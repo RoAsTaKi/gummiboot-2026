@@ -105,35 +105,41 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .wb-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sand)}
 .wb-sub{font-size:12px;color:rgba(245,237,224,.5);margin-top:4px}
 
-/* AVAILABILITY — Sat/Sun grouped */
+/* AVAILABILITY — full calendar */
 .avail-intro{background:linear-gradient(135deg,#1a2838,#0d2030);border:1px solid rgba(74,158,190,.2);border-radius:16px;padding:20px;margin-bottom:16px}
-.wknds-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 
-.wknd-block{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.12);transition:box-shadow .2s}
-.wknd-block.best{box-shadow:0 0 0 2px var(--sun),0 4px 20px rgba(232,168,56,.2)}
-.wknd-block-header{background:var(--night-m);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.wknd-block-title{font-size:13px;font-weight:700;color:var(--sand)}
-.wknd-block-note{font-size:10px;color:rgba(245,237,224,.4)}
-.best-badge{background:var(--sun);color:var(--night);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-left:8px}
-
-.days-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid #f0f4f6}
-.day-col{padding:10px 12px;border-right:1px solid #f0f4f6}
-.day-col:last-child{border-right:none}
-.day-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--water-d);margin-bottom:8px}
-.day-people{display:flex;flex-wrap:wrap;gap:5px;min-height:30px;align-items:center}
-.person-chip{border-radius:16px;padding:3px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;transition:all .2s;user-select:none;border:1.5px solid transparent}
-.person-chip.avail{background:var(--forest-l);color:var(--forest);border-color:var(--forest)}
-.person-chip.unavail{background:#f0f4f6;color:#aab8c2;border-color:#dde8ee}
-.person-chip.mine{outline:2px solid var(--water);outline-offset:1px;cursor:pointer}
-.no-one{font-size:11px;color:#aab8c2;font-style:italic}
+/* Calendar */
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);background:var(--night-m);padding:8px 0}
+.cal-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,237,224,.45);padding:4px 0}
+.cal-dow.we{color:var(--water);opacity:.8}
+.cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
+.cal-cell{position:relative;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;border:1px solid #f0f4f6;user-select:none;-webkit-tap-highlight-color:transparent}
+.cal-cell:hover{background:#f0f7fc}
+.cal-cell.empty{background:#fafbfc;cursor:default}
+.cal-cell.today .cal-day-num{background:var(--water);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.cal-cell.out-range{opacity:.35;pointer-events:none}
+.cal-day-num{font-size:12px;font-weight:600;color:var(--text);line-height:1;margin-bottom:2px}
+.cal-cell.free{background:#e8f3ec}
+.cal-cell.free .cal-day-num{color:var(--forest);font-weight:700}
+.cal-cell.maybe{background:#fdf4e0}
+.cal-cell.maybe .cal-day-num{color:#b07800;font-weight:700}
+.cal-cell.weekend{background:#f8faff}
+.cal-cell.free.weekend{background:#d4ead8}
+.cal-cell.maybe.weekend{background:#faefd0}
+.cal-dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:32px;min-height:6px}
+.cal-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.cal-dot.free{background:var(--forest)}
+.cal-dot.maybe{background:var(--sun)}
+.cal-state-icon{font-size:8px;position:absolute;top:2px;right:3px;line-height:1}
 
 .avail-results{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:12px;display:none}
 .ar-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d);margin-bottom:12px}
 .ar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ar-bar-wrap{flex:1;height:8px;background:#e5eef5;border-radius:4px;overflow:hidden}
-.ar-bar{height:100%;background:linear-gradient(90deg,var(--forest),var(--water));border-radius:4px;transition:width .4s ease}
+.ar-bar{height:100%;border-radius:4px;transition:width .4s ease}
 .ar-label{font-size:10px;color:var(--text);min-width:80px;line-height:1.3}
 .ar-count{font-size:11px;font-weight:700;color:var(--water-d);min-width:28px;text-align:right}
+.best-badge{background:var(--sun);color:var(--night);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:4px;padding:2px 7px}
 
 /* ALERTS */
 .abox{background:linear-gradient(135deg,#0d2a3e,#14405c);border:1px solid rgba(74,158,190,.3);border-radius:14px;padding:18px 20px;margin-bottom:12px}
@@ -346,16 +352,27 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
   <div class="sh"><div class="shl"></div><div class="sht">📅 When Are You Free?</div><div class="shl"></div></div>
   <div class="avail-intro">
     <div class="vi-title" style="margin-bottom:8px">Add your available days</div>
-    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap <strong>Sat</strong> or <strong>Sun</strong> to mark which days you're free. Tap again to remove. The app finds the best overlap automatically.<br><br><span style="color:rgba(245,237,224,.45);font-size:11px">💡 Tip: if you're free both days of a weekend, tap both — that unlocks overnight trips!</span></div>
+    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap any day to mark it. <strong style="color:#6dba8a">Green = free ✓</strong> &nbsp; <strong style="color:#e8a838">Yellow = maybe ◐</strong> &nbsp; Grey = not marked. Tap again to cycle through. The app finds the best overlap automatically.<br><br><span style="color:rgba(245,237,224,.45);font-size:11px">💡 Tip: free both days of a weekend? Tap both — overnight trips become possible!</span></div>
     <div class="name-row">
       <input class="name-input" id="availName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
       <button class="btn-go" onclick="loadAvail()">Load my dates</button>
     </div>
-    <div class="vgreeting" id="aGreeting">Hi <span id="aSpan"></span>! Tap Sat or Sun below to mark your availability.</div>
+    <div class="vgreeting" id="aGreeting">Hi <span id="aSpan"></span>! Tap any day below to add your availability.</div>
   </div>
-  <div class="wknds-grid" id="wkndsGrid"></div>
+
+  <!-- Month navigation -->
+  <div id="calNav" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <button onclick="prevMonth()" style="background:rgba(74,158,190,.15);border:1px solid rgba(74,158,190,.3);border-radius:8px;padding:7px 14px;color:var(--water);font-family:Syne,sans-serif;font-weight:700;font-size:13px;cursor:pointer">‹</button>
+    <div id="calMonthLabel" style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sand)"></div>
+    <button onclick="nextMonth()" style="background:rgba(74,158,190,.15);border:1px solid rgba(74,158,190,.3);border-radius:8px;padding:7px 14px;color:var(--water);font-family:Syne,sans-serif;font-weight:700;font-size:13px;cursor:pointer">›</button>
+  </div>
+
+  <!-- Calendar grid -->
+  <div id="calGrid" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.15);margin-bottom:14px"></div>
+
+  <!-- Best days summary -->
   <div class="avail-results" id="availResults">
-    <div class="ar-title">📊 Best days at a glance</div>
+    <div class="ar-title">📊 Most popular days</div>
     <div id="arBody"></div>
   </div>
 </div>
@@ -418,7 +435,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="meta"><span class="pd">11.6 km</span><span class="pd">3–4 hours</span><span class="pd">Mittel</span><span class="pg">🌡 20–22°C warmest</span><span class="pb">🚆 ~1h from Basel</span></div>
       </div>
       <div class="route-photo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Laufenburg_am_Rhein.jpg/1200px-Laufenburg_am_Rhein.jpg" alt="Laufenburg" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏰 🛶 🏖</div>'">
+        <img crossorigin="anonymous" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Laufenburg_-_Bad_Laufenburg_from_south.jpg/800px-Laufenburg_-_Bad_Laufenburg_from_south.jpg" alt="Laufenburg" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏰 🛶 🏖</div>'">
       </div>
       <div class="card-map"><div id="map_d1"></div></div>
       <div class="rdwrap"><div class="rd">
@@ -472,7 +489,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="meta"><span class="pd">18.8 km</span><span class="pd">3.5–4 hours</span><span class="pd">Mittel</span><span class="pd">19–23°C</span><span class="pb">🚆 ~2h · Basel Bad Bf</span></div>
       </div>
       <div class="route-photo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Stein_am_Rhein_-_Luftbild.jpg/1200px-Stein_am_Rhein_-_Luftbild.jpg" alt="Stein am Rhein" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏯 🛶 ⛵</div>'">
+        <img crossorigin="anonymous" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Stein_am_Rhein.jpg/800px-Stein_am_Rhein.jpg" alt="Stein am Rhein" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏯 🛶 ⛵</div>'">
       </div>
       <div class="card-map"><div id="map_d2"></div></div>
       <div class="rdwrap"><div class="rd">
@@ -526,7 +543,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="meta"><span class="pd">7 km</span><span class="pd">3–4 hours</span><span class="pd">Mittel</span><span class="pd">1× portage</span><span class="pb">🚆 ~1.5h · Basel Bad Bf</span><span class="pg">🌕 Moonlight perfect</span></div>
       </div>
       <div class="route-photo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rheinfall_2015-10-04.jpg/1200px-Rheinfall_2015-10-04.jpg" alt="Rheinfall" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>💦 🛶 ⛪</div>'">
+        <img crossorigin="anonymous" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Rheinfall_Schaffhausen.jpg/800px-Rheinfall_Schaffhausen.jpg" alt="Rheinfall" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>💦 🛶 ⛪</div>'">
       </div>
       <div class="card-map"><div id="map_d3"></div></div>
       <div class="rdwrap"><div class="rd">
@@ -588,7 +605,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="meta"><span class="pd">Day 1: 26.7km · 3.5–4h</span><span class="pd">Day 2: 17.4km · 4–5h</span><span class="pd">16–19°C</span><span class="pb">🚆 ~55 min from Basel</span></div>
       </div>
       <div class="route-photo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bern_Aare_aerial_%28cropped%29.jpg/1200px-Bern_Aare_aerial_%28cropped%29.jpg" alt="Aare Bern" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>⛰️ 🛶 🏕 🏙</div>'">
+        <img crossorigin="anonymous" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Bern_Aare_Aerial.jpg/800px-Bern_Aare_Aerial.jpg" alt="Aare Bern" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>⛰️ 🛶 🏕 🏙</div>'">
       </div>
       <div class="card-map"><div id="map_o1"></div></div>
       <div class="rdwrap"><div class="rd">
@@ -646,7 +663,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="meta"><span class="pd">25.3 km</span><span class="pd">4–5h per day</span><span class="pw">⚠️ Anspruchsvoll</span><span class="pg">🌡 20–22°C warmest!</span><span class="pb">🚆 ~1h 15min</span></div>
       </div>
       <div class="route-photo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Bremgarten_AG_-_Reuss_%28Hexenturm%29.jpg/1200px-Bremgarten_AG_-_Reuss_%28Hexenturm%29.jpg" alt="Bremgarten Reuss" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🌲 🛶 🪨</div>'">
+        <img crossorigin="anonymous" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Bremgarten_-_Hexenturm.jpg/800px-Bremgarten_-_Hexenturm.jpg" alt="Bremgarten Reuss" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🌲 🛶 🪨</div>'">
       </div>
       <div class="card-map"><div id="map_o2"></div></div>
       <div class="rdwrap"><div class="rd">
@@ -838,19 +855,7 @@ const ROUTES = [
   {id:'o2',cls:'o2',emoji:'🌲',name:'Bremgarten → Gebenstorf',sub:'Overnight #2 · Reuss · 25.3km · Advanced'},
 ];
 
-// Weekends: each has sat + sun as separate day IDs
-const WEEKENDS = [
-  {id:'w01', label:'May 2–4',      note:'Early May',           sat:{id:'w01s',label:'Sat May 3'},  sun:{id:'w01u',label:'Sun May 4'}},
-  {id:'w02', label:'May 16–18',    note:'',                    sat:{id:'w02s',label:'Sat May 17'}, sun:{id:'w02u',label:'Sun May 18'}},
-  {id:'w03', label:'May 30–Jun 1', note:'Pfingsten 🌸',        sat:{id:'w03s',label:'Sat May 31'}, sun:{id:'w03u',label:'Sun Jun 1'}},
-  {id:'w04', label:'Jun 13–15',    note:'',                    sat:{id:'w04s',label:'Sat Jun 14'}, sun:{id:'w04u',label:'Sun Jun 15'}},
-  {id:'w05', label:'Jun 27–29',    note:'',                    sat:{id:'w05s',label:'Sat Jun 28'}, sun:{id:'w05u',label:'Sun Jun 29'}},
-  {id:'w06', label:'Jul 11–13',    note:'',                    sat:{id:'w06s',label:'Sat Jul 12'}, sun:{id:'w06u',label:'Sun Jul 13'}},
-  {id:'w07', label:'Jul 25–27',    note:'',                    sat:{id:'w07s',label:'Sat Jul 26'}, sun:{id:'w07u',label:'Sun Jul 27'}},
-  {id:'w08', label:'Aug 1–3',      note:'National Day 🇨🇭',    sat:{id:'w08s',label:'Sat Aug 2'},  sun:{id:'w08u',label:'Sun Aug 3'}},
-  {id:'w09', label:'Aug 15–17',    note:'',                    sat:{id:'w09s',label:'Sat Aug 16'}, sun:{id:'w09u',label:'Sun Aug 17'}},
-  {id:'w10', label:'Aug 29–31',    note:'Schwing & Stampf 🎵', sat:{id:'w10s',label:'Sat Aug 30'}, sun:{id:'w10u',label:'Sun Aug 31'}},
-];
+// Calendar: April–September 2026 (full dates, no preset weekends)
 
 // ═══════════════════════════════════════════
 // STORAGE
@@ -942,114 +947,20 @@ function toggleVote(rid){
 }
 
 // ═══════════════════════════════════════════
-// AVAILABILITY (Sat/Sun per weekend)
+// CALENDAR AVAILABILITY
+// States: 0=none, 1=free(green), 2=maybe(yellow)
+// Storage: { name: { "2026-05-03": 1, "2026-05-04": 2, ... } }
 // ═══════════════════════════════════════════
 let currentAvail = S.get('gb_avail_person') || '';
 
-function buildWknds(){
-  const g=document.getElementById('wkndsGrid');
-  g.innerHTML=WEEKENDS.map(w=>`
-    <div class="wknd-block" id="wb_${w.id}">
-      <div class="wknd-block-header">
-        <div>
-          <span class="wknd-block-title">${w.label}</span>
-          ${w.note?`<span class="wknd-block-note"> · ${w.note}</span>`:''}
-          <span id="best_${w.id}"></span>
-        </div>
-        <div id="wsummary_${w.id}" style="font-size:11px;color:rgba(245,237,224,.45)"></div>
-      </div>
-      <div class="days-row">
-        <div class="day-col">
-          <div class="day-label">Saturday</div>
-          <div class="day-people" id="dp_${w.sat.id}"></div>
-        </div>
-        <div class="day-col">
-          <div class="day-label">Sunday</div>
-          <div class="day-people" id="dp_${w.sun.id}"></div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  refreshAvailUI();
-}
+const CAL_START = new Date(2026,3,1);
+const CAL_END   = new Date(2026,8,30);
+let calYear=2026, calMonth=3;
 
-function refreshAvailUI(){
-  const avail=getAvail();
-  const names=Object.keys(avail);
+const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW_LABELS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-  // collect all day IDs for best-day calculation
-  const allDayIds=[];
-  WEEKENDS.forEach(w=>{allDayIds.push(w.sat.id,w.sun.id);});
-
-  // best day & best weekend
-  let bestDayCount=0,bestDayIds=[];
-  allDayIds.forEach(did=>{
-    const c=names.filter(n=>(avail[n]||[]).includes(did)).length;
-    if(c>bestDayCount){bestDayCount=c;bestDayIds=[did];}
-    else if(c===bestDayCount&&c>0)bestDayIds.push(did);
-  });
-
-  WEEKENDS.forEach(w=>{
-    const satFree=names.filter(n=>(avail[n]||[]).includes(w.sat.id));
-    const sunFree=names.filter(n=>(avail[n]||[]).includes(w.sun.id));
-    const bothFree=names.filter(n=>satFree.includes(n)&&sunFree.includes(n));
-
-    // best badge
-    const isSatBest=bestDayCount>0&&bestDayIds.includes(w.sat.id);
-    const isSunBest=bestDayCount>0&&bestDayIds.includes(w.sun.id);
-    const isBest=isSatBest||isSunBest;
-    document.getElementById('wb_'+w.id).className='wknd-block'+(isBest?' best':'');
-    document.getElementById('best_'+w.id).innerHTML=isBest?'<span class="best-badge">✨ BEST</span>':'';
-
-    // summary
-    const summaryEl=document.getElementById('wsummary_'+w.id);
-    if(summaryEl){
-      if(names.length===0) summaryEl.textContent='';
-      else if(bothFree.length>0) summaryEl.textContent=bothFree.length+' free both days → overnight possible!';
-      else summaryEl.textContent='';
-    }
-
-    // chips for each day
-    [
-      {day:w.sat, free:satFree, isBest:isSatBest},
-      {day:w.sun, free:sunFree, isBest:isSunBest},
-    ].forEach(({day,free,isBest})=>{
-      const el=document.getElementById('dp_'+day.id);
-      if(!el)return;
-      if(names.length===0){el.innerHTML='<div class="no-one">Be the first!</div>';return;}
-      el.innerHTML=names.map(name=>{
-        const isAvail=free.includes(name);
-        const isMine=name===currentAvail;
-        const cls='person-chip'+(isAvail?' avail':' unavail')+(isMine?' mine':'');
-        const click=isMine?`onclick="toggleDay('${day.id}')" style="cursor:pointer"`:'';
-        return `<div class="${cls}" ${click}>${isAvail?'✓':'—'} ${name}</div>`;
-      }).join('');
-    });
-  });
-
-  refreshAvailResults(avail,names,bestDayIds,bestDayCount);
-}
-
-function refreshAvailResults(avail,names,bestDayIds,bestDayCount){
-  if(names.length===0){document.getElementById('availResults').style.display='none';return;}
-  document.getElementById('availResults').style.display='block';
-
-  const rows=[];
-  WEEKENDS.forEach(w=>{
-    [w.sat,w.sun].forEach(day=>{
-      const c=names.filter(n=>(avail[n]||[]).includes(day.id)).length;
-      rows.push({label:day.label,count:c,isBest:bestDayIds.includes(day.id)&&bestDayCount>0});
-    });
-  });
-  const max=Math.max(...rows.map(r=>r.count),1);
-  document.getElementById('arBody').innerHTML=rows.map(r=>`
-    <div class="ar-row">
-      <div class="ar-label">${r.label}${r.isBest?' ✨':''}</div>
-      <div class="ar-bar-wrap"><div class="ar-bar" style="width:${(r.count/max)*100}%;${r.isBest?'background:linear-gradient(90deg,var(--sun),#f0b840)':''}"></div></div>
-      <div class="ar-count">${r.count}/${names.length}</div>
-    </div>
-  `).join('');
-}
+function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
 
 function loadAvail(){
   const n=document.getElementById('availName').value.trim();
@@ -1057,21 +968,141 @@ function loadAvail(){
   currentAvail=n;
   S.set('gb_avail_person',n);
   const a=getAvail();
-  if(!a[n]){a[n]=[];saveAvail(a);}
+  if(!a[n]){a[n]={};saveAvail(a);}
   document.getElementById('aSpan').textContent=n;
   document.getElementById('aGreeting').style.display='block';
-  refreshAvailUI();
+  renderCal();
+  refreshSummary();
   if(!document.getElementById('voterName').value) document.getElementById('voterName').value=n;
 }
 
-function toggleDay(dayId){
+function prevMonth(){
+  if(calYear===2026&&calMonth===3)return;
+  calMonth--; if(calMonth<0){calMonth=11;calYear--;}
+  renderCal();
+}
+function nextMonth(){
+  if(calYear===2026&&calMonth===8)return;
+  calMonth++; if(calMonth>11){calMonth=0;calYear++;}
+  renderCal();
+}
+
+function renderCal(){
+  const lbl = document.getElementById('calMonthLabel');
+  if(lbl) lbl.textContent = MONTH_NAMES[calMonth]+' '+calYear;
+  const grid = document.getElementById('calGrid');
+  if(!grid) return;
+
+  const avail=getAvail();
+  const names=Object.keys(avail);
+  const myData=(currentAvail&&avail[currentAvail])||{};
+  const today=new Date();
+  const firstDay=new Date(calYear,calMonth,1);
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const startDow=(firstDay.getDay()+6)%7;
+
+  let html=`<div class="cal-header">`;
+  DOW_LABELS.forEach((d,i)=>{ html+=`<div class="cal-dow${i>=5?' we':''}">${d}</div>`; });
+  html+=`</div><div class="cal-body">`;
+  for(let i=0;i<startDow;i++) html+=`<div class="cal-cell empty"></div>`;
+
+  for(let d=1;d<=daysInMonth;d++){
+    const dk=dateKey(calYear,calMonth,d);
+    const dt=new Date(calYear,calMonth,d);
+    const dow=(dt.getDay()+6)%7;
+    const isWeekend=dow>=5;
+    const isToday=today.getFullYear()===calYear&&today.getMonth()===calMonth&&today.getDate()===d;
+    const inRange=dt>=CAL_START&&dt<=CAL_END;
+    const myState=myData[dk]||0;
+    const freePeople=names.filter(n=>n!==currentAvail&&(avail[n]||{})[dk]===1);
+    const maybePeople=names.filter(n=>n!==currentAvail&&(avail[n]||{})[dk]===2);
+
+    let cls='cal-cell';
+    if(!inRange)cls+=' out-range';
+    if(isWeekend)cls+=' weekend';
+    if(isToday)cls+=' today';
+    if(myState===1)cls+=' free';
+    if(myState===2)cls+=' maybe';
+
+    const stateIcon=myState===1?'✓':myState===2?'◐':'';
+    const clickAttr=currentAvail&&inRange?`onclick="tapDay('${dk}')" style="cursor:pointer"`:'';
+    let dots='';
+    freePeople.slice(0,4).forEach(()=>{dots+=`<div class="cal-dot free"></div>`;});
+    maybePeople.slice(0,4).forEach(()=>{dots+=`<div class="cal-dot maybe"></div>`;});
+
+    html+=`<div class="${cls}" ${clickAttr}>
+      <div class="cal-day-num">${d}</div>
+      ${stateIcon?`<div class="cal-state-icon">${stateIcon}</div>`:''}
+      <div class="cal-dots">${dots}</div>
+    </div>`;
+  }
+  const totalCells=startDow+daysInMonth;
+  const rem=(7-(totalCells%7))%7;
+  for(let i=0;i<rem;i++) html+=`<div class="cal-cell empty"></div>`;
+  html+=`</div>`;
+  grid.innerHTML=html;
+}
+
+function tapDay(dk){
   if(!currentAvail)return;
   const a=getAvail();
-  if(!a[currentAvail])a[currentAvail]=[];
-  const i=a[currentAvail].indexOf(dayId);
-  if(i>=0)a[currentAvail].splice(i,1); else a[currentAvail].push(dayId);
+  if(!a[currentAvail])a[currentAvail]={};
+  const cur=a[currentAvail][dk]||0;
+  a[currentAvail][dk]=(cur+1)%3;
+  if(a[currentAvail][dk]===0) delete a[currentAvail][dk];
   saveAvail(a);
-  refreshAvailUI();
+  renderCal();
+  refreshSummary();
+}
+
+function refreshSummary(){
+  const avail=getAvail();
+  const names=Object.keys(avail);
+  const el=document.getElementById('availResults');
+  if(!el)return;
+  if(names.length===0){el.style.display='none';return;}
+
+  const dayMap={};
+  names.forEach(n=>{
+    Object.entries(avail[n]||{}).forEach(([dk,state])=>{
+      if(state>0){
+        if(!dayMap[dk])dayMap[dk]={free:[],maybe:[]};
+        if(state===1)dayMap[dk].free.push(n);
+        else if(state===2)dayMap[dk].maybe.push(n);
+      }
+    });
+  });
+
+  const sorted=Object.entries(dayMap)
+    .map(([dk,{free,maybe}])=>({dk,score:free.length+maybe.length*0.5,free,maybe}))
+    .sort((a,b)=>b.score-a.score||a.dk.localeCompare(b.dk))
+    .slice(0,12);
+
+  if(sorted.length===0){el.style.display='none';return;}
+  el.style.display='block';
+  const maxScore=sorted[0].score||1;
+  const body=document.getElementById('arBody');
+  if(!body)return;
+  body.innerHTML=sorted.map(({dk,score,free,maybe},i)=>{
+    const isBest=i===0;
+    const [y,m,d]=dk.split('-');
+    const dt=new Date(+y,+m-1,+d);
+    const label=dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const fp=Math.round((free.length/maxScore)*100);
+    const mp=Math.round((maybe.length/maxScore)*100);
+    const allNames=[...free.map(n=>`<span style="color:var(--forest)">${n}</span>`), ...maybe.map(n=>`<span style="color:#b07800">${n}?</span>`)].join(', ');
+    return `<div class="ar-row" style="flex-direction:column;align-items:stretch;gap:4px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="ar-label" style="min-width:auto;font-weight:600">${label} ${isBest?'<span class="best-badge">✨ BEST</span>':''}</div>
+        <div style="font-size:10px;color:var(--muted)">${free.length} free · ${maybe.length} maybe</div>
+      </div>
+      <div class="ar-bar-wrap" style="position:relative;height:10px">
+        <div style="position:absolute;top:0;left:0;height:100%;width:${fp+mp}%;background:#e8a838;opacity:.4;border-radius:4px"></div>
+        <div class="ar-bar" style="width:${fp}%;background:linear-gradient(90deg,var(--forest),var(--water));position:absolute;top:0;left:0;height:100%"></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted)">${allNames}</div>
+    </div>`;
+  }).join('');
 }
 
 // ═══════════════════════════════════════════
@@ -1116,54 +1147,116 @@ function initMaps(){
   marker(ov, 47.347, 8.334, '#7a3a10', '🌙 Overnight 2 Start: Bremgarten');
   marker(ov, 47.392, 8.229, '#7a3a10', '🌙 Overnight 2 End: Gebenstorf');
 
-  // DAY 1 — Leibstadt → Laufenburg
-  const m1 = makeMap('map_d1', 47.571, 8.020, 12);
-  routeLine(m1, [[47.572,7.973],[47.574,8.000],[47.568,8.025],[47.562,8.048],[47.570,8.067]], '#4a9ebe');
-  marker(m1, 47.572, 7.973, '#2d5a3d', '🚀 Entry: Leibstadt');
-  marker(m1, 47.574, 8.000, '#4a9ebe', '🏖 Dreispitz Beach (km 3.8)');
-  marker(m1, 47.568, 8.025, '#4a9ebe', '🏝 Etzgen "Caribbean" Island (km 6.8)');
-  marker(m1, 47.570, 8.067, '#e8a838', '🏰 Exit: Laufenburg');
+  // DAY 1 — Leibstadt → Laufenburg (accurate Rhine path)
+  const m1 = makeMap('map_d1', 47.575, 8.035, 12);
+  routeLine(m1, [
+    [47.5893,8.1780],[47.5888,8.1738],[47.5884,8.1695],[47.5880,8.1652],[47.5876,8.1608],
+    [47.5871,8.1565],[47.5866,8.1522],[47.5860,8.1478],[47.5854,8.1435],[47.5847,8.1392],
+    [47.5840,8.1350],[47.5832,8.1308],[47.5824,8.1266],[47.5816,8.1224],[47.5808,8.1182],
+    [47.5800,8.1142],[47.5791,8.1102],[47.5782,8.1062],[47.5773,8.1022],[47.5764,8.0984],
+    [47.5755,8.0946],[47.5746,8.0908],[47.5738,8.0870],[47.5730,8.0834],[47.5722,8.0798],
+    [47.5714,8.0764],[47.5706,8.0730],[47.5698,8.0698],[47.5689,8.0670],[47.5678,8.0648],
+    [47.5666,8.0632],[47.5653,8.0622],[47.5640,8.0617],[47.5626,8.0614],[47.5594,8.0616]
+  ], '#4a9ebe');
+  marker(m1, 47.5893, 8.1780, '#2d5a3d', '🚀 Entry: Leibstadt (Albbruck-Dogern dam)');
+  marker(m1, 47.5764, 8.0984, '#4a9ebe', '🏖 Dreispitz Beach (km 3.8) — Fischerhütte bar');
+  marker(m1, 47.5730, 8.0834, '#4a9ebe', '🏝 Etzgen "Caribbean" Island (km 6.8)');
+  marker(m1, 47.5594, 8.0616, '#e8a838', '🏰 Exit: Laufenburg (Laufenbrücke) ⚠️ Stay left!');
 
-  // DAY 2 — Stein am Rhein → Schaffhausen
-  const m2 = makeMap('map_d2', 47.677, 8.748, 12);
-  routeLine(m2, [[47.657,8.858],[47.667,8.810],[47.668,8.760],[47.669,8.710],[47.671,8.680],[47.690,8.660],[47.696,8.634]], '#2e7a9e');
-  marker(m2, 47.657, 8.858, '#2d5a3d', '🏯 Entry: Stein am Rhein');
-  marker(m2, 47.668, 8.760, '#e08030', '⚠️ Bibermüli — ferry caution (km 5.1)');
-  marker(m2, 47.669, 8.710, '#4a9ebe', '🏊 Mid-exit option: Diessenhofen (km 9.7)');
-  marker(m2, 47.696, 8.634, '#e8a838', '🏙 Exit: Schaffhausen (Salzstadel)');
+  // DAY 2 — Stein am Rhein → Schaffhausen (accurate Rhine path)
+  const m2 = makeMap('map_d2', 47.680, 8.750, 12);
+  routeLine(m2, [
+    [47.6625,8.8542],[47.6632,8.8496],[47.6639,8.8450],[47.6646,8.8404],[47.6653,8.8358],
+    [47.6660,8.8312],[47.6667,8.8266],[47.6674,8.8220],[47.6681,8.8174],[47.6688,8.8128],
+    [47.6695,8.8082],[47.6702,8.8036],[47.6710,8.7988],[47.6718,8.7940],[47.6726,8.7892],
+    [47.6735,8.7844],[47.6746,8.7796],[47.6758,8.7748],[47.6772,8.7700],[47.6788,8.7654],
+    [47.6804,8.7608],[47.6820,8.7564],[47.6836,8.7522],[47.6852,8.7480],[47.6868,8.7440],
+    [47.6882,8.7400],[47.6894,8.7360],[47.6900,8.7310],[47.6904,8.7255],[47.6908,8.7200],
+    [47.6912,8.7145],[47.6916,8.7090],[47.6920,8.7035],[47.6923,8.6980],[47.6926,8.6925],
+    [47.6928,8.6870],[47.6930,8.6815],[47.6932,8.6760],[47.6934,8.6705],[47.6936,8.6650],
+    [47.6938,8.6595],[47.6940,8.6540],[47.6942,8.6490],[47.6944,8.6467]
+  ], '#2e7a9e');
+  marker(m2, 47.6625, 8.8542, '#2d5a3d', '🏯 Entry: Stein am Rhein');
+  marker(m2, 47.6894, 8.7360, '#4a9ebe', '🏊 Diessenhofen mid-exit option (km 9.7)');
+  marker(m2, 47.6900, 8.7310, '#e08030', '⚠️ Bibermüli — ferry lane caution');
+  marker(m2, 47.6944, 8.6467, '#e8a838', '🏙 Exit: Schaffhausen (Salzstadel) ⛔');
 
-  // DAY 3 — Rheinfall → Kloster Rheinau
-  const m3 = makeMap('map_d3', 47.663, 8.575, 13);
-  routeLine(m3, [[47.678,8.616],[47.676,8.590],[47.670,8.566],[47.653,8.548],[47.646,8.542],[47.643,8.538]], '#2a6a90');
-  marker(m3, 47.678, 8.616, '#2d5a3d', '💦 Entry: below Rheinfall');
-  marker(m3, 47.670, 8.566, '#4a9ebe', '🏊 Best swim spot (km 5)');
-  marker(m3, 47.653, 8.548, '#e08030', '🔄 Stauwehr Rheinau — portage (km 6.4)');
-  marker(m3, 47.643, 8.538, '#e8a838', '⛪ Exit: Kloster Rheinau island');
+  // DAY 3 — Rheinfall → Kloster Rheinau (with S-bend)
+  const m3 = makeMap('map_d3', 47.658, 8.577, 13);
+  routeLine(m3, [
+    [47.6775,8.6153],[47.6768,8.6110],[47.6762,8.6065],[47.6755,8.6018],[47.6746,8.5972],
+    [47.6735,8.5930],[47.6720,8.5895],[47.6704,8.5868],[47.6686,8.5848],[47.6668,8.5835],
+    [47.6650,8.5828],[47.6632,8.5828],[47.6618,8.5838],[47.6608,8.5860],[47.6602,8.5892],
+    [47.6600,8.5928],[47.6604,8.5960],[47.6612,8.5988],[47.6622,8.6010],[47.6634,8.6032],
+    [47.6644,8.6056],[47.6648,8.6080],[47.6646,8.6104],[47.6638,8.6118],[47.6628,8.6116],
+    [47.6618,8.6102],[47.6422,8.6083]
+  ], '#2a6a90');
+  marker(m3, 47.6775, 8.6153, '#2d5a3d', '💦 Entry: below Rheinfall (Schlössli Wörth)');
+  marker(m3, 47.6650, 8.5828, '#4a9ebe', '🏊 Best swim spot — calm bend before weir');
+  marker(m3, 47.6618, 8.5838, '#e08030', '🔄 Stauwehr Rheinau — portage 60m (km 6.4)');
+  marker(m3, 47.6422, 8.6083, '#e8a838', '⛪ Exit: Kloster Rheinau monastery island');
 
   // OVERNIGHT 1 — Aare Thun → Bern → Hinterkappelen
-  const mo1 = makeMap('map_o1', 46.90, 7.51, 11);
+  const mo1 = makeMap('map_o1', 46.87, 7.52, 11);
   routeLine(mo1, [
-    [46.758,7.629],[46.780,7.610],[46.820,7.575],[46.855,7.540],[46.892,7.518],[46.920,7.434]
+    [46.7580,7.6296],[46.7590,7.6268],[46.7602,7.6240],[46.7616,7.6216],[46.7632,7.6192],
+    [46.7650,7.6172],[46.7670,7.6156],[46.7695,7.6132],[46.7720,7.6108],[46.7745,7.6080],
+    [46.7770,7.6048],[46.7795,7.6014],[46.7820,7.5978],[46.7845,7.5940],[46.7870,7.5900],
+    [46.7895,7.5862],[46.7920,7.5828],[46.7956,7.5822],[46.7981,7.5739],
+    [46.8010,7.5720],[46.8040,7.5704],[46.8070,7.5690],[46.8100,7.5680],[46.8130,7.5672],
+    [46.8160,7.5666],[46.8192,7.5662],[46.8224,7.5658],[46.8256,7.5652],[46.8290,7.5644],
+    [46.8325,7.5636],[46.8360,7.5628],[46.8395,7.5618],[46.8432,7.5606],[46.8470,7.5592],
+    [46.8508,7.5576],[46.8544,7.5558],[46.8580,7.5538],[46.8616,7.5516],[46.8650,7.5492],
+    [46.8684,7.5466],[46.8718,7.5438],[46.8752,7.5408],[46.8786,7.5376],[46.8820,7.5342],
+    [46.8854,7.5306],[46.8890,7.5268],[46.8926,7.5228],[46.8962,7.5186],[46.8998,7.5142],
+    [46.9034,7.5096],[46.9070,7.5048],[46.9106,7.4998],[46.9142,7.4946],[46.9180,7.4892],
+    [46.9218,7.4836],[46.9256,7.4778],[46.9294,7.4718],[46.9331,7.4561]
   ], '#1e4a3a');
   routeLine(mo1, [
-    [46.920,7.434],[46.935,7.420],[46.948,7.405],[46.955,7.395],[46.961,7.379]
+    [46.9331,7.4561],[46.9355,7.4536],[46.9375,7.4518],[46.9395,7.4504],[46.9412,7.4494],
+    [46.9425,7.4488],[46.9435,7.4490],[46.9445,7.4496],[46.9453,7.4508],[46.9460,7.4524],
+    [46.9466,7.4542],[46.9472,7.4562],[46.9478,7.4578],[46.9485,7.4585],[46.9492,7.4580],
+    [46.9500,7.4568],[46.9507,7.4550],[46.9510,7.4502],[46.9518,7.4478],[46.9526,7.4458],
+    [46.9534,7.4442],[46.9542,7.4428],[46.9550,7.4420],[46.9558,7.4424],[46.9568,7.4436],
+    [46.9578,7.4448],[46.9590,7.4454],[46.9600,7.4448],[46.9608,7.4434],[46.9614,7.4414],
+    [46.9618,7.4390],[46.9616,7.4366],[46.9614,7.4340],[46.9616,7.4310],[46.9620,7.4276],
+    [46.9622,7.4232],[46.9620,7.4190],[46.9618,7.4148],[46.9618,7.4106],[46.9620,7.4064],
+    [46.9622,7.4022],[46.9626,7.3980],[46.9630,7.3938],[46.9634,7.3896],[46.9640,7.3858],
+    [46.9646,7.3838]
   ], '#2d8a5a');
-  marker(mo1, 46.758, 7.629, '#2d5a3d', '🏔 Entry: Thun / Uttigen');
-  marker(mo1, 46.820, 7.575, '#e08030', '🌊 Uttiger Welle — rapids (km 5.1)');
-  marker(mo1, 46.920, 7.434, '#1a2e3b', '⛺ Camping Eichholz — Night 1');
-  marker(mo1, 46.948, 7.405, '#e08030', '🔄 Stauwehr Engehalde — portage');
-  marker(mo1, 46.961, 7.379, '#e8a838', '🦫 Exit: Hinterkappelen');
+  marker(mo1, 46.7580, 7.6296, '#2d5a3d', '🏔 Entry: Thun (Lake outlet)');
+  marker(mo1, 46.7695, 7.6132, '#4a9ebe', '🛶 Schwäbis — classic put-in point');
+  marker(mo1, 46.7956, 7.5822, '#e08030', '🌊 Uttiger Welle — rapids ⚠️ Beginners: start at Uttigen');
+  marker(mo1, 46.9331, 7.4561, '#1a2e3b', '⛺ Camping Eichholz — Night 1 (km 25)');
+  marker(mo1, 46.9485, 7.4585, '#4a9ebe', '🏛 Bern Old Town loop — Nydeggbrücke');
+  marker(mo1, 46.9620, 7.4276, '#e08030', '🔄 Stauwehr Engehalde — portage Day 2');
+  marker(mo1, 46.9646, 7.3838, '#e8a838', '🦫 Exit: Hinterkappelen / TCS Eymatt');
 
   // OVERNIGHT 2 — Reuss Bremgarten → Gebenstorf
-  const mo2 = makeMap('map_o2', 47.370, 8.280, 12);
+  const mo2 = makeMap('map_o2', 47.400, 8.290, 12);
   routeLine(mo2, [
-    [47.347,8.334],[47.352,8.318],[47.358,8.298],[47.367,8.282],[47.371,8.265],[47.378,8.248],[47.383,8.236],[47.392,8.229]
+    [47.3508,8.3378],[47.3522,8.3368],[47.3536,8.3356],[47.3550,8.3342],[47.3564,8.3332],
+    [47.3578,8.3330],[47.3594,8.3334],[47.3610,8.3340],[47.3626,8.3344],[47.3642,8.3346],
+    [47.3655,8.3346],[47.3666,8.3336],[47.3674,8.3316],[47.3680,8.3288],[47.3682,8.3258],
+    [47.3678,8.3230],[47.3680,8.3204],[47.3690,8.3188],[47.3706,8.3172],[47.3722,8.3156],
+    [47.3738,8.3140],[47.3750,8.3180],[47.3766,8.3112],[47.3780,8.3098],[47.3796,8.3088],
+    [47.3812,8.3082],[47.3828,8.3078],[47.3846,8.3085],[47.3857,8.3069],[47.3870,8.3050],
+    [47.3885,8.3030],[47.3902,8.3008],[47.3920,8.2984],[47.3940,8.2958],[47.3962,8.2930],
+    [47.3986,8.2900],[47.4012,8.2868],[47.4040,8.2838],[47.4068,8.2810],[47.4098,8.2782],
+    [47.4128,8.2758],[47.4158,8.2740],[47.4177,8.2735],[47.4198,8.2718],[47.4218,8.2700],
+    [47.4238,8.2680],[47.4258,8.2660],[47.4278,8.2640],[47.4298,8.2618],[47.4318,8.2596],
+    [47.4338,8.2574],[47.4358,8.2552],[47.4378,8.2532],[47.4398,8.2512],[47.4418,8.2492],
+    [47.4438,8.2472],[47.4458,8.2452],[47.4478,8.2434],[47.4498,8.2418],[47.4520,8.2400],
+    [47.4542,8.2384],[47.4564,8.2368],[47.4588,8.2352],[47.4612,8.2336],[47.4638,8.2322],
+    [47.4664,8.2310],[47.4692,8.2298],[47.4720,8.2288],[47.4748,8.2278],[47.4776,8.2270],
+    [47.4806,8.2261]
   ], '#7a3a10');
-  marker(mo2, 47.347, 8.334, '#2d5a3d', '🏰 Entry: Bremgarten (Hexenturm)');
-  marker(mo2, 47.352, 8.318, '#e08030', '⚠️ Honeggerwehr — pass RIGHT (km 1.3)');
-  marker(mo2, 47.367, 8.282, '#1a2e3b', '⛺ Camping Sulz — Night (km 8.4)');
-  marker(mo2, 47.371, 8.265, '#e08030', '🪨 Gnadental rapids — sharp boulders');
-  marker(mo2, 47.392, 8.229, '#e8a838', '🏁 Exit: Gebenstorf ⛔ stop here');
+  marker(mo2, 47.3508, 8.3378, '#2d5a3d', '🏰 Entry: Bremgarten (Hexenturm)');
+  marker(mo2, 47.3550, 8.3342, '#e08030', '⚠️ Honeggerwehr — pass RIGHT (km 1.3)');
+  marker(mo2, 47.3750, 8.3180, '#1a2e3b', '⛺ Camping Sulz — Night (km 8.4)');
+  marker(mo2, 47.3857, 8.3069, '#e08030', '🪨 Gnadenthal rapids — sharp boulders!');
+  marker(mo2, 47.4177, 8.2735, '#4a9ebe', '🏘 Mellingen — medieval bridge mid-exit option');
+  marker(mo2, 47.4806, 8.2261, '#e8a838', '🏁 Exit: Gebenstorf ⛔ Do NOT continue past here');
 }
 
 // ═══════════════════════════════════════════
@@ -1181,8 +1274,14 @@ function initApp(){
     document.getElementById('aSpan').textContent=currentAvail;
     document.getElementById('aGreeting').style.display='block';
   }
+  // Set initial cal month to today or April 2026 if in future
+  const now=new Date();
+  if(now.getFullYear()===2026&&now.getMonth()>=3&&now.getMonth()<=8){
+    calMonth=now.getMonth(); calYear=2026;
+  }
   buildVoteCards();
-  buildWknds();
+  renderCal();
+  refreshSummary();
   initMaps();
   document.getElementById('voterName').addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
   document.getElementById('availName').addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
@@ -1200,7 +1299,8 @@ document.addEventListener('DOMContentLoaded', function(){
       el.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8f4fb;font-size:12px;color:#617585;padding:16px;text-align:center">🗺 Map unavailable offline<br>Open at <strong>gummiboot-2026.vercel.app</strong> to view</div>';
     });
     buildVoteCards();
-    buildWknds();
+    renderCal();
+  refreshSummary();
     document.getElementById('voterName').addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
     document.getElementById('availName').addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
   };
