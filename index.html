@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gummiboot 2026 🛶</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap');
 :root {
@@ -15,14 +16,12 @@
   --pro:#2d5a3d; --con:#7a2828;
   --warn:#9a4800; --warn-bg:#fff6ed; --warn-b:#f0c080;
   --upd-bg:#e8f4fb;
-  --vote-active:#e8a838;
-  --avail-yes:#2d5a3d; --avail-no:#dde8ee;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
 
-/* ── HERO ── */
+/* HERO */
 .hero{position:relative;height:100svh;min-height:560px;max-height:820px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,#0a3d5c 0%,#1a6080 35%,#2a8aad 65%,#1a5070 100%)}
 .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,26,38,.05) 0%,rgba(13,26,38,.25) 45%,rgba(13,26,38,.92) 100%)}
 .hgrid{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(74,158,190,.04) 0,rgba(74,158,190,.04) 1px,transparent 1px,transparent 52px),repeating-linear-gradient(0deg,rgba(74,158,190,.04) 0,rgba(74,158,190,.04) 1px,transparent 1px,transparent 52px)}
@@ -43,7 +42,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .hscroll{font-size:11px;color:rgba(245,237,224,.35);letter-spacing:2px;text-transform:uppercase;animation:pulse 2.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.75}}
 
-/* ── LETTER ── */
+/* LETTER */
 .letter{max-width:680px;margin:0 auto;padding:44px 20px 0}
 .lcard{background:linear-gradient(135deg,#1a3a2a,#0d2a1e);border:1px solid rgba(74,158,190,.2);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden}
 .lcard::before{content:'🛶';position:absolute;right:20px;top:16px;font-size:54px;opacity:.1}
@@ -53,42 +52,40 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .lopts{background:rgba(0,0,0,.25);border-radius:10px;padding:12px 14px;border-left:3px solid var(--sun);font-size:11px;color:rgba(245,237,224,.5);line-height:1.6}
 .lopts strong{color:var(--sun);display:block;margin-bottom:6px;font-size:10px;letter-spacing:2px;text-transform:uppercase}
 
-/* ── NAV ── */
+/* NAV */
 .nav{position:sticky;top:0;z-index:100;background:rgba(13,26,38,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(74,158,190,.12);padding:0 12px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav a{flex-shrink:0;padding:13px 12px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,237,224,.35);text-decoration:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.nav a:hover,.nav a.active{color:var(--water);border-bottom-color:var(--water)}
+.nav a:hover{color:var(--water);border-bottom-color:var(--water)}
 
-/* ── SECTION ── */
+/* SECTION */
 .sec{max-width:680px;margin:0 auto;padding:0 16px}
 .sh{padding:44px 0 20px;display:flex;align-items:center;gap:14px}
 .shl{flex:1;height:1px;background:rgba(74,158,190,.15)}
 .sht{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--water);white-space:nowrap}
 
-/* ── VOTE SECTION ── */
+/* VOTE */
 .vote-intro{background:linear-gradient(135deg,#0d2a3e,#14405c);border:1px solid rgba(74,158,190,.3);border-radius:16px;padding:20px;margin-bottom:16px}
 .vi-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water);margin-bottom:8px}
 .vi-sub{font-size:13px;color:rgba(245,237,224,.7);line-height:1.55;margin-bottom:14px}
-.name-input-row{display:flex;gap:10px;align-items:center}
+.name-row{display:flex;gap:10px;align-items:center}
 .name-input{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(74,158,190,.3);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--sand);font-family:'Syne',sans-serif;outline:none;transition:border .2s}
 .name-input::placeholder{color:rgba(245,237,224,.3)}
 .name-input:focus{border-color:var(--water)}
 .btn-go{background:var(--water);border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;color:var(--night);cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s;white-space:nowrap}
 .btn-go:hover{background:#5ab0d0;transform:translateY(-1px)}
-.btn-go:active{transform:translateY(0)}
-.voter-greeting{font-size:13px;color:rgba(245,237,224,.6);margin-top:10px;display:none}
-.voter-greeting span{color:var(--water);font-weight:700}
+.vgreeting{font-size:13px;color:rgba(245,237,224,.6);margin-top:10px;display:none}
+.vgreeting span{color:var(--water);font-weight:700}
 
-/* vote cards */
 .vote-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .vcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.15);transition:transform .15s}
 .vcard:hover{transform:translateY(-2px)}
-.vcard-header{padding:14px 16px;display:flex;align-items:center;gap:12px}
-.vcard.d1 .vcard-header{background:linear-gradient(135deg,#1a5570,#3a8aad)}
-.vcard.d2 .vcard-header{background:linear-gradient(135deg,#1e4a6a,#2e7a9e)}
-.vcard.d3 .vcard-header{background:linear-gradient(135deg,#1a456a,#2a6a90)}
-.vcard.o1 .vcard-header{background:linear-gradient(135deg,#142838,#1e4a3a)}
-.vcard.o2 .vcard-header{background:linear-gradient(135deg,#2a1808,#5a2e10)}
+.vcard-h{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.vcard.d1 .vcard-h{background:linear-gradient(135deg,#1a5570,#3a8aad)}
+.vcard.d2 .vcard-h{background:linear-gradient(135deg,#1e4a6a,#2e7a9e)}
+.vcard.d3 .vcard-h{background:linear-gradient(135deg,#1a456a,#2a6a90)}
+.vcard.o1 .vcard-h{background:linear-gradient(135deg,#142838,#1e4a3a)}
+.vcard.o2 .vcard-h{background:linear-gradient(135deg,#2a1808,#5a2e10)}
 .vcard-info{flex:1}
 .vcard-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
 .vcard-sub{font-size:11px;color:rgba(255,255,255,.55)}
@@ -103,43 +100,40 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .vbar-fill{height:100%;background:linear-gradient(90deg,var(--water),var(--sun));border-radius:3px;transition:width .4s ease}
 .vbar-voters{font-size:10px;color:var(--muted);margin-top:5px}
 
-/* winner banner */
 .winner-banner{background:linear-gradient(135deg,#1a3a2a,#0d2a1e);border:1px solid rgba(232,168,56,.3);border-radius:14px;padding:16px 18px;margin-bottom:14px;display:none}
 .wb-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sun);margin-bottom:8px}
 .wb-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sand)}
 .wb-sub{font-size:12px;color:rgba(245,237,224,.5);margin-top:4px}
 
-/* ── AVAILABILITY ── */
+/* AVAILABILITY — Sat/Sun grouped */
 .avail-intro{background:linear-gradient(135deg,#1a2838,#0d2030);border:1px solid rgba(74,158,190,.2);border-radius:16px;padding:20px;margin-bottom:16px}
-.avail-name-row{display:flex;gap:10px;margin-bottom:0}
+.wknds-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 
-.weekends-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.wknd-row{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.wknd-header{background:var(--night-m);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-.wknd-date{font-size:12px;font-weight:700;color:var(--sand)}
-.wknd-summary{font-size:11px;color:rgba(245,237,224,.45)}
-.wknd-people{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px;min-height:44px;align-items:center}
-.person-chip{border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .2s;user-select:none}
+.wknd-block{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.12);transition:box-shadow .2s}
+.wknd-block.best{box-shadow:0 0 0 2px var(--sun),0 4px 20px rgba(232,168,56,.2)}
+.wknd-block-header{background:var(--night-m);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+.wknd-block-title{font-size:13px;font-weight:700;color:var(--sand)}
+.wknd-block-note{font-size:10px;color:rgba(245,237,224,.4)}
+.best-badge{background:var(--sun);color:var(--night);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-left:8px}
+
+.days-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid #f0f4f6}
+.day-col{padding:10px 12px;border-right:1px solid #f0f4f6}
+.day-col:last-child{border-right:none}
+.day-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--water-d);margin-bottom:8px}
+.day-people{display:flex;flex-wrap:wrap;gap:5px;min-height:30px;align-items:center}
+.person-chip{border-radius:16px;padding:3px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;transition:all .2s;user-select:none;border:1.5px solid transparent}
 .person-chip.avail{background:var(--forest-l);color:var(--forest);border-color:var(--forest)}
 .person-chip.unavail{background:#f0f4f6;color:#aab8c2;border-color:#dde8ee}
-.person-chip.mine{outline:2px solid var(--water);outline-offset:2px}
-.person-chip.mine.avail{background:var(--forest-l);color:var(--forest)}
-.chip-icon{font-size:10px}
-.wknd-no-one{font-size:11px;color:#aab8c2;font-style:italic}
+.person-chip.mine{outline:2px solid var(--water);outline-offset:1px;cursor:pointer}
+.no-one{font-size:11px;color:#aab8c2;font-style:italic}
 
-/* best weekend highlight */
-.wknd-row.best-weekend{border:2px solid var(--sun)}
-.wknd-row.best-weekend .wknd-header{background:linear-gradient(135deg,#2a1e08,#4a3010)}
-.best-badge{background:var(--sun);color:var(--night);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:4px;padding:2px 7px}
-
-/* results summary */
 .avail-results{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:12px;display:none}
 .ar-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d);margin-bottom:12px}
-.ar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ar-bar-wrap{flex:1;height:8px;background:#e5eef5;border-radius:4px;overflow:hidden}
 .ar-bar{height:100%;background:linear-gradient(90deg,var(--forest),var(--water));border-radius:4px;transition:width .4s ease}
-.ar-label{font-size:11px;color:var(--text);min-width:90px}
-.ar-count{font-size:12px;font-weight:700;color:var(--water-d);min-width:30px;text-align:right}
+.ar-label{font-size:10px;color:var(--text);min-width:80px;line-height:1.3}
+.ar-count{font-size:11px;font-weight:700;color:var(--water-d);min-width:28px;text-align:right}
 
 /* ALERTS */
 .abox{background:linear-gradient(135deg,#0d2a3e,#14405c);border:1px solid rgba(74,158,190,.3);border-radius:14px;padding:18px 20px;margin-bottom:12px}
@@ -159,6 +153,11 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .mo-detail{font-size:11px;color:rgba(245,237,224,.45)}
 .mo-dist{font-size:12px;font-weight:700;color:var(--water);white-space:nowrap}
 
+/* Leaflet map boxes */
+.leaflet-wrap{border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.25);margin-bottom:14px;position:relative}
+.leaflet-wrap .leaflet-container{font-family:'Syne',sans-serif}
+.map-caption{position:absolute;bottom:8px;left:8px;z-index:1000;background:rgba(13,26,38,.85);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,237,224,.8);pointer-events:none}
+
 /* ROUTE CARDS */
 .cards{display:flex;flex-direction:column;gap:22px}
 .card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 32px rgba(0,0,0,.28)}
@@ -168,9 +167,8 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .card.d3 .ch{background:linear-gradient(135deg,#1a456a,#2a6a90)}
 .card.o1 .ch{background:linear-gradient(135deg,#142838,#1e4a3a)}
 .card.o2 .ch{background:linear-gradient(135deg,#2a1808,#5a2e10)}
-.card.o3 .ch{background:linear-gradient(135deg,#0e2030,#1a3a50)}
 .nbg{position:absolute;top:10px;right:16px;font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:rgba(255,255,255,.07);line-height:1;pointer-events:none}
-.badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 11px;font-size:10px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:9px}
+.badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 11px;font-size:10px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:9px}
 .ct{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:3px}
 .cs{font-size:11.5px;color:rgba(255,255,255,.62)}
 .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
@@ -179,44 +177,37 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .pg{background:rgba(80,180,110,.25);border:1px solid rgba(80,180,110,.4);color:#90e0a8;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500}
 .pb{background:rgba(74,158,190,.25);border:1px solid rgba(74,158,190,.4);color:#a8d8ee;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500}
 
-/* scene */
-.scene{height:120px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.s-river{background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#2a8aad 40%,#1a6a8d 70%,#155a7a 100%)}
-.s-green{background:linear-gradient(180deg,#5a8a50 0%,#6a9a60 20%,#4a8a6a 35%,#2a8aad 45%,#1a6a8d 70%,#155a7a 100%)}
-.s-falls{background:linear-gradient(180deg,#4a90a0 0%,#3a8090 20%,#e8f4f8 28%,#a0d0e0 35%,#2090b0 45%,#1a7090 70%,#105070 100%)}
-.s-aare{background:linear-gradient(180deg,#c8e8c8 0%,#90c890 25%,#55a878 40%,#2a8aad 40%,#1a7a9d 70%,#155a7a 100%)}
-.s-reuss{background:linear-gradient(180deg,#2a5a30 0%,#3a7040 20%,#4a8050 35%,#2a7090 45%,#1a6080 70%,#105070 100%)}
-.scene-emoji{font-size:clamp(28px,5vw,40px);position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-.scene-label{position:absolute;bottom:8px;left:12px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.4)}
-.scene-km{position:absolute;bottom:8px;right:12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-shadow:0 1px 4px rgba(0,0,0,.4)}
+/* route photo */
+.route-photo{height:180px;overflow:hidden;position:relative;background:#1a3a50}
+.route-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.route-photo-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
+
+/* route map inside card */
+.card-map{height:200px;position:relative}
+.card-map .leaflet-container{height:200px}
 
 /* route diagram */
 .rdwrap{padding:12px 16px 0}
 .rd{background:linear-gradient(135deg,#e8f4fb,#d4edf7);border-radius:12px;padding:14px;position:relative;overflow:hidden}
 .rd-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d);margin-bottom:12px}
-.rdpath{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.rdpath{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
 .rdpath::-webkit-scrollbar{display:none}
 .rdstop{flex-shrink:0;text-align:center}
-.rdstop-dot{width:32px;height:32px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.dot-start{background:var(--forest)}
-.dot-mid{background:var(--water)}
-.dot-night{background:var(--night-m)}
-.dot-end{background:var(--sun)}
-.dot-warn{background:#e08030}
+.rds-dot{width:32px;height:32px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.ds{background:var(--forest)}.dm{background:var(--water)}.dn{background:var(--night-m)}.de{background:var(--sun)}.dw{background:#e08030}
 .rdstop-name{font-size:10px;font-weight:600;color:var(--water-d);white-space:nowrap;max-width:64px;overflow:hidden;text-overflow:ellipsis}
 .rdstop-sub{font-size:9px;color:var(--muted);white-space:nowrap;max-width:64px;overflow:hidden;text-overflow:ellipsis}
 .rdarrow{flex-shrink:0;padding:0 5px;color:var(--water-d);font-size:16px;margin-bottom:22px}
 .rd-sms{position:absolute;bottom:6px;right:12px;font-size:10px;font-weight:600;color:var(--water-d);opacity:.6}
 
-/* card body */
 .cb{padding:16px 18px 20px}
 .verdict{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:13px;font-style:italic;border-left:3px solid var(--water);padding-left:11px}
 .tp{display:inline-flex;align-items:center;gap:6px;background:var(--water-l);border-radius:8px;padding:6px 12px;margin-bottom:13px;font-size:12px;color:var(--water-d);font-weight:500}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;background:#f6f9fc;border-radius:11px;padding:13px 14px;margin-bottom:13px}
 .ft{font-size:11.5px;color:var(--text);line-height:1.45}
 .ft strong{display:block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--water-d);font-weight:700;margin-bottom:2px;opacity:.8}
-.wb2{background:var(--warn-bg);border:1px solid var(--warn-b);border-left:4px solid #e08030;border-radius:8px;padding:10px 13px;font-size:12px;color:var(--warn);line-height:1.55;margin-bottom:13px}
-.ub{background:var(--upd-bg);border:1px solid rgba(74,158,190,.3);border-left:4px solid var(--water);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--water-d);line-height:1.55;margin-bottom:13px}
+.wbx{background:var(--warn-bg);border:1px solid var(--warn-b);border-left:4px solid #e08030;border-radius:8px;padding:10px 13px;font-size:12px;color:var(--warn);line-height:1.55;margin-bottom:13px}
+.ubx{background:var(--upd-bg);border:1px solid rgba(74,158,190,.3);border-left:4px solid var(--water);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--water-d);line-height:1.55;margin-bottom:13px}
 .pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
 .cl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
 .pros .cl{color:var(--pro)}.cons .cl{color:var(--con)}
@@ -268,12 +259,11 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 .info-box{background:rgba(74,158,190,.08);border:1px solid rgba(74,158,190,.15);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(245,237,224,.6);line-height:1.6;margin-bottom:8px}
 .white-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 2px 12px rgba(0,0,0,.1);margin-bottom:12px;font-size:12px;color:var(--text);line-height:1.7}
 .tip-box{background:#f7f2eb;border-radius:12px;padding:14px 16px;font-size:12px;color:var(--text);line-height:1.6}
-
 .footer{text-align:center;padding:48px 20px 36px;font-size:11px;color:rgba(245,237,224,.2);line-height:1.8}
 
 @media(max-width:480px){
   .sg,.gebote,.pc,.fg,.kgrid{grid-template-columns:1fr}
-  .name-input-row{flex-direction:column}
+  .name-row{flex-direction:column}
   .btn-go{width:100%}
 }
 </style>
@@ -306,10 +296,10 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
       Okay. I need you to clear a weekend this summer — or two.<br><br>
       I've been dreaming about this for years: <strong>inflatable dinghies, Swiss rivers, all of us together.</strong> No agenda. No schedule. Just the current, the sun, a cold drink, and wherever the river takes us.<br><br>
       I've done the research (obviously 😅). I built this whole guide so we can plan it — and then completely forget we planned anything once we're on the water.<br><br>
-      <strong>Pick a route below. Add your available weekends. Say yes.</strong> The rest takes care of itself. 🛶
+      <strong>Pick a route below. Add your available dates. Say yes.</strong> The rest takes care of itself. 🛶
     </div>
     <div class="lopts">
-      <strong>✏️ Customise this ending:</strong>
+      <strong>✏️ Customise one of these endings:</strong>
       A) "I've been trying to get us on a river for three summers. This is the year." &nbsp;·&nbsp;
       B) "Someone send me availability. We're doing this before September. No excuses." &nbsp;·&nbsp;
       C) "I made a whole guide. Don't let it go to waste. Let's go."
@@ -318,7 +308,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 </div>
 
 <!-- NAV -->
-<nav class="nav" id="mainnav">
+<nav class="nav">
   <a href="#vote">❤️ Vote</a>
   <a href="#dates">📅 Dates</a>
   <a href="#updates">⚠️ 2026</a>
@@ -331,126 +321,89 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
   <a href="#links">🔗 Links</a>
 </nav>
 
-<!-- ══════════════════════════════════
-     VOTE
-══════════════════════════════════ -->
+<!-- ══════ VOTE ══════ -->
 <div id="vote" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">❤️ Vote for Your Favourite Route</div><div class="shl"></div></div>
-
   <div class="vote-intro">
     <div class="vi-title">Who are you?</div>
-    <div class="vi-sub">Enter your name to load your votes — or add yours for the first time. You can always come back and change your vote.</div>
-    <div class="name-input-row">
+    <div class="vi-sub">Enter your name, then heart your favourite route(s). Come back any time to change your vote.</div>
+    <div class="name-row">
       <input class="name-input" id="voterName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
       <button class="btn-go" onclick="loadVoter()">Let's go 🛶</button>
     </div>
-    <div class="voter-greeting" id="voterGreeting">Welcome back, <span id="voterSpan"></span>! Your votes are loaded.</div>
+    <div class="vgreeting" id="vGreeting">Welcome back, <span id="vSpan"></span>! Your votes are loaded.</div>
   </div>
-
   <div class="winner-banner" id="winnerBanner">
     <div class="wb-title">🏆 Leading route right now</div>
     <div class="wb-name" id="winnerName">—</div>
-    <div class="wb-sub" id="winnerSub">Cast your vote below to join in</div>
+    <div class="wb-sub" id="winnerSub"></div>
   </div>
-
-  <div class="vote-cards" id="voteCards">
-    <!-- injected by JS -->
-  </div>
+  <div class="vote-cards" id="voteCards"></div>
 </div>
 
-<!-- ══════════════════════════════════
-     AVAILABILITY
-══════════════════════════════════ -->
+<!-- ══════ DATES ══════ -->
 <div id="dates" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">📅 When Are You Free?</div><div class="shl"></div></div>
-
   <div class="avail-intro">
-    <div class="vi-title" style="margin-bottom:8px">Add your available weekends</div>
-    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap the weekends you're free. Tap again to remove. The best weekend lights up automatically. Come back any time to update.</div>
-    <div class="avail-name-row">
+    <div class="vi-title" style="margin-bottom:8px">Add your available days</div>
+    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap <strong>Sat</strong> or <strong>Sun</strong> to mark which days you're free. Tap again to remove. The app finds the best overlap automatically.<br><br><span style="color:rgba(245,237,224,.45);font-size:11px">💡 Tip: if you're free both days of a weekend, tap both — that unlocks overnight trips!</span></div>
+    <div class="name-row">
       <input class="name-input" id="availName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
       <button class="btn-go" onclick="loadAvail()">Load my dates</button>
     </div>
-    <div class="voter-greeting" id="availGreeting">Hi <span id="availSpan"></span>! Tap weekends below to toggle your availability.</div>
+    <div class="vgreeting" id="aGreeting">Hi <span id="aSpan"></span>! Tap Sat or Sun below to mark your availability.</div>
   </div>
-
-  <div class="weekends-grid" id="weekendsGrid">
-    <!-- injected by JS -->
-  </div>
-
+  <div class="wknds-grid" id="wkndsGrid"></div>
   <div class="avail-results" id="availResults">
-    <div class="ar-title">📊 Best weekends at a glance</div>
-    <div id="availResultsBody"></div>
+    <div class="ar-title">📊 Best days at a glance</div>
+    <div id="arBody"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     2026 UPDATES
-══════════════════════════════════ -->
+<!-- ══════ 2026 UPDATES ══════ -->
 <div id="updates" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">⚠️ What Changed Since the Book</div><div class="shl"></div></div>
   <div class="abox">
     <div class="at">🔴 Three Laws Changed — January 1, 2020</div>
     <div class="ai"><div class="ad r"></div><div><strong>Life jacket now legally required.</strong> Min. 75N buoyancy per person on rivers (100N on Rhine). Standard 50N swim aids don't qualify. Children under 12 must wear one at all times. Fines CHF 50–140.</div></div>
-    <div class="ai"><div class="ad r"></div><div><strong>Alcohol limit for Gummiboote abolished.</strong> The book's "0.5‰ rule" no longer applies to non-motorised inflatables. Must still be fit to navigate. Criminal liability if you cause an accident drunk.</div></div>
-    <div class="ai"><div class="ad r"></div><div><strong>Boat labeling now law.</strong> Name, address, and phone number must be visibly written on the boat. Fine: CHF 40.</div></div>
+    <div class="ai"><div class="ad r"></div><div><strong>Alcohol limit abolished.</strong> The book's "0.5‰ rule" no longer applies to non-motorised inflatables. Must still be fit to navigate. Criminal liability if you cause an accident drunk.</div></div>
+    <div class="ai"><div class="ad r"></div><div><strong>Boat labeling now law.</strong> Name, address, and phone number must be visibly written on boat. Fine: CHF 40.</div></div>
   </div>
   <div class="abox" style="margin-top:10px">
     <div class="at">✅ 2026 — All Still Running</div>
-    <div class="ai"><div class="ad g"></div><div><strong>Camping Eichholz</strong> (Aare overnight, night 1) — open April–October. ~CHF 14/night + tent. Book early. Free Bern transit ticket. campingeichholz.ch</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>TCS Camping Bern Eymatt</strong> (Hinterkappelen, night 2) — 4-star, open April 2. ~CHF 34/person. Restaurant on site. booking.camping.care</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>Camping Sulz</strong> (Reuss overnight) — operational March–October. camping-sulz.ch · +41 56 496 48 79</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>Aareschlauchboot</strong> confirmed 2026 — CHF 140–190/boat. Code <strong>AARE26</strong> = –30% until April 30! aareschlauchboot.ch</div></div>
+    <div class="ai"><div class="ad g"></div><div><strong>Camping Eichholz</strong> (Aare overnight) — open April–October. ~CHF 14/night + tent. Book early. campingeichholz.ch</div></div>
+    <div class="ai"><div class="ad g"></div><div><strong>TCS Camping Bern Eymatt</strong> (Hinterkappelen) — 4-star, open April 2. ~CHF 34/person. booking.camping.care</div></div>
+    <div class="ai"><div class="ad g"></div><div><strong>Camping Sulz</strong> (Reuss overnight) — March–October. camping-sulz.ch · +41 56 496 48 79</div></div>
+    <div class="ai"><div class="ad g"></div><div><strong>Aareschlauchboot</strong> 2026 — CHF 140–190/boat. Code <strong>AARE26</strong> = –30% until April 30!</div></div>
     <div class="ai"><div class="ad g"></div><div><strong>Rheinschlauchboot.ch</strong> NEW (2024) — rental Stein am Rhein → Schaffhausen. From CHF 160/boat.</div></div>
-    <div class="ai"><div class="ad b"></div><div><strong>HydroWatch app is dead.</strong> Use hydrodaten.admin.ch (redesigned 2023) + free <strong>Meine Pegel</strong> app (iOS/Android) for mobile flow alerts.</div></div>
+    <div class="ai"><div class="ad b"></div><div><strong>HydroWatch app dead.</strong> Use hydrodaten.admin.ch + free <strong>Meine Pegel</strong> app (iOS/Android).</div></div>
     <div class="ai"><div class="ad b"></div><div><strong>Updated guidebook:</strong> 7th edition (2023), Salamander Verlag, CHF 37.50. ISBN 978-3-907267-04-2.</div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     ALL ROUTES OVERVIEW
-══════════════════════════════════ -->
+<!-- ══════ ALL ROUTES ══════ -->
 <div id="all-routes" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🗺 All 5 Routes — Overview</div><div class="shl"></div></div>
   <div class="map-overview">
     <div class="mo-title">🇨🇭 All routes within 45 min – 2h of Basel by train</div>
     <div class="mo-grid">
-      <div class="mo-item"><div class="mo-dot" style="background:#4a9ebe"></div><div class="mo-info"><div class="mo-name">☀️ Day 1 — Leibstadt → Laufenburg</div><div class="mo-detail">Rhein · Aargau · 🚆 ~1h · 20–22°C · Closest!</div></div><div class="mo-dist">11.6 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#2e7a9e"></div><div class="mo-info"><div class="mo-name">☀️ Day 2 — Stein am Rhein → Schaffhausen</div><div class="mo-detail">Rhein · Schaffhausen · 🚆 ~2h · Basel Bad Bf · 19–23°C</div></div><div class="mo-dist">18.8 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#2a6a90"></div><div class="mo-info"><div class="mo-name">☀️ Day 3 — Rheinfall → Kloster Rheinau</div><div class="mo-detail">Rhein · Neuhausen · 🚆 ~1.5h · Most dramatic · 🌕 moonlight</div></div><div class="mo-dist">7 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#1e4a3a"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 1 — Thun → Bern → Hinterkappelen</div><div class="mo-detail">Aare · Bern · 🚆 ~55 min · The dream route · 2 days</div></div><div class="mo-dist">44 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#7a3a10"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 2 — Bremgarten → Gebenstorf</div><div class="mo-detail">Reuss · Aargau · 🚆 ~1h 15min · Advanced · Wildest</div></div><div class="mo-dist">25.3 km</div></div>
+      <div class="mo-item"><div class="mo-dot" style="background:#4a9ebe"></div><div class="mo-info"><div class="mo-name">☀️ Day 1 — Leibstadt → Laufenburg</div><div class="mo-detail">Rhein · 🚆 ~1h · 20–22°C · Closest!</div></div><div class="mo-dist">11.6 km</div></div>
+      <div class="mo-item"><div class="mo-dot" style="background:#2e7a9e"></div><div class="mo-info"><div class="mo-name">☀️ Day 2 — Stein am Rhein → Schaffhausen</div><div class="mo-detail">Rhein · 🚆 ~2h · Basel Bad Bf · 19–23°C</div></div><div class="mo-dist">18.8 km</div></div>
+      <div class="mo-item"><div class="mo-dot" style="background:#2a6a90"></div><div class="mo-info"><div class="mo-name">☀️ Day 3 — Rheinfall → Kloster Rheinau</div><div class="mo-detail">Rhein · 🚆 ~1.5h · Most dramatic · 🌕 moonlight</div></div><div class="mo-dist">7 km</div></div>
+      <div class="mo-item"><div class="mo-dot" style="background:#1e4a3a"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 1 — Thun → Bern → Hinterkappelen</div><div class="mo-detail">Aare · 🚆 ~55 min · The dream route · 2 days</div></div><div class="mo-dist">44 km</div></div>
+      <div class="mo-item"><div class="mo-dot" style="background:#7a3a10"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 2 — Bremgarten → Gebenstorf</div><div class="mo-detail">Reuss · 🚆 ~1h 15min · Advanced · Wildest</div></div><div class="mo-dist">25.3 km</div></div>
     </div>
   </div>
-  <div style="background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.12);margin-bottom:14px">
-    <div class="sct" style="margin-bottom:12px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d)">📍 Geographic Orientation</div>
-    <div style="font-size:12px;color:var(--text);line-height:1.8">
-      <strong>Basel</strong> is home base in the northwest.<br>
-      → East along Rhine: <strong>Leibstadt</strong> (45 min) · <strong>Stein am Rhein</strong> (2h) · <strong>Schaffhausen / Rheinfall</strong><br>
-      → South by train: <strong>Bern / Thun</strong> (55 min) — the Aare overnight<br>
-      → Southeast: <strong>Bremgarten / Reuss</strong> (1h 15min) — the wild overnight
-    </div>
-    <div style="margin-top:14px;background:#f0f7fc;border-radius:10px;padding:14px">
-      <pre style="margin:0;font-family:monospace;font-size:11px;line-height:1.9;color:var(--text)">
-  Stein am Rhein ←──────── Schaffhausen
-       │                       │
-  Leibstadt                 Rheinfall ──→ Rheinau
-       │                   
-    BASEL ●            
-       │               
-  Bremgarten (Reuss) ──────→ Gebenstorf
-       │               
-     Bern ────────────────→ Hinterkappelen
-       │               
-     Thun (Aare start)</pre>
-    </div>
+
+  <!-- Overview Leaflet Map -->
+  <div class="leaflet-wrap" style="height:340px">
+    <div id="mapOverview" style="height:340px"></div>
+    <div class="map-caption">All routes — click markers for details</div>
   </div>
-  <div class="info-box">💡 For satellite maps of each route, open <strong>map.geo.admin.ch</strong> — Switzerland's official federal map. Search the start point of any route to see the river path in detail.</div>
+  <div class="info-box">💡 Each route card below has its own detailed map. For satellite view, open <strong>map.geo.admin.ch</strong> and search any start point.</div>
 </div>
 
-<!-- ══════════════════════════════════
-     DAY TRIPS
-══════════════════════════════════ -->
+<!-- ══════ DAY TRIPS ══════ -->
 <div id="day-trips" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">☀️ Day Trips</div><div class="shl"></div></div>
   <div class="cards">
@@ -464,17 +417,20 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="cs">Rhein · Route 17 · "Mit dem Strom in ein altes Städtchen"</div>
         <div class="meta"><span class="pd">11.6 km</span><span class="pd">3–4 hours</span><span class="pd">Mittel</span><span class="pg">🌡 20–22°C warmest</span><span class="pb">🚆 ~1h from Basel</span></div>
       </div>
-      <div class="scene s-river"><div class="scene-emoji">🏰 🛶 🏖</div><div class="scene-label">Leibstadt → Laufenburg</div><div class="scene-km">11.6 km · 3–4h</div></div>
+      <div class="route-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Laufenburg_am_Rhein.jpg/1200px-Laufenburg_am_Rhein.jpg" alt="Laufenburg" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏰 🛶 🏖</div>'">
+      </div>
+      <div class="card-map"><div id="map_d1"></div></div>
       <div class="rdwrap"><div class="rd">
         <div class="rd-title">Route waypoints</div>
         <div class="rdpath">
-          <div class="rdstop"><div class="rdstop-dot dot-start">🚀</div><div class="rdstop-name">Leibstadt</div><div class="rdstop-sub">Entry · km 0</div></div>
+          <div class="rdstop"><div class="rds-dot ds">🚀</div><div class="rdstop-name">Leibstadt</div><div class="rdstop-sub">Entry · km 0</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-mid">🏖</div><div class="rdstop-name">Dreispitz</div><div class="rdstop-sub">Beach · km 3.8</div></div>
+          <div class="rdstop"><div class="rds-dot dm">🏖</div><div class="rdstop-name">Dreispitz</div><div class="rdstop-sub">Beach · km 3.8</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-mid">🏝</div><div class="rdstop-name">Etzgen</div><div class="rdstop-sub">Caribbean · km 6.8</div></div>
+          <div class="rdstop"><div class="rds-dot dm">🏝</div><div class="rdstop-name">Etzgen</div><div class="rdstop-sub">Caribbean · km 6.8</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-end">🏰</div><div class="rdstop-name">Laufenburg</div><div class="rdstop-sub">Exit · km 11.6</div></div>
+          <div class="rdstop"><div class="rds-dot de">🏰</div><div class="rdstop-name">Laufenburg</div><div class="rdstop-sub">Exit · km 11.6</div></div>
         </div>
         <div class="rd-sms">Flow check: SMS 9234 · Q 2091 · Max 1300 m³/s</div>
       </div></div>
@@ -484,17 +440,17 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="fg">
           <div class="ft"><strong>Entry</strong>Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank. Short variant: start Schwaderloch (~2h)</div>
           <div class="ft"><strong>Exit</strong>Laufenburg: Schlipf 200m after Laufenbrücke, left bank. ⚠️ Stay left — cross-current right of bridge</div>
-          <div class="ft"><strong>Hazard</strong>Querströmung after Laufenbrücke. Don't continue past Laufenburg (Kraftwerk backflow)</div>
-          <div class="ft"><strong>Beach stops</strong>Dreispitz sandbar km 3.8 (Fischerhütte bar) + "Caribbean" grass island Etzgen km 6.8 🏖</div>
+          <div class="ft"><strong>Hazard</strong>Querströmung after Laufenbrücke. Don't continue past Laufenburg</div>
+          <div class="ft"><strong>Beach stops</strong>Dreispitz sandbar km 3.8 (Fischerhütte bar) + Caribbean island Etzgen km 6.8 🏖</div>
           <div class="ft"><strong>Boat rental</strong>No dedicated rental — bring own boats</div>
-          <div class="ft"><strong>Swimming</strong>✅ Good overall. Avoid weir backflow area at start + bridge pillars</div>
+          <div class="ft"><strong>Swimming</strong>✅ Good. Avoid weir backflow area at start</div>
         </div>
         <div class="pc">
           <div class="pros"><div class="cl">Pros</div>
             <div class="pt"><span class="ptd"></span>Closest route to Basel</div>
-            <div class="pt"><span class="ptd"></span>Warmest water of all routes (20–22°C)</div>
+            <div class="pt"><span class="ptd"></span>Warmest water of all (20–22°C)</div>
             <div class="pt"><span class="ptd"></span>Sandy Caribbean beach mid-route</div>
-            <div class="pt"><span class="ptd"></span>Medieval old town finish — dinner + drinks</div>
+            <div class="pt"><span class="ptd"></span>Medieval old town finish</div>
           </div>
           <div class="cons"><div class="cl">Cons</div>
             <div class="pt"><span class="ptd"></span>Starts next to a nuclear plant 😅</div>
@@ -502,7 +458,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
             <div class="pt"><span class="ptd"></span>Cross-current near Laufenbrücke</div>
           </div>
         </div>
-        <div class="fit"><span class="fl">Why this one first</span>Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip. Everyone will want to do more after.</div>
+        <div class="fit"><span class="fl">Why this one first</span>Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.</div>
       </div>
     </div>
 
@@ -515,30 +471,33 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="cs">Rhein · Route 13 · "Kulturperlen am fliessenden Band"</div>
         <div class="meta"><span class="pd">18.8 km</span><span class="pd">3.5–4 hours</span><span class="pd">Mittel</span><span class="pd">19–23°C</span><span class="pb">🚆 ~2h · Basel Bad Bf</span></div>
       </div>
-      <div class="scene s-green"><div class="scene-emoji">🏯 🛶 ⛵</div><div class="scene-label">Stein am Rhein → Schaffhausen</div><div class="scene-km">18.8 km · 3.5–4h</div></div>
+      <div class="route-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Stein_am_Rhein_-_Luftbild.jpg/1200px-Stein_am_Rhein_-_Luftbild.jpg" alt="Stein am Rhein" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🏯 🛶 ⛵</div>'">
+      </div>
+      <div class="card-map"><div id="map_d2"></div></div>
       <div class="rdwrap"><div class="rd">
         <div class="rd-title">Route waypoints</div>
         <div class="rdpath">
-          <div class="rdstop"><div class="rdstop-dot dot-start">🏯</div><div class="rdstop-name">Stein am Rhein</div><div class="rdstop-sub">Entry · km 0</div></div>
+          <div class="rdstop"><div class="rds-dot ds">🏯</div><div class="rdstop-name">Stein am Rhein</div><div class="rdstop-sub">Entry · km 0</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">⚠️</div><div class="rdstop-name">Bibermüli</div><div class="rdstop-sub">Ferries · km 5.1</div></div>
+          <div class="rdstop"><div class="rds-dot dw">⚠️</div><div class="rdstop-name">Bibermüli</div><div class="rdstop-sub">Ferries · km 5.1</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-mid">🏊</div><div class="rdstop-name">Diessenhofen</div><div class="rdstop-sub">Mid-exit · km 9.7</div></div>
+          <div class="rdstop"><div class="rds-dot dm">🏊</div><div class="rdstop-name">Diessenhofen</div><div class="rdstop-sub">Mid-exit · km 9.7</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-end">🏙</div><div class="rdstop-name">Schaffhausen</div><div class="rdstop-sub">Exit · km 18.8</div></div>
+          <div class="rdstop"><div class="rds-dot de">🏙</div><div class="rdstop-name">Schaffhausen</div><div class="rdstop-sub">Exit · km 18.8</div></div>
         </div>
         <div class="rd-sms">Flow check: SMS 9234 · Q 2288 · Max 600 m³/s</div>
       </div></div>
       <div class="cb">
-        <div class="verdict">"The Schaffhauser Amazonas. Every bend: a new castle, vineyard, or monastery. Book says 'Wie hübsch!' at every turn. One of Europe's most beautiful river stretches."</div>
+        <div class="verdict">"The Schaffhauser Amazonas. Every bend: a new castle, vineyard, or monastery. The book says 'Wie hübsch!' at every turn. One of Europe's most beautiful river stretches."</div>
         <div class="tp">🚆 Basel Bad Bf → Stein am Rhein ~1h 50min · Return ~1h 30min</div>
         <div class="fg">
-          <div class="ft"><strong>Entry</strong>Stein am Rhein: Rheinbrücke left or Hafen right. Walk medieval town first</div>
+          <div class="ft"><strong>Entry</strong>Stein am Rhein: Rheinbrücke left or Hafen right. Walk the medieval town first</div>
           <div class="ft"><strong>Exit</strong>Schaffhausen: Salzstadel right bank. ⛔ Weiterfahrt verboten past here</div>
-          <div class="ft"><strong>Mid-exit</strong>Diessenhofen (km 9.7): 15 min bus. Good if group wants shorter day</div>
-          <div class="ft"><strong>Hazard</strong>Ferry ships — can't stop. Stay in shallow water near bank. Never tie boats together</div>
-          <div class="ft"><strong>Boat rental</strong>rheinschlauchboot.ch (NEW 2024) · From CHF 160/boat · Online booking</div>
-          <div class="ft"><strong>Swimming</strong>✅ Good. Stay clear of Wiffen channel markers + ferries</div>
+          <div class="ft"><strong>Mid-exit</strong>Diessenhofen (km 9.7): 15 min bus — splits into two 2h halves</div>
+          <div class="ft"><strong>Hazard</strong>Ferry ships — can't stop. Stay near bank. Never tie boats together</div>
+          <div class="ft"><strong>Boat rental</strong>rheinschlauchboot.ch (NEW 2024) · From CHF 160/boat</div>
+          <div class="ft"><strong>Swimming</strong>✅ Good. Clear of Wiffen markers + ferries</div>
         </div>
         <div class="pc">
           <div class="pros"><div class="cl">Pros</div>
@@ -553,7 +512,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
             <div class="pt"><span class="ptd"></span>Depart Basel Bad Bf (not SBB!)</div>
           </div>
         </div>
-        <div class="fit"><span class="fl">Why this one</span>The full cinematic Swiss summer. Walk Schaffhausen + Munot fortress after. Gelato mandatory. Go on a weekday.</div>
+        <div class="fit"><span class="fl">Why this one</span>The full cinematic Swiss summer. Walk Schaffhausen + Munot fortress after. Gelato mandatory.</div>
       </div>
     </div>
 
@@ -566,54 +525,55 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="cs">Rhein · Route 14 · "Vom Wasserfall zur Klosterinsel"</div>
         <div class="meta"><span class="pd">7 km</span><span class="pd">3–4 hours</span><span class="pd">Mittel</span><span class="pd">1× portage</span><span class="pb">🚆 ~1.5h · Basel Bad Bf</span><span class="pg">🌕 Moonlight perfect</span></div>
       </div>
-      <div class="scene s-falls"><div class="scene-emoji">💦 🛶 ⛪</div><div class="scene-label">Rheinfall → Kloster Rheinau</div><div class="scene-km">7 km · 3–4h</div></div>
+      <div class="route-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Rheinfall_2015-10-04.jpg/1200px-Rheinfall_2015-10-04.jpg" alt="Rheinfall" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>💦 🛶 ⛪</div>'">
+      </div>
+      <div class="card-map"><div id="map_d3"></div></div>
       <div class="rdwrap"><div class="rd">
         <div class="rd-title">Route waypoints</div>
         <div class="rdpath">
-          <div class="rdstop"><div class="rdstop-dot dot-start">💦</div><div class="rdstop-name">Neuhausen</div><div class="rdstop-sub">Below falls · km 0</div></div>
+          <div class="rdstop"><div class="rds-dot ds">💦</div><div class="rdstop-name">Neuhausen</div><div class="rdstop-sub">Below falls · km 0</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-mid">🏊</div><div class="rdstop-name">Badi Dachsen</div><div class="rdstop-sub">Glacé · km 2</div></div>
+          <div class="rdstop"><div class="rds-dot dm">🏊</div><div class="rdstop-name">Badi Dachsen</div><div class="rdstop-sub">Glacé · km 2</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">🔄</div><div class="rdstop-name">Stauwehr</div><div class="rdstop-sub">Portage · km 6.4</div></div>
+          <div class="rdstop"><div class="rds-dot dw">🔄</div><div class="rdstop-name">Stauwehr</div><div class="rdstop-sub">Portage · km 6.4</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-end">⛪</div><div class="rdstop-name">Kloster Rheinau</div><div class="rdstop-sub">Exit · km 7.0</div></div>
+          <div class="rdstop"><div class="rds-dot de">⛪</div><div class="rdstop-name">Kloster Rheinau</div><div class="rdstop-sub">Exit · km 7.0</div></div>
         </div>
         <div class="rd-sms">Flow check: SMS 9234 · Q 2288 · Max 500 m³/s</div>
       </div></div>
       <div class="cb">
-        <div class="verdict">"Launches in Rheinfall mist with rainbows overhead. Ends at a baroque monastery island founded in 778 AD. 7km of pure theatre. Book recommends this for moonlight evenings."</div>
+        <div class="verdict">"Launches in Rheinfall mist with rainbows overhead. Ends at a baroque monastery island founded in 778 AD. 7km of pure theatre. Book recommends for moonlight evenings."</div>
         <div class="tp">🚆 Basel Bad Bf → Neuhausen ~45 min · Return ~30 min</div>
         <div class="fg">
-          <div class="ft"><strong>Entry</strong>Neuhausen: Schlipf 80m below Schlössli Wörth, right bank. ⛔ Do NOT enter Rheinfallbecken — whirlpools</div>
+          <div class="ft"><strong>Entry</strong>Neuhausen: Schlipf 80m below Schlössli Wörth, right bank. ⛔ Do NOT enter Rheinfallbecken</div>
           <div class="ft"><strong>Exit</strong>Klosterbrücke Rheinau (km 7): left after bridge. Or Picknickplatz Rheingasse — lone cypress 🌴</div>
-          <div class="ft"><strong>Portage</strong>Stauwehr Rheinau (km 6.4): carry 60m OR Rollwagen trolley. Avoid 300m above/below weir</div>
-          <div class="ft"><strong>Best swim</strong>Wide calm bend just before Stauwehr where current nearly stops</div>
+          <div class="ft"><strong>Portage</strong>Stauwehr Rheinau (km 6.4): carry 60m OR Rollwagen trolley. Avoid 300m above/below</div>
+          <div class="ft"><strong>Best swim</strong>Wide calm bend just before Stauwehr</div>
           <div class="ft"><strong>Short variant</strong>Exit at Stauwehr Rheinau (~2.5h)</div>
-          <div class="ft"><strong>Overnight tip</strong>Gasthaus-Restaurant Salmen, Rheinau · salmen-rheinau.ch</div>
+          <div class="ft"><strong>Overnight tip</strong>Gasthaus-Restaurant Salmen, Rheinau</div>
         </div>
         <div class="pc">
           <div class="pros"><div class="cl">Pros</div>
             <div class="pt"><span class="ptd"></span>Most dramatic launch — Rheinfall + rainbows</div>
             <div class="pt"><span class="ptd"></span>Baroque monastery island finish</div>
-            <div class="pt"><span class="ptd"></span>Fun Rollwagen trolley</div>
+            <div class="pt"><span class="ptd"></span>Fun Rollwagen trolley around weir</div>
             <div class="pt"><span class="ptd"></span>Perfect for moonlight evenings 🌕</div>
           </div>
           <div class="cons"><div class="cl">Cons</div>
-            <div class="pt"><span class="ptd"></span>Touristy Rheinfall area at start</div>
+            <div class="pt"><span class="ptd"></span>Touristy Rheinfall start</div>
             <div class="pt"><span class="ptd"></span>Mandatory weir portage</div>
             <div class="pt"><span class="ptd"></span>Shortest route (7km)</div>
           </div>
         </div>
-        <div class="fit"><span class="fl">Why this one</span>"We launched below the Rheinfall and paddled to a monastery island" — best single-sentence story of all 5 routes. 🌕</div>
+        <div class="fit"><span class="fl">Why this one</span>"We launched below the Rheinfall and paddled to a monastery island" — best story of all 5 routes. 🌕</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     OVERNIGHTS
-══════════════════════════════════ -->
+<!-- ══════ OVERNIGHTS ══════ -->
 <div id="overnights" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🌙 Overnight Adventures</div><div class="shl"></div></div>
   <div class="cards">
@@ -627,52 +587,52 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="cs">Aare · Routes 1+2 · "Die Königin aller Gummiboottouren"</div>
         <div class="meta"><span class="pd">Day 1: 26.7km · 3.5–4h</span><span class="pd">Day 2: 17.4km · 4–5h</span><span class="pd">16–19°C</span><span class="pb">🚆 ~55 min from Basel</span></div>
       </div>
-      <div class="scene s-aare"><div class="scene-emoji">⛰️ 🛶 🏕 🏙</div><div class="scene-label">Aare: Thun → Bern → Hinterkappelen</div><div class="scene-km">44 km · 2 days</div></div>
+      <div class="route-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bern_Aare_aerial_%28cropped%29.jpg/1200px-Bern_Aare_aerial_%28cropped%29.jpg" alt="Aare Bern" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>⛰️ 🛶 🏕 🏙</div>'">
+      </div>
+      <div class="card-map"><div id="map_o1"></div></div>
       <div class="rdwrap"><div class="rd">
         <div class="rd-title">2-day route — Day 1 → Night → Day 2</div>
         <div class="rdpath">
-          <div class="rdstop"><div class="rdstop-dot dot-start">🏔</div><div class="rdstop-name">Thun/Uttigen</div><div class="rdstop-sub">Day 1 start</div></div>
+          <div class="rdstop"><div class="rds-dot ds">🏔</div><div class="rdstop-name">Thun/Uttigen</div><div class="rdstop-sub">Day 1 start</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">🌊</div><div class="rdstop-name">Uttiger Welle</div><div class="rdstop-sub">Rapids · km 5.1</div></div>
+          <div class="rdstop"><div class="rds-dot dw">🌊</div><div class="rdstop-name">Uttiger Welle</div><div class="rdstop-sub">Rapids · km 5.1</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-night">⛺</div><div class="rdstop-name">Camping Eichholz</div><div class="rdstop-sub">Night 1 · km 25</div></div>
+          <div class="rdstop"><div class="rds-dot dn">⛺</div><div class="rdstop-name">Camping Eichholz</div><div class="rdstop-sub">Night 1 · km 25</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">🔄</div><div class="rdstop-name">Stauwehr Engehalde</div><div class="rdstop-sub">Portage · D2 km 3.8</div></div>
+          <div class="rdstop"><div class="rds-dot dw">🔄</div><div class="rdstop-name">Stauwehr Engehalde</div><div class="rdstop-sub">Portage · D2 km 3.8</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-end">🦫</div><div class="rdstop-name">Hinterkappelen</div><div class="rdstop-sub">Day 2 exit</div></div>
+          <div class="rdstop"><div class="rds-dot de">🦫</div><div class="rdstop-name">Hinterkappelen</div><div class="rdstop-sub">Day 2 exit</div></div>
         </div>
         <div class="rd-sms">Day 1: Q 2030 · Day 2: Q 2135</div>
       </div></div>
       <div class="cb">
-        <div class="verdict">"The book calls this the queen of all Swiss dinghy routes. Two days, two riverside campsites, Bernese Alps on Day 1, city of Bern at night, beavers at dusk on Day 2."</div>
+        <div class="verdict">"The book calls this the queen of all Swiss dinghy routes. Alps on Day 1, city of Bern at night, beavers at dusk on Day 2. Designed as a connected 2-day adventure."</div>
         <div class="tp">🚆 Basel → Thun ~55 min direct IC · Return ~1h 30min</div>
-        <div class="ub"><strong>✅ 2026:</strong> Camping Eichholz open April–October · ~CHF 14/night + tent · Book early · campingeichholz.ch · Free Bern transit included<br><br><strong>✅ 2026:</strong> TCS Camping Bern Eymatt (Hinterkappelen) open April 2 · ~CHF 34/person · Restaurant on site · booking.camping.care</div>
+        <div class="ubx"><strong>✅ 2026:</strong> Camping Eichholz open April–October · ~CHF 14/night + tent · Book early · campingeichholz.ch<br><br><strong>✅ 2026:</strong> TCS Camping Bern Eymatt (Hinterkappelen) open April 2 · ~CHF 34/person · booking.camping.care</div>
         <div class="fg">
-          <div class="ft"><strong>Day 1 Entry</strong>Thun-Schwäbis (Restaurant Bellevue). Safer: Uttigen (below rapids) — recommended for beginners</div>
-          <div class="ft"><strong>Night 1</strong>Camping Eichholz, Wabern (km 25.1). Directly on Aare. Summer BBQ vibes. Also has rooms as fallback</div>
-          <div class="ft"><strong>Day 1 Hazard</strong>"Uttiger Welle" (km 5.1): real rapids. Paddle straight + even load. Beginners: start at Uttigen</div>
-          <div class="ft"><strong>Day 2 Entry</strong>Carry past Schwellenmätteli-Wehr 300m right, re-enter at Kiesstrand. Paddle fast — Karrussell pulls back</div>
-          <div class="ft"><strong>Day 2 Hazards</strong>Stauwehr Engehalde: portage 300m right. Worblaufenwelle (km 6.9): pass in Flussmitte. Seilfähren: cut curve</div>
-          <div class="ft"><strong>Night 2/Exit</strong>Hinterkappelen: Rowing Club Bern dock. 7 min bus. Or: Strandbar Bogen 17 (mid-June–Sept) 🍺</div>
-          <div class="ft"><strong>Boat rental</strong>aareschlauchboot.ch · CHF 140–190 · Code AARE26 = –30% until Apr 30 🎉</div>
-          <div class="ft"><strong>Day 1 highlights</strong>Jungfrau + Alps panorama all day, Auguetbrügg covered wooden bridge, Eichholz summer parties</div>
+          <div class="ft"><strong>Day 1 Entry</strong>Thun-Schwäbis. Safer: Uttigen (below rapids) — for beginners</div>
+          <div class="ft"><strong>Night 1</strong>Camping Eichholz, Wabern (km 25.1). Summer BBQ vibes. Also has rooms as fallback</div>
+          <div class="ft"><strong>Day 1 Hazard</strong>"Uttiger Welle" (km 5.1): real rapids. Start at Uttigen if unsure</div>
+          <div class="ft"><strong>Day 2 Hazards</strong>Stauwehr Engehalde: portage 300m right. Worblaufenwelle (km 6.9): pass in Flussmitte</div>
+          <div class="ft"><strong>Exit</strong>Hinterkappelen: Rowing Club dock. 7 min bus. Or Strandbar Bogen 17 🍺</div>
+          <div class="ft"><strong>Boat rental</strong>aareschlauchboot.ch · CHF 140–190 · Code AARE26 = –30% until Apr 30!</div>
         </div>
         <div class="pc">
           <div class="pros"><div class="cl">Pros</div>
-            <div class="pt"><span class="ptd"></span>Book-designed as a connected 2-day route</div>
-            <div class="pt"><span class="ptd"></span>Camping Eichholz — legendary summer atmosphere</div>
+            <div class="pt"><span class="ptd"></span>Book-designed as connected 2-day route</div>
+            <div class="pt"><span class="ptd"></span>Camping Eichholz — legendary atmosphere</div>
             <div class="pt"><span class="ptd"></span>Alps panorama all of Day 1</div>
-            <div class="pt"><span class="ptd"></span>Bern 30 min walk from Eichholz if mood strikes</div>
+            <div class="pt"><span class="ptd"></span>Bern 30 min walk if mood strikes</div>
             <div class="pt"><span class="ptd"></span>Beavers at dusk Day 2 🦫</div>
           </div>
           <div class="cons"><div class="cl">Cons</div>
-            <div class="pt"><span class="ptd"></span>Most popular → busy summer weekends</div>
-            <div class="pt"><span class="ptd"></span>Uttiger Welle (start Uttigen if unsure)</div>
-            <div class="pt"><span class="ptd"></span>Book Eichholz EARLY — fills fast</div>
-            <div class="pt"><span class="ptd"></span>Colder water (16–19°C) vs Rhine</div>
+            <div class="pt"><span class="ptd"></span>Most popular → busy weekends</div>
+            <div class="pt"><span class="ptd"></span>Book Eichholz EARLY</div>
+            <div class="pt"><span class="ptd"></span>Colder water (16–19°C)</div>
           </div>
         </div>
-        <div class="fit"><span class="fl">Why this is THE one</span>Sleep outside ✓ Nature ✓ Swim ✓ Alps backdrop ✓ Bern at night if you want it ✓. The full 2026 bucketlist weekend in two days. Book Camping Eichholz NOW.</div>
+        <div class="fit"><span class="fl">Why this is THE one</span>Sleep outside ✓ Nature ✓ Swim ✓ Alps ✓ Bern if you want it ✓. The full 2026 bucketlist weekend in two days. Book Camping Eichholz NOW.</div>
       </div>
     </div>
 
@@ -685,58 +645,57 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
         <div class="cs">Reuss · Route 12 · "In wilden Waldschluchten durchs Mittelland"</div>
         <div class="meta"><span class="pd">25.3 km</span><span class="pd">4–5h per day</span><span class="pw">⚠️ Anspruchsvoll</span><span class="pg">🌡 20–22°C warmest!</span><span class="pb">🚆 ~1h 15min</span></div>
       </div>
-      <div class="scene s-reuss"><div class="scene-emoji">🌲 🛶 🪨</div><div class="scene-label">Reuss: Bremgarten → Gebenstorf</div><div class="scene-km">25.3 km · 2 days</div></div>
+      <div class="route-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Bremgarten_AG_-_Reuss_%28Hexenturm%29.jpg/1200px-Bremgarten_AG_-_Reuss_%28Hexenturm%29.jpg" alt="Bremgarten Reuss" onerror="this.parentElement.innerHTML='<div class=route-photo-fallback>🌲 🛶 🪨</div>'">
+      </div>
+      <div class="card-map"><div id="map_o2"></div></div>
       <div class="rdwrap"><div class="rd">
         <div class="rd-title">2-day route — Day 1 → Night → Day 2</div>
         <div class="rdpath">
-          <div class="rdstop"><div class="rdstop-dot dot-start">🏰</div><div class="rdstop-name">Bremgarten</div><div class="rdstop-sub">Entry</div></div>
+          <div class="rdstop"><div class="rds-dot ds">🏰</div><div class="rdstop-name">Bremgarten</div><div class="rdstop-sub">Entry</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">⚠️</div><div class="rdstop-name">Honeggerwehr</div><div class="rdstop-sub">Pass RIGHT · km 1.3</div></div>
+          <div class="rdstop"><div class="rds-dot dw">⚠️</div><div class="rdstop-name">Honeggerwehr</div><div class="rdstop-sub">Pass RIGHT · km 1.3</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-night">⛺</div><div class="rdstop-name">Camping Sulz</div><div class="rdstop-sub">Night · km 8.4</div></div>
+          <div class="rdstop"><div class="rds-dot dn">⛺</div><div class="rdstop-name">Camping Sulz</div><div class="rdstop-sub">Night · km 8.4</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-warn">🪨</div><div class="rdstop-name">Gnadental</div><div class="rdstop-sub">Rapids · km 9–10</div></div>
+          <div class="rdstop"><div class="rds-dot dw">🪨</div><div class="rdstop-name">Gnadental</div><div class="rdstop-sub">Rapids · km 9–10</div></div>
           <div class="rdarrow">→</div>
-          <div class="rdstop"><div class="rdstop-dot dot-end">🏁</div><div class="rdstop-name">Gebenstorf</div><div class="rdstop-sub">Exit · km 25.3</div></div>
+          <div class="rdstop"><div class="rds-dot de">🏁</div><div class="rdstop-name">Gebenstorf</div><div class="rdstop-sub">Exit · km 25.3</div></div>
         </div>
         <div class="rd-sms">Flow check: SMS 9234 · Q 2018 · 150–270 m³/s</div>
       </div></div>
       <div class="cb">
         <div class="verdict">"Wild gorges, glacier boulders, near-zero infrastructure. For the group that wants to feel like they actually found something — not just done the Swiss classic."</div>
-        <div class="wb2">⚠️ <strong>Anspruchsvoll</strong> — highest difficulty. Sharp Nagelfluh boulders dangerous for inflatables. Near-total fire ban. Don't miss exit at Gebenstorf — weir downstream. Check: swissoutdoorassociation.ch</div>
-        <div class="ub"><strong>✅ 2026:</strong> Camping Sulz (km 8.4) confirmed open — camping-sulz.ch · +41 56 496 48 79 · Restaurant Rüssstübli on site</div>
+        <div class="wbx">⚠️ <strong>Anspruchsvoll</strong> — highest difficulty. Sharp Nagelfluh boulders dangerous for inflatables. Near-total fire ban. Don't miss exit at Gebenstorf — weir downstream. Check: swissoutdoorassociation.ch</div>
+        <div class="ubx"><strong>✅ 2026:</strong> Camping Sulz (km 8.4) confirmed — camping-sulz.ch · +41 56 496 48 79 · Restaurant Rüssstübli on site</div>
         <div class="fg">
           <div class="ft"><strong>Entry</strong>Bremgarten: Treppe beim Hexenturm, right bank. Walk medieval Altstadt first</div>
           <div class="ft"><strong>Night</strong>Camping Sulz (km 8.4, right bank). Only proper camping on this route</div>
-          <div class="ft"><strong>Exit</strong>Gebenstorf: Reussbädli before Wehranlage, right. 7 min bus to Bhf Brugg. ⛔ Keinesfalls weiterfahren</div>
+          <div class="ft"><strong>Exit</strong>Gebenstorf: Reussbädli before Wehranlage. 7 min bus to Bhf Brugg. ⛔ Keinesfalls weiterfahren</div>
           <div class="ft"><strong>Hazard 1</strong>Honeggerwehr (km 1.3): pass RIGHT — left arm = impassable weir</div>
-          <div class="ft"><strong>Hazard 2</strong>Stromschnellen Gnadental (km 9–10): sharp Nagelfluh boulders. Navigate early and proactively</div>
-          <div class="ft"><strong>Fire</strong>⛔ Near-total fire ban (Naturschutzgebiet). No campfire even at Camping Sulz</div>
+          <div class="ft"><strong>Hazard 2</strong>Gnadental (km 9–10): sharp Nagelfluh boulders. Navigate early</div>
+          <div class="ft"><strong>Fire</strong>⛔ Near-total fire ban. No campfire even at Camping Sulz</div>
         </div>
         <div class="pc">
           <div class="pros"><div class="cl">Pros</div>
             <div class="pt"><span class="ptd"></span>Warmest water of all routes (20–22°C)</div>
             <div class="pt"><span class="ptd"></span>Far less crowded — feels discovered</div>
             <div class="pt"><span class="ptd"></span>Wild gorge unlike Aare or Rhine</div>
-            <div class="pt"><span class="ptd"></span>Closest overnight to Basel by ÖV</div>
           </div>
           <div class="cons"><div class="cl">Cons</div>
             <div class="pt"><span class="ptd"></span>Highest difficulty — not for beginners</div>
             <div class="pt"><span class="ptd"></span>Sharp boulders can puncture boats</div>
             <div class="pt"><span class="ptd"></span>No campfire (near-total fire ban)</div>
-            <div class="pt"><span class="ptd"></span>Check military exercise closures</div>
           </div>
         </div>
-        <div class="fit"><span class="fl">Honest verdict</span>Do the Aare overnight first. Come back for the Reuss once you're hooked. The no-campfire rule changes the overnight vibe significantly. But the gorge is extraordinary.</div>
+        <div class="fit"><span class="fl">Honest verdict</span>Do the Aare overnight first. Come back for the Reuss once you're hooked.</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     SAFETY
-══════════════════════════════════ -->
+<!-- ══════ SAFETY ══════ -->
 <div id="safety" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🛡 Safety — Sicher Unterwegs</div><div class="shl"></div></div>
   <div class="gebote">
@@ -755,44 +714,42 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
   <div class="sg">
     <div class="sc"><div class="sct">⚡ Flow Levels</div>
       <div class="si"><div class="sn">!</div><div><strong>Too low:</strong> scrapes stones, rapids more dangerous</div></div>
-      <div class="si"><div class="sn">!</div><div><strong>Too high:</strong> torrential, can't exit, weirs deadly</div></div>
-      <div class="si"><div class="sn">✓</div><div>Check hydrodaten.admin.ch morning of trip. Use SMS codes in each route card</div></div>
+      <div class="si"><div class="sn">!</div><div><strong>Too high:</strong> torrential, weirs deadly, can't exit</div></div>
+      <div class="si"><div class="sn">✓</div><div>Check hydrodaten.admin.ch + use SMS codes in each route card above</div></div>
     </div>
     <div class="sc"><div class="sct">🚢 Ships + Ferries</div>
       <div class="si"><div class="sn">!</div><div>Must give way to all ferries, cargo ships, police boats</div></div>
-      <div class="si"><div class="sn">!</div><div>If collision imminent: STAY IN BOAT. Ship's bow wave pushes rubber boats away</div></div>
+      <div class="si"><div class="sn">!</div><div>If collision imminent: STAY IN BOAT — bow wave pushes rubber boats away</div></div>
       <div class="si"><div class="sn">!</div><div>Never tie boats together</div></div>
     </div>
     <div class="sc"><div class="sct">🌊 Wehre + Weirs</div>
-      <div class="si"><div class="sn">!</div><div>Rücklauf (backflow) up to 10m — impossible to escape</div></div>
+      <div class="si"><div class="sn">!</div><div>Rücklauf (backflow) up to 10m — impossible to escape alone</div></div>
       <div class="si"><div class="sn">!</div><div>Start paddling toward exit 1km before any weir</div></div>
       <div class="si"><div class="sn">!</div><div>Never swim 500m above or below a weir</div></div>
     </div>
     <div class="sc"><div class="sct">🏊 Swimming</div>
-      <div class="si"><div class="sn">!</div><div>Experienced swimmers only. Cold + current = harder than pools</div></div>
-      <div class="si"><div class="sn">!</div><div>Fall in: swim FEET-FIRST to protect head</div></div>
+      <div class="si"><div class="sn">!</div><div>Experienced swimmers only — cold + current harder than pools</div></div>
+      <div class="si"><div class="sn">!</div><div>Fall in: swim FEET-FIRST to protect head from rocks</div></div>
       <div class="si"><div class="sn">!</div><div>1 person stays in boat. Max 1 boat-length away</div></div>
     </div>
   </div>
   <div class="white-card">
     <div class="sct" style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d);margin-bottom:10px">⚖️ Legal Rules 2026</div>
-    <strong>Life jacket:</strong> Min. 75N per person on rivers. 100N on Rhine. Children under 12 must wear one. Fines CHF 50–140.<br>
-    <strong>Boat labeling:</strong> Name, address, phone number visibly written on boat. Fine: CHF 40.<br>
-    <strong>Alcohol:</strong> No fixed limit for non-motorised inflatables. Must be fit to navigate. Criminal liability if accident while drunk.<br>
+    <strong>Life jacket:</strong> Min. 75N per person. 100N on Rhine. Children under 12 must wear one. Fines CHF 50–140.<br>
+    <strong>Boat labeling:</strong> Name, address, phone visibly written on boat. Fine: CHF 40.<br>
+    <strong>Alcohol:</strong> No fixed limit for non-motorised inflatables. Must be fit to navigate.<br>
     <strong>Cannabis:</strong> Zero tolerance on Swiss waterways.
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     KIT
-══════════════════════════════════ -->
+<!-- ══════ KIT ══════ -->
 <div id="kit" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🎒 Kit & Equipment</div><div class="shl"></div></div>
   <div class="kcard">
     <div class="kt">✅ Required — Legally or Safety-Critical</div>
     <div class="kgrid">
       <div class="ki req"><div class="kb"></div><div>Life jacket min. 75N per person (law since 2020)</div></div>
-      <div class="ki req"><div class="kb"></div><div>Inflatable boat: min. 3 air chambers · name/address/phone written on it</div></div>
+      <div class="ki req"><div class="kb"></div><div>Inflatable boat min. 3 air chambers · name/address/phone written on it</div></div>
       <div class="ki req"><div class="kb"></div><div>Strong aluminium paddles (metal spring lock only)</div></div>
       <div class="ki req"><div class="kb"></div><div>Pump (foot pump ~CHF 10 or double-action ~CHF 20)</div></div>
     </div>
@@ -801,7 +758,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
     <div class="kt">🎒 Strongly Recommended</div>
     <div class="kgrid">
       <div class="ki"><div class="kb"></div><div>Drysack per person (CHF 8–80)</div></div>
-      <div class="ki"><div class="kb"></div><div>Floating rope / Bootsleine 15m (CHF 30)</div></div>
+      <div class="ki"><div class="kb"></div><div>Floating rope / Bootsleine 15m</div></div>
       <div class="ki"><div class="kb"></div><div>Spare paddle</div></div>
       <div class="ki"><div class="kb"></div><div>Repair kit (PVC patches + glue)</div></div>
       <div class="ki"><div class="kb"></div><div>Water shoes / plastic sandals</div></div>
@@ -812,10 +769,10 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
       <div class="ki"><div class="kb"></div><div>Food + picnic supplies</div></div>
       <div class="ki"><div class="kb"></div><div>Phone in waterproof bag</div></div>
       <div class="ki"><div class="kb"></div><div>ÖV card + cash for return journey</div></div>
-      <div class="ki"><div class="kb"></div><div>Large sponge (keep boat floor dry)</div></div>
       <div class="ki"><div class="kb"></div><div>Waterproof marker pen</div></div>
       <div class="ki"><div class="kb"></div><div>ID card (required German side)</div></div>
-      <div class="ki"><div class="kb"></div><div>Insect repellent (river banks)</div></div>
+      <div class="ki"><div class="kb"></div><div>Insect repellent</div></div>
+      <div class="ki"><div class="kb"></div><div>Large sponge (keep boat floor dry)</div></div>
     </div>
   </div>
   <div class="kcard">
@@ -833,9 +790,7 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     TRAVEL
-══════════════════════════════════ -->
+<!-- ══════ TRAVEL ══════ -->
 <div id="travel" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🚆 Getting There from Basel</div><div class="shl"></div></div>
   <div class="tt">
@@ -850,19 +805,17 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
   <div class="info-box">⚠️ For Stein am Rhein routes: depart from <strong>Basel Bad Bf</strong> (Badischer Bahnhof), not Basel SBB. Allow 10 min transfer. Always verify at sbb.ch.</div>
 </div>
 
-<!-- ══════════════════════════════════
-     LINKS
-══════════════════════════════════ -->
+<!-- ══════ LINKS ══════ -->
 <div id="links" class="sec">
   <div class="sh"><div class="shl"></div><div class="sht">🔗 Essential Links</div><div class="shl"></div></div>
   <div class="rc">
-    <div class="rcard"><div class="ri bl">💧</div><div class="rb"><div class="rn">hydrodaten.admin.ch</div><div class="rd2">Official BAFU river flow data. Redesigned 2023. Check the morning of trip — mandatory on all routes.</div><span class="rtag upd">Still active · Redesigned 2023</span></div></div>
-    <div class="rcard"><div class="ri bl">📱</div><div class="rb"><div class="rn">Meine Pegel (App)</div><div class="rd2">Free iOS + Android. Push notifications for flow levels. Replaces defunct HydroWatch from the book.</div><span class="rtag upd">Replaces HydroWatch</span></div></div>
-    <div class="rcard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">aareschlauchboot.ch</div><div class="rd2">Boat rental, Aare Uttigen→Bern. CHF 140–190/boat. Code AARE26 = –30% until April 30, 2026.</div><span class="rtag upd">Discount active now!</span></div></div>
-    <div class="rcard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">rheinschlauchboot.ch</div><div class="rd2">NEW (2024) boat rental, Stein am Rhein→Schaffhausen. From CHF 160/boat.</div><span class="rtag upd">New 2024</span></div></div>
-    <div class="rcard"><div class="ri bl">🗺</div><div class="rb"><div class="rn">map.geo.admin.ch</div><div class="rd2">Federal map with distance measurement. Perfect for planning exact entry/exit points.</div><span class="rtag">Still active</span></div></div>
-    <div class="rcard"><div class="ri ye">⚠️</div><div class="rb"><div class="rn">swissoutdoorassociation.ch</div><div class="rd2">Temporary river closures (military exercises). Essential for the Reuss route.</div><span class="rtag">Check for Reuss</span></div></div>
-    <div class="rcard"><div class="ri ye">📖</div><div class="rb"><div class="rn">Gummibootführer Schweiz — 7th Edition (2023)</div><div class="rd2">Updated guidebook. Salamander Verlag. CHF 37.50. Covers 2020 regulations. ISBN 978-3-907267-04-2</div><span class="rtag upd">New edition available</span></div></div>
+    <div class="rcard"><div class="ri bl">💧</div><div class="rb"><div class="rn">hydrodaten.admin.ch</div><div class="rd2">Official BAFU flow data. Redesigned 2023. Check the morning of every trip.</div><span class="rtag upd">Still active</span></div></div>
+    <div class="rcard"><div class="ri bl">📱</div><div class="rb"><div class="rn">Meine Pegel (App)</div><div class="rd2">Free iOS + Android. Push alerts for flow levels. Replaces defunct HydroWatch.</div><span class="rtag upd">Replaces HydroWatch</span></div></div>
+    <div class="rcard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">aareschlauchboot.ch</div><div class="rd2">Boat rental Aare Uttigen→Bern. CHF 140–190. Code AARE26 = –30% until April 30!</div><span class="rtag upd">Discount active!</span></div></div>
+    <div class="rcard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">rheinschlauchboot.ch</div><div class="rd2">NEW (2024) boat rental Stein am Rhein→Schaffhausen. From CHF 160/boat.</div><span class="rtag upd">New 2024</span></div></div>
+    <div class="rcard"><div class="ri bl">🗺</div><div class="rb"><div class="rn">map.geo.admin.ch</div><div class="rd2">Federal map with satellite view and distance measurement. Perfect for route planning.</div><span class="rtag">Still active</span></div></div>
+    <div class="rcard"><div class="ri ye">⚠️</div><div class="rb"><div class="rn">swissoutdoorassociation.ch</div><div class="rd2">Temporary river closures. Essential for the Reuss route — check 1 month before.</div><span class="rtag">Check for Reuss</span></div></div>
+    <div class="rcard"><div class="ri ye">📖</div><div class="rb"><div class="rn">Gummibootführer Schweiz — 7th Edition (2023)</div><div class="rd2">Updated guidebook by Iwona Eberle. CHF 37.50. Covers 2020 regulations. ISBN 978-3-907267-04-2</div><span class="rtag upd">New edition!</span></div></div>
   </div>
 </div>
 
@@ -878,148 +831,142 @@ body{background:var(--night);font-family:'Syne',sans-serif;color:var(--text);fon
 // DATA
 // ═══════════════════════════════════════════
 const ROUTES = [
-  { id:'d1', cls:'d1', emoji:'🏰', name:'Leibstadt → Laufenburg', sub:'Day Trip #1 · Rhine · 11.6km · 3–4h' },
-  { id:'d2', cls:'d2', emoji:'🏯', name:'Stein am Rhein → Schaffhausen', sub:'Day Trip #2 · Rhine · 18.8km · 3.5–4h' },
-  { id:'d3', cls:'d3', emoji:'💦', name:'Rheinfall → Kloster Rheinau', sub:'Day Trip #3 · Rhine · 7km · 🌕 moonlight' },
-  { id:'o1', cls:'o1', emoji:'⛰️', name:'Thun → Bern → Hinterkappelen', sub:'Overnight #1 · Aare · 44km · 2 days ⭐' },
-  { id:'o2', cls:'o2', emoji:'🌲', name:'Bremgarten → Gebenstorf', sub:'Overnight #2 · Reuss · 25.3km · Advanced' },
+  {id:'d1',cls:'d1',emoji:'🏰',name:'Leibstadt → Laufenburg',sub:'Day Trip #1 · Rhine · 11.6km · 3–4h'},
+  {id:'d2',cls:'d2',emoji:'🏯',name:'Stein am Rhein → Schaffhausen',sub:'Day Trip #2 · Rhine · 18.8km · Most scenic'},
+  {id:'d3',cls:'d3',emoji:'💦',name:'Rheinfall → Kloster Rheinau',sub:'Day Trip #3 · Rhine · 7km · 🌕 moonlight'},
+  {id:'o1',cls:'o1',emoji:'⛰️',name:'Thun → Bern → Hinterkappelen',sub:'Overnight #1 · Aare · 44km · The dream ⭐'},
+  {id:'o2',cls:'o2',emoji:'🌲',name:'Bremgarten → Gebenstorf',sub:'Overnight #2 · Reuss · 25.3km · Advanced'},
 ];
 
+// Weekends: each has sat + sun as separate day IDs
 const WEEKENDS = [
-  { id:'w1',  label:'May 2–4',      note:'Early May' },
-  { id:'w2',  label:'May 16–18',    note:'' },
-  { id:'w3',  label:'May 30–Jun 1', note:'Pfingsten 🌸' },
-  { id:'w4',  label:'Jun 13–15',    note:'' },
-  { id:'w5',  label:'Jun 27–29',    note:'' },
-  { id:'w6',  label:'Jul 11–13',    note:'' },
-  { id:'w7',  label:'Jul 25–27',    note:'' },
-  { id:'w8',  label:'Aug 1–3',      note:'National Day 🇨🇭' },
-  { id:'w9',  label:'Aug 15–17',    note:'' },
-  { id:'w10', label:'Aug 29–31',    note:'Schwing & Stampf 🎵' },
+  {id:'w01', label:'May 2–4',      note:'Early May',           sat:{id:'w01s',label:'Sat May 3'},  sun:{id:'w01u',label:'Sun May 4'}},
+  {id:'w02', label:'May 16–18',    note:'',                    sat:{id:'w02s',label:'Sat May 17'}, sun:{id:'w02u',label:'Sun May 18'}},
+  {id:'w03', label:'May 30–Jun 1', note:'Pfingsten 🌸',        sat:{id:'w03s',label:'Sat May 31'}, sun:{id:'w03u',label:'Sun Jun 1'}},
+  {id:'w04', label:'Jun 13–15',    note:'',                    sat:{id:'w04s',label:'Sat Jun 14'}, sun:{id:'w04u',label:'Sun Jun 15'}},
+  {id:'w05', label:'Jun 27–29',    note:'',                    sat:{id:'w05s',label:'Sat Jun 28'}, sun:{id:'w05u',label:'Sun Jun 29'}},
+  {id:'w06', label:'Jul 11–13',    note:'',                    sat:{id:'w06s',label:'Sat Jul 12'}, sun:{id:'w06u',label:'Sun Jul 13'}},
+  {id:'w07', label:'Jul 25–27',    note:'',                    sat:{id:'w07s',label:'Sat Jul 26'}, sun:{id:'w07u',label:'Sun Jul 27'}},
+  {id:'w08', label:'Aug 1–3',      note:'National Day 🇨🇭',    sat:{id:'w08s',label:'Sat Aug 2'},  sun:{id:'w08u',label:'Sun Aug 3'}},
+  {id:'w09', label:'Aug 15–17',    note:'',                    sat:{id:'w09s',label:'Sat Aug 16'}, sun:{id:'w09u',label:'Sun Aug 17'}},
+  {id:'w10', label:'Aug 29–31',    note:'Schwing & Stampf 🎵', sat:{id:'w10s',label:'Sat Aug 30'}, sun:{id:'w10u',label:'Sun Aug 31'}},
 ];
 
 // ═══════════════════════════════════════════
-// STORAGE HELPERS
+// STORAGE
 // ═══════════════════════════════════════════
-function getStore(key){ try{ return JSON.parse(localStorage.getItem(key)||'null'); }catch(e){ return null; } }
-function setStore(key,val){ try{ localStorage.setItem(key,JSON.stringify(val)); }catch(e){} }
-
-// votes: { routeId: [name, name, ...] }
-// avail: { name: [weekendId, ...] }
-
-function getVotes(){ return getStore('gb_votes') || {}; }
-function saveVotes(v){ setStore('gb_votes',v); }
-function getAvail(){ return getStore('gb_avail') || {}; }
-function saveAvail(a){ setStore('gb_avail',a); }
-function getCurrentVoter(){ return getStore('gb_current_voter') || ''; }
-function setCurrentVoter(n){ setStore('gb_current_voter',n); }
-function getCurrentAvail(){ return getStore('gb_current_avail') || ''; }
-function setCurrentAvail(n){ setStore('gb_current_avail',n); }
+const S = {
+  get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}},
+};
+const getVotes = () => S.get('gb_votes') || {};
+const saveVotes = v => S.set('gb_votes', v);
+const getAvail = () => S.get('gb_avail') || {};
+const saveAvail = a => S.set('gb_avail', a);
 
 // ═══════════════════════════════════════════
-// VOTE LOGIC
+// VOTING
 // ═══════════════════════════════════════════
-let currentVoter = '';
+let currentVoter = S.get('gb_voter') || '';
 
 function buildVoteCards(){
-  const container = document.getElementById('voteCards');
-  container.innerHTML = ROUTES.map(r => `
-    <div class="vcard ${r.cls}" id="vc_${r.id}">
-      <div class="vcard-header">
+  const c = document.getElementById('voteCards');
+  c.innerHTML = ROUTES.map(r => `
+    <div class="vcard ${r.cls}">
+      <div class="vcard-h">
         <div style="font-size:22px">${r.emoji}</div>
-        <div class="vcard-info">
-          <div class="vcard-name">${r.name}</div>
-          <div class="vcard-sub">${r.sub}</div>
-        </div>
+        <div class="vcard-info"><div class="vcard-name">${r.name}</div><div class="vcard-sub">${r.sub}</div></div>
         <button class="vote-btn" id="vbtn_${r.id}" onclick="toggleVote('${r.id}')" ${!currentVoter?'disabled':''}>
-          <span class="vh">🤍</span>
-          <span class="vc" id="vcount_${r.id}">0</span>
+          <span class="vh">🤍</span><span class="vc" id="vc_${r.id}">0</span>
         </button>
       </div>
       <div class="vcard-bar">
         <div class="vbar-track"><div class="vbar-fill" id="vbar_${r.id}" style="width:0%"></div></div>
-        <div class="vbar-voters" id="vvoters_${r.id}">No votes yet</div>
+        <div class="vbar-voters" id="vv_${r.id}">No votes yet</div>
       </div>
     </div>
   `).join('');
-  refreshVoteUI();
+  refreshVotes();
 }
 
-function refreshVoteUI(){
+function refreshVotes(){
   const votes = getVotes();
-  const total = ROUTES.reduce((s,r)=> s + (votes[r.id]||[]).length, 0);
-  let maxVotes = 0; let winnerId = '';
-  ROUTES.forEach(r => {
-    const v = votes[r.id] || [];
-    const count = v.length;
-    if(count > maxVotes){ maxVotes = count; winnerId = r.id; }
-    const pct = total > 0 ? (count/total)*100 : 0;
-    const voted = currentVoter && v.includes(currentVoter);
-    const btn = document.getElementById('vbtn_'+r.id);
+  const total = ROUTES.reduce((s,r)=>(s+(votes[r.id]||[]).length),0);
+  let max=0,wid='';
+  ROUTES.forEach(r=>{
+    const v=votes[r.id]||[];
+    const n=v.length;
+    if(n>max){max=n;wid=r.id;}
+    const pct=total>0?(n/total)*100:0;
+    const voted=currentVoter&&v.includes(currentVoter);
+    const btn=document.getElementById('vbtn_'+r.id);
     if(btn){
-      btn.className = 'vote-btn' + (voted?' voted':'');
-      btn.querySelector('.vh').textContent = voted ? '❤️' : '🤍';
-      btn.querySelector('.vc').textContent = count;
-      btn.disabled = !currentVoter;
+      btn.className='vote-btn'+(voted?' voted':'');
+      btn.querySelector('.vh').textContent=voted?'❤️':'🤍';
+      btn.querySelector('.vc').textContent=n;
+      btn.disabled=!currentVoter;
     }
-    const bar = document.getElementById('vbar_'+r.id);
-    if(bar) bar.style.width = pct+'%';
-    const vv = document.getElementById('vvoters_'+r.id);
-    if(vv) vv.textContent = count === 0 ? 'No votes yet' : v.join(', ');
+    const bar=document.getElementById('vbar_'+r.id);
+    if(bar)bar.style.width=pct+'%';
+    const vv=document.getElementById('vv_'+r.id);
+    if(vv)vv.textContent=n===0?'No votes yet':v.join(', ');
   });
-  // winner banner
-  const banner = document.getElementById('winnerBanner');
-  if(maxVotes > 0){
-    const winner = ROUTES.find(r=>r.id===winnerId);
-    document.getElementById('winnerName').textContent = winner.emoji + ' ' + winner.name;
-    document.getElementById('winnerSub').textContent = maxVotes + ' vote' + (maxVotes>1?'s':'') + ' · ' + (getVotes()[winnerId]||[]).join(', ');
-    banner.style.display = 'block';
-  } else {
-    banner.style.display = 'none';
-  }
+  const banner=document.getElementById('winnerBanner');
+  if(max>0){
+    const w=ROUTES.find(r=>r.id===wid);
+    document.getElementById('winnerName').textContent=w.emoji+' '+w.name;
+    document.getElementById('winnerSub').textContent=max+' vote'+(max>1?'s':'')+' · '+(getVotes()[wid]||[]).join(', ');
+    banner.style.display='block';
+  } else banner.style.display='none';
 }
 
 function loadVoter(){
-  const input = document.getElementById('voterName');
-  const name = input.value.trim();
-  if(!name) return;
-  currentVoter = name;
-  setCurrentVoter(name);
-  document.getElementById('voterSpan').textContent = name;
-  const g = document.getElementById('voterGreeting');
-  g.style.display = 'block';
+  const n=document.getElementById('voterName').value.trim();
+  if(!n)return;
+  currentVoter=n;
+  S.set('gb_voter',n);
+  document.getElementById('vSpan').textContent=n;
+  document.getElementById('vGreeting').style.display='block';
   buildVoteCards();
-  // if avail name empty, prefill
-  const an = document.getElementById('availName');
-  if(!an.value) an.value = name;
+  if(!document.getElementById('availName').value) document.getElementById('availName').value=n;
 }
 
-function toggleVote(routeId){
-  if(!currentVoter) return;
-  const votes = getVotes();
-  if(!votes[routeId]) votes[routeId] = [];
-  const idx = votes[routeId].indexOf(currentVoter);
-  if(idx >= 0){ votes[routeId].splice(idx,1); }
-  else { votes[routeId].push(currentVoter); }
-  saveVotes(votes);
-  refreshVoteUI();
+function toggleVote(rid){
+  if(!currentVoter)return;
+  const v=getVotes();
+  if(!v[rid])v[rid]=[];
+  const i=v[rid].indexOf(currentVoter);
+  if(i>=0)v[rid].splice(i,1); else v[rid].push(currentVoter);
+  saveVotes(v);
+  refreshVotes();
 }
 
 // ═══════════════════════════════════════════
-// AVAILABILITY LOGIC
+// AVAILABILITY (Sat/Sun per weekend)
 // ═══════════════════════════════════════════
-let currentAvailPerson = '';
+let currentAvail = S.get('gb_avail_person') || '';
 
-function buildWeekends(){
-  const grid = document.getElementById('weekendsGrid');
-  grid.innerHTML = WEEKENDS.map(w => `
-    <div class="wknd-row" id="wrow_${w.id}">
-      <div class="wknd-header">
-        <div class="wknd-date">${w.label}${w.note?' · <span style="color:rgba(245,237,224,.45);font-size:10px">'+w.note+'</span>':''}</div>
-        <div class="wknd-summary" id="wsummary_${w.id}"></div>
+function buildWknds(){
+  const g=document.getElementById('wkndsGrid');
+  g.innerHTML=WEEKENDS.map(w=>`
+    <div class="wknd-block" id="wb_${w.id}">
+      <div class="wknd-block-header">
+        <div>
+          <span class="wknd-block-title">${w.label}</span>
+          ${w.note?`<span class="wknd-block-note"> · ${w.note}</span>`:''}
+          <span id="best_${w.id}"></span>
+        </div>
+        <div id="wsummary_${w.id}" style="font-size:11px;color:rgba(245,237,224,.45)"></div>
       </div>
-      <div class="wknd-people" id="wpeople_${w.id}">
-        <div class="wknd-no-one">No one yet — be the first!</div>
+      <div class="days-row">
+        <div class="day-col">
+          <div class="day-label">Saturday</div>
+          <div class="day-people" id="dp_${w.sat.id}"></div>
+        </div>
+        <div class="day-col">
+          <div class="day-label">Sunday</div>
+          <div class="day-people" id="dp_${w.sun.id}"></div>
+        </div>
       </div>
     </div>
   `).join('');
@@ -1027,128 +974,237 @@ function buildWeekends(){
 }
 
 function refreshAvailUI(){
-  const avail = getAvail();
-  const allNames = Object.keys(avail);
-  // find best weekend
-  let bestWknd = ''; let bestCount = 0;
-  WEEKENDS.forEach(w => {
-    const count = allNames.filter(n => (avail[n]||[]).includes(w.id)).length;
-    if(count > bestCount){ bestCount = count; bestWknd = w.id; }
+  const avail=getAvail();
+  const names=Object.keys(avail);
+
+  // collect all day IDs for best-day calculation
+  const allDayIds=[];
+  WEEKENDS.forEach(w=>{allDayIds.push(w.sat.id,w.sun.id);});
+
+  // best day & best weekend
+  let bestDayCount=0,bestDayIds=[];
+  allDayIds.forEach(did=>{
+    const c=names.filter(n=>(avail[n]||[]).includes(did)).length;
+    if(c>bestDayCount){bestDayCount=c;bestDayIds=[did];}
+    else if(c===bestDayCount&&c>0)bestDayIds.push(did);
   });
 
-  WEEKENDS.forEach(w => {
-    const available = allNames.filter(n => (avail[n]||[]).includes(w.id));
-    const peopleDiv = document.getElementById('wpeople_'+w.id);
-    const summaryDiv = document.getElementById('wsummary_'+w.id);
-    const row = document.getElementById('wrow_'+w.id);
+  WEEKENDS.forEach(w=>{
+    const satFree=names.filter(n=>(avail[n]||[]).includes(w.sat.id));
+    const sunFree=names.filter(n=>(avail[n]||[]).includes(w.sun.id));
+    const bothFree=names.filter(n=>satFree.includes(n)&&sunFree.includes(n));
 
-    if(!peopleDiv) return;
+    // best badge
+    const isSatBest=bestDayCount>0&&bestDayIds.includes(w.sat.id);
+    const isSunBest=bestDayCount>0&&bestDayIds.includes(w.sun.id);
+    const isBest=isSatBest||isSunBest;
+    document.getElementById('wb_'+w.id).className='wknd-block'+(isBest?' best':'');
+    document.getElementById('best_'+w.id).innerHTML=isBest?'<span class="best-badge">✨ BEST</span>':'';
 
-    // best weekend highlight
-    row.className = 'wknd-row' + (bestCount>0 && w.id===bestWknd ? ' best-weekend' : '');
-
-    // chips
-    let html = '';
-    if(allNames.length === 0){
-      html = '<div class="wknd-no-one">No one yet</div>';
-    } else {
-      allNames.forEach(name => {
-        const isAvail = available.includes(name);
-        const isMine = name === currentAvailPerson;
-        const cls = 'person-chip' + (isAvail?' avail':' unavail') + (isMine?' mine':'');
-        const icon = isAvail ? '✓' : '—';
-        const clickable = isMine ? `onclick="toggleAvail('${w.id}')" style="cursor:pointer"` : '';
-        html += `<div class="${cls}" ${clickable}><span class="chip-icon">${icon}</span>${name}</div>`;
-      });
+    // summary
+    const summaryEl=document.getElementById('wsummary_'+w.id);
+    if(summaryEl){
+      if(names.length===0) summaryEl.textContent='';
+      else if(bothFree.length>0) summaryEl.textContent=bothFree.length+' free both days → overnight possible!';
+      else summaryEl.textContent='';
     }
-    peopleDiv.innerHTML = html;
 
-    // summary + best badge
-    if(available.length > 0){
-      const isBest = bestCount > 0 && w.id === bestWknd;
-      summaryDiv.innerHTML = available.length + ' free' + (isBest ? ' &nbsp;<span class="best-badge">✨ BEST</span>' : '');
-    } else {
-      summaryDiv.textContent = '';
-    }
+    // chips for each day
+    [
+      {day:w.sat, free:satFree, isBest:isSatBest},
+      {day:w.sun, free:sunFree, isBest:isSunBest},
+    ].forEach(({day,free,isBest})=>{
+      const el=document.getElementById('dp_'+day.id);
+      if(!el)return;
+      if(names.length===0){el.innerHTML='<div class="no-one">Be the first!</div>';return;}
+      el.innerHTML=names.map(name=>{
+        const isAvail=free.includes(name);
+        const isMine=name===currentAvail;
+        const cls='person-chip'+(isAvail?' avail':' unavail')+(isMine?' mine':'');
+        const click=isMine?`onclick="toggleDay('${day.id}')" style="cursor:pointer"`:'';
+        return `<div class="${cls}" ${click}>${isAvail?'✓':'—'} ${name}</div>`;
+      }).join('');
+    });
   });
 
-  // results bar chart
-  refreshAvailResults(avail, allNames, bestWknd, bestCount);
+  refreshAvailResults(avail,names,bestDayIds,bestDayCount);
 }
 
-function refreshAvailResults(avail, allNames, bestWknd, bestCount){
-  if(allNames.length === 0){
-    document.getElementById('availResults').style.display = 'none';
-    return;
-  }
-  document.getElementById('availResults').style.display = 'block';
-  const max = Math.max(...WEEKENDS.map(w => allNames.filter(n=>(avail[n]||[]).includes(w.id)).length), 1);
-  const html = WEEKENDS.map(w => {
-    const count = allNames.filter(n=>(avail[n]||[]).includes(w.id)).length;
-    const pct = (count/max)*100;
-    const isBest = w.id === bestWknd && bestCount > 0;
-    return `<div class="ar-row">
-      <div class="ar-label">${w.label}${isBest?' ✨':''}</div>
-      <div class="ar-bar-wrap"><div class="ar-bar" style="width:${pct}%;${isBest?'background:linear-gradient(90deg,var(--sun),#e8a838)':''}"></div></div>
-      <div class="ar-count">${count}/${allNames.length}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('availResultsBody').innerHTML = html;
+function refreshAvailResults(avail,names,bestDayIds,bestDayCount){
+  if(names.length===0){document.getElementById('availResults').style.display='none';return;}
+  document.getElementById('availResults').style.display='block';
+
+  const rows=[];
+  WEEKENDS.forEach(w=>{
+    [w.sat,w.sun].forEach(day=>{
+      const c=names.filter(n=>(avail[n]||[]).includes(day.id)).length;
+      rows.push({label:day.label,count:c,isBest:bestDayIds.includes(day.id)&&bestDayCount>0});
+    });
+  });
+  const max=Math.max(...rows.map(r=>r.count),1);
+  document.getElementById('arBody').innerHTML=rows.map(r=>`
+    <div class="ar-row">
+      <div class="ar-label">${r.label}${r.isBest?' ✨':''}</div>
+      <div class="ar-bar-wrap"><div class="ar-bar" style="width:${(r.count/max)*100}%;${r.isBest?'background:linear-gradient(90deg,var(--sun),#f0b840)':''}"></div></div>
+      <div class="ar-count">${r.count}/${names.length}</div>
+    </div>
+  `).join('');
 }
 
 function loadAvail(){
-  const input = document.getElementById('availName');
-  const name = input.value.trim();
-  if(!name) return;
-  currentAvailPerson = name;
-  setCurrentAvail(name);
-  // ensure person exists in avail store
-  const avail = getAvail();
-  if(!avail[name]) { avail[name] = []; saveAvail(avail); }
-  document.getElementById('availSpan').textContent = name;
-  document.getElementById('availGreeting').style.display = 'block';
+  const n=document.getElementById('availName').value.trim();
+  if(!n)return;
+  currentAvail=n;
+  S.set('gb_avail_person',n);
+  const a=getAvail();
+  if(!a[n]){a[n]=[];saveAvail(a);}
+  document.getElementById('aSpan').textContent=n;
+  document.getElementById('aGreeting').style.display='block';
   refreshAvailUI();
-  // also set voter name if empty
-  const vn = document.getElementById('voterName');
-  if(!vn.value) vn.value = name;
+  if(!document.getElementById('voterName').value) document.getElementById('voterName').value=n;
 }
 
-function toggleAvail(weekendId){
-  if(!currentAvailPerson) return;
-  const avail = getAvail();
-  if(!avail[currentAvailPerson]) avail[currentAvailPerson] = [];
-  const idx = avail[currentAvailPerson].indexOf(weekendId);
-  if(idx >= 0){ avail[currentAvailPerson].splice(idx,1); }
-  else { avail[currentAvailPerson].push(weekendId); }
-  saveAvail(avail);
+function toggleDay(dayId){
+  if(!currentAvail)return;
+  const a=getAvail();
+  if(!a[currentAvail])a[currentAvail]=[];
+  const i=a[currentAvail].indexOf(dayId);
+  if(i>=0)a[currentAvail].splice(i,1); else a[currentAvail].push(dayId);
+  saveAvail(a);
   refreshAvailUI();
+}
+
+// ═══════════════════════════════════════════
+// LEAFLET MAPS
+// ═══════════════════════════════════════════
+function makeMap(id, lat, lng, zoom){
+  const map = L.map(id, {zoomControl:true, scrollWheelZoom:false, attributionControl:true});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors',maxZoom:18
+  }).addTo(map);
+  map.setView([lat,lng],zoom);
+  return map;
+}
+
+function marker(map, lat, lng, color, label){
+  const icon = L.divIcon({
+    html:`<div style="background:${color};width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>`,
+    className:'',iconAnchor:[7,7]
+  });
+  return L.marker([lat,lng],{icon}).addTo(map).bindPopup(label);
+}
+
+function routeLine(map, coords, color){
+  L.polyline(coords,{color,weight:4,opacity:.85}).addTo(map);
+}
+
+function initMaps(){
+  // OVERVIEW MAP — centred on Swiss Mittelland
+  const ov = makeMap('mapOverview', 47.55, 8.15, 8);
+  // Basel home
+  marker(ov, 47.558, 7.589, '#e8a838', '📍 Basel — Home Base');
+  // Route start/end markers
+  marker(ov, 47.572, 7.973, '#4a9ebe', '☀️ Day 1 Start: Leibstadt');
+  marker(ov, 47.570, 8.067, '#4a9ebe', '☀️ Day 1 End: Laufenburg');
+  marker(ov, 47.657, 8.858, '#2e7a9e', '☀️ Day 2 Start: Stein am Rhein');
+  marker(ov, 47.696, 8.634, '#2e7a9e', '☀️ Day 2 End: Schaffhausen');
+  marker(ov, 47.678, 8.616, '#2a6a90', '☀️ Day 3 Start: Rheinfall');
+  marker(ov, 47.643, 8.538, '#2a6a90', '☀️ Day 3 End: Kloster Rheinau');
+  marker(ov, 46.758, 7.629, '#1e4a3a', '🌙 Overnight 1 Start: Thun');
+  marker(ov, 46.920, 7.434, '#1e4a3a', '⛺ Camping Eichholz (Night 1)');
+  marker(ov, 46.961, 7.379, '#1e4a3a', '🌙 Overnight 1 End: Hinterkappelen');
+  marker(ov, 47.347, 8.334, '#7a3a10', '🌙 Overnight 2 Start: Bremgarten');
+  marker(ov, 47.392, 8.229, '#7a3a10', '🌙 Overnight 2 End: Gebenstorf');
+
+  // DAY 1 — Leibstadt → Laufenburg
+  const m1 = makeMap('map_d1', 47.571, 8.020, 12);
+  routeLine(m1, [[47.572,7.973],[47.574,8.000],[47.568,8.025],[47.562,8.048],[47.570,8.067]], '#4a9ebe');
+  marker(m1, 47.572, 7.973, '#2d5a3d', '🚀 Entry: Leibstadt');
+  marker(m1, 47.574, 8.000, '#4a9ebe', '🏖 Dreispitz Beach (km 3.8)');
+  marker(m1, 47.568, 8.025, '#4a9ebe', '🏝 Etzgen "Caribbean" Island (km 6.8)');
+  marker(m1, 47.570, 8.067, '#e8a838', '🏰 Exit: Laufenburg');
+
+  // DAY 2 — Stein am Rhein → Schaffhausen
+  const m2 = makeMap('map_d2', 47.677, 8.748, 12);
+  routeLine(m2, [[47.657,8.858],[47.667,8.810],[47.668,8.760],[47.669,8.710],[47.671,8.680],[47.690,8.660],[47.696,8.634]], '#2e7a9e');
+  marker(m2, 47.657, 8.858, '#2d5a3d', '🏯 Entry: Stein am Rhein');
+  marker(m2, 47.668, 8.760, '#e08030', '⚠️ Bibermüli — ferry caution (km 5.1)');
+  marker(m2, 47.669, 8.710, '#4a9ebe', '🏊 Mid-exit option: Diessenhofen (km 9.7)');
+  marker(m2, 47.696, 8.634, '#e8a838', '🏙 Exit: Schaffhausen (Salzstadel)');
+
+  // DAY 3 — Rheinfall → Kloster Rheinau
+  const m3 = makeMap('map_d3', 47.663, 8.575, 13);
+  routeLine(m3, [[47.678,8.616],[47.676,8.590],[47.670,8.566],[47.653,8.548],[47.646,8.542],[47.643,8.538]], '#2a6a90');
+  marker(m3, 47.678, 8.616, '#2d5a3d', '💦 Entry: below Rheinfall');
+  marker(m3, 47.670, 8.566, '#4a9ebe', '🏊 Best swim spot (km 5)');
+  marker(m3, 47.653, 8.548, '#e08030', '🔄 Stauwehr Rheinau — portage (km 6.4)');
+  marker(m3, 47.643, 8.538, '#e8a838', '⛪ Exit: Kloster Rheinau island');
+
+  // OVERNIGHT 1 — Aare Thun → Bern → Hinterkappelen
+  const mo1 = makeMap('map_o1', 46.90, 7.51, 11);
+  routeLine(mo1, [
+    [46.758,7.629],[46.780,7.610],[46.820,7.575],[46.855,7.540],[46.892,7.518],[46.920,7.434]
+  ], '#1e4a3a');
+  routeLine(mo1, [
+    [46.920,7.434],[46.935,7.420],[46.948,7.405],[46.955,7.395],[46.961,7.379]
+  ], '#2d8a5a');
+  marker(mo1, 46.758, 7.629, '#2d5a3d', '🏔 Entry: Thun / Uttigen');
+  marker(mo1, 46.820, 7.575, '#e08030', '🌊 Uttiger Welle — rapids (km 5.1)');
+  marker(mo1, 46.920, 7.434, '#1a2e3b', '⛺ Camping Eichholz — Night 1');
+  marker(mo1, 46.948, 7.405, '#e08030', '🔄 Stauwehr Engehalde — portage');
+  marker(mo1, 46.961, 7.379, '#e8a838', '🦫 Exit: Hinterkappelen');
+
+  // OVERNIGHT 2 — Reuss Bremgarten → Gebenstorf
+  const mo2 = makeMap('map_o2', 47.370, 8.280, 12);
+  routeLine(mo2, [
+    [47.347,8.334],[47.352,8.318],[47.358,8.298],[47.367,8.282],[47.371,8.265],[47.378,8.248],[47.383,8.236],[47.392,8.229]
+  ], '#7a3a10');
+  marker(mo2, 47.347, 8.334, '#2d5a3d', '🏰 Entry: Bremgarten (Hexenturm)');
+  marker(mo2, 47.352, 8.318, '#e08030', '⚠️ Honeggerwehr — pass RIGHT (km 1.3)');
+  marker(mo2, 47.367, 8.282, '#1a2e3b', '⛺ Camping Sulz — Night (km 8.4)');
+  marker(mo2, 47.371, 8.265, '#e08030', '🪨 Gnadental rapids — sharp boulders');
+  marker(mo2, 47.392, 8.229, '#e8a838', '🏁 Exit: Gebenstorf ⛔ stop here');
 }
 
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', function(){
+function initApp(){
   // restore session
-  const savedVoter = getCurrentVoter();
-  if(savedVoter){
-    currentVoter = savedVoter;
-    document.getElementById('voterName').value = savedVoter;
-    document.getElementById('voterSpan').textContent = savedVoter;
-    document.getElementById('voterGreeting').style.display = 'block';
+  if(currentVoter){
+    document.getElementById('voterName').value=currentVoter;
+    document.getElementById('vSpan').textContent=currentVoter;
+    document.getElementById('vGreeting').style.display='block';
   }
-  const savedAvail = getCurrentAvail();
-  if(savedAvail){
-    currentAvailPerson = savedAvail;
-    document.getElementById('availName').value = savedAvail;
-    document.getElementById('availSpan').textContent = savedAvail;
-    document.getElementById('availGreeting').style.display = 'block';
+  if(currentAvail){
+    document.getElementById('availName').value=currentAvail;
+    document.getElementById('aSpan').textContent=currentAvail;
+    document.getElementById('aGreeting').style.display='block';
   }
   buildVoteCards();
-  buildWeekends();
+  buildWknds();
+  initMaps();
+  document.getElementById('voterName').addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
+  document.getElementById('availName').addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+}
 
-  // Enter key support
-  document.getElementById('voterName').addEventListener('keydown', e => { if(e.key==='Enter') loadVoter(); });
-  document.getElementById('availName').addEventListener('keydown', e => { if(e.key==='Enter') loadAvail(); });
+// Dynamically load Leaflet then start the app
+document.addEventListener('DOMContentLoaded', function(){
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.crossOrigin = '';
+  script.onload = function(){ initApp(); };
+  script.onerror = function(){
+    // Leaflet failed to load — init app anyway without maps, show fallback
+    document.querySelectorAll('.card-map,.leaflet-wrap').forEach(el=>{
+      el.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8f4fb;font-size:12px;color:#617585;padding:16px;text-align:center">🗺 Map unavailable offline<br>Open at <strong>gummiboot-2026.vercel.app</strong> to view</div>';
+    });
+    buildVoteCards();
+    buildWknds();
+    document.getElementById('voterName').addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
+    document.getElementById('availName').addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+  };
+  document.head.appendChild(script);
 });
 </script>
 </body>
