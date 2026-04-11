@@ -2,1037 +2,2641 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ec">
 <title>Gummiboot 2026 🛶</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
 :root{
-  --ink:#0e1820;--ink-m:#1c2f3d;--ink-l:#243a4a;
-  --water:#4a9ebe;--water-p:rgba(74,158,190,.12);--water-g:rgba(74,158,190,.25);
-  --amber:#d4893a;--amber-p:rgba(212,137,58,.14);
-  --cream:#f0e8d8;--cream-d:rgba(240,232,216,.6);--cream-g:rgba(240,232,216,.12);
-  --gold:#c9a84c;--sage:#7a9e8a;
-  --danger:#c44a3a;--danger-p:rgba(196,74,58,.12);
-  --muted:#6b8090;
+  /* CANVAS — warm cream, like magazine paper */
+  --paper:#faf6ec;
+  --paper-d:#f3ecd9;
+  --paper-dd:#ebe3cb;
+  --cream:#fff9ea;
+
+  /* INK — text hierarchy */
+  --ink:#1a2332;
+  --ink-m:#3a4a5e;
+  --ink-l:#6b7a8c;
+  --ink-xl:#9aa5b3;
+
+  /* ACCENTS */
+  --river:#2c7da0;
+  --river-d:#1d5778;
+  --river-l:#5ba3c4;
+  --river-p:rgba(44,125,160,.08);
+  --river-pp:rgba(44,125,160,.16);
+
+  --sun:#d97b2e;
+  --sun-d:#b85e18;
+  --sun-l:#e89956;
+  --sun-p:rgba(217,123,46,.08);
+  --sun-pp:rgba(217,123,46,.18);
+
+  --sage:#5a8a6c;
+  --sage-l:#7ba58c;
+  --sage-p:rgba(90,138,108,.1);
+  --sage-pp:rgba(90,138,108,.2);
+
+  --danger:#b84438;
+  --danger-p:rgba(184,68,56,.08);
+
+  --gold:#b8932b;
+
+  /* SURFACES */
+  --card:#fff;
+  --card-el:#fffcf2;
+  --line:rgba(26,35,50,.08);
+  --line-m:rgba(26,35,50,.14);
+
+  /* TYPE */
   --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'DM Sans',system-ui,sans-serif;
+  --sans:'DM Sans',system-ui,-apple-system,sans-serif;
+
+  /* MOTION */
   --ease:cubic-bezier(.4,0,.2,1);
   --spring:cubic-bezier(.34,1.56,.64,1);
+  --smooth:cubic-bezier(.16,1,.3,1);
+
+  /* SHADOWS */
+  --sh-s:0 1px 2px rgba(26,35,50,.04),0 2px 8px rgba(26,35,50,.04);
+  --sh-m:0 4px 16px rgba(26,35,50,.06),0 2px 6px rgba(26,35,50,.04);
+  --sh-l:0 16px 48px rgba(26,35,50,.1),0 4px 12px rgba(26,35,50,.05);
+  --sh-xl:0 32px 80px rgba(26,35,50,.14),0 8px 24px rgba(26,35,50,.08);
 }
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--ink);font-family:var(--sans);color:var(--ink-m);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);
+  font-family:var(--sans);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+  font-weight:400;
+  line-height:1.5;
+}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+a{color:inherit;text-decoration:none}
 
-/* HERO */
-.hero{position:relative;height:100svh;min-height:580px;max-height:900px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(212,137,58,.18) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 20%,rgba(74,158,190,.22) 0%,transparent 55%),linear-gradient(170deg,#071218 0%,#0e2030 35%,#152d42 65%,#0e1820 100%)}
-.ripple{position:absolute;border-radius:50%;border:1px solid rgba(74,158,190,.12);animation:ripple 7s ease-out infinite}
-.ripple:nth-child(1){width:220px;height:80px;bottom:22%;left:12%;animation-delay:0s}
-.ripple:nth-child(2){width:340px;height:110px;bottom:30%;left:42%;animation-delay:-2.5s}
-.ripple:nth-child(3){width:170px;height:65px;bottom:16%;left:68%;animation-delay:-5s}
-@keyframes ripple{0%{transform:scale(.5);opacity:0}30%{opacity:1}100%{transform:scale(1.5);opacity:0}}
-.star{position:absolute;border-radius:50%;background:rgba(240,232,216,.7);animation:twinkle var(--d,3s) ease-in-out infinite;animation-delay:var(--delay,0s)}
-@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.85}}
-.hdeco{position:absolute;font-size:clamp(42px,8vw,72px);bottom:40%;right:8%;animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(74,158,190,.35));z-index:2}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-18px) rotate(2deg)}}
-.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,24,32,.05) 0%,rgba(14,24,32,.25) 45%,rgba(14,24,32,.92) 100%);pointer-events:none}
-.hc{position:relative;z-index:3;padding:0 28px clamp(52px,9vh,88px);max-width:720px;margin:0 auto;width:100%}
-.h-season{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.h-season::before,.h-season::after{content:'';flex:1;max-width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--amber))}
-.h-season::after{background:linear-gradient(90deg,var(--amber),transparent)}
-.hero h1{font-family:var(--serif);font-size:clamp(40px,10vw,76px);font-weight:300;font-style:italic;color:var(--cream);line-height:1.0;letter-spacing:-.02em;margin-bottom:18px}
-.hero h1 strong{font-style:normal;font-weight:600;color:white;display:block}
-.hero-sub{font-size:13px;color:var(--cream-d);letter-spacing:.4px;margin-bottom:24px;font-weight:300}
-.hero-chips{display:flex;flex-wrap:wrap;gap:7px}
-.hero-chip{padding:5px 13px;border:1px solid rgba(240,232,216,.13);border-radius:20px;font-size:11px;color:rgba(240,232,216,.5);backdrop-filter:blur(8px);background:rgba(240,232,216,.04)}
-.scroll-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:5px;animation:floatd 2.2s ease-in-out infinite}
-@keyframes floatd{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
-.scroll-hint span{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,232,216,.2)}
-
-/* LETTER */
-.letter-wrap{max-width:720px;margin:0 auto;padding:72px 20px 0}
-.letter-card{position:relative;padding:44px 32px;background:linear-gradient(135deg,rgba(26,47,61,.9),rgba(14,24,32,.95));border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden}
-.letter-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
-.letter-card::after{content:'🛶';position:absolute;right:22px;top:18px;font-size:46px;opacity:.07}
-.l-from{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:26px}
-.l-body{font-family:var(--serif);font-size:clamp(16px,3.5vw,21px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.85;margin-bottom:28px}
-.l-body strong{font-style:normal;font-weight:600;color:white}
-.l-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--amber);color:var(--ink);border-radius:2px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;font-family:var(--sans);cursor:pointer;transition:all .2s}
-.l-cta:hover{background:#e09a4a;transform:translateY(-1px)}
-.l-alts{margin-top:16px;padding:12px 14px;border-left:2px solid rgba(212,137,58,.3);background:rgba(212,137,58,.04);font-size:11px;color:rgba(240,232,216,.28);line-height:1.7;border-radius:0 2px 2px 0}
-.l-alts strong{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
-
-/* NAV */
-.nav{position:sticky;top:0;z-index:100;background:rgba(14,24,32,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,232,216,.05);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 10px}
-.nav::-webkit-scrollbar{display:none}
-.nav a{flex-shrink:0;padding:14px 12px;font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,232,216,.28);text-decoration:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.nav a:hover{color:var(--water);border-bottom-color:var(--water)}
-
-/* SECTIONS */
-.sec{max-width:720px;margin:0 auto;padding:0 20px}
-.sh{padding:60px 0 26px;display:flex;align-items:center;gap:16px}
-.shl{flex:1;height:1px;background:linear-gradient(90deg,rgba(240,232,216,.06),transparent)}
-.shl.r{background:linear-gradient(90deg,transparent,rgba(240,232,216,.06))}
-.sht{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--water);white-space:nowrap}
-
-/* VOTE */
-.vote-box{background:linear-gradient(135deg,rgba(74,158,190,.07),rgba(14,24,32,.9));border:1px solid rgba(74,158,190,.14);border-radius:3px;padding:22px;margin-bottom:18px}
-.box-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:6px}
-.bt-water{color:var(--water)}.bt-sage{color:var(--sage)}.bt-gold{color:var(--gold)}
-.box-sub{font-size:13px;color:var(--cream-d);line-height:1.6;margin-bottom:16px}
-.name-row{display:flex;gap:9px}
-.ni{flex:1;background:rgba(240,232,216,.06);border:1px solid rgba(240,232,216,.1);border-radius:2px;padding:11px 15px;font-size:14px;color:var(--cream);font-family:var(--sans);outline:none;transition:border .2s}
-.ni::placeholder{color:rgba(240,232,216,.18)}
-.ni:focus{border-color:rgba(74,158,190,.45)}
-.bg{border:none;border-radius:2px;padding:11px 18px;font-size:11px;font-weight:600;font-family:var(--sans);letter-spacing:1px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.bg-water{background:var(--water);color:var(--ink)}
-.bg-water:hover{background:#5ab0d0;transform:translateY(-1px)}
-.bg-sage{background:var(--sage);color:var(--ink)}
-.bg-sage:hover{background:#8ab49a;transform:translateY(-1px)}
-.vg{font-size:12px;color:rgba(240,232,216,.4);margin-top:9px;display:none}
-.vg span{font-weight:600}
-.vg-water span{color:var(--water)}.vg-sage span{color:var(--sage)}
-
-/* winner */
-.winner{background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(14,24,32,.95));border:1px solid rgba(201,168,76,.22);border-radius:3px;padding:16px 20px;margin-bottom:14px;display:none}
-.w-eye{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-.w-name{font-family:var(--serif);font-size:20px;color:var(--cream);margin-bottom:3px}
-.w-who{font-size:11px;color:rgba(240,232,216,.3)}
-
-/* vote cards */
-.vcards{display:flex;flex-direction:column;gap:2px;margin-bottom:18px}
-.vc{background:rgba(26,47,61,.45);border:1px solid rgba(240,232,216,.05);border-radius:2px;overflow:hidden;transition:border-color .2s}
-.vc:hover{border-color:rgba(240,232,216,.09)}
-.vc-row{display:flex;align-items:center;gap:13px;padding:13px 16px}
-.vc-e{font-size:20px;flex-shrink:0}
-.vc-info{flex:1;min-width:0}
-.vc-name{font-size:13.5px;font-weight:500;color:var(--cream);margin-bottom:2px}
-.vc-sub{font-size:10.5px;color:var(--muted)}
-.vbtn{background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.1);border-radius:20px;padding:6px 13px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s var(--spring);font-family:var(--sans);flex-shrink:0}
-.vbtn:hover{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.3)}
-.vbtn.voted{background:rgba(201,168,76,.18);border-color:var(--gold)}
-.vh{font-size:15px;transition:transform .2s var(--spring)}
-.vbtn.voted .vh{transform:scale(1.25)}
-.vcount{font-size:12px;font-weight:600;color:var(--cream);min-width:14px}
-.vc-track{height:2px;background:rgba(240,232,216,.04)}
-.vc-bar{height:100%;background:linear-gradient(90deg,var(--water),var(--gold));transition:width .5s var(--ease)}
-.vc-who{padding:5px 16px 9px;font-size:10px;color:var(--muted);min-height:22px}
-
-/* CALENDAR */
-.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.cn-btn{background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.09);border-radius:2px;padding:8px 16px;color:var(--water);font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:all .15s}
-.cn-btn:hover{background:rgba(74,158,190,.13)}
-.cn-label{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--cream)}
-.cal-wrap{background:rgba(14,24,32,.7);border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden;margin-bottom:12px}
-.cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);background:rgba(240,232,216,.03);padding:8px 0 6px}
-.cdow{text-align:center;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,232,216,.22)}
-.cdow.we{color:var(--water);opacity:.65}
-.cal-body{display:grid;grid-template-columns:repeat(7,1fr)}
-.ccell{position:relative;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:background .12s;border:1px solid rgba(240,232,216,.03);-webkit-tap-highlight-color:transparent;user-select:none}
-.ccell.empty{cursor:default;background:rgba(0,0,0,.12)}
-.ccell:not(.empty):not(.oor):hover{background:rgba(240,232,216,.05)}
-.ccell.oor{opacity:.2;pointer-events:none}
-.ccell.we:not(.empty){background:rgba(74,158,190,.04)}
-.ccell.free{background:rgba(122,158,138,.18)!important}
-.ccell.maybe{background:rgba(201,168,76,.14)!important}
-.cday{font-size:clamp(11px,2.5vw,13px);font-weight:500;color:rgba(240,232,216,.5);line-height:1;margin-bottom:1px}
-.ccell.free .cday{color:#9ed4b0;font-weight:700}
-.ccell.maybe .cday{color:#d4a84a;font-weight:700}
-.ccell.today .cday{background:var(--water);color:var(--ink);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
-.cst{font-size:7px;line-height:1;height:8px;color:rgba(240,232,216,.5)}
-.cdots{display:flex;gap:2px;justify-content:center;min-height:5px}
-.cdot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
-.cdot.free{background:var(--sage)}.cdot.maybe{background:var(--gold)}
-.avail-results{background:rgba(26,47,61,.45);border:1px solid rgba(240,232,216,.06);border-radius:3px;padding:16px 18px;margin-bottom:12px;display:none}
-.ar-t{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:12px}
-.ar-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
-.ar-label{font-size:11px;color:var(--cream-d);min-width:82px;line-height:1.3}
-.ar-track{flex:1;height:6px;background:rgba(240,232,216,.06);border-radius:3px;overflow:hidden;position:relative}
-.ar-maybe{position:absolute;top:0;left:0;height:100%;background:rgba(201,168,76,.3);border-radius:3px;transition:width .4s}
-.ar-free{position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,var(--sage),var(--water));border-radius:3px;transition:width .4s}
-
-/* ALERTS */
-.abox{border-radius:3px;padding:18px 20px;margin-bottom:10px;border:1px solid}
-.abox.danger{background:var(--danger-p);border-color:rgba(196,74,58,.22)}
-.abox.good{background:rgba(122,158,138,.07);border-color:rgba(122,158,138,.18)}
-.abox.info{background:var(--water-p);border-color:var(--water-g)}
-.at{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
-.abox.danger .at{color:#e07060}.abox.good .at{color:var(--sage)}.abox.info .at{color:var(--water)}
-.ai{display:flex;gap:9px;margin-bottom:9px;font-size:12.5px;line-height:1.6;color:var(--cream-d)}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.ad-r{background:#e07060}.ad-g{background:var(--sage)}.ad-b{background:var(--water)}
-
-/* OVERVIEW LIST */
-.ov-list{background:rgba(26,47,61,.35);border:1px solid rgba(240,232,216,.06);border-radius:3px;padding:18px;margin-bottom:12px}
-.ov-t{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:14px}
-.ov-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(240,232,216,.04)}
-.ov-item:last-child{border-bottom:none}
-.ov-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.ov-info{flex:1}
-.ov-name{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:2px}
-.ov-detail{font-size:11px;color:var(--muted)}
-.ov-km{font-size:12px;font-weight:700;color:var(--water);white-space:nowrap}
-
-/* ROUTE CARDS */
-.rcards{display:flex;flex-direction:column;gap:28px}
-.rcard{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.06);border-radius:4px;overflow:hidden;transition:border-color .3s}
-.rcard:hover{border-color:rgba(240,232,216,.1)}
-
-/* photos */
-.rphoto{position:relative;height:210px;overflow:hidden;background:var(--ink-m)}
-.rphoto-grid{display:grid;height:100%;gap:2px}
-.rphoto-grid.c1{grid-template-columns:1fr}
-.rphoto-grid.c2{grid-template-columns:2fr 1fr}
-.rphoto-grid.c3{grid-template-columns:1fr 1fr 1fr}
-.rphoto-grid>div{overflow:hidden}
-.rphoto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
-.rphoto-grid>div:hover img{transform:scale(1.04)}
-.rphoto-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(14,24,32,.55) 75%,rgba(14,24,32,.95) 100%);pointer-events:none}
-.rbadge{position:absolute;top:13px;left:13px;border:1px solid;border-radius:20px;padding:4px 11px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;backdrop-filter:blur(8px);background:rgba(14,24,32,.7)}
-.rbadge.day{border-color:rgba(74,158,190,.35);color:var(--water)}
-.rbadge.night{border-color:rgba(122,158,138,.35);color:var(--sage)}
-.ricon{position:absolute;bottom:13px;right:13px;font-size:26px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
-
-/* card meta */
-.rmeta{padding:16px 18px 0}
-.rtitle{font-family:var(--serif);font-size:clamp(20px,5vw,28px);font-weight:400;color:var(--cream);line-height:1.15;margin-bottom:3px}
-.rsub{font-size:11px;color:var(--muted);margin-bottom:11px;font-style:italic}
-.rpills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.rp{border-radius:20px;padding:3px 11px;font-size:10px;font-weight:500}
-.rpd{background:rgba(240,232,216,.06);color:rgba(240,232,216,.55)}
-.rpw{background:rgba(212,137,58,.13);border:1px solid rgba(212,137,58,.22);color:#d4a060}
-.rpb{background:var(--water-p);border:1px solid var(--water-g);color:var(--water)}
-.rps{background:rgba(122,158,138,.1);border:1px solid rgba(122,158,138,.22);color:var(--sage)}
-.rpx{background:var(--danger-p);border:1px solid rgba(196,74,58,.18);color:#e07060}
-.rtravel{display:inline-flex;align-items:center;gap:6px;background:var(--water-p);border-radius:2px;padding:6px 12px;font-size:12px;color:var(--water);font-weight:500;margin-bottom:14px}
-
-/* verdict */
-.rverdict{font-family:var(--serif);font-size:14.5px;font-style:italic;font-weight:300;color:rgba(240,232,216,.5);line-height:1.75;margin:0 18px 16px;border-left:2px solid rgba(74,158,190,.25);padding-left:13px}
-
-/* diagram */
-.rdiag{margin:0 18px 16px;background:rgba(14,24,32,.5);border-radius:3px;padding:13px 14px;overflow-x:auto;scrollbar-width:none;border:1px solid rgba(240,232,216,.05)}
-.rdiag::-webkit-scrollbar{display:none}
-.diag-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--water);opacity:.55;margin-bottom:10px}
-.dpath{display:flex;align-items:center}
-.dstop{flex-shrink:0;text-align:center}
-.ddot{width:28px;height:28px;border-radius:50%;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:12px;border:1.5px solid rgba(240,232,216,.15)}
-.ds{background:rgba(122,158,138,.22)}.dm{background:var(--water-p)}.dw{background:rgba(196,74,58,.18)}.dc{background:rgba(26,47,61,.9)}.de{background:rgba(201,168,76,.18)}
-.dname{font-size:9px;font-weight:500;color:rgba(240,232,216,.55);white-space:nowrap;max-width:58px;overflow:hidden;text-overflow:ellipsis}
-.dsub{font-size:8px;color:var(--muted);white-space:nowrap;max-width:58px;overflow:hidden;text-overflow:ellipsis}
-.darrow{flex-shrink:0;padding:0 4px;color:rgba(240,232,216,.18);font-size:13px;margin-bottom:20px}
-.dsms{margin-top:7px;font-size:9px;color:var(--muted);opacity:.65}
-
-/* facts */
-.rfacts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:0 18px 16px;background:rgba(240,232,216,.04);border-radius:3px;overflow:hidden;border:1px solid rgba(240,232,216,.05)}
-.fact{padding:11px 13px;background:rgba(14,24,32,.45);font-size:11.5px;color:rgba(240,232,216,.6);line-height:1.5}
-.fact strong{display:block;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--water);opacity:.65;font-weight:700;margin-bottom:3px}
-
-/* update/warn */
-.rupdate,.rwarn{margin:0 18px 14px;border-radius:2px;padding:10px 13px;font-size:12px;line-height:1.6;border-left:3px solid}
-.rupdate{background:var(--water-p);border-color:var(--water);color:rgba(74,158,190,.85)}
-.rwarn{background:var(--danger-p);border-color:var(--danger);color:rgba(196,74,58,.85)}
-
-/* pros/cons */
-.rpc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 18px 16px}
-.pcl{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
-.pcpros .pcl{color:var(--sage)}.pccons .pcl{color:#e07060}
-.pci{display:flex;gap:6px;margin-bottom:5px;font-size:11.5px;color:rgba(240,232,216,.5);line-height:1.45}
-.pcd{width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.pcpros .pcd{background:var(--sage)}.pccons .pcd{background:#e07060}
-
-/* verdict box */
-.rfit{margin:0 18px 20px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.13);border-radius:3px;padding:12px 14px}
-.rfitl{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;display:block}
-.rfitt{font-size:12.5px;color:rgba(240,232,216,.6);line-height:1.65}
-
-/* map in card */
-.rmap{margin:0 18px 20px;border-radius:3px;overflow:hidden;border:1px solid rgba(240,232,216,.06);height:200px}
-.rmap .leaflet-container{height:200px}
-
-/* SAFETY */
-.gebote{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
-.gcard{background:rgba(26,47,61,.35);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start}
-.gnum{width:21px;height:21px;border-radius:50%;background:var(--water-p);border:1px solid var(--water-g);color:var(--water);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.gtext{font-size:12px;color:rgba(240,232,216,.6);line-height:1.4}
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-.scard{background:rgba(26,47,61,.35);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:14px}
-.stitle{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:9px}
-.sitem{display:flex;gap:7px;margin-bottom:6px;font-size:11.5px;line-height:1.45;color:rgba(240,232,216,.5)}
-.si{font-size:13px;flex-shrink:0;margin-top:-1px}
-.legal{background:rgba(26,47,61,.35);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:16px 18px;font-size:12px;color:rgba(240,232,216,.5);line-height:1.85;margin-bottom:12px}
-.legal .lt{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:11px}
-
-/* KIT */
-.ksec{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:18px;margin-bottom:10px}
-.kt{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:13px}
-.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.ki{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:rgba(240,232,216,.5);line-height:1.4}
-.kchk{width:13px;height:13px;border:1.5px solid rgba(240,232,216,.15);border-radius:2px;flex-shrink:0;margin-top:2px}
-.ki.req .kchk{background:var(--sage);border-color:var(--sage);display:flex;align-items:center;justify-content:center}
-.ki.req .kchk::after{content:'✓';font-size:8px;color:var(--ink)}
-.tipbox{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.11);border-radius:3px;padding:13px 15px;font-size:12px;color:rgba(240,232,216,.45);line-height:1.75}
-
-/* TRAVEL */
-.ttable{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden;margin-bottom:10px}
-.tth{display:grid;grid-template-columns:2fr 1fr 1fr;background:rgba(14,24,32,.6);padding:10px 15px;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(240,232,216,.22);gap:8px}
-.ttr{display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 15px;gap:8px;border-top:1px solid rgba(240,232,216,.04);align-items:center}
-.ttr:nth-child(even){background:rgba(240,232,216,.02)}
-.trn{font-size:12px;font-weight:500;color:rgba(240,232,216,.6)}
-.trn span{display:block;font-size:10.5px;font-weight:400;color:var(--muted)}
-.trt{font-size:13px;font-weight:700;color:var(--water)}
-
-/* RESOURCES */
-.rescards{display:flex;flex-direction:column;gap:7px}
-.rescard{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:13px 15px;display:flex;gap:11px;align-items:flex-start;transition:border-color .2s}
-.rescard:hover{border-color:rgba(240,232,216,.09)}
-.ri{width:32px;height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.ri.bl{background:var(--water-p)}.ri.gr{background:rgba(122,158,138,.1)}.ri.ye{background:var(--amber-p)}
-.rb{flex:1}
-.rn{font-size:13px;font-weight:500;color:rgba(240,232,216,.7);margin-bottom:2px}
-.rd{font-size:11px;color:var(--muted);line-height:1.5}
-.rtag{display:inline-block;margin-top:4px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border-radius:2px;padding:2px 7px}
-.rtag.wt{color:var(--water);background:var(--water-p)}.rtag.gr{color:var(--sage);background:rgba(122,158,138,.1)}
-
-/* INFO NOTE */
-.inote{background:var(--water-p);border:1px solid var(--water-g);border-radius:3px;padding:10px 13px;font-size:12px;color:rgba(74,158,190,.8);line-height:1.6;margin-bottom:8px}
-
-/* FOOTER */
-.footer{text-align:center;padding:64px 20px 40px;font-size:11px;color:rgba(240,232,216,.15);line-height:2}
-.footer::before{content:'';display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(240,232,216,.1),transparent);margin:0 auto 32px}
-
-/* LEAFLET DARK */
-.leaflet-container{background:var(--ink)!important}
-.leaflet-tile{filter:brightness(.7) saturate(.6)}
-.leaflet-control-attribution{background:rgba(14,24,32,.7)!important;color:rgba(240,232,216,.25)!important}
-.leaflet-control-zoom a{background:rgba(26,47,61,.9)!important;color:var(--water)!important;border-color:rgba(240,232,216,.1)!important}
-.leaflet-popup-content-wrapper{background:rgba(14,24,32,.97);border:1px solid rgba(240,232,216,.1);color:var(--cream);border-radius:3px}
-.leaflet-popup-tip{background:rgba(14,24,32,.97)}
-
-@media(max-width:480px){
-  .sgrid,.gebote,.rpc,.rfacts,.kgrid{grid-template-columns:1fr}
-  .name-row{flex-direction:column}
-  .bg{width:100%}
+/* ═══════════════════════════════════════
+   HERO — real photo, cinematic, warm
+   ═══════════════════════════════════════ */
+.hero{
+  position:relative;
+  height:100svh;
+  min-height:600px;
+  max-height:880px;
+  overflow:hidden;
+  background:#1a2332;
+}
+.hero-img{
+  position:absolute;inset:0;
+  background-image:url('./aarebootle_Mit%20dem%20gummiboot%20von%20thun%20nach%20bern.jpg');
+  background-size:cover;
+  background-position:center 40%;
+  animation:heroZoom 18s ease-out forwards;
+}
+@keyframes heroZoom{0%{transform:scale(1.12)}100%{transform:scale(1.02)}}
+.hero-grad{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(26,35,50,.3) 0%,transparent 30%,transparent 55%,rgba(26,35,50,.88) 100%),
+    linear-gradient(100deg,rgba(26,35,50,.45) 0%,transparent 55%);
+  pointer-events:none;
+}
+.hero-content{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  padding:0 clamp(24px,6vw,64px) clamp(72px,10vh,120px);
+  color:var(--cream);
+  z-index:2;
+  max-width:900px;
+}
+.hero-eyebrow{
+  font-size:10px;
+  letter-spacing:6px;
+  text-transform:uppercase;
+  color:var(--sun-l);
+  font-weight:500;
+  margin-bottom:22px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  opacity:0;
+  animation:heroFadeUp .9s var(--smooth) .3s forwards;
+}
+.hero-eyebrow::before{
+  content:'';
+  width:36px;
+  height:1px;
+  background:var(--sun-l);
+}
+.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(44px,9vw,92px);
+  font-weight:300;
+  font-style:italic;
+  line-height:.98;
+  letter-spacing:-.025em;
+  margin-bottom:20px;
+  color:#fff;
+  text-shadow:0 2px 40px rgba(0,0,0,.3);
+  opacity:0;
+  animation:heroFadeUp 1.1s var(--smooth) .5s forwards;
+}
+.hero-title strong{
+  font-style:normal;
+  font-weight:500;
+  display:block;
+  color:#fff;
+}
+.hero-sub{
+  font-size:clamp(14px,2.2vw,17px);
+  color:rgba(255,249,234,.85);
+  max-width:540px;
+  line-height:1.6;
+  margin-bottom:34px;
+  font-weight:300;
+  opacity:0;
+  animation:heroFadeUp 1.1s var(--smooth) .7s forwards;
+}
+.hero-meta{
+  display:flex;
+  gap:22px;
+  flex-wrap:wrap;
+  opacity:0;
+  animation:heroFadeUp 1.1s var(--smooth) .9s forwards;
+}
+.hm{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  color:rgba(255,249,234,.7);
+  letter-spacing:.3px;
+}
+.hm-n{
+  font-family:var(--serif);
+  font-size:28px;
+  font-weight:400;
+  font-style:italic;
+  color:var(--sun-l);
+  line-height:1;
+}
+.hm-l{
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:rgba(255,249,234,.5);
+  line-height:1.3;
+  max-width:80px;
+}
+@keyframes heroFadeUp{
+  0%{opacity:0;transform:translateY(24px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+.hero-scroll{
+  position:absolute;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  animation:heroFloat 2.4s ease-in-out infinite;
+  opacity:0;
+  animation:heroFadeUp 1s var(--smooth) 1.3s forwards, heroFloat 2.4s ease-in-out 2.3s infinite;
+}
+.hero-scroll span{
+  font-size:8px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(255,249,234,.35);
+}
+.hero-scroll svg{
+  width:16px;
+  height:16px;
+  stroke:rgba(255,249,234,.4);
+  stroke-width:1.5;
+  fill:none;
+}
+@keyframes heroFloat{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(6px)}
 }
 
-/* Class aliases for travel + links */
-.tt{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden;margin-bottom:10px}
-.tth{display:grid;grid-template-columns:2fr 1fr 1fr;background:rgba(14,24,32,.6);padding:10px 15px;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(240,232,216,.22);gap:8px}
-.tr{display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 15px;gap:8px;border-top:1px solid rgba(240,232,216,.04);align-items:center}
-.tr:nth-child(even){background:rgba(240,232,216,.02)}
-.trr{font-size:12px;font-weight:500;color:rgba(240,232,216,.6)}
-.trr span{display:block;font-size:10.5px;font-weight:400;color:var(--muted)}
-.trt{font-size:13px;font-weight:700;color:var(--water)}
-.rc{display:flex;flex-direction:column;gap:7px}
-.white-card{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:16px 18px;font-size:12px;color:rgba(240,232,216,.5);line-height:1.85;margin-bottom:10px}
-.white-card .sct{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:11px;display:block}
+/* ═══════════════════════════════════════
+   TABS — sticky, three phases
+   ═══════════════════════════════════════ */
+.tabs{
+  position:sticky;
+  top:0;
+  z-index:80;
+  background:rgba(250,246,236,.92);
+  backdrop-filter:blur(16px) saturate(1.2);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+  padding:14px 16px;
+}
+.tabs-inner{
+  max-width:720px;
+  margin:0 auto;
+  display:flex;
+  gap:6px;
+  background:var(--paper-d);
+  padding:5px;
+  border-radius:100px;
+  position:relative;
+}
+.tab{
+  flex:1;
+  padding:11px 14px;
+  border-radius:100px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.3px;
+  color:var(--ink-l);
+  text-align:center;
+  transition:color .25s var(--ease);
+  position:relative;
+  z-index:2;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.tab.active{color:var(--ink)}
+.tab-indicator{
+  position:absolute;
+  top:5px;
+  bottom:5px;
+  background:#fff;
+  border-radius:100px;
+  box-shadow:var(--sh-s);
+  transition:all .45s var(--spring);
+  z-index:1;
+}
+.tab-emoji{font-size:14px;line-height:1}
+@media(max-width:420px){
+  .tab{font-size:11px;padding:10px 8px}
+  .tab-emoji{font-size:13px}
+}
 
-/* ═══ V9 ═══ */
+/* ═══════════════════════════════════════
+   TAB PANELS
+   ═══════════════════════════════════════ */
+.panels{position:relative}
+.panel{display:none;animation:panelIn .5s var(--smooth)}
+.panel.active{display:block}
+@keyframes panelIn{
+  0%{opacity:0;transform:translateY(8px)}
+  100%{opacity:1;transform:translateY(0)}
+}
 
-/* LETTER — unboxed, arriving on cream paper (dark edition) */
-.letter-wrap{max-width:640px;margin:0 auto;padding:96px 28px 20px}
-.letter-card{position:relative;padding:0;background:none;border:none;border-radius:0;overflow:visible}
-.letter-card::before{display:none}
-.letter-card::after{display:none}
-.l-from{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:36px;display:flex;align-items:center;gap:14px}
-.l-from::before{content:'';width:28px;height:1px;background:var(--amber);opacity:.6}
-.l-body{font-family:var(--serif);font-size:clamp(18px,3.6vw,23px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.9;margin-bottom:34px;letter-spacing:.002em}
-.l-body strong{font-style:normal;font-weight:500;color:#fff}
-.l-sign{font-family:var(--serif);font-size:14px;font-style:italic;color:rgba(240,232,216,.4);margin-top:28px;line-height:1.7}
-.l-sign em{color:var(--amber);font-style:italic;opacity:.75}
-.l-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;background:transparent;color:var(--amber);border:1px solid rgba(212,137,58,.5);border-radius:2px;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--sans);cursor:pointer;transition:all .25s var(--ease)}
-.l-cta:hover{background:var(--amber);color:var(--ink);border-color:var(--amber);transform:translateY(-1px)}
-.l-alts{display:none}
+/* ═══════════════════════════════════════
+   CONTAINER & SECTION HEADERS
+   ═══════════════════════════════════════ */
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+.wrap-wide{max-width:1100px;margin:0 auto;padding:0 20px}
 
-/* CALENDAR — anticipation heading + dark styling fix */
-.cal-question{font-family:var(--serif);font-size:clamp(22px,5.5vw,32px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.3;text-align:center;max-width:540px;margin:0 auto 10px;letter-spacing:-.005em}
-.cal-question-sub{font-size:11px;color:rgba(240,232,216,.35);text-align:center;letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;font-weight:400}
-.cal-mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
-.cm-btn{background:transparent;border:1px solid rgba(240,232,216,.1);border-radius:2px;width:38px;height:34px;color:var(--water);font-family:var(--sans);font-weight:400;font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;line-height:1}
-.cm-btn:hover:not(:disabled){background:rgba(74,158,190,.1);border-color:rgba(74,158,190,.3)}
-.cm-btn:disabled{opacity:.2;cursor:not-allowed}
-.cm-label{font-family:var(--serif);font-size:22px;font-weight:400;font-style:italic;color:var(--cream);letter-spacing:.01em}
-.cal-grid-wrap{background:rgba(14,24,32,.5);border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden;margin-bottom:14px}
-.avail-intro{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:20px 22px;margin-bottom:18px}
-.vi-title{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--water);font-weight:600}
-.vi-sub{font-size:12px;color:rgba(240,232,216,.45);line-height:1.65}
-.btn-go{background:var(--water);color:var(--ink);border:none;border-radius:2px;padding:11px 18px;font-size:11px;font-weight:600;font-family:var(--sans);letter-spacing:1px;cursor:pointer;transition:all .15s;white-space:nowrap;text-transform:uppercase}
-.btn-go:hover{background:#5ab0d0;transform:translateY(-1px)}
+.section-head{
+  padding:56px 0 22px;
+  text-align:left;
+}
+.section-kicker{
+  font-size:10px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.section-kicker::before{
+  content:'';
+  width:24px;
+  height:1px;
+  background:var(--river);
+  opacity:.6;
+}
+.section-title{
+  font-family:var(--serif);
+  font-size:clamp(28px,5.5vw,40px);
+  font-weight:400;
+  font-style:italic;
+  line-height:1.1;
+  letter-spacing:-.01em;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.section-sub{
+  font-size:14px;
+  color:var(--ink-l);
+  line-height:1.6;
+  max-width:560px;
+}
 
-/* ROUTE CARDS — tappable affordance */
-.rcard{cursor:pointer;position:relative}
-.rcard::after{content:'⤢  Open poster';position:absolute;top:14px;right:14px;background:rgba(14,24,32,.75);backdrop-filter:blur(10px);border:1px solid rgba(240,232,216,.15);border-radius:20px;padding:6px 12px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--cream);opacity:0;transform:translateY(-4px);transition:all .3s var(--ease);pointer-events:none;z-index:3}
-.rcard:hover::after{opacity:1;transform:translateY(0)}
-@media(hover:none){.rcard::after{opacity:.85;transform:none}}
+/* ═══════════════════════════════════════
+   DISCOVER — letter + entry cards + routes
+   ═══════════════════════════════════════ */
 
-/* CINEMATIC POSTER MODAL */
-.poster{position:fixed;inset:0;z-index:1000;background:rgba(7,14,20,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-.poster.open{opacity:1;pointer-events:auto}
-.poster-inner{max-width:780px;margin:0 auto;min-height:100%;transform:translateY(24px);transition:transform .45s var(--ease);opacity:0;transition:transform .45s var(--ease),opacity .35s var(--ease)}
-.poster.open .poster-inner{transform:translateY(0);opacity:1}
-.poster-close{position:fixed;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(14,24,32,.85);backdrop-filter:blur(12px);border:1px solid rgba(240,232,216,.15);color:var(--cream);font-size:20px;cursor:pointer;z-index:1001;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
-.poster-close:hover{background:var(--amber);color:var(--ink);border-color:var(--amber);transform:rotate(90deg)}
+/* Letter — a warm moment on cream */
+.letter{
+  max-width:620px;
+  margin:0 auto;
+  padding:72px 24px 30px;
+  text-align:left;
+}
+.letter-from{
+  font-size:10px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--sun-d);
+  font-weight:600;
+  margin-bottom:28px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.letter-from::before{
+  content:'';
+  width:30px;
+  height:1px;
+  background:var(--sun);
+  opacity:.5;
+}
+.letter-body{
+  font-family:var(--serif);
+  font-size:clamp(19px,3.6vw,24px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink);
+  line-height:1.85;
+  margin-bottom:32px;
+  letter-spacing:.003em;
+}
+.letter-body strong{
+  font-style:normal;
+  font-weight:500;
+  color:var(--ink);
+  background:linear-gradient(180deg,transparent 62%,var(--sun-pp) 62%,var(--sun-pp) 92%,transparent 92%);
+  padding:0 3px;
+}
+.letter-sign{
+  font-family:var(--serif);
+  font-size:15px;
+  font-style:italic;
+  color:var(--ink-l);
+  margin-top:24px;
+  line-height:1.7;
+}
+.letter-sign em{
+  color:var(--sun-d);
+  font-style:italic;
+  opacity:.85;
+}
 
-/* poster hero — full-bleed photo */
-.poster-hero{position:relative;width:100%;height:72svh;min-height:480px;max-height:720px;overflow:hidden;background:var(--ink)}
-.poster-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:pkenburns 14s ease-out forwards;transform-origin:center}
-@keyframes pkenburns{0%{transform:scale(1.08)}100%{transform:scale(1.0)}}
-.poster-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,24,32,.4) 0%,rgba(14,24,32,.1) 30%,rgba(14,24,32,.2) 55%,rgba(14,24,32,.92) 92%,var(--ink) 100%);pointer-events:none}
-.poster-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,24,32,.55) 0%,transparent 50%);pointer-events:none;z-index:1}
-.poster-head{position:absolute;left:0;right:0;bottom:0;padding:28px clamp(24px,5vw,44px) 34px;z-index:2;color:var(--cream)}
-.poster-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.poster-eyebrow::before{content:'';width:32px;height:1px;background:var(--amber)}
-.poster-title{font-family:var(--serif);font-size:clamp(34px,8vw,58px);font-weight:300;font-style:italic;line-height:1.0;letter-spacing:-.02em;margin-bottom:14px;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.5)}
-.poster-sub{font-family:var(--serif);font-size:clamp(14px,2.8vw,18px);font-style:italic;color:rgba(240,232,216,.72);margin-bottom:18px;line-height:1.4;font-weight:300}
-.poster-pills{display:flex;flex-wrap:wrap;gap:6px}
-.poster-pills .rp{background:rgba(14,24,32,.6);backdrop-filter:blur(10px);border:1px solid rgba(240,232,216,.15)}
+/* Trip countdown strip */
+.countdown{
+  max-width:620px;
+  margin:0 auto 10px;
+  padding:22px 24px;
+  background:linear-gradient(135deg,var(--sun-p),transparent);
+  border:1px solid var(--sun-pp);
+  border-radius:4px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  position:relative;
+  overflow:hidden;
+}
+.countdown::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:3px;
+  height:100%;
+  background:var(--sun);
+}
+.cd-num{
+  font-family:var(--serif);
+  font-size:48px;
+  font-weight:400;
+  font-style:italic;
+  color:var(--sun-d);
+  line-height:1;
+}
+.cd-info{flex:1}
+.cd-label{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--sun-d);
+  font-weight:600;
+  margin-bottom:4px;
+}
+.cd-text{
+  font-size:13px;
+  color:var(--ink-m);
+  line-height:1.5;
+}
 
-/* poster body */
-.poster-body{background:var(--ink);padding:40px clamp(22px,5vw,44px) 80px}
-.poster-verdict{font-family:var(--serif);font-size:clamp(16px,3vw,20px);font-style:italic;font-weight:300;color:rgba(240,232,216,.7);line-height:1.75;border-left:2px solid var(--amber);padding:4px 0 4px 20px;margin-bottom:32px;max-width:640px}
-.poster-section{margin-bottom:28px}
-.poster-section-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:12px}
-.poster-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(74,158,190,.3),transparent)}
-.poster .rdiag,.poster .rfacts,.poster .rpc,.poster .rfit,.poster .rmap,.poster .rupdate,.poster .rwarn{margin-left:0;margin-right:0}
-.poster .rfacts{grid-template-columns:1fr 1fr}
-.poster .rmap{height:260px}
-.poster .rmap .leaflet-container{height:260px}
+/* Entry cards — the three big CTAs */
+.entry-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  max-width:720px;
+  margin:24px auto 0;
+  padding:0 20px;
+}
+.ec{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:22px 18px;
+  text-align:left;
+  cursor:pointer;
+  transition:all .3s var(--smooth);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-height:160px;
+}
+.ec::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--bar,var(--river));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s var(--smooth);
+}
+.ec:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--sh-l);
+  border-color:var(--line-m);
+}
+.ec:hover::before{transform:scaleX(1)}
+.ec-icon{
+  font-size:26px;
+  line-height:1;
+  margin-bottom:auto;
+}
+.ec-num{
+  font-family:var(--serif);
+  font-size:13px;
+  font-style:italic;
+  color:var(--ink-xl);
+  letter-spacing:.5px;
+}
+.ec-title{
+  font-family:var(--serif);
+  font-size:19px;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.2;
+  letter-spacing:-.005em;
+}
+.ec-desc{
+  font-size:11.5px;
+  color:var(--ink-l);
+  line-height:1.5;
+}
+.ec-arrow{
+  position:absolute;
+  bottom:18px;
+  right:18px;
+  color:var(--ink-xl);
+  font-size:16px;
+  transition:all .3s var(--smooth);
+}
+.ec:hover .ec-arrow{color:var(--bar,var(--river));transform:translateX(4px)}
+@media(max-width:600px){
+  .entry-cards{grid-template-columns:1fr;gap:10px}
+  .ec{min-height:auto;flex-direction:row;align-items:center;padding:18px}
+  .ec-icon{margin-bottom:0;margin-right:4px}
+  .ec-body{flex:1}
+  .ec-arrow{position:static;margin-left:auto}
+}
+
+/* Filter chips */
+.filter-row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:4px 20px 20px;
+  max-width:760px;
+  margin:0 auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.filter-row::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;
+  padding:9px 16px;
+  border-radius:100px;
+  font-size:12px;
+  font-weight:500;
+  background:var(--card);
+  border:1px solid var(--line);
+  color:var(--ink-m);
+  transition:all .2s var(--ease);
+  white-space:nowrap;
+}
+.chip:hover{border-color:var(--river);color:var(--river)}
+.chip.active{
+  background:var(--ink);
+  color:var(--cream);
+  border-color:var(--ink);
+}
+
+/* Route gallery — horizontal snap carousel */
+.gallery-wrap{
+  position:relative;
+  margin-bottom:40px;
+}
+.gallery{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:4px 20px 28px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  scroll-padding:0 20px;
+}
+.gallery::-webkit-scrollbar{display:none}
+.g-card{
+  flex-shrink:0;
+  width:min(320px,82vw);
+  scroll-snap-align:start;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .35s var(--smooth);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.g-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--sh-l);
+  border-color:var(--line-m);
+}
+.g-photo{
+  position:relative;
+  aspect-ratio:4/3;
+  background:var(--paper-dd);
+  overflow:hidden;
+}
+.g-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .8s var(--smooth);
+}
+.g-card:hover .g-photo img{transform:scale(1.05)}
+.g-photo-ov{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(26,35,50,.65) 100%);
+}
+.g-badge{
+  position:absolute;
+  top:14px;
+  left:14px;
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:100px;
+  backdrop-filter:blur(10px);
+}
+.g-badge.day{background:rgba(255,249,234,.92);color:var(--river-d)}
+.g-badge.night{background:rgba(26,35,50,.85);color:var(--sage-l)}
+.g-km{
+  position:absolute;
+  bottom:14px;
+  right:14px;
+  font-family:var(--serif);
+  font-size:22px;
+  font-style:italic;
+  color:#fff;
+  font-weight:500;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.g-km span{
+  font-size:10px;
+  font-family:var(--sans);
+  font-style:normal;
+  opacity:.7;
+  letter-spacing:1px;
+  font-weight:400;
+}
+.g-body{
+  padding:18px 20px 20px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.g-title{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:500;
+  line-height:1.2;
+  color:var(--ink);
+  letter-spacing:-.01em;
+}
+.g-sub{
+  font-size:12px;
+  color:var(--ink-l);
+  line-height:1.5;
+  font-style:italic;
+}
+.g-meta{
+  display:flex;
+  gap:12px;
+  margin-top:6px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:10.5px;
+  color:var(--ink-l);
+  letter-spacing:.3px;
+}
+.g-meta-i{display:flex;align-items:center;gap:5px}
+.g-open{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:rgba(255,255,255,.95);
+  border-radius:100px;
+  padding:6px 10px;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--ink);
+  opacity:0;
+  transform:translateY(-4px);
+  transition:all .3s var(--smooth);
+  backdrop-filter:blur(10px);
+}
+.g-card:hover .g-open{opacity:1;transform:translateY(0)}
+@media(hover:none){.g-open{opacity:.92;transform:none}}
+
+/* Gallery nav arrows (desktop) */
+.g-nav{
+  display:none;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--sh-m);
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:var(--ink);
+  z-index:3;
+  transition:all .2s;
+}
+.g-nav:hover{background:var(--ink);color:var(--cream)}
+.g-nav.prev{left:8px}
+.g-nav.next{right:8px}
+@media(min-width:860px){.g-nav{display:flex}}
+
+/* ═══════════════════════════════════════
+   DECIDE — vote posters + calendar
+   ═══════════════════════════════════════ */
+
+/* Leading route banner */
+.leader{
+  max-width:720px;
+  margin:0 auto 24px;
+  background:linear-gradient(120deg,var(--sun-p),var(--sun-pp));
+  border:1px solid var(--sun-pp);
+  border-radius:6px;
+  padding:20px 24px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  position:relative;
+  overflow:hidden;
+}
+.leader::before{
+  content:'🏆';
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:130px;
+  opacity:.08;
+}
+.leader-lbl{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--sun-d);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.leader-name{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.2;
+  font-style:italic;
+}
+.leader-votes{
+  font-size:11px;
+  color:var(--ink-l);
+  margin-top:3px;
+}
+.leader-info{flex:1;position:relative;z-index:1}
+
+/* Name card */
+.name-card{
+  max-width:720px;
+  margin:0 auto 20px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:20px 22px;
+}
+.nc-title{
+  font-size:10px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:4px;
+}
+.nc-sub{
+  font-size:12.5px;
+  color:var(--ink-l);
+  line-height:1.5;
+  margin-bottom:14px;
+}
+.nc-row{display:flex;gap:10px}
+.nc-input{
+  flex:1;
+  background:var(--paper);
+  border:1px solid var(--line-m);
+  border-radius:4px;
+  padding:11px 14px;
+  font-size:14px;
+  color:var(--ink);
+  outline:none;
+  transition:all .2s;
+}
+.nc-input:focus{border-color:var(--river);background:#fff}
+.nc-input::placeholder{color:var(--ink-xl)}
+.nc-btn{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:4px;
+  padding:11px 20px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:all .2s var(--ease);
+  white-space:nowrap;
+}
+.nc-btn:hover{background:var(--river);transform:translateY(-1px)}
+.nc-greet{
+  font-size:12px;
+  color:var(--sage);
+  margin-top:10px;
+  display:none;
+  font-weight:500;
+}
+.nc-greet.show{display:block}
+.nc-greet strong{font-weight:600}
+@media(max-width:480px){
+  .nc-row{flex-direction:column}
+  .nc-btn{width:100%}
+}
+
+/* Vote posters — photo-based picker */
+.vote-posters{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  max-width:720px;
+  margin:0 auto 30px;
+}
+.vp{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  position:relative;
+  transition:all .3s var(--smooth);
+  cursor:pointer;
+}
+.vp:hover{transform:translateY(-3px);box-shadow:var(--sh-l)}
+.vp.leading{
+  border-color:var(--sun);
+  box-shadow:0 0 0 3px var(--sun-p),var(--sh-m);
+}
+.vp-photo{
+  position:relative;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:var(--paper-dd);
+}
+.vp-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .6s var(--smooth);
+}
+.vp:hover .vp-photo img{transform:scale(1.04)}
+.vp-photo::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(26,35,50,.7) 100%);
+}
+.vp-title{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:12px;
+  font-family:var(--serif);
+  font-size:18px;
+  font-weight:500;
+  font-style:italic;
+  color:#fff;
+  line-height:1.2;
+  z-index:1;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.vp-body{
+  padding:14px 16px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.vp-info{min-width:0;flex:1}
+.vp-sub{
+  font-size:11px;
+  color:var(--ink-l);
+  margin-bottom:8px;
+  line-height:1.4;
+}
+.vp-bar{
+  height:3px;
+  background:var(--paper-dd);
+  border-radius:10px;
+  overflow:hidden;
+}
+.vp-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--river),var(--sun));
+  border-radius:10px;
+  transition:width .6s var(--smooth);
+}
+.vp-btn{
+  flex-shrink:0;
+  background:var(--paper);
+  border:1px solid var(--line-m);
+  border-radius:100px;
+  padding:9px 14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink-m);
+  transition:all .25s var(--spring);
+  position:relative;
+}
+.vp-btn:hover{background:var(--sun-p);border-color:var(--sun)}
+.vp-btn.voted{
+  background:var(--sun);
+  border-color:var(--sun);
+  color:#fff;
+}
+.vp-btn.voted .vp-h{transform:scale(1.15)}
+.vp-h{font-size:14px;transition:transform .25s var(--spring);line-height:1}
+.vp-count{font-weight:700;min-width:12px;text-align:center}
+.vp-voters{
+  padding:10px 16px 14px;
+  border-top:1px solid var(--line);
+  font-size:10.5px;
+  color:var(--ink-l);
+  min-height:36px;
+  line-height:1.5;
+}
+.vp-voters strong{color:var(--ink-m);font-weight:600}
+
+/* Calendar */
+.cal-hero{
+  padding:40px 0 30px;
+  text-align:center;
+}
+.cal-q{
+  font-family:var(--serif);
+  font-size:clamp(24px,5.5vw,36px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink);
+  line-height:1.3;
+  max-width:560px;
+  margin:0 auto 10px;
+  letter-spacing:-.005em;
+}
+.cal-q em{
+  color:var(--sun-d);
+  font-style:italic;
+  background:linear-gradient(180deg,transparent 62%,var(--sun-pp) 62%,var(--sun-pp) 92%,transparent 92%);
+  padding:0 4px;
+}
+.cal-q-sub{
+  font-size:11px;
+  color:var(--ink-l);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:28px;
+  font-weight:500;
+}
+
+.best-weekend{
+  max-width:720px;
+  margin:0 auto 18px;
+  background:linear-gradient(120deg,var(--sage-p),var(--sage-pp));
+  border:1px solid var(--sage-pp);
+  border-radius:6px;
+  padding:20px 24px;
+  display:none;
+  align-items:center;
+  gap:16px;
+  position:relative;
+}
+.best-weekend.show{display:flex}
+.bw-star{
+  font-size:28px;
+  animation:bwSpin 8s linear infinite;
+}
+@keyframes bwSpin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.bw-info{flex:1}
+.bw-lbl{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--sage);
+  font-weight:700;
+  margin-bottom:3px;
+}
+.bw-date{
+  font-family:var(--serif);
+  font-size:20px;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1.2;
+  font-weight:500;
+}
+.bw-who{
+  font-size:11px;
+  color:var(--ink-l);
+  margin-top:3px;
+}
+
+.cal-mnav{
+  max-width:720px;
+  margin:0 auto 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4px;
+}
+.cm-btn{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:4px;
+  width:40px;
+  height:36px;
+  color:var(--ink);
+  font-size:18px;
+  transition:all .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.cm-btn:hover:not(:disabled){background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.cm-btn:disabled{opacity:.3;cursor:not-allowed}
+.cm-label{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:500;
+  font-style:italic;
+  color:var(--ink);
+}
+
+.cal-wrap{
+  max-width:720px;
+  margin:0 auto 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:var(--sh-s);
+}
+.cal-dow-row{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  background:var(--paper);
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+.cdow{
+  text-align:center;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+}
+.cdow.we{color:var(--river)}
+.cal-body{display:grid;grid-template-columns:repeat(7,1fr)}
+.ccell{
+  position:relative;
+  aspect-ratio:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .15s;
+  border-top:1px solid var(--line);
+  border-left:1px solid var(--line);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.ccell:nth-child(7n+1){border-left:none}
+.ccell.empty{cursor:default;background:var(--paper)}
+.ccell:not(.empty):not(.oor):hover{background:var(--paper-d)}
+.ccell.oor{opacity:.25;pointer-events:none}
+.ccell.we:not(.empty):not(.free):not(.maybe){background:var(--river-p)}
+.ccell.free{background:var(--sage-pp)!important}
+.ccell.maybe{background:var(--sun-pp)!important}
+.ccell.today .cday{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:50%;
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.cday{
+  font-size:clamp(12px,2.6vw,14px);
+  font-weight:500;
+  color:var(--ink);
+  line-height:1;
+  margin-bottom:2px;
+}
+.ccell.free .cday{color:var(--sage);font-weight:700}
+.ccell.maybe .cday{color:var(--sun-d);font-weight:700}
+.cst{font-size:8px;line-height:1;height:9px;color:var(--ink-l)}
+.cdots{display:flex;gap:2px;justify-content:center;min-height:6px}
+.cdot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.cdot.free{background:var(--sage)}
+.cdot.maybe{background:var(--sun)}
+
+.cal-legend{
+  max-width:720px;
+  margin:0 auto 14px;
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  font-size:11px;
+  color:var(--ink-l);
+  justify-content:center;
+}
+.cl-i{display:flex;align-items:center;gap:6px}
+.cl-sw{width:14px;height:14px;border-radius:3px;border:1px solid var(--line)}
+.cl-sw.free{background:var(--sage-pp);border-color:var(--sage)}
+.cl-sw.maybe{background:var(--sun-pp);border-color:var(--sun)}
+
+.avail-results{
+  max-width:720px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:18px 22px;
+  display:none;
+}
+.avail-results.show{display:block}
+.ar-t{
+  font-size:10px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:14px;
+}
+.ar-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:9px;
+}
+.ar-label{
+  font-size:12px;
+  color:var(--ink-m);
+  min-width:98px;
+  line-height:1.3;
+  font-weight:500;
+}
+.ar-track{
+  flex:1;
+  height:8px;
+  background:var(--paper-d);
+  border-radius:6px;
+  overflow:hidden;
+  position:relative;
+}
+.ar-maybe{
+  position:absolute;
+  top:0;left:0;
+  height:100%;
+  background:var(--sun-pp);
+  border-radius:6px;
+  transition:width .5s var(--smooth);
+}
+.ar-free{
+  position:absolute;
+  top:0;left:0;
+  height:100%;
+  background:linear-gradient(90deg,var(--sage),var(--river));
+  border-radius:6px;
+  transition:width .5s var(--smooth);
+}
+.ar-count{
+  font-size:11px;
+  color:var(--ink-l);
+  min-width:32px;
+  text-align:right;
+  font-weight:600;
+}
+
+/* ═══════════════════════════════════════
+   DAY OF — kit + safety + emergency
+   ═══════════════════════════════════════ */
+
+/* Trip day hero */
+.trip-day{
+  max-width:720px;
+  margin:40px auto 0;
+  background:linear-gradient(135deg,#1a2332,#2a3b52);
+  border-radius:8px;
+  padding:36px 32px;
+  color:var(--cream);
+  position:relative;
+  overflow:hidden;
+}
+.trip-day::before{
+  content:'🛶';
+  position:absolute;
+  right:-20px;
+  bottom:-30px;
+  font-size:200px;
+  opacity:.05;
+  transform:rotate(-12deg);
+}
+.td-eyebrow{
+  font-size:10px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  color:var(--sun-l);
+  font-weight:600;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.td-eyebrow::before{
+  content:'';
+  width:28px;
+  height:1px;
+  background:var(--sun-l);
+}
+.td-title{
+  font-family:var(--serif);
+  font-size:clamp(30px,6vw,42px);
+  font-weight:400;
+  font-style:italic;
+  line-height:1.1;
+  color:#fff;
+  margin-bottom:12px;
+  letter-spacing:-.01em;
+}
+.td-sub{
+  font-size:14px;
+  color:rgba(255,249,234,.7);
+  max-width:440px;
+  line-height:1.6;
+  margin-bottom:26px;
+  position:relative;
+  z-index:1;
+}
+.td-actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  position:relative;
+  z-index:1;
+}
+.td-btn{
+  background:rgba(255,249,234,.08);
+  border:1px solid rgba(255,249,234,.15);
+  border-radius:4px;
+  padding:14px 10px;
+  color:var(--cream);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.3px;
+  transition:all .25s var(--ease);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  text-align:center;
+  line-height:1.2;
+}
+.td-btn:hover{
+  background:var(--sun);
+  border-color:var(--sun);
+  color:var(--ink);
+  transform:translateY(-2px);
+}
+.td-btn-icon{font-size:20px;line-height:1}
 @media(max-width:560px){
-  .poster .rfacts,.poster .rpc{grid-template-columns:1fr}
-  .poster-hero{height:62svh;min-height:420px}
+  .td-actions{grid-template-columns:repeat(2,1fr)}
+  .trip-day{padding:30px 24px}
+}
+
+/* Emergency row */
+.emergency{
+  max-width:720px;
+  margin:14px auto 0;
+  background:var(--danger-p);
+  border:1px solid rgba(184,68,56,.18);
+  border-radius:6px;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.em-icon{font-size:24px}
+.em-info{flex:1;min-width:0}
+.em-title{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--danger);
+  font-weight:700;
+  margin-bottom:2px;
+}
+.em-sub{
+  font-size:12px;
+  color:var(--ink-m);
+  line-height:1.4;
+}
+.em-call{
+  background:var(--danger);
+  color:#fff;
+  border-radius:4px;
+  padding:11px 18px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.5px;
+  transition:all .2s;
+}
+.em-call:hover{background:#942f24}
+
+/* Kit checklist */
+.kit-card{
+  max-width:720px;
+  margin:0 auto 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:24px 26px;
+}
+.kit-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+.kit-title-row{flex:1}
+.kit-lbl{
+  font-size:10px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:5px;
+}
+.kit-title{
+  font-family:var(--serif);
+  font-size:24px;
+  font-weight:500;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1.1;
+}
+.kit-progress{
+  font-size:11px;
+  color:var(--ink-l);
+  text-align:right;
+  padding-top:4px;
+}
+.kit-progress strong{
+  font-family:var(--serif);
+  font-size:22px;
+  font-style:italic;
+  color:var(--sage);
+  display:block;
+  line-height:1;
+  font-weight:500;
+}
+.kit-bar{
+  height:4px;
+  background:var(--paper-d);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.kit-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--sage),var(--river));
+  border-radius:10px;
+  transition:width .5s var(--smooth);
+}
+.kit-group{margin-bottom:18px}
+.kit-group:last-child{margin-bottom:0}
+.kit-group-t{
+  font-size:9px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.kit-group-t::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+.kit-items{display:flex;flex-direction:column;gap:3px}
+.kit-i{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:background .15s;
+  font-size:13px;
+  color:var(--ink-m);
+}
+.kit-i:hover{background:var(--paper)}
+.kit-i.done{color:var(--ink-xl)}
+.kit-i.done .kit-text{text-decoration:line-through}
+.kit-chk{
+  width:18px;
+  height:18px;
+  border-radius:4px;
+  border:1.5px solid var(--line-m);
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s var(--spring);
+}
+.kit-i.done .kit-chk{
+  background:var(--sage);
+  border-color:var(--sage);
+}
+.kit-i.done .kit-chk::after{
+  content:'✓';
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+}
+.kit-text{flex:1;line-height:1.4}
+.kit-req{
+  font-size:8.5px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  background:var(--danger-p);
+  color:var(--danger);
+  padding:2px 7px;
+  border-radius:100px;
+  font-weight:700;
+  flex-shrink:0;
+}
+.kit-reset{
+  font-size:11px;
+  color:var(--ink-l);
+  text-decoration:underline;
+  cursor:pointer;
+  margin-top:14px;
+  display:inline-block;
+}
+.kit-reset:hover{color:var(--river)}
+
+/* 2026 updates box — warm warning */
+.updates-card{
+  max-width:720px;
+  margin:0 auto 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+.uc-head{
+  background:var(--danger-p);
+  padding:16px 22px;
+  border-bottom:1px solid rgba(184,68,56,.15);
+}
+.uc-lbl{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--danger);
+  font-weight:700;
+  margin-bottom:3px;
+}
+.uc-title{
+  font-family:var(--serif);
+  font-size:20px;
+  font-weight:500;
+  color:var(--ink);
+  font-style:italic;
+}
+.uc-body{padding:18px 22px}
+.uc-item{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+  font-size:12.5px;
+  color:var(--ink-m);
+  line-height:1.55;
+}
+.uc-item:last-child{margin-bottom:0}
+.uc-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--danger);
+  flex-shrink:0;
+  margin-top:7px;
+}
+.uc-item strong{color:var(--ink);font-weight:600}
+
+/* Safety quick cards */
+.safety-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  max-width:720px;
+  margin:0 auto 14px;
+}
+.sg-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:16px 18px;
+}
+.sg-t{
+  font-size:9px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:10px;
+}
+.sg-i{
+  display:flex;
+  gap:8px;
+  font-size:12px;
+  color:var(--ink-m);
+  margin-bottom:6px;
+  line-height:1.5;
+}
+.sg-i:last-child{margin-bottom:0}
+.sg-i-i{color:var(--sage);flex-shrink:0}
+@media(max-width:520px){.safety-grid{grid-template-columns:1fr}}
+
+/* Travel table */
+.travel-card{
+  max-width:720px;
+  margin:0 auto 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+.tc-h{
+  padding:16px 22px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper);
+}
+.tc-lbl{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:3px;
+}
+.tc-title{
+  font-family:var(--serif);
+  font-size:20px;
+  font-weight:500;
+  color:var(--ink);
+  font-style:italic;
+}
+.tc-row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  padding:13px 22px;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  align-items:center;
+  font-size:12.5px;
+}
+.tc-row:last-child{border-bottom:none}
+.tc-n{color:var(--ink);font-weight:500}
+.tc-n span{display:block;font-size:10.5px;color:var(--ink-l);font-weight:400;margin-top:2px}
+.tc-t{color:var(--river);font-weight:600}
+
+/* Share card */
+.share-card{
+  max-width:720px;
+  margin:30px auto 0;
+  background:linear-gradient(135deg,var(--river-p),var(--sun-p));
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:26px 28px;
+  text-align:center;
+}
+.sc-icon{font-size:32px;margin-bottom:10px}
+.sc-title{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:500;
+  font-style:italic;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.sc-sub{
+  font-size:12.5px;
+  color:var(--ink-l);
+  margin-bottom:18px;
+  line-height:1.5;
+}
+.sc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sc-btn{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:4px;
+  padding:11px 20px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:all .2s;
+}
+.sc-btn:hover{background:var(--river);transform:translateY(-1px)}
+.sc-btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-m)}
+.sc-btn.ghost:hover{background:var(--card);border-color:var(--ink)}
+.sc-toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--cream);
+  padding:12px 22px;
+  border-radius:100px;
+  font-size:12px;
+  font-weight:500;
+  opacity:0;
+  pointer-events:none;
+  transition:all .3s var(--smooth);
+  z-index:200;
+  box-shadow:var(--sh-l);
+}
+.sc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════════════════════════════
+   CINEMATIC POSTER MODAL (kept from V9)
+   ═══════════════════════════════════════ */
+.poster{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:rgba(26,35,50,.88);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s var(--ease);
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.poster.open{opacity:1;pointer-events:auto}
+.poster-inner{
+  max-width:820px;
+  margin:0 auto;
+  min-height:100%;
+  background:var(--paper);
+  transform:translateY(30px);
+  opacity:0;
+  transition:transform .5s var(--smooth),opacity .4s var(--ease);
+  box-shadow:var(--sh-xl);
+}
+.poster.open .poster-inner{transform:translateY(0);opacity:1}
+.poster-close{
+  position:fixed;
+  top:20px;
+  right:20px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:rgba(250,246,236,.95);
+  backdrop-filter:blur(12px);
+  color:var(--ink);
+  font-size:22px;
+  z-index:1001;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .25s;
+  box-shadow:var(--sh-m);
+  line-height:1;
+}
+.poster-close:hover{background:var(--sun);color:#fff;transform:rotate(90deg)}
+
+.poster-hero{
+  position:relative;
+  width:100%;
+  height:64svh;
+  min-height:440px;
+  max-height:680px;
+  overflow:hidden;
+  background:var(--ink);
+}
+.poster-hero img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  animation:pkenburns 16s ease-out forwards;
+  transform-origin:center;
+}
+@keyframes pkenburns{0%{transform:scale(1.1)}100%{transform:scale(1.0)}}
+.poster-hero::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(26,35,50,.3) 0%,transparent 35%,transparent 55%,rgba(26,35,50,.92) 92%,var(--paper) 100%);
+  pointer-events:none;
+}
+.poster-head{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  padding:30px clamp(24px,5vw,48px) 38px;
+  z-index:2;
+  color:#fff;
+}
+.poster-eyebrow{
+  font-size:10px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--sun-l);
+  font-weight:500;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.poster-eyebrow::before{
+  content:'';
+  width:32px;
+  height:1px;
+  background:var(--sun-l);
+}
+.poster-title{
+  font-family:var(--serif);
+  font-size:clamp(34px,8vw,60px);
+  font-weight:300;
+  font-style:italic;
+  line-height:1;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+  color:#fff;
+  text-shadow:0 2px 30px rgba(0,0,0,.5);
+}
+.poster-sub{
+  font-family:var(--serif);
+  font-size:clamp(14px,2.8vw,18px);
+  font-style:italic;
+  color:rgba(255,249,234,.78);
+  margin-bottom:20px;
+  line-height:1.4;
+  font-weight:300;
+}
+.poster-pills{display:flex;flex-wrap:wrap;gap:6px}
+.poster-pills .rp{
+  background:rgba(26,35,50,.55);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,249,234,.2);
+  color:#fff;
+  padding:5px 12px;
+  border-radius:100px;
+  font-size:10.5px;
+  font-weight:500;
+}
+.poster-body{
+  background:var(--paper);
+  padding:44px clamp(24px,5vw,48px) 100px;
+}
+.poster-verdict{
+  font-family:var(--serif);
+  font-size:clamp(17px,3vw,21px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink-m);
+  line-height:1.75;
+  border-left:2px solid var(--sun);
+  padding:4px 0 4px 22px;
+  margin-bottom:36px;
+  max-width:680px;
+}
+.poster-section{margin-bottom:32px}
+.poster-section-title{
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.poster-section-title::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+.poster .rfacts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border-radius:4px;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+.poster .fact{
+  padding:14px 16px;
+  background:var(--card);
+  font-size:12.5px;
+  color:var(--ink-m);
+  line-height:1.55;
+}
+.poster .fact strong{
+  display:block;
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.poster .rdiag{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:16px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.poster .rdiag::-webkit-scrollbar{display:none}
+.poster .diag-l{
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  margin-bottom:12px;
+}
+.poster .dpath{display:flex;align-items:center}
+.poster .dstop{flex-shrink:0;text-align:center}
+.poster .ddot{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  margin:0 auto 6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  background:var(--paper-d);
+  border:1.5px solid var(--line-m);
+}
+.poster .ds{background:var(--sage-pp);border-color:var(--sage)}
+.poster .dm{background:var(--river-p);border-color:var(--river-l)}
+.poster .dw{background:var(--danger-p);border-color:var(--danger)}
+.poster .dc{background:var(--paper-dd)}
+.poster .de{background:var(--sun-pp);border-color:var(--sun)}
+.poster .dname{font-size:10px;font-weight:600;color:var(--ink);white-space:nowrap;max-width:70px;overflow:hidden;text-overflow:ellipsis}
+.poster .dsub{font-size:9px;color:var(--ink-l);white-space:nowrap;max-width:70px;overflow:hidden;text-overflow:ellipsis}
+.poster .darrow{flex-shrink:0;padding:0 6px;color:var(--ink-xl);font-size:14px;margin-bottom:22px}
+.poster .dsms{margin-top:10px;font-size:10px;color:var(--ink-l)}
+.poster .rpc{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.poster .pcl{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.poster .pcpros .pcl{color:var(--sage)}
+.poster .pccons .pcl{color:var(--danger)}
+.poster .pci{
+  display:flex;
+  gap:8px;
+  margin-bottom:7px;
+  font-size:12.5px;
+  color:var(--ink-m);
+  line-height:1.5;
+}
+.poster .pcd{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:7px;
+}
+.poster .pcpros .pcd{background:var(--sage)}
+.poster .pccons .pcd{background:var(--danger)}
+.poster .rfit{
+  background:var(--sun-p);
+  border:1px solid var(--sun-pp);
+  border-radius:4px;
+  padding:16px 18px;
+}
+.poster .rfitl{
+  display:block;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--sun-d);
+  margin-bottom:6px;
+}
+.poster .rfitt{
+  font-size:13.5px;
+  color:var(--ink-m);
+  line-height:1.6;
+}
+.poster .rupdate,.poster .rwarn{
+  border-radius:4px;
+  padding:12px 16px;
+  font-size:12.5px;
+  line-height:1.6;
+  border-left:3px solid;
+}
+.poster .rupdate{background:var(--river-p);border-color:var(--river);color:var(--river-d)}
+.poster .rwarn{background:var(--danger-p);border-color:var(--danger);color:var(--danger)}
+.poster .rtravel{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--river-p);
+  border-radius:4px;
+  padding:8px 14px;
+  font-size:12px;
+  color:var(--river-d);
+  font-weight:500;
+}
+.poster .rmap{
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+  height:280px;
+}
+.poster .rmap .leaflet-container{height:280px}
+@media(max-width:620px){
+  .poster .rfacts{grid-template-columns:1fr}
+  .poster .rpc{grid-template-columns:1fr;gap:14px}
+  .poster-hero{height:56svh;min-height:380px}
 }
 body.poster-locked{overflow:hidden}
 
-/* VOTE HEART — real delight */
-@keyframes heartThump{0%{transform:scale(1)}20%{transform:scale(1.5)}40%{transform:scale(.9)}60%{transform:scale(1.3)}100%{transform:scale(1.25)}}
-.vbtn.voted .vh{animation:heartThump .55s var(--spring)}
-.vbtn.bursting{box-shadow:0 0 0 0 rgba(201,168,76,.6);animation:voteFlash .6s ease-out}
-@keyframes voteFlash{0%{box-shadow:0 0 0 0 rgba(201,168,76,.5);background:rgba(201,168,76,.35)}100%{box-shadow:0 0 0 18px rgba(201,168,76,0);background:rgba(201,168,76,.18)}}
-.heart-burst{position:absolute;pointer-events:none;font-size:14px;opacity:0;transform:translate(-50%,-50%);z-index:10;will-change:transform,opacity}
-@keyframes hfly{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}15%{opacity:1;transform:translate(calc(-50% + var(--dx,0) * .3),calc(-50% + var(--dy,-12px) * .3)) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx,0)),calc(-50% + var(--dy,-60px))) scale(.7)}}
-.heart-burst.go{animation:hfly .9s ease-out forwards}
+/* ═══════════════════════════════════════
+   HEART BURST + MICRO
+   ═══════════════════════════════════════ */
+@keyframes heartThump{
+  0%{transform:scale(1)}
+  20%{transform:scale(1.6)}
+  40%{transform:scale(.85)}
+  60%{transform:scale(1.35)}
+  100%{transform:scale(1.15)}
+}
+.vp-btn.just-voted .vp-h{animation:heartThump .6s var(--spring)}
+.vp-btn.bursting{animation:voteFlash .7s ease-out}
+@keyframes voteFlash{
+  0%{box-shadow:0 0 0 0 rgba(217,123,46,.55)}
+  100%{box-shadow:0 0 0 24px rgba(217,123,46,0)}
+}
+.heart-burst{
+  position:absolute;
+  pointer-events:none;
+  font-size:15px;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  z-index:10;
+  will-change:transform,opacity;
+}
+@keyframes hfly{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+  15%{opacity:1;transform:translate(calc(-50% + var(--dx,0)*.3),calc(-50% + var(--dy,-12px)*.3)) scale(1.1)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0)),calc(-50% + var(--dy,-70px))) scale(.65)}
+}
+.heart-burst.go{animation:hfly 1s ease-out forwards}
+
+/* ═══════════════════════════════════════
+   MAP + LEAFLET (lighter)
+   ═══════════════════════════════════════ */
+.leaflet-container{background:var(--paper-d)!important;font-family:var(--sans)!important}
+.leaflet-tile{filter:saturate(.85) brightness(1.02)}
+.leaflet-control-attribution{background:rgba(255,255,255,.85)!important;color:var(--ink-l)!important;font-size:10px!important}
+.leaflet-control-zoom a{background:#fff!important;color:var(--ink)!important;border-color:var(--line)!important}
+.leaflet-popup-content-wrapper{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--ink);
+  border-radius:4px;
+  box-shadow:var(--sh-m);
+}
+.leaflet-popup-tip{background:#fff}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+.footer{
+  text-align:center;
+  padding:72px 20px 50px;
+  font-size:11px;
+  color:var(--ink-xl);
+  line-height:2;
+  margin-top:40px;
+}
+.footer::before{
+  content:'🛶';
+  display:block;
+  font-size:26px;
+  margin-bottom:18px;
+  opacity:.5;
+}
 
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-bg">
-    <div class="ripple"></div><div class="ripple"></div><div class="ripple"></div>
-  </div>
-  <div id="stars" style="position:absolute;inset:0;pointer-events:none"></div>
-  <div class="hdeco">🛶</div>
-  <div class="hc">
-    <div class="h-season">Summer 2026</div>
-    <h1><span>This summer,</span><strong>we go on the water.</strong></h1>
-    <div class="hero-sub">Five routes · All from Basel · Vote · Plan · Go</div>
-    <div class="hero-chips">
-      <span class="hero-chip">3 Day Trips</span>
-      <span class="hero-chip">2 Overnight Adventures</span>
-      <span class="hero-chip">44–108 km of river</span>
-      <span class="hero-chip">0% planning stress</span>
+<!-- ══════════════════════════════════════
+     HERO
+     ══════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Summer 2026 · Switzerland</div>
+    <h1 class="hero-title">Wherever the<br><strong>river takes us.</strong></h1>
+    <p class="hero-sub">Five inflatable-dinghy routes through Swiss rivers — all reachable from Basel. Vote, pick a weekend, and pack a cold drink. The current does the rest. 🛶</p>
+    <div class="hero-meta">
+      <div class="hm"><span class="hm-n">5</span><span class="hm-l">Curated<br>routes</span></div>
+      <div class="hm"><span class="hm-n">106</span><span class="hm-l">Kilometres<br>of river</span></div>
+      <div class="hm"><span class="hm-n">22°</span><span class="hm-l">Warmest<br>water</span></div>
     </div>
   </div>
-  <div class="scroll-hint">
-    <span>scroll</span>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(240,232,216,.25)" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
   </div>
-</div>
+</header>
 
-
-<!-- LETTER -->
-<div class="letter-wrap">
-  <div class="letter-card">
-    <div class="l-from">A note from Roxane</div>
-    <div class="l-body">
-      Okay. I need you to clear a weekend this summer — or two.<br><br>
-      I've been dreaming about this for years: <strong>inflatable dinghies, Swiss rivers, all of us together.</strong> No agenda. No schedule. Just the current, the sun, a cold drink, and wherever the river takes us.<br><br>
-      I've done the research (obviously 😅). I built this whole guide so we can plan it — and then completely forget we planned anything once we're on the water.<br><br>
-      <strong>Pick a route. Add your available days. Say yes.</strong> The rest takes care of itself. 🛶
-    </div>
-    <a class="l-cta" href="#vote">Pick your route ↓</a>
-    <div class="l-sign">
-      — Roxane<br>
-      <em>Written from Basel, with the rivers already running warm</em>
-    </div>
+<!-- ══════════════════════════════════════
+     TABS
+     ══════════════════════════════════════ -->
+<nav class="tabs" id="tabs">
+  <div class="tabs-inner">
+    <div class="tab-indicator" id="tabIndicator"></div>
+    <button class="tab active" data-tab="discover"><span class="tab-emoji">✨</span>Discover</button>
+    <button class="tab" data-tab="decide"><span class="tab-emoji">🗳</span>Decide</button>
+    <button class="tab" data-tab="dayof"><span class="tab-emoji">🎒</span>Day Of</button>
   </div>
-</div>
-
-
-<!-- NAV -->
-<nav class="nav">
-  <a href="#vote">❤️ Vote</a>
-  <a href="#dates">📅 Dates</a>
-  <a href="#updates">⚠️ 2026</a>
-  <a href="#all-routes">🗺 Routes</a>
-  <a href="#day-trips">☀️ Day Trips</a>
-  <a href="#overnights">🌙 Overnight</a>
-  <a href="#safety">🛡 Safety</a>
-  <a href="#kit">🎒 Kit</a>
-  <a href="#travel">🚆 Travel</a>
-  <a href="#links">🔗 Links</a>
 </nav>
 
-<!-- ══════ VOTE ══════ -->
-<div id="vote" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">❤️ Vote for Your Favourite Route</div><div class="shl"></div></div>
-  <div class="vote-box">
-    <div class="vi-title">Who are you?</div>
-    <div class="vi-sub">Enter your name, then heart your favourite route(s). Come back any time to change your vote.</div>
-    <div class="name-row">
-      <input class="ni" id="voterName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
-      <button class="bg bg-water" onclick="loadVoter()">Let's go 🛶</button>
+<!-- ══════════════════════════════════════
+     PANELS
+     ══════════════════════════════════════ -->
+<main class="panels">
+
+  <!-- ═══════════ DISCOVER ═══════════ -->
+  <section class="panel active" id="panel-discover">
+
+    <!-- Letter -->
+    <div class="letter">
+      <div class="letter-from">A note from Roxane</div>
+      <div class="letter-body">
+        Okay. I need you to clear a weekend this summer — or two.<br><br>
+        I've been dreaming about this for years: <strong>inflatable dinghies, Swiss rivers, all of us together.</strong> No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.<br><br>
+        I've done the research (obviously 😅). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.<br><br>
+        <strong>Pick a route. Mark your days. Say yes.</strong> The rest takes care of itself.
+      </div>
+      <div class="letter-sign">
+        — Roxane<br>
+        <em>Written from Basel, with the rivers already running warm</em>
+      </div>
     </div>
-    <div class="vg vg-water" id="vGreeting">Welcome back, <span id="vSpan"></span>! Your votes are loaded.</div>
-  </div>
-  <div class="winner" id="winnerBanner">
-    <div class="wb-title">🏆 Leading route right now</div>
-    <div class="w-name" id="winnerName">—</div>
-    <div class="wb-sub" id="winnerSub"></div>
-  </div>
-  <div class="vcards" id="voteCards"></div>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+      <div class="cd-num" id="cdNum">—</div>
+      <div class="cd-info">
+        <div class="cd-label">Until the warmest weeks</div>
+        <div class="cd-text" id="cdText">The Rhine hits its warmest window in late July. That's the one we want to catch.</div>
+      </div>
+    </div>
+
+    <!-- Entry cards -->
+    <div class="entry-cards">
+      <button class="ec" style="--bar:var(--river)" onclick="scrollToRoutes()">
+        <div class="ec-icon">🗺</div>
+        <div class="ec-body">
+          <div class="ec-num">01</div>
+          <div class="ec-title">Browse the routes</div>
+          <div class="ec-desc">5 river adventures, tap to see full details</div>
+        </div>
+        <div class="ec-arrow">→</div>
+      </button>
+      <button class="ec" style="--bar:var(--sun)" onclick="switchTab('decide','vote')">
+        <div class="ec-icon">❤️</div>
+        <div class="ec-body">
+          <div class="ec-num">02</div>
+          <div class="ec-title">Vote your favourite</div>
+          <div class="ec-desc">Heart the ones you're excited about</div>
+        </div>
+        <div class="ec-arrow">→</div>
+      </button>
+      <button class="ec" style="--bar:var(--sage)" onclick="switchTab('decide','dates')">
+        <div class="ec-icon">📅</div>
+        <div class="ec-body">
+          <div class="ec-num">03</div>
+          <div class="ec-title">Mark your days</div>
+          <div class="ec-desc">When are you free this summer?</div>
+        </div>
+        <div class="ec-arrow">→</div>
+      </button>
+    </div>
+
+    <!-- Filter + Gallery -->
+    <div class="wrap" id="routesAnchor">
+      <div class="section-head">
+        <div class="section-kicker">The routes</div>
+        <h2 class="section-title">Five rivers, one summer</h2>
+        <p class="section-sub">Swipe through — tap any card to open the full cinematic poster with waypoints, maps, and everything you need to plan.</p>
+      </div>
+    </div>
+
+    <div class="filter-row" id="filterRow">
+      <button class="chip active" data-filter="all">All routes</button>
+      <button class="chip" data-filter="day">☀️ Day trips</button>
+      <button class="chip" data-filter="night">🌙 Overnights</button>
+      <button class="chip" data-filter="warmest">🌡 Warmest</button>
+      <button class="chip" data-filter="closest">🚆 Closest</button>
+    </div>
+
+    <div class="gallery-wrap">
+      <button class="g-nav prev" onclick="galleryScroll(-1)" aria-label="Previous">‹</button>
+      <button class="g-nav next" onclick="galleryScroll(1)" aria-label="Next">›</button>
+      <div class="gallery" id="gallery"></div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ DECIDE ═══════════ -->
+  <section class="panel" id="panel-decide">
+
+    <div class="wrap" id="voteAnchor">
+      <div class="section-head">
+        <div class="section-kicker">Vote</div>
+        <h2 class="section-title">Which route lights you up?</h2>
+        <p class="section-sub">Heart as many as you want. The leader gets a gold frame. Tap a photo to see the full route.</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="leader" id="leader" style="display:none">
+        <div class="leader-info">
+          <div class="leader-lbl">🏆 Leading right now</div>
+          <div class="leader-name" id="leaderName">—</div>
+          <div class="leader-votes" id="leaderVotes"></div>
+        </div>
+      </div>
+
+      <div class="name-card">
+        <div class="nc-title">Who are you?</div>
+        <div class="nc-sub">Enter your name once, then vote below and mark your days on the calendar.</div>
+        <div class="nc-row">
+          <input class="nc-input" id="voterName" type="text" placeholder="Your name…" autocomplete="given-name" maxlength="24">
+          <button class="nc-btn" onclick="loadVoter()">Start voting</button>
+        </div>
+        <div class="nc-greet" id="vGreeting">Welcome back, <strong id="vSpan"></strong> ✨</div>
+      </div>
+
+      <div class="vote-posters" id="votePosters"></div>
+    </div>
+
+    <div class="wrap" id="datesAnchor">
+      <div class="cal-hero">
+        <div class="section-kicker" style="justify-content:center">The calendar</div>
+        <div class="cal-q">Which of these days are we going to mark as <em>the day</em>?</div>
+        <div class="cal-q-sub">Tap to claim your availability</div>
+      </div>
+
+      <div class="best-weekend" id="bestWeekend">
+        <div class="bw-star">⭐</div>
+        <div class="bw-info">
+          <div class="bw-lbl">Best overlap so far</div>
+          <div class="bw-date" id="bwDate">—</div>
+          <div class="bw-who" id="bwWho"></div>
+        </div>
+      </div>
+
+      <div class="name-card">
+        <div class="nc-title">Mark your available days</div>
+        <div class="nc-sub">Tap any day to cycle: <strong style="color:var(--sage)">free ✓</strong> → <strong style="color:var(--sun-d)">maybe ◐</strong> → unmark. Weekend free? Tap both days — overnight trips unlock.</div>
+        <div class="nc-row">
+          <input class="nc-input" id="availName" type="text" placeholder="Your name…" autocomplete="given-name" maxlength="24">
+          <button class="nc-btn" onclick="loadAvail()">Load my dates</button>
+        </div>
+        <div class="nc-greet" id="aGreeting">Hi <strong id="aSpan"></strong>! Tap any day to mark it.</div>
+      </div>
+
+      <div class="cal-mnav">
+        <button class="cm-btn" onclick="prevMonth()" aria-label="Previous month">‹</button>
+        <div id="calMonthLabel" class="cm-label"></div>
+        <button class="cm-btn" onclick="nextMonth()" aria-label="Next month">›</button>
+      </div>
+
+      <div id="calGrid" class="cal-wrap"></div>
+
+      <div class="cal-legend">
+        <div class="cl-i"><div class="cl-sw free"></div>Free</div>
+        <div class="cl-i"><div class="cl-sw maybe"></div>Maybe</div>
+        <div class="cl-i">· · · = others' votes</div>
+      </div>
+
+      <div class="avail-results" id="availResults">
+        <div class="ar-t">📊 Most popular days</div>
+        <div id="arBody"></div>
+      </div>
+    </div>
+
+    <!-- Share card -->
+    <div class="wrap">
+      <div class="share-card">
+        <div class="sc-icon">💬</div>
+        <div class="sc-title">Share with the crew</div>
+        <div class="sc-sub">Copy a clean summary to paste into your group chat — route, dates, everything they need.</div>
+        <div class="sc-btns">
+          <button class="sc-btn" onclick="copyTripSummary()">Copy summary</button>
+          <button class="sc-btn ghost" onclick="shareUrl()">Share link</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ DAY OF ═══════════ -->
+  <section class="panel" id="panel-dayof">
+
+    <div class="wrap">
+      <div class="trip-day">
+        <div class="td-eyebrow">When the day comes</div>
+        <h2 class="td-title">You're on the water<br>in a few hours.</h2>
+        <p class="td-sub">Quick links for the morning-of, so you're not scrolling through a guide at 9am with coffee in one hand.</p>
+        <div class="td-actions">
+          <a class="td-btn" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">🌊</div>Water level
+          </a>
+          <a class="td-btn" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">☀️</div>Weather
+          </a>
+          <a class="td-btn" href="https://www.sbb.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">🚆</div>Trains
+          </a>
+          <a class="td-btn" href="tel:117">
+            <div class="td-btn-icon">🚨</div>Emergency
+          </a>
+        </div>
+      </div>
+
+      <div class="emergency">
+        <div class="em-icon">🆘</div>
+        <div class="em-info">
+          <div class="em-title">In an emergency</div>
+          <div class="em-sub">Police <strong>117</strong> · Ambulance <strong>144</strong> · Rega air rescue <strong>1414</strong> · River SOS — stay with the boat, drift feet-first</div>
+        </div>
+        <a class="em-call" href="tel:117">Call 117</a>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">The checklist</div>
+        <h2 class="section-title">Everything you need</h2>
+        <p class="section-sub">Tap to tick off as you pack. Saves automatically. Red = legally required in 2026.</p>
+      </div>
+
+      <div class="kit-card">
+        <div class="kit-head">
+          <div class="kit-title-row">
+            <div class="kit-lbl">The kit</div>
+            <div class="kit-title">Packed & ready</div>
+          </div>
+          <div class="kit-progress">
+            <strong id="kitProgressNum">0/0</strong>
+            items packed
+          </div>
+        </div>
+        <div class="kit-bar"><div class="kit-bar-fill" id="kitBarFill" style="width:0%"></div></div>
+        <div id="kitGroups"></div>
+        <a class="kit-reset" onclick="resetKit()">Reset checklist</a>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">2026 updates</div>
+        <h2 class="section-title">What changed since the book</h2>
+        <p class="section-sub">The Salamander Verlag guidebook is still the bible — but three laws changed in 2020. Read before you go.</p>
+      </div>
+
+      <div class="updates-card">
+        <div class="uc-head">
+          <div class="uc-lbl">🔴 Three laws changed · January 2020</div>
+          <div class="uc-title">Don't get fined — read this</div>
+        </div>
+        <div class="uc-body">
+          <div class="uc-item"><div class="uc-dot"></div><div><strong>Life jackets now legally required.</strong> Min. 75N buoyancy per person on rivers (100N on the Rhine). Standard 50N swim aids don't qualify. Kids under 12 must wear one at all times. Fines CHF 50–140.</div></div>
+          <div class="uc-item"><div class="uc-dot"></div><div><strong>Alcohol limit abolished.</strong> The 0.5‰ rule no longer applies to non-motorised inflatables. You still have to be fit to navigate — criminal liability if you cause an accident drunk.</div></div>
+          <div class="uc-item"><div class="uc-dot"></div><div><strong>Boat labelling now mandatory.</strong> Name, address, and phone number must be visibly written on the boat. Fine: CHF 40.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Safety</div>
+        <h2 class="section-title">Non-negotiables</h2>
+      </div>
+
+      <div class="safety-grid">
+        <div class="sg-card">
+          <div class="sg-t">⚠️ Before you launch</div>
+          <div class="sg-i"><div class="sg-i-i">✓</div>Check water level on hydrodaten.admin.ch</div>
+          <div class="sg-i"><div class="sg-i-i">✓</div>Tell someone your route + ETA</div>
+          <div class="sg-i"><div class="sg-i-i">✓</div>Life jackets on before you enter the water</div>
+          <div class="sg-i"><div class="sg-i-i">✓</div>Waterproof dry bag for phone + keys</div>
+        </div>
+        <div class="sg-card">
+          <div class="sg-t">🚫 Absolute don'ts</div>
+          <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never paddle drunk (criminal liability)</div>
+          <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never near weirs or hydro intakes</div>
+          <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never in high water (Rhine > 1300 m³/s)</div>
+          <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never alone on unfamiliar water</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Getting there</div>
+        <h2 class="section-title">All from Basel</h2>
+      </div>
+
+      <div class="travel-card">
+        <div class="tc-h">
+          <div class="tc-lbl">🚆 Train times from Basel SBB</div>
+          <div class="tc-title">How long to each entry</div>
+        </div>
+        <div class="tc-row"><div class="tc-n">Leibstadt<span>Day Trip #1 · Rhine</span></div><div>~45 min</div><div class="tc-t">1h</div></div>
+        <div class="tc-row"><div class="tc-n">Stein am Rhein<span>Day Trip #2 · via Zürich</span></div><div>~1h 50</div><div class="tc-t">2h</div></div>
+        <div class="tc-row"><div class="tc-n">Neuhausen am Rheinfall<span>Day Trip #3 · Basel Bad</span></div><div>~1h 20</div><div class="tc-t">1.5h</div></div>
+        <div class="tc-row"><div class="tc-n">Thun<span>Overnight #1 · via Bern</span></div><div>~55 min</div><div class="tc-t">1h</div></div>
+        <div class="tc-row"><div class="tc-n">Bremgarten AG<span>Overnight #2 · via Zürich</span></div><div>~1h 15</div><div class="tc-t">1.25h</div></div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>Built with 🛶 for the Summer 2026 crew</div>
+  <div>Sources: Salamander Verlag (7th ed. 2023) · hydrodaten.admin.ch · SBB</div>
+</footer>
+
+<!-- Poster modal -->
+<div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
+  <button class="poster-close" onclick="closePoster()" aria-label="Close">×</button>
+  <div class="poster-inner" id="posterInner"></div>
 </div>
 
-<!-- ══════ DATES ══════ -->
-<div id="dates" class="sec">
-  <div style="padding:72px 0 18px">
-    <div class="cal-question">Which of these days are we going to mark as <em style="color:var(--amber);font-style:italic">the day</em>?</div>
-    <div class="cal-question-sub">Tap to claim your availability</div>
-  </div>
-  <div class="avail-intro">
-    <div class="vi-title" style="margin-bottom:8px">Add your available days</div>
-    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap any day to mark it. <strong style="color:#9ed4b0">Green = free ✓</strong> &nbsp; <strong style="color:#d4a84a">Yellow = maybe ◐</strong> &nbsp; Tap again to cycle through. The app finds the best overlap automatically.<br><br><span style="color:rgba(240,232,216,.32);font-size:11px">💡 Free both days of a weekend? Tap both — overnight trips become possible.</span></div>
-    <div class="name-row">
-      <input class="ni" id="availName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
-      <button class="btn-go" onclick="loadAvail()">Load my dates</button>
-    </div>
-    <div class="vg vg-sage" id="aGreeting">Hi <span id="aSpan"></span>! Tap any day below to add your availability.</div>
-  </div>
+<!-- Toast -->
+<div class="sc-toast" id="toast"></div>
 
-  <!-- Month navigation -->
-  <div class="cal-mnav">
-    <button class="cm-btn" onclick="prevMonth()" aria-label="Previous month">‹</button>
-    <div id="calMonthLabel" class="cm-label"></div>
-    <button class="cm-btn" onclick="nextMonth()" aria-label="Next month">›</button>
-  </div>
-
-  <!-- Calendar grid -->
-  <div id="calGrid" class="cal-grid-wrap"></div>
-
-  <!-- Best days summary -->
-  <div class="avail-results" id="availResults">
-    <div class="ar-t">📊 Most popular days</div>
-    <div id="arBody"></div>
-  </div>
-</div>
-
-<!-- ══════ 2026 UPDATES ══════ -->
-<div id="updates" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">⚠️ What Changed Since the Book</div><div class="shl"></div></div>
-  <div class="abox">
-    <div class="at">🔴 Three Laws Changed — January 1, 2020</div>
-    <div class="ai"><div class="ad r"></div><div><strong>Life jacket now legally required.</strong> Min. 75N buoyancy per person on rivers (100N on Rhine). Standard 50N swim aids don't qualify. Children under 12 must wear one at all times. Fines CHF 50–140.</div></div>
-    <div class="ai"><div class="ad r"></div><div><strong>Alcohol limit abolished.</strong> The book's "0.5‰ rule" no longer applies to non-motorised inflatables. Must still be fit to navigate. Criminal liability if you cause an accident drunk.</div></div>
-    <div class="ai"><div class="ad r"></div><div><strong>Boat labeling now law.</strong> Name, address, and phone number must be visibly written on boat. Fine: CHF 40.</div></div>
-  </div>
-  <div class="abox" style="margin-top:10px">
-    <div class="at">✅ 2026 — All Still Running</div>
-    <div class="ai"><div class="ad g"></div><div><strong>Camping Eichholz</strong> (Aare overnight) — open April–October. ~CHF 14/night + tent. Book early. campingeichholz.ch</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>TCS Camping Bern Eymatt</strong> (Hinterkappelen) — 4-star, open April 2. ~CHF 34/person. booking.camping.care</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>Camping Sulz</strong> (Reuss overnight) — March–October. camping-sulz.ch · +41 56 496 48 79</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>Aareschlauchboot</strong> 2026 — CHF 140–190/boat. Code <strong>AARE26</strong> = –30% until April 30!</div></div>
-    <div class="ai"><div class="ad g"></div><div><strong>Rheinschlauchboot.ch</strong> NEW (2024) — rental Stein am Rhein → Schaffhausen. From CHF 160/boat.</div></div>
-    <div class="ai"><div class="ad b"></div><div><strong>HydroWatch app dead.</strong> Use hydrodaten.admin.ch + free <strong>Meine Pegel</strong> app (iOS/Android).</div></div>
-    <div class="ai"><div class="ad b"></div><div><strong>Updated guidebook:</strong> 7th edition (2023), Salamander Verlag, CHF 37.50. ISBN 978-3-907267-04-2.</div></div>
-  </div>
-</div>
-
-<!-- ══════ ALL ROUTES ══════ -->
-<div id="all-routes" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🗺 All 5 Routes — Overview</div><div class="shl"></div></div>
-  <div class="map-overview">
-    <div class="mo-title">🇨🇭 All routes within 45 min – 2h of Basel by train</div>
-    <div class="mo-grid">
-      <div class="mo-item"><div class="mo-dot" style="background:#4a9ebe"></div><div class="mo-info"><div class="mo-name">☀️ Day 1 — Leibstadt → Laufenburg</div><div class="mo-detail">Rhein · 🚆 ~1h · 20–22°C · Closest!</div></div><div class="mo-dist">11.6 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#2e7a9e"></div><div class="mo-info"><div class="mo-name">☀️ Day 2 — Stein am Rhein → Schaffhausen</div><div class="mo-detail">Rhein · 🚆 ~2h · Basel Bad Bf · 19–23°C</div></div><div class="mo-dist">18.8 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#2a6a90"></div><div class="mo-info"><div class="mo-name">☀️ Day 3 — Rheinfall → Kloster Rheinau</div><div class="mo-detail">Rhein · 🚆 ~1.5h · Most dramatic · 🌕 moonlight</div></div><div class="mo-dist">7 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#1e4a3a"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 1 — Thun → Bern → Hinterkappelen</div><div class="mo-detail">Aare · 🚆 ~55 min · The dream route · 2 days</div></div><div class="mo-dist">44 km</div></div>
-      <div class="mo-item"><div class="mo-dot" style="background:#7a3a10"></div><div class="mo-info"><div class="mo-name">🌙 Overnight 2 — Bremgarten → Gebenstorf</div><div class="mo-detail">Reuss · 🚆 ~1h 15min · Advanced · Wildest</div></div><div class="mo-dist">25.3 km</div></div>
-    </div>
-  </div>
-
-  <!-- Overview Leaflet Map -->
-  <div class="leaflet-wrap" style="height:340px">
-    <div id="mapOverview" style="height:340px"></div>
-    <div class="map-caption">All routes — click markers for details</div>
-  </div>
-  <div class="inote">💡 Each route card below has its own detailed map. For satellite view, open <strong>map.geo.admin.ch</strong> and search any start point.</div>
-</div>
-
-<!-- ══════ DAY TRIPS ══════ -->
-<div id="day-trips" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">☀️ Day Trips</div><div class="shl r"></div></div>
-  <div class="rcards">
-
-    <div class="rcard">
-      <div class="rphoto">
-        <div class="rphoto-grid c2">
-          <div><img src="./Laufenburg.jpg" alt="Laufenburg" onerror="this.style.display='none'"></div>
-          <div><img src="./aare%20interlaken.webp" alt="Rhine" onerror="this.style.display='none'"></div>
-        </div>
-        <div class="rphoto-ov"></div>
-        <div class="rbadge day">Day Trip #1 · Closest</div>
-        <div class="ricon">🏰</div>
-      </div>
-      <div class="rmeta">
-        <div class="rtitle">Leibstadt → Laufenburg</div>
-        <div class="rsub">Rhein · Route 17 · "Mit dem Strom in ein altes Städtchen"</div>
-        <div class="rpills">
-          <span class="rp rpd">11.6 km</span><span class="rp rpd">3–4 hours</span><span class="rp rpd">Mittel</span>
-          <span class="rp rpw">🌡 20–22°C warmest</span><span class="rp rpb">🚆 ~1h from Basel</span>
-        </div>
-        <div class="rtravel">🚆 Basel → Laufenburg ~45 min · Return ~½h</div>
-      </div>
-      <div class="rverdict">"Starts at a nuclear power plant, ends in a medieval double-city split by Napoleon. In between: sandy islands, Black Forest views, and a sandbar the book literally calls the Caribbean."</div>
-      <div class="rdiag">
-        <div class="diag-l">Route waypoints</div>
-        <div class="dpath">
-          <div class="dstop"><div class="ddot ds">🚀</div><div class="dname">Leibstadt</div><div class="dsub">Entry · km 0</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dm">🏖</div><div class="dname">Dreispitz</div><div class="dsub">Beach · km 3.8</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dm">🏝</div><div class="dname">Etzgen</div><div class="dsub">Caribbean · km 6.8</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot de">🏰</div><div class="dname">Laufenburg</div><div class="dsub">Exit · km 11.6</div></div>
-        </div>
-        <div class="dsms">Flow check: SMS 9234 · Q 2091 · Max 1300 m³/s</div>
-      </div>
-      <div class="rfacts">
-        <div class="fact"><strong>Entry</strong>Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank</div>
-        <div class="fact"><strong>Exit</strong>Laufenburg: Schlipf 200m after Laufenbrücke, left bank. ⚠️ Stay left</div>
-        <div class="fact"><strong>Hazard</strong>Querströmung after bridge — stay left of channel</div>
-        <div class="fact"><strong>Beach stops</strong>Dreispitz km 3.8 (Fischerhütte bar) + Caribbean island km 6.8 🏖</div>
-        <div class="fact"><strong>Boat rental</strong>No dedicated rental — bring own boats</div>
-        <div class="fact"><strong>Swimming</strong>✅ Good. Avoid weir backflow at start</div>
-      </div>
-      <div class="rpc">
-        <div class="pcpros"><div class="pcl">Pros</div>
-          <div class="pci"><span class="pcd"></span>Closest to Basel — ~1h</div>
-          <div class="pci"><span class="pcd"></span>Warmest water of all routes</div>
-          <div class="pci"><span class="pcd"></span>Sandy Caribbean beach mid-route</div>
-          <div class="pci"><span class="pcd"></span>Medieval old town finish</div>
-        </div>
-        <div class="pccons"><div class="pcl">Cons</div>
-          <div class="pci"><span class="pcd"></span>Starts next to a nuclear plant 😅</div>
-          <div class="pci"><span class="pcd"></span>No dedicated boat rental</div>
-          <div class="pci"><span class="pcd"></span>Cross-current near bridge</div>
-        </div>
-      </div>
-      <div class="rfit"><span class="rfitl">Why this one first</span><div class="rfitt">Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.</div></div>
-      <div class="rmap"><div id="map_d1"></div></div>
-    </div>
-
-    <div class="rcard">
-      <div class="rphoto">
-        <div class="rphoto-grid c3">
-          <div><img src="./Region%20Stein%20am%20Rhein.jpg" alt="Stein am Rhein" onerror="this.style.display='none'"></div>
-          <div><img src="./steinamrhein-insel-werd-rhein.jpg" alt="Stein am Rhein" onerror="this.style.display='none'"></div>
-          <div><img src="./blick-auf-stein-am-rhein-von-der-insel-werd.jpg" alt="Insel Werd" onerror="this.style.display='none'"></div>
-        </div>
-        <div class="rphoto-ov"></div>
-        <div class="rbadge day">Day Trip #2 · Most Scenic</div>
-        <div class="ricon">🏯</div>
-      </div>
-      <div class="rmeta">
-        <div class="rtitle">Stein am Rhein → Schaffhausen</div>
-        <div class="rsub">Rhein · Route 13 · "Kulturperlen am fliessenden Band"</div>
-        <div class="rpills">
-          <span class="rp rpd">18.8 km</span><span class="rp rpd">3.5–4 hours</span><span class="rp rpd">Mittel</span>
-          <span class="rp rpd">19–23°C</span><span class="rp rpb">🚆 ~2h · Basel Bad Bf</span>
-        </div>
-        <div class="rtravel">🚆 Basel Bad Bf → Stein am Rhein ~1h 50min · Return ~1h 30min</div>
-      </div>
-      <div class="rverdict">"The Schaffhauser Amazonas. Every bend reveals a new castle, vineyard, or monastery. One of Europe's most beautiful river stretches — the book says 'Wie hübsch!' at every turn."</div>
-      <div class="rdiag">
-        <div class="diag-l">Route waypoints</div>
-        <div class="dpath">
-          <div class="dstop"><div class="ddot ds">🏯</div><div class="dname">Stein am Rhein</div><div class="dsub">Entry · km 0</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">⚠️</div><div class="dname">Bibermüli</div><div class="dsub">Ferries · km 5.1</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dm">🚌</div><div class="dname">Diessenhofen</div><div class="dsub">Mid-exit · km 9.7</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot de">🏙</div><div class="dname">Schaffhausen</div><div class="dsub">Exit · km 18.8</div></div>
-        </div>
-        <div class="dsms">Flow check: SMS 9234 · Q 2288 · Max 600 m³/s</div>
-      </div>
-      <div class="rfacts">
-        <div class="fact"><strong>Entry</strong>Stein am Rhein: Rheinbrücke left bank · Walk medieval town first</div>
-        <div class="fact"><strong>Exit</strong>Schaffhausen: Salzstadel right bank ⛔ Weiterfahrt verboten</div>
-        <div class="fact"><strong>Mid-exit</strong>Diessenhofen (km 9.7): 15 min bus — splits into two 2h halves</div>
-        <div class="fact"><strong>Hazard</strong>Ferry ships — stay near bank, never tie boats together</div>
-        <div class="fact"><strong>Boat rental 2026</strong>rheinschlauchboot.ch (NEW) · From CHF 160/boat</div>
-        <div class="fact"><strong>Swimming</strong>✅ Good. Clear of Wiffen markers + ferries</div>
-      </div>
-      <div class="rpc">
-        <div class="pcpros"><div class="pcl">Pros</div>
-          <div class="pci"><span class="pcd"></span>Most beautiful scenery of all day trips</div>
-          <div class="pci"><span class="pcd"></span>Castles, monasteries, vineyards throughout</div>
-          <div class="pci"><span class="pcd"></span>Warm water + many beach stops</div>
-          <div class="pci"><span class="pcd"></span>Dedicated boat rental available (2024)</div>
-        </div>
-        <div class="pccons"><div class="pcl">Cons</div>
-          <div class="pci"><span class="pcd"></span>Ferry traffic needs real attention</div>
-          <div class="pci"><span class="pcd"></span>Busy weekends — go weekday</div>
-          <div class="pci"><span class="pcd"></span>Depart Basel Bad Bf (not SBB!)</div>
-        </div>
-      </div>
-      <div class="rfit"><span class="rfitl">Why this one</span><div class="rfitt">The full cinematic Swiss summer. Walk Schaffhausen + Munot fortress after. Gelato mandatory. Weekday for best experience.</div></div>
-      <div class="rmap"><div id="map_d2"></div></div>
-    </div>
-
-    <div class="rcard">
-      <div class="rphoto">
-        <div class="rphoto-grid c2">
-          <div><img src="./Rheinfall.jpeg" alt="Rheinfall" onerror="this.style.display='none'"></div>
-          <div><img src="./Rhein%20bei%20Neuhausen.jpg" alt="Rhine Neuhausen" onerror="this.style.display='none'"></div>
-        </div>
-        <div class="rphoto-ov"></div>
-        <div class="rbadge day">Day Trip #3 · Most Dramatic</div>
-        <div class="ricon">💦</div>
-      </div>
-      <div class="rmeta">
-        <div class="rtitle">Rheinfall → Kloster Rheinau</div>
-        <div class="rsub">Rhein · Route 14 · "Vom Wasserfall zur Klosterinsel"</div>
-        <div class="rpills">
-          <span class="rp rpd">7 km</span><span class="rp rpd">3–4 hours</span><span class="rp rpd">Mittel</span>
-          <span class="rp rpd">1× portage</span><span class="rp rpb">🚆 ~1.5h · Basel Bad Bf</span>
-          <span class="rp rps">🌕 Moonlight perfect</span>
-        </div>
-        <div class="rtravel">🚆 Basel Bad Bf → Neuhausen ~45 min · Return ~30 min</div>
-      </div>
-      <div class="rverdict">"Launches in Rheinfall mist with rainbows overhead. Ends at a baroque monastery island founded in 778 AD. 7km of pure theatre — the only route the book recommends for moonlight."</div>
-      <div class="rdiag">
-        <div class="diag-l">Route waypoints</div>
-        <div class="dpath">
-          <div class="dstop"><div class="ddot ds">💦</div><div class="dname">Neuhausen</div><div class="dsub">Below falls · km 0</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dm">🏊</div><div class="dname">Badi Dachsen</div><div class="dsub">Glacé · km 2</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">🔄</div><div class="dname">Stauwehr</div><div class="dsub">Portage · km 6.4</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot de">⛪</div><div class="dname">Kloster Rheinau</div><div class="dsub">Exit · km 7.0</div></div>
-        </div>
-        <div class="dsms">Flow check: SMS 9234 · Q 2288 · Max 500 m³/s</div>
-      </div>
-      <div class="rfacts">
-        <div class="fact"><strong>Entry</strong>Neuhausen: Schlipf 80m below Schlössli Wörth, right bank. ⛔ Do NOT enter Rheinfallbecken</div>
-        <div class="fact"><strong>Exit</strong>Klosterbrücke Rheinau (km 7): left after bridge. Or Picknickplatz Rheingasse 🌴</div>
-        <div class="fact"><strong>Portage</strong>Stauwehr Rheinau (km 6.4): carry 60m OR Rollwagen trolley. Avoid 300m above/below</div>
-        <div class="fact"><strong>Best swim</strong>Wide calm bend just before Stauwehr</div>
-        <div class="fact"><strong>Short variant</strong>Exit at Stauwehr (~2.5h total)</div>
-        <div class="fact"><strong>Overnight tip</strong>Gasthaus-Restaurant Salmen, Rheinau</div>
-      </div>
-      <div class="rpc">
-        <div class="pcpros"><div class="pcl">Pros</div>
-          <div class="pci"><span class="pcd"></span>Most dramatic launch — Rheinfall + rainbows</div>
-          <div class="pci"><span class="pcd"></span>Baroque monastery island finish</div>
-          <div class="pci"><span class="pcd"></span>Fun Rollwagen trolley at weir</div>
-          <div class="pci"><span class="pcd"></span>Perfect for moonlight evenings 🌕</div>
-        </div>
-        <div class="pccons"><div class="pcl">Cons</div>
-          <div class="pci"><span class="pcd"></span>Touristy Rheinfall start</div>
-          <div class="pci"><span class="pcd"></span>Mandatory weir portage</div>
-          <div class="pci"><span class="pcd"></span>Shortest route (7km)</div>
-        </div>
-      </div>
-      <div class="rfit"><span class="rfitl">Why this one</span><div class="rfitt">"We launched below the Rheinfall and paddled to a monastery island" — best single-sentence story of all 5 routes. 🌕</div></div>
-      <div class="rmap"><div id="map_d3"></div></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ══════ OVERNIGHTS ══════ -->
-<div id="overnights" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🌙 Overnight Adventures</div><div class="shl r"></div></div>
-  <div class="rcards">
-
-    <div class="rcard">
-      <div class="rphoto">
-        <div class="rphoto-grid c3">
-          <div><img src="./Mit%20dem%20Gummiboot%20auf%20der%20Aare.webp" alt="Gummiboot Aare" onerror="this.style.display='none'"></div>
-          <div><img src="./Aare%20von%20Thun%20nach%20Bern.webp" alt="Aare Thun Bern" onerror="this.style.display='none'"></div>
-          <div><img src="./aarebootle_Mit%20dem%20gummiboot%20von%20thun%20nach%20bern.jpg" alt="Rafting Aare" onerror="this.style.display='none'"></div>
-        </div>
-        <div class="rphoto-ov"></div>
-        <div class="rbadge night">Overnight #1 · The Dream Route ⭐</div>
-        <div class="ricon">⛰️</div>
-      </div>
-      <div class="rmeta">
-        <div class="rtitle">Thun → Bern (night) → Hinterkappelen</div>
-        <div class="rsub">Aare · Routes 1+2 · "Die Königin aller Gummiboottouren"</div>
-        <div class="rpills">
-          <span class="rp rpd">Day 1: 26.7km · 3.5–4h</span><span class="rp rpd">Day 2: 17.4km · 4–5h</span>
-          <span class="rp rpd">16–19°C</span><span class="rp rpb">🚆 ~55 min from Basel</span>
-        </div>
-        <div class="rtravel">🚆 Basel → Thun ~55 min direct IC · Return ~1h 30min</div>
-      </div>
-      <div class="rverdict">"The book calls this the queen of all Swiss dinghy routes. Alps on Day 1, city of Bern at night, beavers at dusk on Day 2. Designed as a connected 2-day adventure."</div>
-      <div class="rupdate"><strong>✅ 2026:</strong> Camping Eichholz open April–October · ~CHF 14/night + tent · Book early · campingeichholz.ch · Free Bern transit included<br><strong>✅ 2026:</strong> TCS Camping Bern Eymatt (Hinterkappelen) · ~CHF 34/person · booking.camping.care</div>
-      <div class="rdiag">
-        <div class="diag-l">2-day route — Day 1 → Night → Day 2</div>
-        <div class="dpath">
-          <div class="dstop"><div class="ddot ds">🏔</div><div class="dname">Thun/Uttigen</div><div class="dsub">Day 1 start</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">🌊</div><div class="dname">Uttiger Welle</div><div class="dsub">Rapids · km 5.1</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dc">⛺</div><div class="dname">Eichholz</div><div class="dsub">Night 1 · km 25</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">🔄</div><div class="dname">Stauwehr</div><div class="dsub">Portage · D2 km 3.8</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot de">🦫</div><div class="dname">Hinterkappelen</div><div class="dsub">Day 2 exit</div></div>
-        </div>
-        <div class="dsms">Day 1: Q 2030 (max 200 m³/s) · Day 2: Q 2135</div>
-      </div>
-      <div class="rfacts">
-        <div class="fact"><strong>Day 1 Entry</strong>Thun-Schwäbis. Safer: Uttigen (below rapids) for beginners</div>
-        <div class="fact"><strong>Night 1</strong>Camping Eichholz, Wabern (km 25.1). BBQ vibes. Rooms as fallback</div>
-        <div class="fact"><strong>Day 1 Hazard</strong>"Uttiger Welle" (km 5.1): real rapids. Beginners: start at Uttigen</div>
-        <div class="fact"><strong>Day 2 Hazards</strong>Stauwehr Engehalde: portage 300m right. Worblaufenwelle: pass in Flussmitte</div>
-        <div class="fact"><strong>Exit / Night 2</strong>Hinterkappelen Rowing Club. 7 min bus. Or Strandbar Bogen 17 🍺</div>
-        <div class="fact"><strong>Boat rental</strong>aareschlauchboot.ch · CHF 140–190 · Code AARE26 = –30% until Apr 30 🎉</div>
-      </div>
-      <div class="rpc">
-        <div class="pcpros"><div class="pcl">Pros</div>
-          <div class="pci"><span class="pcd"></span>Book-designed as connected 2-day route</div>
-          <div class="pci"><span class="pcd"></span>Camping Eichholz — legendary Aare atmosphere</div>
-          <div class="pci"><span class="pcd"></span>Alps panorama all of Day 1</div>
-          <div class="pci"><span class="pcd"></span>Bern 30 min walk from campsite</div>
-          <div class="pci"><span class="pcd"></span>Beavers at dusk on Day 2 🦫</div>
-        </div>
-        <div class="pccons"><div class="pcl">Cons</div>
-          <div class="pci"><span class="pcd"></span>Most popular → busy summer weekends</div>
-          <div class="pci"><span class="pcd"></span>Book Eichholz EARLY — fills fast</div>
-          <div class="pci"><span class="pcd"></span>Colder water (16–19°C)</div>
-        </div>
-      </div>
-      <div class="rfit"><span class="rfitl">Why this is THE one</span><div class="rfitt">Sleep outside ✓ Nature ✓ Swim ✓ Alps ✓ Bern if the mood strikes ✓. The full 2026 bucketlist weekend in two days. <strong>Book Camping Eichholz now.</strong></div></div>
-      <div class="rmap"><div id="map_o1"></div></div>
-    </div>
-
-    <div class="rcard">
-      <div class="rphoto">
-        <div class="rphoto-grid c3">
-          <div><img src="./Bremgarten.jpg" alt="Bremgarten" onerror="this.style.display='none'"></div>
-          <div><img src="./bremgarten-melligen.jpg" alt="Bremgarten Mellingen" onerror="this.style.display='none'"></div>
-          <div><img src="./Easy-Rafting-Bremgarten-Mellingen776x776.jpg" alt="Easy Rafting" onerror="this.style.display='none'"></div>
-        </div>
-        <div class="rphoto-ov"></div>
-        <div class="rbadge night">Overnight #2 · Advanced · Wildest</div>
-        <div class="ricon">🌲</div>
-      </div>
-      <div class="rmeta">
-        <div class="rtitle">Bremgarten → Camping Sulz → Gebenstorf</div>
-        <div class="rsub">Reuss · Route 12 · "In wilden Waldschluchten durchs Mittelland"</div>
-        <div class="rpills">
-          <span class="rp rpd">25.3 km</span><span class="rp rpd">4–5h per day</span>
-          <span class="rp rpx">⚠️ Anspruchsvoll</span><span class="rp rpw">🌡 20–22°C warmest!</span>
-          <span class="rp rpb">🚆 ~1h 15min</span>
-        </div>
-        <div class="rtravel">🚆 Basel → Bremgarten ~1h 15min · Return from Gebenstorf ~¼h</div>
-      </div>
-      <div class="rverdict">"Wild gorges, glacier boulders, near-zero infrastructure. For the group that wants to feel like they actually found something — not just done the Swiss classic."</div>
-      <div class="rwarn">⚠️ <strong>Anspruchsvoll</strong> — highest difficulty. Sharp Nagelfluh boulders dangerous for inflatables. Near-total fire ban throughout. Must exit at Gebenstorf.</div>
-      <div class="rupdate"><strong>✅ 2026:</strong> Camping Sulz (km 8.4) confirmed — camping-sulz.ch · +41 56 496 48 79 · Restaurant Rüssstübli on site</div>
-      <div class="rdiag">
-        <div class="diag-l">2-day route — Day 1 → Night → Day 2</div>
-        <div class="dpath">
-          <div class="dstop"><div class="ddot ds">🏰</div><div class="dname">Bremgarten</div><div class="dsub">Entry</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">⚠️</div><div class="dname">Honeggerwehr</div><div class="dsub">Pass RIGHT · km 1.3</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dc">⛺</div><div class="dname">Camping Sulz</div><div class="dsub">Night · km 8.4</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot dw">🪨</div><div class="dname">Gnadental</div><div class="dsub">Rapids · km 9–10</div></div>
-          <div class="darrow">→</div>
-          <div class="dstop"><div class="ddot de">🏁</div><div class="dname">Gebenstorf</div><div class="dsub">Exit · km 25.3</div></div>
-        </div>
-        <div class="dsms">Flow check: SMS 9234 · Q 2018 · 150–270 m³/s</div>
-      </div>
-      <div class="rfacts">
-        <div class="fact"><strong>Entry</strong>Bremgarten: Treppe beim Hexenturm, right bank. Walk medieval Altstadt first</div>
-        <div class="fact"><strong>Night</strong>Camping Sulz (km 8.4, right bank). Only camping on this route</div>
-        <div class="fact"><strong>Exit</strong>Gebenstorf: Reussbädli before Wehranlage. 7 min bus to Brugg. ⛔ Keinesfalls weiterfahren</div>
-        <div class="fact"><strong>Hazard 1</strong>Honeggerwehr (km 1.3): pass RIGHT — left arm = impassable weir</div>
-        <div class="fact"><strong>Hazard 2</strong>Gnadental (km 9–10): sharp Nagelfluh boulders. Navigate early</div>
-        <div class="fact"><strong>Fire</strong>⛔ Near-total fire ban. No campfire even at Camping Sulz</div>
-      </div>
-      <div class="rpc">
-        <div class="pcpros"><div class="pcl">Pros</div>
-          <div class="pci"><span class="pcd"></span>Warmest water of all routes (20–22°C)</div>
-          <div class="pci"><span class="pcd"></span>Far less crowded — feels discovered</div>
-          <div class="pci"><span class="pcd"></span>Wild gorge unlike Aare or Rhine</div>
-        </div>
-        <div class="pccons"><div class="pcl">Cons</div>
-          <div class="pci"><span class="pcd"></span>Highest difficulty — not for beginners</div>
-          <div class="pci"><span class="pcd"></span>Sharp boulders can puncture boats</div>
-          <div class="pci"><span class="pcd"></span>No campfire (near-total fire ban)</div>
-        </div>
-      </div>
-      <div class="rfit"><span class="rfitl">Honest verdict</span><div class="rfitt">Do the Aare overnight first. Come back for the Reuss once you're hooked. The gorge is extraordinary — but earn it.</div></div>
-      <div class="rmap"><div id="map_o2"></div></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ══════ SAFETY ══════ -->
-<div id="safety" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🛡 Safety — Sicher Unterwegs</div><div class="shl"></div></div>
-  <div class="gebote">
-    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water);grid-column:1/-1;margin-bottom:4px">🦆 Die 10 Gummiboot-Gebo(o)te</div>
-    <div class="ge"><div class="gn">1</div><div>Check the route in advance</div></div>
-    <div class="ge"><div class="gn">2</div><div>Check the water flow (Abfluss)</div></div>
-    <div class="ge"><div class="gn">3</div><div>Check the weather forecast</div></div>
-    <div class="ge"><div class="gn">4</div><div>Pack a life jacket <span style="color:var(--water)">(now law!)</span></div></div>
-    <div class="ge"><div class="gn">5</div><div>Bring plenty of water</div></div>
-    <div class="ge"><div class="gn">6</div><div>Protect yourself from sun</div></div>
-    <div class="ge"><div class="gn">7</div><div>Watch your alcohol intake</div></div>
-    <div class="ge"><div class="gn">8</div><div>Paddle proactively — anticipate</div></div>
-    <div class="ge"><div class="gn">9</div><div>Give way to ferries + ships</div></div>
-    <div class="ge"><div class="gn">10</div><div>Respect nature · take your rubbish</div></div>
-  </div>
-  <div class="sg">
-    <div class="sc"><div class="sct">⚡ Flow Levels</div>
-      <div class="si"><div class="sn">!</div><div><strong>Too low:</strong> scrapes stones, rapids more dangerous</div></div>
-      <div class="si"><div class="sn">!</div><div><strong>Too high:</strong> torrential, weirs deadly, can't exit</div></div>
-      <div class="si"><div class="sn">✓</div><div>Check hydrodaten.admin.ch + use SMS codes in each route card above</div></div>
-    </div>
-    <div class="sc"><div class="sct">🚢 Ships + Ferries</div>
-      <div class="si"><div class="sn">!</div><div>Must give way to all ferries, cargo ships, police boats</div></div>
-      <div class="si"><div class="sn">!</div><div>If collision imminent: STAY IN BOAT — bow wave pushes rubber boats away</div></div>
-      <div class="si"><div class="sn">!</div><div>Never tie boats together</div></div>
-    </div>
-    <div class="sc"><div class="sct">🌊 Wehre + Weirs</div>
-      <div class="si"><div class="sn">!</div><div>Rücklauf (backflow) up to 10m — impossible to escape alone</div></div>
-      <div class="si"><div class="sn">!</div><div>Start paddling toward exit 1km before any weir</div></div>
-      <div class="si"><div class="sn">!</div><div>Never swim 500m above or below a weir</div></div>
-    </div>
-    <div class="sc"><div class="sct">🏊 Swimming</div>
-      <div class="si"><div class="sn">!</div><div>Experienced swimmers only — cold + current harder than pools</div></div>
-      <div class="si"><div class="sn">!</div><div>Fall in: swim FEET-FIRST to protect head from rocks</div></div>
-      <div class="si"><div class="sn">!</div><div>1 person stays in boat. Max 1 boat-length away</div></div>
-    </div>
-  </div>
-  <div class="white-card">
-    <div class="sct" style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--water-d);margin-bottom:10px">⚖️ Legal Rules 2026</div>
-    <strong>Life jacket:</strong> Min. 75N per person. 100N on Rhine. Children under 12 must wear one. Fines CHF 50–140.<br>
-    <strong>Boat labeling:</strong> Name, address, phone visibly written on boat. Fine: CHF 40.<br>
-    <strong>Alcohol:</strong> No fixed limit for non-motorised inflatables. Must be fit to navigate.<br>
-    <strong>Cannabis:</strong> Zero tolerance on Swiss waterways.
-  </div>
-</div>
-
-<!-- ══════ KIT ══════ -->
-<div id="kit" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🎒 Kit & Equipment</div><div class="shl"></div></div>
-  <div class="kcard">
-    <div class="kt">✅ Required — Legally or Safety-Critical</div>
-    <div class="kgrid">
-      <div class="ki req"><div class="kb"></div><div>Life jacket min. 75N per person (law since 2020)</div></div>
-      <div class="ki req"><div class="kb"></div><div>Inflatable boat min. 3 air chambers · name/address/phone written on it</div></div>
-      <div class="ki req"><div class="kb"></div><div>Strong aluminium paddles (metal spring lock only)</div></div>
-      <div class="ki req"><div class="kb"></div><div>Pump (foot pump ~CHF 10 or double-action ~CHF 20)</div></div>
-    </div>
-  </div>
-  <div class="kcard">
-    <div class="kt">🎒 Strongly Recommended</div>
-    <div class="kgrid">
-      <div class="ki"><div class="kb"></div><div>Drysack per person (CHF 8–80)</div></div>
-      <div class="ki"><div class="kb"></div><div>Floating rope / Bootsleine 15m</div></div>
-      <div class="ki"><div class="kb"></div><div>Spare paddle</div></div>
-      <div class="ki"><div class="kb"></div><div>Repair kit (PVC patches + glue)</div></div>
-      <div class="ki"><div class="kb"></div><div>Water shoes / plastic sandals</div></div>
-      <div class="ki"><div class="kb"></div><div>Swimwear + towel + change of clothes</div></div>
-      <div class="ki"><div class="kb"></div><div>Hat + sunscreen + sunglasses</div></div>
-      <div class="ki"><div class="kb"></div><div>Min. 2L water per person</div></div>
-      <div class="ki"><div class="kb"></div><div>Rain/wind jacket</div></div>
-      <div class="ki"><div class="kb"></div><div>Food + picnic supplies</div></div>
-      <div class="ki"><div class="kb"></div><div>Phone in waterproof bag</div></div>
-      <div class="ki"><div class="kb"></div><div>ÖV card + cash for return journey</div></div>
-      <div class="ki"><div class="kb"></div><div>Waterproof marker pen</div></div>
-      <div class="ki"><div class="kb"></div><div>ID card (required German side)</div></div>
-      <div class="ki"><div class="kb"></div><div>Insect repellent</div></div>
-      <div class="ki"><div class="kb"></div><div>Large sponge (keep boat floor dry)</div></div>
-    </div>
-  </div>
-  <div class="kcard">
-    <div class="kt">🌙 Overnight Extra</div>
-    <div class="kgrid">
-      <div class="ki"><div class="kb"></div><div>Tent + sleeping bag + mat</div></div>
-      <div class="ki"><div class="kb"></div><div>Cooking gear + camp dinner food</div></div>
-      <div class="ki"><div class="kb"></div><div>Headlamp</div></div>
-      <div class="ki"><div class="kb"></div><div>Boat light (if paddling at dusk)</div></div>
-    </div>
-  </div>
-  <div class="tipbox">
-    💡 <strong>Berner Fassmethode:</strong> Store boat in a 60L barrel (hardware store) on a folding luggage cart. Tow it behind the boat — keeps drinks cold AND saves space on board. 🍺<br><br>
-    💡 <strong>Budget:</strong> Full kit (boat + paddles + pump + 2 life jackets + rope + bag) = ~CHF 290. Split 3–4 ways and you have it forever.
-  </div>
-</div>
-
-<!-- ══════ TRAVEL ══════ -->
-<div id="travel" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🚆 Getting There from Basel</div><div class="shl"></div></div>
-  <div class="tt">
-    <div class="tth"><div>Route</div><div>To start</div><div>Home</div></div>
-    <div class="ttr"><div class="trr">Leibstadt → Laufenburg<span>Day trip #1 · Closest!</span></div><div class="trt">~1h</div><div class="trt">~½h</div></div>
-    <div class="ttr"><div class="trr">Stein am Rhein → Schaffhausen<span>Day trip #2 · Basel Bad Bf</span></div><div class="trt">~2h</div><div class="trt">~1h 30</div></div>
-    <div class="ttr"><div class="trr">Rheinfall → Rheinau<span>Day trip #3 · Basel Bad Bf</span></div><div class="trt">~1h 30</div><div class="trt">~2h 15</div></div>
-    <div class="ttr"><div class="trr">Aare: Thun–Bern<span>Overnight #1 · Day 1</span></div><div class="trt">~55 min</div><div class="trt">~1h 15</div></div>
-    <div class="ttr"><div class="trr">Aare: Bern–Hinterkappelen<span>Overnight #1 · Day 2</span></div><div class="trt">~1h</div><div class="trt">~1h 30</div></div>
-    <div class="ttr"><div class="trr">Reuss: Bremgarten–Gebenstorf<span>Overnight #2</span></div><div class="trt">~1h 15</div><div class="trt">~¼h</div></div>
-  </div>
-  <div class="inote">⚠️ For Stein am Rhein routes: depart from <strong>Basel Bad Bf</strong> (Badischer Bahnhof), not Basel SBB. Allow 10 min transfer. Always verify at sbb.ch.</div>
-</div>
-
-<!-- ══════ LINKS ══════ -->
-<div id="links" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">🔗 Essential Links</div><div class="shl"></div></div>
-  <div class="rc">
-    <div class="rescard"><div class="ri bl">💧</div><div class="rb"><div class="rn">hydrodaten.admin.ch</div><div class="rd2">Official BAFU flow data. Redesigned 2023. Check the morning of every trip.</div><span class="rtag upd">Still active</span></div></div>
-    <div class="rescard"><div class="ri bl">📱</div><div class="rb"><div class="rn">Meine Pegel (App)</div><div class="rd2">Free iOS + Android. Push alerts for flow levels. Replaces defunct HydroWatch.</div><span class="rtag upd">Replaces HydroWatch</span></div></div>
-    <div class="rescard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">aareschlauchboot.ch</div><div class="rd2">Boat rental Aare Uttigen→Bern. CHF 140–190. Code AARE26 = –30% until April 30!</div><span class="rtag upd">Discount active!</span></div></div>
-    <div class="rescard"><div class="ri gr">🛶</div><div class="rb"><div class="rn">rheinschlauchboot.ch</div><div class="rd2">NEW (2024) boat rental Stein am Rhein→Schaffhausen. From CHF 160/boat.</div><span class="rtag upd">New 2024</span></div></div>
-    <div class="rescard"><div class="ri bl">🗺</div><div class="rb"><div class="rn">map.geo.admin.ch</div><div class="rd2">Federal map with satellite view and distance measurement. Perfect for route planning.</div><span class="rtag">Still active</span></div></div>
-    <div class="rescard"><div class="ri ye">⚠️</div><div class="rb"><div class="rn">swissoutdoorassociation.ch</div><div class="rd2">Temporary river closures. Essential for the Reuss route — check 1 month before.</div><span class="rtag">Check for Reuss</span></div></div>
-    <div class="rescard"><div class="ri ye">📖</div><div class="rb"><div class="rn">Gummibootführer Schweiz — 7th Edition (2023)</div><div class="rd2">Updated guidebook by Iwona Eberle. CHF 37.50. Covers 2020 regulations. ISBN 978-3-907267-04-2</div><span class="rtag upd">New edition!</span></div></div>
-  </div>
-</div>
-
-<div class="footer">
-  Based on <em>Gummibootführer Schweiz</em> by Iwona Eberle (4th ed. 2016 · 7th ed. 2023 available)<br>
-  Updated with 2020 Swiss waterway regulations and 2026 venue research<br>
-  Always check hydrodaten.admin.ch before any trip · All tours at own risk<br>
-  Made with 🛶 and way too much enthusiasm
-</div>
 
 <script>
-// ── STARS ──
-(function(){
-  const c=document.getElementById('stars');
-  if(!c)return;
-  for(let i=0;i<55;i++){
-    const s=document.createElement('div');
-    s.className='star';
-    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*65}%;--d:${2+Math.random()*3}s;--delay:-${Math.random()*3}s;width:${1+Math.random()*1.2}px;height:${1+Math.random()*1.2}px`;
-    c.appendChild(s);
+// ═══════════════════════════════════════
+// ROUTE DATA — single source of truth
+// ═══════════════════════════════════════
+const ROUTES=[
+  {
+    id:'d1',
+    type:'day',
+    emoji:'🏰',
+    badge:'Day Trip · Closest',
+    name:'Leibstadt → Laufenburg',
+    sub:'Rhein · 11.6 km · Warmest + closest',
+    verdict:'Starts at a nuclear power plant, ends in a medieval double-city split by Napoleon. In between: sandy islands, Black Forest views, and a sandbar the book literally calls the Caribbean.',
+    photos:['./Laufenburg.jpg','./aare%20interlaken.webp'],
+    km:11.6,
+    hours:'3–4h',
+    difficulty:'Mittel',
+    temp:'20–22°C',
+    travel:'Basel → Laufenburg ~45 min',
+    river:'Rhein',
+    tags:['day','warmest','closest'],
+    pills:[
+      {c:'d','t':'11.6 km'},
+      {c:'d','t':'3–4 hours'},
+      {c:'d','t':'Mittel'},
+      {c:'w','t':'🌡 20–22°C warmest'},
+      {c:'b','t':'🚆 ~1h from Basel'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'🚀',name:'Leibstadt',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'🏖',name:'Dreispitz',sub:'Beach · km 3.8'},
+      {cls:'dm',emoji:'🏝',name:'Etzgen',sub:'Caribbean · km 6.8'},
+      {cls:'de',emoji:'🏰',name:'Laufenburg',sub:'Exit · km 11.6'}
+    ],
+    flow:'SMS 9234 · Q 2091 · Max 1300 m³/s',
+    facts:[
+      ['Entry','Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank'],
+      ['Exit','Laufenburg: Schlipf 200m after Laufenbrücke, left bank. ⚠️ Stay left'],
+      ['Hazard','Querströmung after bridge — stay left of channel'],
+      ['Beach stops','Dreispitz km 3.8 + Caribbean island km 6.8 🏖'],
+      ['Boat rental','No dedicated rental — bring own boats'],
+      ['Swimming','✅ Good. Avoid weir backflow at start']
+    ],
+    pros:['Closest to Basel — ~1h','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
+    cons:['Starts next to a nuclear plant 😅','No dedicated boat rental','Cross-current near bridge'],
+    fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
+    mapCoords:[[47.5912,8.1772],[47.5702,8.0684],[47.5602,8.0434],[47.5615,8.0594]]
+  },
+  {
+    id:'d2',
+    type:'day',
+    emoji:'🏯',
+    badge:'Day Trip · Scenic',
+    name:'Stein am Rhein → Schaffhausen',
+    sub:'Rhein · 18.8 km · Most scenic',
+    verdict:'A UNESCO-worthy medieval old town launches you into the most picturesque stretch of the Rhine — frescoed houses, vineyards climbing the hills, a convent island, and a finish right before the waterfall (don\'t go over it).',
+    photos:['./Region%20Stein%20am%20Rhein.jpg','./steinamrhein-insel-werd-rhein.jpg','./blick-auf-stein-am-rhein-von-der-insel-werd.jpg'],
+    km:18.8,
+    hours:'4–5h',
+    difficulty:'Leicht',
+    temp:'19–23°C',
+    travel:'Basel Bad Bf → Stein am Rhein ~2h',
+    river:'Rhein',
+    tags:['day','warmest'],
+    pills:[
+      {c:'d','t':'18.8 km'},
+      {c:'d','t':'4–5 hours'},
+      {c:'d','t':'Leicht'},
+      {c:'w','t':'🌡 19–23°C'},
+      {c:'b','t':'🚆 ~2h'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'🏯',name:'Stein am Rhein',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'⛪',name:'Insel Werd',sub:'Convent · km 1'},
+      {cls:'dm',emoji:'🍇',name:'Diessenhofen',sub:'Vineyards · km 8'},
+      {cls:'dw',emoji:'⚠️',name:'EXIT NOW',sub:'km 18.8'},
+      {cls:'de',emoji:'🏛',name:'Schaffhausen',sub:'Finish'}
+    ],
+    flow:'Stein am Rhein · Q 350 · Max 800 m³/s',
+    facts:[
+      ['Entry','Stein am Rhein: Public slip on left bank 300m downstream of bridge'],
+      ['Exit','Schaffhausen: ⚠️ CRITICAL — exit at Schifflände BEFORE Rheinfall. Do NOT continue.'],
+      ['Hazard','🚨 Rheinfall 4km past exit. Signs are clear. Exit WILL BE obvious.'],
+      ['Beach stops','Diessenhofen village (km 8), multiple vineyard stops'],
+      ['Boat rental','Rheinschlauchboot.ch — CHF 160/boat, rental + return'],
+      ['Swimming','✅ Excellent. Current is calm.']
+    ],
+    pros:['Most picturesque route','Medieval towns at both ends','Vineyards + convent island','Rental service available'],
+    cons:['Longest trip (4–5 hours)','Furthest from Basel (~2h)','⚠️ Rheinfall risk if you miss exit'],
+    fit:'For the people who want the most Instagram-worthy day. Calm water, beautiful villages, zero drama if you pay attention at the exit.',
+    mapCoords:[[47.6602,8.8597],[47.6577,8.8543],[47.6883,8.7521],[47.6936,8.6316]]
+  },
+  {
+    id:'d3',
+    type:'day',
+    emoji:'💦',
+    badge:'Day Trip · Dramatic',
+    name:'Rheinfall → Kloster Rheinau',
+    sub:'Rhein · 7 km · Most dramatic · 🌕 moonlight',
+    verdict:'The shortest route, but the most cinematic. Launch below Europe\'s largest waterfall, drift past a baroque monastery island, finish at a thousand-year-old Benedictine complex. Works as a moonlight trip on clear nights.',
+    photos:['./Rheinfall.jpeg','./Rhein%20bei%20Neuhausen.jpg'],
+    km:7,
+    hours:'2–3h',
+    difficulty:'Leicht',
+    temp:'18–20°C',
+    travel:'Basel → Neuhausen ~1h 30',
+    river:'Rhein',
+    tags:['day','moonlight'],
+    pills:[
+      {c:'d','t':'7 km'},
+      {c:'d','t':'2–3 hours'},
+      {c:'d','t':'Leicht'},
+      {c:'w','t':'🌕 moonlight'},
+      {c:'b','t':'🚆 ~1h 30'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'💦',name:'Rheinfall',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'🌳',name:'Nohl',sub:'Forest · km 3'},
+      {cls:'de',emoji:'⛪',name:'Rheinau',sub:'Abbey · km 7'}
+    ],
+    flow:'Neuhausen · Q 350 m³/s'
+    ,
+    facts:[
+      ['Entry','Below Rheinfall: marked public entry on left bank downstream of basin'],
+      ['Exit','Rheinau: Jetty at the Benedictine abbey, left bank'],
+      ['Hazard','Initial turbulence from the falls. Stay left, 200m downstream before you relax.'],
+      ['Beach stops','Nohl forest clearings, Rheinau abbey approach'],
+      ['Boat rental','None. Bring own.'],
+      ['Swimming','✅ Calm after first 200m. Magical at dusk.']
+    ],
+    pros:['Shortest, easiest day out','Start at iconic waterfall','Moonlight-trip capable','Baroque abbey finish'],
+    cons:['Colder water than other routes','No rental','Initial turbulence requires attention'],
+    fit:'When you want drama without commitment. Half a day, one beer at the abbey, home for dinner. Best under a full moon.',
+    mapCoords:[[47.6781,8.6154],[47.6681,8.6000],[47.6403,8.6175]]
+  },
+  {
+    id:'o1',
+    type:'night',
+    emoji:'⛰️',
+    badge:'Overnight · The Dream',
+    name:'Thun → Bern → Hinterkappelen',
+    sub:'Aare · 44 km · The dream route ⭐',
+    verdict:'The big one. The turquoise glacier-fed Aare, two perfect days, camping under the stars at Eichholz, drifting through Bern the second morning past the parliament, past the bear park, into the final sandy curves. This is the trip people talk about for years.',
+    photos:['./Mit%20dem%20Gummiboot%20auf%20der%20Aare.webp','./Aare%20von%20Thun%20nach%20Bern.webp','./aarebootle_Mit%20dem%20gummiboot%20von%20thun%20nach%20bern.jpg','./thun%20bern.jpg'],
+    km:44,
+    hours:'2 days',
+    difficulty:'Mittel',
+    temp:'16–20°C',
+    travel:'Basel → Thun ~55 min',
+    river:'Aare',
+    tags:['night','closest'],
+    pills:[
+      {c:'d','t':'44 km · 2 days'},
+      {c:'d','t':'Mittel'},
+      {c:'w','t':'🌡 16–20°C glacier'},
+      {c:'s','t':'⛺ Camping Eichholz'},
+      {c:'b','t':'🚆 ~55 min closest!'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'🏔',name:'Thun',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'🏖',name:'Kiesen',sub:'Lunch · km 12'},
+      {cls:'dc',emoji:'⛺',name:'Eichholz',sub:'Camp · km 28'},
+      {cls:'dm',emoji:'🐻',name:'Bern',sub:'Day 2 · km 32'},
+      {cls:'de',emoji:'🌅',name:'Hinterkappelen',sub:'Exit · km 44'}
+    ],
+    flow:'Thun · Q 220 m³/s · Max 380 m³/s',
+    facts:[
+      ['Entry','Thun: Schwäbis Strand, right bank 400m downstream of Scherzligschleuse'],
+      ['Exit','Hinterkappelen: Wohlensee shore, left bank. ⚠️ Exit BEFORE Wohleibrücke.'],
+      ['Day 1','Thun → Eichholz 28km · 5–6 hours paddling · camp'],
+      ['Day 2','Eichholz → Bern 4km → Hinterkappelen 12km · 3–4 hours'],
+      ['Camping','Camping Eichholz: CHF 14/night + tent. Book early. campingeichholz.ch'],
+      ['Swimming','✅ Cold but incredible. Swiss locals swim here daily.']
+    ],
+    pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Closest of all the routes'],
+    cons:['Glacier-cold water (16–20°C)','Requires camping gear','Must book Eichholz ahead','Most commitment'],
+    fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
+    mapCoords:[[46.7580,7.6250],[46.8183,7.5800],[46.9385,7.4632],[46.9480,7.4474],[46.9697,7.3883]]
+  },
+  {
+    id:'o2',
+    type:'night',
+    emoji:'🌲',
+    badge:'Overnight · Wildest',
+    name:'Bremgarten → Gebenstorf',
+    sub:'Reuss · 25.3 km · Advanced · Wildest',
+    verdict:'The secret one. Forgotten medieval Bremgarten, a forested reuss wilderness most people have never heard of, a night at a quiet riverside camping, and a finish at the Wasserschloss — where three Swiss rivers meet. Advanced. Empty. Wild.',
+    photos:['./Bremgarten.jpg','./bremgarten-melligen.jpg','./Easy-Rafting-Bremgarten-Mellingen776x776.jpg','./Bremgarten%20AG.jpg'],
+    km:25.3,
+    hours:'2 days',
+    difficulty:'Anspruchsvoll',
+    temp:'18–21°C',
+    travel:'Basel → Bremgarten AG ~1h 15',
+    river:'Reuss',
+    tags:['night'],
+    pills:[
+      {c:'d','t':'25.3 km · 2 days'},
+      {c:'x','t':'⚠️ Advanced'},
+      {c:'w','t':'🌡 18–21°C'},
+      {c:'s','t':'⛺ Camping Sulz'},
+      {c:'b','t':'🚆 ~1h 15'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'🏰',name:'Bremgarten',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'🌲',name:'Forest',sub:'Wild · km 6'},
+      {cls:'dc',emoji:'⛺',name:'Sulz',sub:'Camp · km 14'},
+      {cls:'dm',emoji:'🏰',name:'Mellingen',sub:'Day 2'},
+      {cls:'de',emoji:'💎',name:'Gebenstorf',sub:'Exit · km 25.3'}
+    ],
+    flow:'Mellingen · Q 180 m³/s · NOT > 250',
+    facts:[
+      ['Entry','Bremgarten: Slip at Reussufer 300m downstream of old covered bridge'],
+      ['Exit','Gebenstorf: Wasserschloss — where Reuss, Aare, Limmat meet. Left bank.'],
+      ['Hazard','Advanced only. Requires previous river experience. Check level BEFORE going.'],
+      ['Day 1','Bremgarten → Sulz 14km · 4 hours · camp'],
+      ['Camping','Camping Sulz: CHF ~18/tent. camping-sulz.ch · +41 56 496 48 79'],
+      ['Swimming','✅ Excellent. Rarely anyone around.']
+    ],
+    pros:['Wildest of all routes','Empty — barely any other boats','Covered medieval bridges','End at Swiss Wasserschloss','Affordable riverside camp'],
+    cons:['Advanced only — experience required','Must check water level carefully','Camping is basic','Hard to organise return transport'],
+    fit:'For the group that\'s already done the Aare and wants something more remote. Save this for year two.',
+    mapCoords:[[47.3522,8.3421],[47.3892,8.3242],[47.4176,8.2824],[47.4174,8.2402],[47.4736,8.2400]]
   }
-})();
+];
 
-// ── STORAGE ──
+// ═══════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════
 const S={
   get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
@@ -1041,49 +2645,148 @@ const getVotes=()=>S.get('gb_votes')||{};
 const saveVotes=v=>S.set('gb_votes',v);
 const getAvail=()=>S.get('gb_avail')||{};
 const saveAvail=a=>S.set('gb_avail',a);
+const getKit=()=>S.get('gb_kit')||{};
+const saveKit=k=>S.set('gb_kit',k);
 
-// ── VOTE ──
-const ROUTES=[
-  {id:'d1',e:'🏰',name:'Leibstadt → Laufenburg',sub:'Day Trip #1 · Rhine · 11.6km · Warmest + closest'},
-  {id:'d2',e:'🏯',name:'Stein am Rhein → Schaffhausen',sub:'Day Trip #2 · Rhine · 18.8km · Most scenic'},
-  {id:'d3',e:'💦',name:'Rheinfall → Kloster Rheinau',sub:'Day Trip #3 · Rhine · 7km · Most dramatic · 🌕 moonlight'},
-  {id:'o1',e:'⛰️',name:'Thun → Bern → Hinterkappelen',sub:'Overnight #1 · Aare · 44km · The dream route ⭐'},
-  {id:'o2',e:'🌲',name:'Bremgarten → Gebenstorf',sub:'Overnight #2 · Reuss · 25.3km · Advanced · Wildest'},
-];
 let voter=S.get('gb_voter')||'';
+let availPerson=S.get('gb_avail_person')||'';
 
-function buildVoteCards(){
-  const v=getVotes();
-  const total=ROUTES.reduce((s,r)=>s+(v[r.id]||[]).length,0);
-  let max=0,wid='';
-  ROUTES.forEach(r=>{const n=(v[r.id]||[]).length;if(n>max){max=n;wid=r.id;}});
-  const el=document.getElementById('voteCards');
+// ═══════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════
+function switchTab(id,scrollTo){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
+  positionTabIndicator();
+  window.scrollTo({top:0,behavior:'auto'});
+  if(scrollTo){
+    setTimeout(()=>{
+      const el=document.getElementById(scrollTo+'Anchor');
+      if(el){
+        const y=el.getBoundingClientRect().top+window.pageYOffset-70;
+        window.scrollTo({top:y,behavior:'smooth'});
+      }
+    },100);
+  }
+}
+
+function positionTabIndicator(){
+  const active=document.querySelector('.tab.active');
+  const ind=document.getElementById('tabIndicator');
+  if(!active||!ind)return;
+  const parent=active.parentElement;
+  const pRect=parent.getBoundingClientRect();
+  const aRect=active.getBoundingClientRect();
+  ind.style.left=(aRect.left-pRect.left)+'px';
+  ind.style.width=aRect.width+'px';
+}
+
+// ═══════════════════════════════════════
+// GALLERY (horizontal route cards)
+// ═══════════════════════════════════════
+let currentFilter='all';
+
+function matchesFilter(r,f){
+  if(f==='all')return true;
+  if(f==='day')return r.type==='day';
+  if(f==='night')return r.type==='night';
+  if(f==='warmest')return r.tags.includes('warmest');
+  if(f==='closest')return r.tags.includes('closest');
+  return true;
+}
+
+function renderGallery(){
+  const g=document.getElementById('gallery');
+  if(!g)return;
+  const filtered=ROUTES.filter(r=>matchesFilter(r,currentFilter));
+  g.innerHTML=filtered.map(r=>`
+    <article class="g-card" data-route="${r.id}" onclick="openPoster('${r.id}')">
+      <div class="g-photo">
+        <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3';this.src=''">
+        <div class="g-photo-ov"></div>
+        <div class="g-badge ${r.type}">${r.badge}</div>
+        <div class="g-km">${r.km}<span> km</span></div>
+        <div class="g-open">⤢ Open</div>
+      </div>
+      <div class="g-body">
+        <div class="g-title">${r.name}</div>
+        <div class="g-sub">${r.sub}</div>
+        <div class="g-meta">
+          <div class="g-meta-i">⏱ ${r.hours}</div>
+          <div class="g-meta-i">🌡 ${r.temp}</div>
+          <div class="g-meta-i">🚆 ${r.travel.split('~')[1]||''}</div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function galleryScroll(dir){
+  const g=document.getElementById('gallery');
+  if(!g)return;
+  const card=g.querySelector('.g-card');
+  const w=card?card.offsetWidth+18:320;
+  g.scrollBy({left:dir*w,behavior:'smooth'});
+}
+
+function scrollToRoutes(){
+  const el=document.getElementById('routesAnchor');
+  if(el){
+    const y=el.getBoundingClientRect().top+window.pageYOffset-70;
+    window.scrollTo({top:y,behavior:'smooth'});
+  }
+}
+
+// ═══════════════════════════════════════
+// VOTING
+// ═══════════════════════════════════════
+function renderVotePosters(){
+  const el=document.getElementById('votePosters');
   if(!el)return;
+  const votes=getVotes();
+  let maxVotes=0,leaderId=null;
+  ROUTES.forEach(r=>{
+    const n=(votes[r.id]||[]).length;
+    if(n>maxVotes){maxVotes=n;leaderId=r.id;}
+  });
+  const total=ROUTES.reduce((s,r)=>s+(votes[r.id]||[]).length,0);
+
   el.innerHTML=ROUTES.map(r=>{
-    const votes=v[r.id]||[];
-    const n=votes.length;
-    const pct=total>0?(n/total)*100:0;
-    const voted=voter&&votes.includes(voter);
-    return `<div class="vc">
-      <div class="vc-row">
-        <div class="vc-e">${r.e}</div>
-        <div class="vc-info"><div class="vc-name">${r.name}</div><div class="vc-sub">${r.sub}</div></div>
-        <button class="vbtn${voted?' voted':''}" id="vbtn_${r.id}" onclick="toggleVote('${r.id}')" ${!voter?'disabled':''}>
-          <span class="vh">${voted?'❤️':'🤍'}</span><span class="vcount">${n}</span>
+    const voters=votes[r.id]||[];
+    const n=voters.length;
+    const voted=voter&&voters.includes(voter);
+    const pct=maxVotes?Math.round((n/maxVotes)*100):0;
+    const isLeader=r.id===leaderId&&n>0;
+    const voterList=voters.length?'<strong>'+voters.join(', ')+'</strong>'+(voters.length===1?' is in':' are in'):'No votes yet';
+    return `<div class="vp${isLeader?' leading':''}" onclick="if(!event.target.closest('.vp-btn'))openPoster('${r.id}')">
+      <div class="vp-photo">
+        <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3'">
+        <div class="vp-title">${r.name}</div>
+      </div>
+      <div class="vp-body">
+        <div class="vp-info">
+          <div class="vp-sub">${r.sub}</div>
+          <div class="vp-bar"><div class="vp-fill" style="width:${pct}%"></div></div>
+        </div>
+        <button class="vp-btn${voted?' voted':''}" id="vpbtn_${r.id}" onclick="toggleVote('${r.id}')" ${!voter?'disabled':''}>
+          <span class="vp-h">${voted?'♥':'♡'}</span>
+          <span class="vp-count">${n}</span>
         </button>
       </div>
-      <div class="vc-track"><div class="vc-bar" style="width:${pct}%"></div></div>
-      <div class="vc-who">${n===0?'No votes yet — be the first!':votes.join(' · ')}</div>
+      <div class="vp-voters">${voterList}</div>
     </div>`;
   }).join('');
-  const banner=document.getElementById('winnerBanner');
-  if(banner){
-    if(max>0){
-      const w=ROUTES.find(r=>r.id===wid);
-      document.getElementById('winnerName').textContent=w.e+' '+w.name;
-      document.getElementById('winnerVoters').textContent=(v[wid]||[]).join(' · ')+' · '+max+' vote'+(max>1?'s':'');
-      banner.style.display='block';
-    }else banner.style.display='none';
+
+  // leader banner
+  const leader=document.getElementById('leader');
+  if(leaderId&&maxVotes>0){
+    const r=ROUTES.find(x=>x.id===leaderId);
+    leader.style.display='flex';
+    document.getElementById('leaderName').textContent=r.name;
+    const voters=votes[leaderId]||[];
+    document.getElementById('leaderVotes').textContent=`${maxVotes} vote${maxVotes>1?'s':''} · ${voters.join(', ')}`;
+  }else{
+    leader.style.display='none';
   }
 }
 
@@ -1093,35 +2796,36 @@ function loadVoter(){
   voter=n;S.set('gb_voter',n);
   const g=document.getElementById('vGreeting');
   document.getElementById('vSpan').textContent=n;
-  if(g)g.style.display='block';
-  buildVoteCards();
-  const an=document.getElementById('availName');
-  if(an&&!an.value)an.value=n;
+  g.classList.add('show');
+  renderVotePosters();
 }
+
 function toggleVote(rid){
   if(!voter)return;
   const v=getVotes();
   if(!v[rid])v[rid]=[];
   const i=v[rid].indexOf(voter);
-  const isNewVote=i<0;
+  const isNew=i<0;
   if(i>=0)v[rid].splice(i,1);else v[rid].push(voter);
   saveVotes(v);
-  buildVoteCards();
-  const btn=document.getElementById('vbtn_'+rid);
-  if(btn&&isNewVote){
-    btn.classList.add('bursting');
-    setTimeout(()=>btn.classList.remove('bursting'),600);
-    fireHeartBurst(btn);
+  renderVotePosters();
+  if(isNew){
+    const btn=document.getElementById('vpbtn_'+rid);
+    if(btn){
+      btn.classList.add('just-voted','bursting');
+      setTimeout(()=>btn.classList.remove('just-voted','bursting'),700);
+      fireHeartBurst(btn);
+    }
   }
 }
+
 function fireHeartBurst(btn){
-  const rect=btn.getBoundingClientRect();
   const parent=btn.parentElement;
+  if(getComputedStyle(parent).position==='static')parent.style.position='relative';
+  const rect=btn.getBoundingClientRect();
   const pRect=parent.getBoundingClientRect();
   const cx=(rect.left-pRect.left)+rect.width/2;
   const cy=(rect.top-pRect.top)+rect.height/2;
-  const prev=getComputedStyle(parent).position;
-  if(prev==='static')parent.style.position='relative';
   const hearts=['❤️','❤️','💛','✨'];
   hearts.forEach((h,idx)=>{
     const el=document.createElement('span');
@@ -1129,25 +2833,26 @@ function fireHeartBurst(btn){
     el.textContent=h;
     el.style.left=cx+'px';
     el.style.top=cy+'px';
-    const angle=(-Math.PI/2)+((idx-1.5)*0.45);
-    const dist=55+Math.random()*25;
+    const angle=(-Math.PI/2)+((idx-1.5)*0.5);
+    const dist=60+Math.random()*25;
     el.style.setProperty('--dx',(Math.cos(angle)*dist)+'px');
     el.style.setProperty('--dy',(Math.sin(angle)*dist)+'px');
     parent.appendChild(el);
     requestAnimationFrame(()=>el.classList.add('go'));
-    setTimeout(()=>el.remove(),1000);
+    setTimeout(()=>el.remove(),1100);
   });
 }
 
-// ── CALENDAR ──
+// ═══════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════
 const CAL_START=new Date(2026,3,1);
 const CAL_END=new Date(2026,8,30);
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 let calY=2026,calM=3;
-let availPerson=S.get('gb_avail_person')||'';
 
-function dk(y,m,d){return`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function dk(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
 
 function loadAvail(){
   const n=document.getElementById('availName').value.trim();
@@ -1157,13 +2862,10 @@ function loadAvail(){
   if(!a[n]){a[n]={};saveAvail(a);}
   const g=document.getElementById('aGreeting');
   document.getElementById('aSpan').textContent=n;
-  if(g)g.style.display='block';
-  renderCal();refreshSummary();
-  const vn=document.getElementById('voterName');
-  if(vn&&!vn.value)vn.value=n;
+  g.classList.add('show');
+  renderCal();
+  refreshSummary();
 }
-function prevMonth(){if(calY===2026&&calM===3)return;calM--;if(calM<0){calM=11;calY--;}renderCal();}
-function nextMonth(){if(calY===2026&&calM===8)return;calM++;if(calM>11){calM=0;calY++;}renderCal();}
 
 function renderCal(){
   const lbl=document.getElementById('calMonthLabel');
@@ -1218,6 +2920,9 @@ function renderCal(){
   g.innerHTML=html;
 }
 
+function prevMonth(){if(calY===2026&&calM===3)return;calM--;if(calM<0){calM=11;calY--;}renderCal();}
+function nextMonth(){if(calY===2026&&calM===8)return;calM++;if(calM>11){calM=0;calY++;}renderCal();}
+
 function tapDay(key){
   if(!availPerson)return;
   const a=getAvail();
@@ -1232,231 +2937,295 @@ function tapDay(key){
 function refreshSummary(){
   const avail=getAvail();
   const names=Object.keys(avail);
-  const el=document.getElementById('availResults');
-  if(!el)return;
-  if(names.length===0){el.style.display='none';return;}
-  const dayMap={};
+  if(names.length===0){
+    document.getElementById('availResults').classList.remove('show');
+    document.getElementById('bestWeekend').classList.remove('show');
+    return;
+  }
+  const scores={};
   names.forEach(n=>{
-    Object.entries(avail[n]||{}).forEach(([key,state])=>{
-      if(state>0){
-        if(!dayMap[key])dayMap[key]={free:[],maybe:[]};
-        if(state===1)dayMap[key].free.push(n);
-        else dayMap[key].maybe.push(n);
-      }
+    Object.entries(avail[n]||{}).forEach(([k,v])=>{
+      if(!scores[k])scores[k]={free:[],maybe:[]};
+      if(v===1)scores[k].free.push(n);
+      else if(v===2)scores[k].maybe.push(n);
     });
   });
-  const sorted=Object.entries(dayMap)
-    .map(([k,{free,maybe}])=>({k,score:free.length+maybe.length*.5,free,maybe}))
-    .sort((a,b)=>b.score-a.score||a.k.localeCompare(b.k))
-    .slice(0,10);
-  if(sorted.length===0){el.style.display='none';return;}
-  el.style.display='block';
-  const max=sorted[0].score||1;
+  const rows=Object.entries(scores).sort((a,b)=>{
+    const as=a[1].free.length*2+a[1].maybe.length;
+    const bs=b[1].free.length*2+b[1].maybe.length;
+    return bs-as;
+  }).slice(0,5);
+
+  if(rows.length===0){
+    document.getElementById('availResults').classList.remove('show');
+    document.getElementById('bestWeekend').classList.remove('show');
+    return;
+  }
+  document.getElementById('availResults').classList.add('show');
   const body=document.getElementById('arBody');
-  if(!body)return;
-  body.innerHTML=sorted.map(({k,score,free,maybe},i)=>{
-    const [y,m,d]=k.split('-');
-    const dt=new Date(+y,+m-1,+d);
-    const label=dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-    const fp=Math.round((free.length/max)*100);
-    const mp=Math.round((maybe.length/max)*100);
-    const pnames=[...free.map(n=>`<span style="color:#9ed4b0">${n}</span>`), ...maybe.map(n=>`<span style="color:#d4a84a">${n}?</span>`)].join(', ');
+  const maxScore=rows[0][1].free.length*2+rows[0][1].maybe.length||1;
+  body.innerHTML=rows.map(([k,v])=>{
+    const d=new Date(k);
+    const label=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const freeW=(v.free.length*2/maxScore)*100;
+    const maybeW=((v.free.length*2+v.maybe.length)/maxScore)*100;
     return `<div class="ar-row">
-      <div class="ar-label">${label}${i===0?' ✨':''}</div>
-      <div class="ar-track">
-        <div class="ar-maybe" style="width:${fp+mp}%"></div>
-        <div class="ar-free" style="width:${fp}%"></div>
-      </div>
-      <div class="ar-count" style="font-size:10px">${free.length>0?`<span style="color:var(--sage)">✓${free.length}</span>`:''}${maybe.length>0?` <span style="color:var(--gold)">◐${maybe.length}</span>`:''}</div>
-    </div>
-    ${pnames?`<div style="font-size:10px;color:rgba(240,232,216,.28);padding:1px 2px 5px;line-height:1.4">${pnames}</div>`:''}`;
+      <div class="ar-label">${label}</div>
+      <div class="ar-track"><div class="ar-maybe" style="width:${maybeW}%"></div><div class="ar-free" style="width:${freeW}%"></div></div>
+      <div class="ar-count">${v.free.length}${v.maybe.length?'+'+v.maybe.length:''}</div>
+    </div>`;
   }).join('');
-}
 
-// ── MAPS ──
-function makeMap(id,lat,lng,zoom){
-  const el=document.getElementById(id);
-  if(!el)return null;
-  const map=L.map(id,{zoomControl:true,scrollWheelZoom:false,attributionControl:false});
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(map);
-  map.setView([lat,lng],zoom);
-  return map;
-}
-function pin(map,lat,lng,type,name,detail){
-  if(!map)return;
-  const C={start:'#7a9e8a',end:'#c9a84c',swim:'#4a9ebe',warn:'#c44a3a',camp:'#1c3a52',exit:'#8a5a20',info:'#6b8090'};
-  const I={start:'🚀',end:'🏁',swim:'🏊',warn:'⚠️',camp:'⛺',exit:'🚌',info:'ℹ️'};
-  const c=C[type]||C.info;const ic=I[type]||'•';
-  const icon=L.divIcon({html:`<div style="background:${c};border:2px solid rgba(255,255,255,.25);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 10px rgba(0,0,0,.5)">${ic}</div>`,className:'',iconAnchor:[15,15]});
-  const popup=`<div style="font-family:sans-serif;max-width:200px;font-size:12px"><strong style="color:white;display:block;margin-bottom:3px">${name}</strong>${detail?`<span style="color:#aaa">${detail}</span>`:''}</div>`;
-  L.marker([lat,lng],{icon}).addTo(map).bindPopup(popup);
-}
-
-function initMaps(){
-  const ov=makeMap('mapOverview',47.3,7.9,8);
-  pin(ov,47.558,7.589,'info','📍 Basel','Your home base');
-  pin(ov,47.589,8.178,'start','Day 1: Leibstadt','11.6km · ~1h from Basel');
-  pin(ov,47.559,8.062,'end','Day 1: Laufenburg','Medieval old town finish');
-  pin(ov,47.663,8.854,'start','Day 2: Stein am Rhein','18.8km · ~2h from Basel Bad Bf');
-  pin(ov,47.694,8.647,'end','Day 2: Schaffhausen','Salzstadel takeout');
-  pin(ov,47.678,8.615,'start','Day 3: Rheinfall','7km · 3–4h');
-  pin(ov,47.642,8.608,'end','Day 3: Kloster Rheinau','Monastery island');
-  pin(ov,46.758,7.630,'start','Overnight 1: Thun','44km · 2 days · The dream route');
-  pin(ov,46.933,7.456,'camp','Camping Eichholz','Night 1 on the Aare');
-  pin(ov,46.965,7.384,'end','Overnight 1: Hinterkappelen','Day 2 exit');
-  pin(ov,47.351,8.338,'start','Overnight 2: Bremgarten','25.3km · 2 days · Wildest');
-  pin(ov,47.375,8.318,'camp','Camping Sulz','Night on the Reuss');
-  pin(ov,47.481,8.226,'end','Overnight 2: Gebenstorf','⛔ Stop here!');
-
-  const m1=makeMap('map_d1',47.575,8.120,12);
-  if(m1){
-    pin(m1,47.589,8.178,'start','Entry: Leibstadt','Slipanlage 200m below Stauwehr Dogern, left bank');
-    pin(m1,47.577,8.098,'swim','Dreispitz Beach','km 3.8 · Sandy beach · Fischerhütte bar');
-    pin(m1,47.573,8.083,'swim','"Caribbean" Island Etzgen','km 6.8 · Best swim stop');
-    pin(m1,47.562,8.068,'warn','⚠️ Laufenbrücke','Cross-current on right — stay LEFT');
-    pin(m1,47.559,8.062,'end','Exit: Laufenburg','Schlipf 200m after bridge, left bank');
-  }
-  const m2=makeMap('map_d2',47.680,8.750,12);
-  if(m2){
-    pin(m2,47.663,8.854,'start','Entry: Stein am Rhein','Rheinbrücke left bank');
-    pin(m2,47.672,8.773,'warn','⚠️ Bibermüli (km 5.1)','Ferry lane changes without warning');
-    pin(m2,47.689,8.736,'exit','Mid-exit: Diessenhofen (km 9.7)','Good split point · Bus back');
-    pin(m2,47.694,8.647,'end','Exit: Schaffhausen','Salzstadel right bank ⛔');
-  }
-  const m3=makeMap('map_d3',47.663,8.580,13);
-  if(m3){
-    pin(m3,47.678,8.615,'start','Entry: below Rheinfall','⛔ Do NOT enter Rheinfallbecken');
-    pin(m3,47.669,8.582,'swim','Badi Dachsen','km 2 · Glacé stop');
-    pin(m3,47.661,8.558,'swim','Calm bend — best swim','Wide section, current nearly stops');
-    pin(m3,47.653,8.548,'warn','⚠️ Stauwehr Rheinau (km 6.4)','Portage: carry 60m OR Rollwagen trolley');
-    pin(m3,47.642,8.608,'end','Exit: Kloster Rheinau','Left bank after Klosterbrücke');
-  }
-  const mo1=makeMap('map_o1',46.870,7.510,11);
-  if(mo1){
-    pin(mo1,46.758,7.630,'start','Entry: Thun','OR safer: Uttigen (below rapids)');
-    pin(mo1,46.795,7.582,'warn','⚠️ Uttiger Welle (km 5.1)','Real rapids · Beginners: start at Uttigen');
-    pin(mo1,46.933,7.456,'camp','⛺ Camping Eichholz (km 25)','~CHF 14/night · Book early');
-    pin(mo1,46.942,7.449,'info','Bern Marzili lido','30 min walk to Bern Altstadt');
-    pin(mo1,46.951,7.458,'info','Bern Old Town loop','UNESCO Old Town curves in river');
-    pin(mo1,46.962,7.427,'warn','⚠️ Stauwehr Engehalde (Day 2)','Portage 300m right bank');
-    pin(mo1,46.965,7.384,'end','Exit: Hinterkappelen','Rowing Club · 7 min bus · Or Strandbar Bogen 17 🍺');
-  }
-  const mo2=makeMap('map_o2',47.415,8.290,12);
-  if(mo2){
-    pin(mo2,47.351,8.338,'start','Entry: Bremgarten (Hexenturm)','Walk medieval Altstadt first');
-    pin(mo2,47.355,8.332,'warn','⚠️ Honeggerwehr (km 1.3)','Pass RIGHT only · Left = fatal weir');
-    pin(mo2,47.375,8.318,'camp','⛺ Camping Sulz (km 8.4)','Restaurant Rüssstübli on site');
-    pin(mo2,47.386,8.307,'warn','⚠️ Gnadental Rapids (km 9–10)','Sharp Nagelfluh boulders · dangerous for inflatables');
-    pin(mo2,47.418,8.274,'exit','Mid-exit: Mellingen (km 14.3)','Good bail-out point');
-    pin(mo2,47.481,8.226,'end','Exit: Gebenstorf ⛔','MUST exit here · weir downstream');
+  // Best weekend
+  const weekends=findBestWeekend(avail);
+  const bw=document.getElementById('bestWeekend');
+  if(weekends){
+    bw.classList.add('show');
+    document.getElementById('bwDate').textContent=weekends.label;
+    document.getElementById('bwWho').textContent=weekends.who;
+  }else{
+    bw.classList.remove('show');
   }
 }
 
-// ── INIT ──
-function initApp(){
-  if(voter){
-    const vn=document.getElementById('voterName');
-    const vg=document.getElementById('vGreeting');
-    const vs=document.getElementById('vSpan');
-    if(vn)vn.value=voter;
-    if(vs)vs.textContent=voter;
-    if(vg)vg.style.display='block';
+function findBestWeekend(avail){
+  const names=Object.keys(avail);
+  if(names.length<2)return null;
+  const d=new Date(CAL_START);
+  let best=null,bestScore=0;
+  while(d<=CAL_END){
+    const dow=(d.getDay()+6)%7;
+    if(dow===5){
+      const sat=dk(d.getFullYear(),d.getMonth(),d.getDate());
+      const sunD=new Date(d);sunD.setDate(sunD.getDate()+1);
+      const sun=dk(sunD.getFullYear(),sunD.getMonth(),sunD.getDate());
+      const freeBoth=names.filter(n=>{
+        const a=avail[n]||{};
+        return (a[sat]===1||a[sat]===2)&&(a[sun]===1||a[sun]===2);
+      });
+      const allFree=names.filter(n=>{
+        const a=avail[n]||{};
+        return a[sat]===1&&a[sun]===1;
+      });
+      const score=allFree.length*3+freeBoth.length;
+      if(score>bestScore&&freeBoth.length>=2){
+        bestScore=score;
+        best={
+          label:d.toLocaleDateString('en-GB',{day:'numeric',month:'long'})+' – '+sunD.toLocaleDateString('en-GB',{day:'numeric',month:'long'}),
+          who:(allFree.length>=2?allFree.join(', ')+' all free ✓':freeBoth.join(', ')+' available')+' · Perfect for an overnight'
+        };
+      }
+    }
+    d.setDate(d.getDate()+1);
   }
-  if(availPerson){
-    const an=document.getElementById('availName');
-    const ag=document.getElementById('aGreeting');
-    const as_=document.getElementById('aSpan');
-    if(an)an.value=availPerson;
-    if(as_)as_.textContent=availPerson;
-    if(ag)ag.style.display='block';
-  }
+  return best;
+}
+
+// ═══════════════════════════════════════
+// KIT CHECKLIST
+// ═══════════════════════════════════════
+const KIT=[
+  {group:'Required by law',items:[
+    {id:'lj',t:'Life jacket (min. 75N river / 100N Rhine)',req:true},
+    {id:'lbl',t:'Boat labelled with name, address, phone',req:true},
+    {id:'kid',t:'Life jacket on kids under 12 AT ALL TIMES',req:true}
+  ]},
+  {group:'Essential',items:[
+    {id:'pump',t:'Boat pump'},
+    {id:'patch',t:'Puncture repair kit'},
+    {id:'drybag',t:'Waterproof dry bag for phone + keys'},
+    {id:'shoes',t:'Closed-toe water shoes or old sneakers'},
+    {id:'sun',t:'Sunscreen (reef-safe)'},
+    {id:'hat',t:'Sun hat or cap'},
+    {id:'sunglasses',t:'Sunglasses with strap'},
+    {id:'water',t:'Drinking water (1.5L+ per person)'},
+    {id:'snacks',t:'Snacks + sandwiches in waterproof bag'},
+    {id:'cash',t:'Cash (some exit towns cash-only)'},
+    {id:'id',t:'ID + Swiss travel pass'},
+    {id:'towel',t:'Quick-dry towel'},
+    {id:'first',t:'Small first aid kit'}
+  ]},
+  {group:'Nice to have',items:[
+    {id:'speaker',t:'Waterproof speaker'},
+    {id:'cooler',t:'Cooler bag + cold drinks 🍻'},
+    {id:'camera',t:'GoPro or waterproof camera'},
+    {id:'rope',t:'Rope (to tie boats together)'},
+    {id:'wickel',t:'Wickelfisch (Swiss swim bag)'},
+    {id:'jumper',t:'Warm layer for after swim'}
+  ]},
+  {group:'Overnight only',items:[
+    {id:'tent',t:'Tent + sleeping bag'},
+    {id:'headlamp',t:'Headlamp'},
+    {id:'camping-food',t:'Camping dinner + breakfast'},
+    {id:'booking',t:'Campsite booked in advance ⚠️'}
+  ]}
+];
+
+function renderKit(){
+  const el=document.getElementById('kitGroups');
+  if(!el)return;
+  const state=getKit();
+  el.innerHTML=KIT.map(g=>`
+    <div class="kit-group">
+      <div class="kit-group-t">${g.group}</div>
+      <div class="kit-items">
+        ${g.items.map(i=>`
+          <div class="kit-i${state[i.id]?' done':''}" onclick="toggleKit('${i.id}')">
+            <div class="kit-chk"></div>
+            <div class="kit-text">${i.t}</div>
+            ${i.req?'<div class="kit-req">Required</div>':''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  updateKitProgress();
+}
+
+function toggleKit(id){
+  const s=getKit();
+  s[id]=!s[id];
+  if(!s[id])delete s[id];
+  saveKit(s);
+  renderKit();
+}
+
+function resetKit(){
+  if(!confirm('Reset the whole checklist?'))return;
+  saveKit({});
+  renderKit();
+}
+
+function updateKitProgress(){
+  const s=getKit();
+  const total=KIT.reduce((a,g)=>a+g.items.length,0);
+  const done=Object.values(s).filter(Boolean).length;
+  const num=document.getElementById('kitProgressNum');
+  const bar=document.getElementById('kitBarFill');
+  if(num)num.textContent=`${done}/${total}`;
+  if(bar)bar.style.width=(total?(done/total)*100:0)+'%';
+}
+
+// ═══════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════
+function renderCountdown(){
+  const target=new Date(2026,6,18); // July 18 — peak warm week
   const now=new Date();
-  if(now.getFullYear()===2026&&now.getMonth()>=3&&now.getMonth()<=8)calM=now.getMonth();
-  buildVoteCards();
-  renderCal();
-  refreshSummary();
-  initMaps();
-  const vn=document.getElementById('voterName');
-  const an=document.getElementById('availName');
-  if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
-  if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
-  wirePosters();
-}
-
-// ── CINEMATIC POSTER MODAL ──
-function wirePosters(){
-  document.querySelectorAll('.rcard').forEach(card=>{
-    card.addEventListener('click',function(e){
-      // don't hijack clicks inside the embedded map
-      if(e.target.closest('.rmap,.leaflet-container,.leaflet-control'))return;
-      // don't hijack link clicks
-      if(e.target.closest('a,button'))return;
-      openPoster(card);
-    });
-  });
-  const poster=document.getElementById('poster');
-  if(poster){
-    poster.addEventListener('click',function(e){
-      if(e.target===poster)closePoster();
-    });
+  const ms=target-now;
+  const days=Math.ceil(ms/(1000*60*60*24));
+  const el=document.getElementById('cdNum');
+  const txt=document.getElementById('cdText');
+  if(!el)return;
+  if(days>0){
+    el.textContent=days;
+    txt.textContent=`Days until the Rhine hits its warmest week. That's when the water's 22°C and the vote leader should happen.`;
+  }else if(days>-60){
+    el.textContent='NOW';
+    el.style.fontSize='36px';
+    txt.textContent=`The warmest window is open. Drop everything — this is the weekend.`;
+  }else{
+    document.getElementById('countdown').style.display='none';
   }
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape')closePoster();
-  });
 }
 
-function openPoster(card){
+// ═══════════════════════════════════════
+// CINEMATIC POSTER MODAL
+// ═══════════════════════════════════════
+function openPoster(rid){
+  const r=ROUTES.find(x=>x.id===rid);
+  if(!r)return;
   const poster=document.getElementById('poster');
   const inner=document.getElementById('posterInner');
-  if(!poster||!inner)return;
 
-  // Extract data from the card
-  const firstImg=card.querySelector('.rphoto img');
-  const photoSrc=firstImg?firstImg.getAttribute('src'):'';
-  const photoAlt=firstImg?firstImg.getAttribute('alt'):'';
-  const badge=card.querySelector('.rbadge');
-  const badgeText=badge?badge.textContent:'Route';
-  const title=card.querySelector('.rtitle');
-  const titleText=title?title.textContent:'';
-  const sub=card.querySelector('.rsub');
-  const subText=sub?sub.textContent:'';
-  const pills=card.querySelector('.rpills');
-  const pillsHTML=pills?pills.innerHTML:'';
-  const travel=card.querySelector('.rtravel');
-  const travelHTML=travel?travel.outerHTML:'';
-  const verdict=card.querySelector('.rverdict');
-  const verdictText=verdict?verdict.textContent:'';
-  const diag=card.querySelector('.rdiag');
-  const facts=card.querySelector('.rfacts');
-  const update=card.querySelector('.rupdate');
-  const warn=card.querySelector('.rwarn');
-  const pc=card.querySelector('.rpc');
-  const fit=card.querySelector('.rfit');
+  const pillClass={d:'rpd',w:'rpw',b:'rpb',s:'rps',x:'rpx'};
+  const pillsHTML=r.pills.map(p=>`<span class="rp ${pillClass[p.c]||'rpd'}">${p.t}</span>`).join('');
 
-  let bodyHTML='';
-  if(verdictText)bodyHTML+=`<div class="poster-verdict">${verdictText}</div>`;
-  if(travelHTML)bodyHTML+=`<div class="poster-section">${travelHTML}</div>`;
-  if(update)bodyHTML+=`<div class="poster-section">${update.outerHTML}</div>`;
-  if(warn)bodyHTML+=`<div class="poster-section">${warn.outerHTML}</div>`;
-  if(diag)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">Waypoints</div>${diag.outerHTML}</div>`;
-  if(facts)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">The details</div>${facts.outerHTML}</div>`;
-  if(pc)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">Honestly</div>${pc.outerHTML}</div>`;
-  if(fit)bodyHTML+=`<div class="poster-section">${fit.outerHTML}</div>`;
+  const diagHTML=r.diag.map((s,i,arr)=>`
+    <div class="dstop">
+      <div class="ddot ${s.cls}">${s.emoji}</div>
+      <div class="dname">${s.name}</div>
+      <div class="dsub">${s.sub}</div>
+    </div>${i<arr.length-1?'<div class="darrow">→</div>':''}
+  `).join('');
 
-  inner.innerHTML=
-    '<div class="poster-hero">'+
-      (photoSrc?'<img src="'+photoSrc+'" alt="'+photoAlt+'">':'')+
-      '<div class="poster-head">'+
-        '<div class="poster-eyebrow">'+badgeText+'</div>'+
-        '<div class="poster-title">'+titleText+'</div>'+
-        '<div class="poster-sub">'+subText+'</div>'+
-        '<div class="poster-pills rpills">'+pillsHTML+'</div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="poster-body">'+bodyHTML+'</div>';
+  const factsHTML=r.facts.map(([l,v])=>`<div class="fact"><strong>${l}</strong>${v}</div>`).join('');
+  const prosHTML=r.pros.map(p=>`<div class="pci"><span class="pcd"></span>${p}</div>`).join('');
+  const consHTML=r.cons.map(p=>`<div class="pci"><span class="pcd"></span>${p}</div>`).join('');
+
+  inner.innerHTML=`
+    <div class="poster-hero">
+      <img src="${r.photos[0]}" alt="${r.name}">
+      <div class="poster-head">
+        <div class="poster-eyebrow">${r.badge}</div>
+        <div class="poster-title">${r.name}</div>
+        <div class="poster-sub">${r.verdict.split('.')[0]}.</div>
+        <div class="poster-pills">${pillsHTML}</div>
+      </div>
+    </div>
+    <div class="poster-body">
+      <div class="poster-verdict">${r.verdict}</div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">Getting there</div>
+        <div class="rtravel">🚆 ${r.travel}</div>
+      </div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">Route waypoints</div>
+        <div class="rdiag">
+          <div class="diag-l">Entry → Exit</div>
+          <div class="dpath">${diagHTML}</div>
+          <div class="dsms">Flow check: ${r.flow}</div>
+        </div>
+      </div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">The details</div>
+        <div class="rfacts">${factsHTML}</div>
+      </div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">Honestly</div>
+        <div class="rpc">
+          <div class="pcpros"><div class="pcl">Pros</div>${prosHTML}</div>
+          <div class="pccons"><div class="pcl">Cons</div>${consHTML}</div>
+        </div>
+      </div>
+
+      <div class="poster-section">
+        <div class="rfit">
+          <span class="rfitl">Why this one</span>
+          <div class="rfitt">${r.fit}</div>
+        </div>
+      </div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">On the map</div>
+        <div class="rmap" id="pmap_${r.id}"></div>
+      </div>
+    </div>
+  `;
 
   poster.classList.add('open');
   document.body.classList.add('poster-locked');
+
+  // Init map if leaflet loaded
+  if(typeof L!=='undefined'){
+    setTimeout(()=>{
+      try{
+        const mapEl=document.getElementById('pmap_'+r.id);
+        if(!mapEl)return;
+        const m=L.map(mapEl,{zoomControl:false,attributionControl:true});
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM',maxZoom:18}).addTo(m);
+        const latlngs=r.mapCoords;
+        L.polyline(latlngs,{color:'#d97b2e',weight:4,opacity:.85}).addTo(m);
+        L.circleMarker(latlngs[0],{radius:7,color:'#5a8a6c',fillColor:'#5a8a6c',fillOpacity:1}).addTo(m).bindPopup('Entry');
+        L.circleMarker(latlngs[latlngs.length-1],{radius:7,color:'#b84438',fillColor:'#b84438',fillOpacity:1}).addTo(m).bindPopup('Exit');
+        m.fitBounds(latlngs,{padding:[30,30]});
+      }catch(e){}
+    },350);
+  }
 }
 
 function closePoster(){
@@ -1470,30 +3239,136 @@ function closePoster(){
   },400);
 }
 
+// ═══════════════════════════════════════
+// SHARE
+// ═══════════════════════════════════════
+function buildTripSummary(){
+  const votes=getVotes();
+  let topId=null,topN=0;
+  ROUTES.forEach(r=>{
+    const n=(votes[r.id]||[]).length;
+    if(n>topN){topN=n;topId=r.id;}
+  });
+  const top=topId?ROUTES.find(r=>r.id===topId):null;
+  const avail=getAvail();
+  const best=findBestWeekend(avail);
+
+  let s='🛶 GUMMIBOOT 2026\n\n';
+  if(top){
+    s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   🚆 ${top.travel}\n\n`;
+  }
+  if(best){
+    s+=`📅 Best weekend: ${best.label}\n   ${best.who}\n\n`;
+  }
+  s+=`Vote + mark your days: ${location.href}\n`;
+  return s;
+}
+
+async function copyTripSummary(){
+  const text=buildTripSummary();
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast('Copied to clipboard ✓');
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=text;
+    document.body.appendChild(ta);
+    ta.select();
+    try{document.execCommand('copy');showToast('Copied ✓');}catch(err){showToast('Copy failed');}
+    ta.remove();
+  }
+}
+
+async function shareUrl(){
+  const data={title:'Gummiboot 2026',text:'Vote for our summer river trip 🛶',url:location.href};
+  if(navigator.share){
+    try{await navigator.share(data);}catch(e){}
+  }else{
+    try{
+      await navigator.clipboard.writeText(location.href);
+      showToast('Link copied ✓');
+    }catch(e){showToast('Copy link manually');}
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+function init(){
+  // Tab wiring
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>switchTab(t.dataset.tab));
+  });
+  window.addEventListener('resize',positionTabIndicator);
+  setTimeout(positionTabIndicator,50);
+  setTimeout(positionTabIndicator,300);
+
+  // Filters
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+      currentFilter=c.dataset.filter;
+      renderGallery();
+    });
+  });
+
+  // Restore names
+  if(voter){
+    document.getElementById('voterName').value=voter;
+    document.getElementById('vSpan').textContent=voter;
+    document.getElementById('vGreeting').classList.add('show');
+  }
+  if(availPerson){
+    document.getElementById('availName').value=availPerson;
+    document.getElementById('aSpan').textContent=availPerson;
+    document.getElementById('aGreeting').classList.add('show');
+  }
+
+  // Set current month
+  const now=new Date();
+  if(now.getFullYear()===2026&&now.getMonth()>=3&&now.getMonth()<=8)calM=now.getMonth();
+
+  // Render everything
+  renderGallery();
+  renderVotePosters();
+  renderCal();
+  refreshSummary();
+  renderKit();
+  renderCountdown();
+
+  // Enter-to-submit
+  const vn=document.getElementById('voterName');
+  const an=document.getElementById('availName');
+  if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
+  if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+
+  // Poster close handlers
+  const poster=document.getElementById('poster');
+  if(poster){
+    poster.addEventListener('click',e=>{if(e.target===poster)closePoster();});
+  }
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePoster();});
+}
+
 document.addEventListener('DOMContentLoaded',function(){
+  // Load leaflet (optional — for poster maps)
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   s.crossOrigin='';
-  s.onload=initApp;
-  s.onerror=function(){
-    document.querySelectorAll('.rmap,[id^=map]').forEach(el=>{
-      el.innerHTML='<div style="height:100%;display:flex;align-items:center;justify-content:center;color:rgba(240,232,216,.3);font-size:12px;text-align:center;padding:16px">🗺 Maps load on gummiboot-2026.vercel.app</div>';
-    });
-    buildVoteCards();renderCal();refreshSummary();
-    const vn=document.getElementById('voterName');const an=document.getElementById('availName');
-    if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
-    if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
-    wirePosters();
-  };
+  s.onload=init;
+  s.onerror=init; // still init even if maps fail
   document.head.appendChild(s);
 });
 </script>
-
-<!-- ══════ CINEMATIC POSTER MODAL ══════ -->
-<div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
-  <button class="poster-close" onclick="closePoster()" aria-label="Close">×</button>
-  <div class="poster-inner" id="posterInner"></div>
-</div>
 
 </body>
 </html>
