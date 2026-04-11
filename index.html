@@ -326,6 +326,92 @@ body{background:var(--ink);font-family:var(--sans);color:var(--ink-m);-webkit-fo
 .rc{display:flex;flex-direction:column;gap:7px}
 .white-card{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:16px 18px;font-size:12px;color:rgba(240,232,216,.5);line-height:1.85;margin-bottom:10px}
 .white-card .sct{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:11px;display:block}
+
+/* ═══ V9 ═══ */
+
+/* LETTER — unboxed, arriving on cream paper (dark edition) */
+.letter-wrap{max-width:640px;margin:0 auto;padding:96px 28px 20px}
+.letter-card{position:relative;padding:0;background:none;border:none;border-radius:0;overflow:visible}
+.letter-card::before{display:none}
+.letter-card::after{display:none}
+.l-from{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:36px;display:flex;align-items:center;gap:14px}
+.l-from::before{content:'';width:28px;height:1px;background:var(--amber);opacity:.6}
+.l-body{font-family:var(--serif);font-size:clamp(18px,3.6vw,23px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.9;margin-bottom:34px;letter-spacing:.002em}
+.l-body strong{font-style:normal;font-weight:500;color:#fff}
+.l-sign{font-family:var(--serif);font-size:14px;font-style:italic;color:rgba(240,232,216,.4);margin-top:28px;line-height:1.7}
+.l-sign em{color:var(--amber);font-style:italic;opacity:.75}
+.l-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;background:transparent;color:var(--amber);border:1px solid rgba(212,137,58,.5);border-radius:2px;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--sans);cursor:pointer;transition:all .25s var(--ease)}
+.l-cta:hover{background:var(--amber);color:var(--ink);border-color:var(--amber);transform:translateY(-1px)}
+.l-alts{display:none}
+
+/* CALENDAR — anticipation heading + dark styling fix */
+.cal-question{font-family:var(--serif);font-size:clamp(22px,5.5vw,32px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.3;text-align:center;max-width:540px;margin:0 auto 10px;letter-spacing:-.005em}
+.cal-question-sub{font-size:11px;color:rgba(240,232,216,.35);text-align:center;letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;font-weight:400}
+.cal-mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
+.cm-btn{background:transparent;border:1px solid rgba(240,232,216,.1);border-radius:2px;width:38px;height:34px;color:var(--water);font-family:var(--sans);font-weight:400;font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;line-height:1}
+.cm-btn:hover:not(:disabled){background:rgba(74,158,190,.1);border-color:rgba(74,158,190,.3)}
+.cm-btn:disabled{opacity:.2;cursor:not-allowed}
+.cm-label{font-family:var(--serif);font-size:22px;font-weight:400;font-style:italic;color:var(--cream);letter-spacing:.01em}
+.cal-grid-wrap{background:rgba(14,24,32,.5);border:1px solid rgba(240,232,216,.06);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.avail-intro{background:rgba(26,47,61,.3);border:1px solid rgba(240,232,216,.05);border-radius:3px;padding:20px 22px;margin-bottom:18px}
+.vi-title{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--water);font-weight:600}
+.vi-sub{font-size:12px;color:rgba(240,232,216,.45);line-height:1.65}
+.btn-go{background:var(--water);color:var(--ink);border:none;border-radius:2px;padding:11px 18px;font-size:11px;font-weight:600;font-family:var(--sans);letter-spacing:1px;cursor:pointer;transition:all .15s;white-space:nowrap;text-transform:uppercase}
+.btn-go:hover{background:#5ab0d0;transform:translateY(-1px)}
+
+/* ROUTE CARDS — tappable affordance */
+.rcard{cursor:pointer;position:relative}
+.rcard::after{content:'⤢  Open poster';position:absolute;top:14px;right:14px;background:rgba(14,24,32,.75);backdrop-filter:blur(10px);border:1px solid rgba(240,232,216,.15);border-radius:20px;padding:6px 12px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--cream);opacity:0;transform:translateY(-4px);transition:all .3s var(--ease);pointer-events:none;z-index:3}
+.rcard:hover::after{opacity:1;transform:translateY(0)}
+@media(hover:none){.rcard::after{opacity:.85;transform:none}}
+
+/* CINEMATIC POSTER MODAL */
+.poster{position:fixed;inset:0;z-index:1000;background:rgba(7,14,20,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.poster.open{opacity:1;pointer-events:auto}
+.poster-inner{max-width:780px;margin:0 auto;min-height:100%;transform:translateY(24px);transition:transform .45s var(--ease);opacity:0;transition:transform .45s var(--ease),opacity .35s var(--ease)}
+.poster.open .poster-inner{transform:translateY(0);opacity:1}
+.poster-close{position:fixed;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(14,24,32,.85);backdrop-filter:blur(12px);border:1px solid rgba(240,232,216,.15);color:var(--cream);font-size:20px;cursor:pointer;z-index:1001;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.poster-close:hover{background:var(--amber);color:var(--ink);border-color:var(--amber);transform:rotate(90deg)}
+
+/* poster hero — full-bleed photo */
+.poster-hero{position:relative;width:100%;height:72svh;min-height:480px;max-height:720px;overflow:hidden;background:var(--ink)}
+.poster-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:pkenburns 14s ease-out forwards;transform-origin:center}
+@keyframes pkenburns{0%{transform:scale(1.08)}100%{transform:scale(1.0)}}
+.poster-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,24,32,.4) 0%,rgba(14,24,32,.1) 30%,rgba(14,24,32,.2) 55%,rgba(14,24,32,.92) 92%,var(--ink) 100%);pointer-events:none}
+.poster-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,24,32,.55) 0%,transparent 50%);pointer-events:none;z-index:1}
+.poster-head{position:absolute;left:0;right:0;bottom:0;padding:28px clamp(24px,5vw,44px) 34px;z-index:2;color:var(--cream)}
+.poster-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.poster-eyebrow::before{content:'';width:32px;height:1px;background:var(--amber)}
+.poster-title{font-family:var(--serif);font-size:clamp(34px,8vw,58px);font-weight:300;font-style:italic;line-height:1.0;letter-spacing:-.02em;margin-bottom:14px;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.5)}
+.poster-sub{font-family:var(--serif);font-size:clamp(14px,2.8vw,18px);font-style:italic;color:rgba(240,232,216,.72);margin-bottom:18px;line-height:1.4;font-weight:300}
+.poster-pills{display:flex;flex-wrap:wrap;gap:6px}
+.poster-pills .rp{background:rgba(14,24,32,.6);backdrop-filter:blur(10px);border:1px solid rgba(240,232,216,.15)}
+
+/* poster body */
+.poster-body{background:var(--ink);padding:40px clamp(22px,5vw,44px) 80px}
+.poster-verdict{font-family:var(--serif);font-size:clamp(16px,3vw,20px);font-style:italic;font-weight:300;color:rgba(240,232,216,.7);line-height:1.75;border-left:2px solid var(--amber);padding:4px 0 4px 20px;margin-bottom:32px;max-width:640px}
+.poster-section{margin-bottom:28px}
+.poster-section-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--water);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.poster-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(74,158,190,.3),transparent)}
+.poster .rdiag,.poster .rfacts,.poster .rpc,.poster .rfit,.poster .rmap,.poster .rupdate,.poster .rwarn{margin-left:0;margin-right:0}
+.poster .rfacts{grid-template-columns:1fr 1fr}
+.poster .rmap{height:260px}
+.poster .rmap .leaflet-container{height:260px}
+@media(max-width:560px){
+  .poster .rfacts,.poster .rpc{grid-template-columns:1fr}
+  .poster-hero{height:62svh;min-height:420px}
+}
+body.poster-locked{overflow:hidden}
+
+/* VOTE HEART — real delight */
+@keyframes heartThump{0%{transform:scale(1)}20%{transform:scale(1.5)}40%{transform:scale(.9)}60%{transform:scale(1.3)}100%{transform:scale(1.25)}}
+.vbtn.voted .vh{animation:heartThump .55s var(--spring)}
+.vbtn.bursting{box-shadow:0 0 0 0 rgba(201,168,76,.6);animation:voteFlash .6s ease-out}
+@keyframes voteFlash{0%{box-shadow:0 0 0 0 rgba(201,168,76,.5);background:rgba(201,168,76,.35)}100%{box-shadow:0 0 0 18px rgba(201,168,76,0);background:rgba(201,168,76,.18)}}
+.heart-burst{position:absolute;pointer-events:none;font-size:14px;opacity:0;transform:translate(-50%,-50%);z-index:10;will-change:transform,opacity}
+@keyframes hfly{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}15%{opacity:1;transform:translate(calc(-50% + var(--dx,0) * .3),calc(-50% + var(--dy,-12px) * .3)) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx,0)),calc(-50% + var(--dy,-60px))) scale(.7)}}
+.heart-burst.go{animation:hfly .9s ease-out forwards}
+
 </style>
 </head>
 <body>
@@ -358,19 +444,17 @@ body{background:var(--ink);font-family:var(--sans);color:var(--ink-m);-webkit-fo
 <!-- LETTER -->
 <div class="letter-wrap">
   <div class="letter-card">
-    <div class="l-from">A note from Roxane · Summer 2026</div>
+    <div class="l-from">A note from Roxane</div>
     <div class="l-body">
       Okay. I need you to clear a weekend this summer — or two.<br><br>
       I've been dreaming about this for years: <strong>inflatable dinghies, Swiss rivers, all of us together.</strong> No agenda. No schedule. Just the current, the sun, a cold drink, and wherever the river takes us.<br><br>
       I've done the research (obviously 😅). I built this whole guide so we can plan it — and then completely forget we planned anything once we're on the water.<br><br>
       <strong>Pick a route. Add your available days. Say yes.</strong> The rest takes care of itself. 🛶
     </div>
-    <a class="l-cta" href="#vote">Vote for your route ↓</a>
-    <div class="l-alts">
-      <strong>✏️ Customise this ending</strong>
-      A) "I've been trying to get us on a river for three summers. This is the year." &nbsp;·&nbsp;
-      B) "Someone send me availability. We're doing this before September. No excuses." &nbsp;·&nbsp;
-      C) "I made a whole guide. Don't let it go to waste. Let's go."
+    <a class="l-cta" href="#vote">Pick your route ↓</a>
+    <div class="l-sign">
+      — Roxane<br>
+      <em>Written from Basel, with the rivers already running warm</em>
     </div>
   </div>
 </div>
@@ -412,10 +496,13 @@ body{background:var(--ink);font-family:var(--sans);color:var(--ink-m);-webkit-fo
 
 <!-- ══════ DATES ══════ -->
 <div id="dates" class="sec">
-  <div class="sh"><div class="shl"></div><div class="sht">📅 When Are You Free?</div><div class="shl"></div></div>
+  <div style="padding:72px 0 18px">
+    <div class="cal-question">Which of these days are we going to mark as <em style="color:var(--amber);font-style:italic">the day</em>?</div>
+    <div class="cal-question-sub">Tap to claim your availability</div>
+  </div>
   <div class="avail-intro">
     <div class="vi-title" style="margin-bottom:8px">Add your available days</div>
-    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap any day to mark it. <strong style="color:#6dba8a">Green = free ✓</strong> &nbsp; <strong style="color:#e8a838">Yellow = maybe ◐</strong> &nbsp; Grey = not marked. Tap again to cycle through. The app finds the best overlap automatically.<br><br><span style="color:rgba(245,237,224,.45);font-size:11px">💡 Tip: free both days of a weekend? Tap both — overnight trips become possible!</span></div>
+    <div class="vi-sub" style="margin-bottom:14px">Enter your name, then tap any day to mark it. <strong style="color:#9ed4b0">Green = free ✓</strong> &nbsp; <strong style="color:#d4a84a">Yellow = maybe ◐</strong> &nbsp; Tap again to cycle through. The app finds the best overlap automatically.<br><br><span style="color:rgba(240,232,216,.32);font-size:11px">💡 Free both days of a weekend? Tap both — overnight trips become possible.</span></div>
     <div class="name-row">
       <input class="ni" id="availName" type="text" placeholder="Your name…" autocomplete="off" maxlength="24">
       <button class="btn-go" onclick="loadAvail()">Load my dates</button>
@@ -424,14 +511,14 @@ body{background:var(--ink);font-family:var(--sans);color:var(--ink-m);-webkit-fo
   </div>
 
   <!-- Month navigation -->
-  <div id="calNav" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <button onclick="prevMonth()" style="background:rgba(74,158,190,.15);border:1px solid rgba(74,158,190,.3);border-radius:8px;padding:7px 14px;color:var(--water);font-family:Syne,sans-serif;font-weight:700;font-size:13px;cursor:pointer">‹</button>
-    <div id="calMonthLabel" style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sand)"></div>
-    <button onclick="nextMonth()" style="background:rgba(74,158,190,.15);border:1px solid rgba(74,158,190,.3);border-radius:8px;padding:7px 14px;color:var(--water);font-family:Syne,sans-serif;font-weight:700;font-size:13px;cursor:pointer">›</button>
+  <div class="cal-mnav">
+    <button class="cm-btn" onclick="prevMonth()" aria-label="Previous month">‹</button>
+    <div id="calMonthLabel" class="cm-label"></div>
+    <button class="cm-btn" onclick="nextMonth()" aria-label="Next month">›</button>
   </div>
 
   <!-- Calendar grid -->
-  <div id="calGrid" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.15);margin-bottom:14px"></div>
+  <div id="calGrid" class="cal-grid-wrap"></div>
 
   <!-- Best days summary -->
   <div class="avail-results" id="availResults">
@@ -1016,11 +1103,40 @@ function toggleVote(rid){
   const v=getVotes();
   if(!v[rid])v[rid]=[];
   const i=v[rid].indexOf(voter);
+  const isNewVote=i<0;
   if(i>=0)v[rid].splice(i,1);else v[rid].push(voter);
   saveVotes(v);
   buildVoteCards();
   const btn=document.getElementById('vbtn_'+rid);
-  if(btn){btn.style.transform='scale(1.4)';setTimeout(()=>btn.style.transform='scale(1)',200);}
+  if(btn&&isNewVote){
+    btn.classList.add('bursting');
+    setTimeout(()=>btn.classList.remove('bursting'),600);
+    fireHeartBurst(btn);
+  }
+}
+function fireHeartBurst(btn){
+  const rect=btn.getBoundingClientRect();
+  const parent=btn.parentElement;
+  const pRect=parent.getBoundingClientRect();
+  const cx=(rect.left-pRect.left)+rect.width/2;
+  const cy=(rect.top-pRect.top)+rect.height/2;
+  const prev=getComputedStyle(parent).position;
+  if(prev==='static')parent.style.position='relative';
+  const hearts=['❤️','❤️','💛','✨'];
+  hearts.forEach((h,idx)=>{
+    const el=document.createElement('span');
+    el.className='heart-burst';
+    el.textContent=h;
+    el.style.left=cx+'px';
+    el.style.top=cy+'px';
+    const angle=(-Math.PI/2)+((idx-1.5)*0.45);
+    const dist=55+Math.random()*25;
+    el.style.setProperty('--dx',(Math.cos(angle)*dist)+'px');
+    el.style.setProperty('--dy',(Math.sin(angle)*dist)+'px');
+    parent.appendChild(el);
+    requestAnimationFrame(()=>el.classList.add('go'));
+    setTimeout(()=>el.remove(),1000);
+  });
 }
 
 // ── CALENDAR ──
@@ -1264,6 +1380,94 @@ function initApp(){
   const an=document.getElementById('availName');
   if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
   if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+  wirePosters();
+}
+
+// ── CINEMATIC POSTER MODAL ──
+function wirePosters(){
+  document.querySelectorAll('.rcard').forEach(card=>{
+    card.addEventListener('click',function(e){
+      // don't hijack clicks inside the embedded map
+      if(e.target.closest('.rmap,.leaflet-container,.leaflet-control'))return;
+      // don't hijack link clicks
+      if(e.target.closest('a,button'))return;
+      openPoster(card);
+    });
+  });
+  const poster=document.getElementById('poster');
+  if(poster){
+    poster.addEventListener('click',function(e){
+      if(e.target===poster)closePoster();
+    });
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape')closePoster();
+  });
+}
+
+function openPoster(card){
+  const poster=document.getElementById('poster');
+  const inner=document.getElementById('posterInner');
+  if(!poster||!inner)return;
+
+  // Extract data from the card
+  const firstImg=card.querySelector('.rphoto img');
+  const photoSrc=firstImg?firstImg.getAttribute('src'):'';
+  const photoAlt=firstImg?firstImg.getAttribute('alt'):'';
+  const badge=card.querySelector('.rbadge');
+  const badgeText=badge?badge.textContent:'Route';
+  const title=card.querySelector('.rtitle');
+  const titleText=title?title.textContent:'';
+  const sub=card.querySelector('.rsub');
+  const subText=sub?sub.textContent:'';
+  const pills=card.querySelector('.rpills');
+  const pillsHTML=pills?pills.innerHTML:'';
+  const travel=card.querySelector('.rtravel');
+  const travelHTML=travel?travel.outerHTML:'';
+  const verdict=card.querySelector('.rverdict');
+  const verdictText=verdict?verdict.textContent:'';
+  const diag=card.querySelector('.rdiag');
+  const facts=card.querySelector('.rfacts');
+  const update=card.querySelector('.rupdate');
+  const warn=card.querySelector('.rwarn');
+  const pc=card.querySelector('.rpc');
+  const fit=card.querySelector('.rfit');
+
+  let bodyHTML='';
+  if(verdictText)bodyHTML+=`<div class="poster-verdict">${verdictText}</div>`;
+  if(travelHTML)bodyHTML+=`<div class="poster-section">${travelHTML}</div>`;
+  if(update)bodyHTML+=`<div class="poster-section">${update.outerHTML}</div>`;
+  if(warn)bodyHTML+=`<div class="poster-section">${warn.outerHTML}</div>`;
+  if(diag)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">Waypoints</div>${diag.outerHTML}</div>`;
+  if(facts)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">The details</div>${facts.outerHTML}</div>`;
+  if(pc)bodyHTML+=`<div class="poster-section"><div class="poster-section-title">Honestly</div>${pc.outerHTML}</div>`;
+  if(fit)bodyHTML+=`<div class="poster-section">${fit.outerHTML}</div>`;
+
+  inner.innerHTML=
+    '<div class="poster-hero">'+
+      (photoSrc?'<img src="'+photoSrc+'" alt="'+photoAlt+'">':'')+
+      '<div class="poster-head">'+
+        '<div class="poster-eyebrow">'+badgeText+'</div>'+
+        '<div class="poster-title">'+titleText+'</div>'+
+        '<div class="poster-sub">'+subText+'</div>'+
+        '<div class="poster-pills rpills">'+pillsHTML+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="poster-body">'+bodyHTML+'</div>';
+
+  poster.classList.add('open');
+  document.body.classList.add('poster-locked');
+}
+
+function closePoster(){
+  const poster=document.getElementById('poster');
+  if(!poster)return;
+  poster.classList.remove('open');
+  document.body.classList.remove('poster-locked');
+  setTimeout(()=>{
+    const inner=document.getElementById('posterInner');
+    if(inner)inner.innerHTML='';
+  },400);
 }
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -1279,9 +1483,17 @@ document.addEventListener('DOMContentLoaded',function(){
     const vn=document.getElementById('voterName');const an=document.getElementById('availName');
     if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
     if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+    wirePosters();
   };
   document.head.appendChild(s);
 });
 </script>
+
+<!-- ══════ CINEMATIC POSTER MODAL ══════ -->
+<div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
+  <button class="poster-close" onclick="closePoster()" aria-label="Close">×</button>
+  <div class="poster-inner" id="posterInner"></div>
+</div>
+
 </body>
 </html>
