@@ -118,9 +118,9 @@ a{color:inherit;text-decoration:none}
 }
 .hero-img{
   position:absolute;inset:0;
-  background-image:url('./Hero%20photo%202.JPG');
+  background-image:url('./thun%20bern.jpg');
   background-size:cover;
-  background-position:center center;
+  background-position:center 60%;
   animation:heroZoom 18s ease-out forwards;
 }
 @keyframes heroZoom{0%{transform:scale(1.12)}100%{transform:scale(1.02)}}
@@ -697,10 +697,22 @@ a{color:inherit;text-decoration:none}
   line-height:1.5;
   font-style:italic;
 }
+.g-verdict{
+  font-family:var(--serif);
+  font-size:15px;
+  font-style:italic;
+  font-weight:400;
+  color:var(--ink-m);
+  line-height:1.45;
+  margin-top:10px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  letter-spacing:-.005em;
+}
 .g-meta{
   display:flex;
   gap:12px;
-  margin-top:6px;
+  margin-top:10px;
   padding-top:12px;
   border-top:1px solid var(--line);
   font-size:10.5px;
@@ -708,6 +720,48 @@ a{color:inherit;text-decoration:none}
   letter-spacing:.3px;
 }
 .g-meta-i{display:flex;align-items:center;gap:5px}
+.g-mini-weather{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.gmw-label{
+  font-size:8.5px;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:7px;
+}
+.gmw-days{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  font-size:11px;
+  color:var(--ink-l);
+}
+.gmw-day{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:6px 4px;
+  text-align:center;
+  transition:all .2s;
+}
+.gmw-dow{
+  font-size:8px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--ink-l);
+  margin-bottom:2px;
+}
+.gmw-icon{font-size:14px;line-height:1;margin-bottom:2px}
+.gmw-t{
+  font-size:11px;
+  font-weight:700;
+  color:var(--ink);
+}
 .g-open{
   position:absolute;
   top:14px;
@@ -809,8 +863,18 @@ a{color:inherit;text-decoration:none}
   background:var(--card);
   border:1px solid rgba(29,122,156,.14);
   border-radius:6px;
-  padding:20px 22px;
+  padding:24px 24px 22px;
   box-shadow:var(--sh-s);
+}
+.nc-opener{
+  font-family:var(--serif);
+  font-size:28px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.1;
+  margin-bottom:12px;
+  letter-spacing:-.01em;
 }
 .nc-title{
   font-size:10px;
@@ -868,6 +932,96 @@ a{color:inherit;text-decoration:none}
 }
 
 /* Vote posters — photo-based picker */
+/* V12: Vote pulse — at a glance tally */
+.vote-pulse{
+  max-width:720px;
+  margin:0 auto 24px;
+  padding:22px 24px 24px;
+  background:linear-gradient(135deg,#fffcf2,#fefff8);
+  border:1px solid rgba(232,131,47,.18);
+  border-radius:8px;
+  box-shadow:var(--sh-s);
+  position:relative;
+  overflow:hidden;
+}
+.vote-pulse::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--sun),var(--river),var(--sage));
+}
+.vp-pulse-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:18px;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.vp-pulse-label{
+  font-family:var(--serif);
+  font-size:22px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  letter-spacing:-.01em;
+  line-height:1.1;
+}
+.vp-pulse-total{
+  font-size:10.5px;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+}
+.vp-pulse-bars{display:flex;flex-direction:column;gap:8px}
+.vp-pulse-row{
+  display:grid;
+  grid-template-columns:minmax(130px,auto) 1fr 28px;
+  gap:12px;
+  align-items:center;
+  padding:8px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.vp-pulse-row:hover{background:rgba(29,122,156,.06)}
+.vp-pulse-row.lead{background:linear-gradient(90deg,rgba(232,131,47,.10),transparent)}
+.vp-pulse-name{
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.vp-pulse-crown{font-size:12px;margin-left:4px}
+.vp-pulse-track{
+  height:10px;
+  background:var(--paper-d);
+  border-radius:100px;
+  overflow:hidden;
+  position:relative;
+}
+.vp-pulse-fill{
+  height:100%;
+  border-radius:100px;
+  transition:width .8s var(--smooth);
+  min-width:0;
+}
+.vp-pulse-n{
+  font-family:var(--serif);
+  font-size:18px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  text-align:right;
+  line-height:1;
+}
+@media(max-width:520px){
+  .vp-pulse-row{grid-template-columns:110px 1fr 24px;gap:8px}
+  .vp-pulse-name{font-size:11px}
+}
+
 .vote-posters{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -2213,6 +2367,25 @@ body.poster-locked{overflow:hidden}
   .overview-map{height:360px}
 }
 
+/* V12: forecast kicker note */
+.forecast-note{
+  max-width:720px;
+  margin:14px auto 20px;
+  padding:14px 20px;
+  background:linear-gradient(135deg,rgba(29,122,156,.08),rgba(29,122,156,.03));
+  border:1px solid rgba(29,122,156,.18);
+  border-left:3px solid var(--river);
+  border-radius:6px;
+  font-size:13px;
+  color:var(--ink-m);
+  line-height:1.5;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.forecast-note .fn-icon{font-size:18px;line-height:1;margin-top:1px}
+.forecast-note strong{color:var(--ink);font-weight:600}
+
 /* FORECAST SCROLL */
 .forecast-scroll{
   display:flex;
@@ -2476,6 +2649,11 @@ body.poster-locked{overflow:hidden}
   font-size:220px;
   opacity:.05;
   transform:rotate(-10deg);
+  animation:tdBoatDrift 28s ease-in-out infinite;
+}
+@keyframes tdBoatDrift{
+  0%,100%{transform:translateX(0) rotate(-10deg)}
+  50%{transform:translateX(-40px) rotate(-8deg)}
 }
 .td-l-eyebrow{
   font-size:10px;
@@ -2628,8 +2806,8 @@ body.poster-locked{overflow:hidden}
 .match-card{
   background:var(--card);
   border-radius:12px;
-  padding:44px 38px 38px;
-  max-width:420px;
+  padding:0 0 38px;
+  max-width:460px;
   width:100%;
   text-align:center;
   box-shadow:var(--sh-xl);
@@ -2645,10 +2823,27 @@ body.poster-locked{overflow:hidden}
   top:0;left:0;right:0;
   height:4px;
   background:linear-gradient(90deg,var(--sun),var(--river),var(--sage));
+  z-index:3;
 }
+.match-hero-img{
+  width:100%;
+  aspect-ratio:16/10;
+  background-image:url('./Hero%20photo%202.JPG');
+  background-size:cover;
+  background-position:center center;
+  position:relative;
+}
+.match-hero-img::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(255,255,255,.5) 100%);
+}
+.match-inner{padding:28px 38px 0}
 .match-sparkle{
-  font-size:46px;
-  margin-bottom:18px;
+  font-size:34px;
+  margin:-24px 0 14px;
+  position:relative;
+  z-index:2;
   animation:matchSparkle 1.8s ease-in-out infinite;
 }
 @keyframes matchSparkle{
@@ -2713,11 +2908,16 @@ body.poster-locked{overflow:hidden}
   color:var(--cream);
   line-height:1.35;
   letter-spacing:-.005em;
-  opacity:0;
-  transform:translateY(12px);
-  transition:all 1.2s var(--smooth) .3s;
 }
-.blessing.show .blessing-text{opacity:1;transform:translateY(0)}
+.blw{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(18px);
+  animation:blessingWordIn 1.1s var(--smooth) forwards;
+}
+@keyframes blessingWordIn{
+  to{opacity:1;transform:translateY(0)}
+}
 .blessing-text strong{color:var(--sun-l);font-weight:400}
 
 /* EMOJI PICKER */
@@ -3090,6 +3290,14 @@ body.poster-locked{overflow:hidden}
   text-transform:uppercase;
   opacity:.7;
 }
+.closing-hero-credits{
+  margin-top:40px;
+  font-size:10px;
+  line-height:1.8;
+  opacity:.5;
+  letter-spacing:.3px;
+  font-weight:300;
+}
 /* Save as PDF toast */
 .pdf-toast{
   position:fixed;
@@ -3161,8 +3369,8 @@ body.poster-locked{overflow:hidden}
   <div class="hero-grad"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Böötle · Summer 2026</div>
-    <h1 class="hero-title">Summer is waiting.<br><strong>Let's go with the flow.</strong></h1>
-    <p class="hero-sub">Six inflatable-dinghy routes through Swiss rivers — all reachable from Basel. Vote, pick a weekend, and pack a cold drink. The current does the rest. 🛶</p>
+    <h1 class="hero-title">Summer is calling.<br><strong>Let's go with the flow…</strong></h1>
+    <p class="hero-sub">Six river routes for inflatable boats — all reachable from Basel. Vote, pick a weekend, pack a cold drink. The current does the rest. 🛶</p>
     <div class="hero-meta">
       <div class="hm"><span class="hm-n">6</span><span class="hm-l">Curated<br>routes</span></div>
       <div class="hm"><span class="hm-n">116</span><span class="hm-l">Kilometres<br>of river</span></div>
@@ -3324,11 +3532,12 @@ body.poster-locked{overflow:hidden}
       </div>
 
       <div class="name-card">
-        <div class="nc-title">Who are you?</div>
-        <div class="nc-sub">Enter your name once, then vote below and mark your days on the calendar.</div>
+        <div class="nc-opener">Who's in?</div>
+        <div class="nc-title">Enter your name</div>
+        <div class="nc-sub">Once, and then you're part of the crew. Vote on routes, mark your days, claim what you're bringing.</div>
         <div class="nc-row">
           <input class="nc-input" id="voterName" type="text" placeholder="Your name…" autocomplete="given-name" maxlength="24">
-          <button class="nc-btn" onclick="loadVoter()">Start voting</button>
+          <button class="nc-btn" onclick="loadVoter()">Join the crew</button>
         </div>
         <div class="nc-greet" id="vGreeting">Welcome back, <strong id="vSpan"></strong> ✨</div>
       </div>
@@ -3401,6 +3610,10 @@ body.poster-locked{overflow:hidden}
         <div class="section-kicker">Live weather</div>
         <h2 class="section-title">Looking ahead</h2>
         <p class="section-sub">14-day forecast for Basel — scroll through to find your weekend. Sun icons = river-ready days.</p>
+      </div>
+      <div class="forecast-note">
+        <span class="fn-icon">💡</span>
+        <span><strong>This is Basel</strong> — the "when is the crew free" forecast. Each route has its own live weather at its launch point, inside the route poster.</span>
       </div>
     </div>
     <div class="forecast-scroll" id="forecastScroll">
@@ -3603,29 +3816,30 @@ body.poster-locked{overflow:hidden}
 </main>
 
 <!-- V12: Closing sunset hero — the adventure day is over -->
-<section class="closing-hero" aria-label="The day is done">
+<section class="closing-hero" aria-label="Golden hour — the river carries you home">
   <div class="closing-hero-img"></div>
   <div class="closing-hero-veil"></div>
   <div class="closing-hero-text">
     <div class="closing-hero-eyebrow">And then</div>
-    <div class="closing-hero-line">the day is done.<br>The current carries you home.</div>
+    <div class="closing-hero-line">golden hour arrives.<br>The current carries you home.</div>
     <div class="closing-hero-sig">Böötle · Summer 2026</div>
+    <div class="closing-hero-credits">
+      Built with 🛶 for the Summer 2026 crew<br>
+      Sources: Salamander Verlag (7th ed. 2023) · hydrodaten.admin.ch · SBB
+    </div>
   </div>
 </section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div>Built with 🛶 for the Summer 2026 crew</div>
-  <div>Sources: Salamander Verlag (7th ed. 2023) · hydrodaten.admin.ch · SBB</div>
-</footer>
 
 <!-- Route Match overlay (fires after voting) -->
 <div class="match-overlay" id="matchOverlay" onclick="closeMatch()">
   <div class="match-card">
-    <div class="match-sparkle">✨</div>
-    <div class="match-title" id="matchTitle">You matched with the crew!</div>
-    <div class="match-body" id="matchBody"></div>
-    <button class="match-btn" onclick="closeMatch()">Nice</button>
+    <div class="match-hero-img"></div>
+    <div class="match-inner">
+      <div class="match-sparkle">✨</div>
+      <div class="match-title" id="matchTitle">You matched with the crew!</div>
+      <div class="match-body" id="matchBody"></div>
+      <button class="match-btn" onclick="closeMatch()">Nice</button>
+    </div>
   </div>
 </div>
 
@@ -3707,7 +3921,7 @@ const ROUTES=[
     pros:['Closest to Basel — ~1h','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
     cons:['Starts next to a nuclear plant 😅','No dedicated boat rental','Cross-current near bridge'],
     fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
-    mapCoords:[[47.5912,8.1772],[47.5702,8.0684],[47.5602,8.0434],[47.5615,8.0594]],
+    mapCoords:[[47.5912,8.1772],[47.5898,8.1680],[47.5876,8.1585],[47.5848,8.1490],[47.5820,8.1395],[47.5790,8.1295],[47.5762,8.1190],[47.5740,8.1085],[47.5720,8.0975],[47.5702,8.0870],[47.5690,8.0775],[47.5680,8.0680],[47.5665,8.0590],[47.5640,8.0510],[47.5615,8.0475],[47.5602,8.0434],[47.5610,8.0510],[47.5615,8.0594]],
     waypoints:[
       {t:'entry',lat:47.5912,lng:8.1772,emoji:'🚀',name:'Leibstadt',desc:'Slipanlage, left bank, below Stauwehr Dogern'},
       {t:'beach',lat:47.5702,lng:8.0684,emoji:'🏖',name:'Dreispitz beach',desc:'Sandy stop + Fischerhütte bar, km 3.8'},
@@ -3761,7 +3975,7 @@ const ROUTES=[
     pros:['Most picturesque route','Medieval towns at both ends','Vineyards + convent island','Rental service available'],
     cons:['Longest trip (4–5 hours)','Furthest from Basel (~2h)','⚠️ Rheinfall risk if you miss exit'],
     fit:'For the people who want the most Instagram-worthy day. Calm water, beautiful villages, zero drama if you pay attention at the exit.',
-    mapCoords:[[47.6602,8.8597],[47.6577,8.8543],[47.6883,8.7521],[47.6936,8.6316]],
+    mapCoords:[[47.6602,8.8597],[47.6610,8.8540],[47.6635,8.8475],[47.6670,8.8395],[47.6700,8.8300],[47.6725,8.8195],[47.6745,8.8080],[47.6770,8.7960],[47.6810,8.7840],[47.6855,8.7720],[47.6883,8.7605],[47.6900,8.7490],[47.6912,8.7370],[47.6925,8.7250],[47.6940,8.7130],[47.6955,8.7010],[47.6970,8.6890],[47.6985,8.6770],[47.6992,8.6650],[47.6975,8.6530],[47.6950,8.6430],[47.6936,8.6316]],
     waypoints:[
       {t:'entry',lat:47.6602,lng:8.8597,emoji:'🏯',name:'Stein am Rhein',desc:'Public slip, left bank 300m downstream of bridge'},
       {t:'sight',lat:47.6577,lng:8.8543,emoji:'⛪',name:'Insel Werd',desc:'Convent island, km 1 — slow-float it'},
@@ -3815,7 +4029,7 @@ const ROUTES=[
     pros:['Shortest, easiest day out','Start at iconic waterfall','Moonlight-trip capable','Baroque abbey finish'],
     cons:['Colder water than other routes','No rental','Initial turbulence requires attention'],
     fit:'When you want drama without commitment. Half a day, one beer at the abbey, home for dinner. Best under a full moon.',
-    mapCoords:[[47.6781,8.6154],[47.6681,8.6000],[47.6403,8.6175]],
+    mapCoords:[[47.6781,8.6154],[47.6768,8.6090],[47.6750,8.6035],[47.6725,8.5995],[47.6695,8.5975],[47.6660,8.5980],[47.6625,8.6005],[47.6595,8.6040],[47.6560,8.6080],[47.6525,8.6115],[47.6490,8.6140],[47.6455,8.6160],[47.6425,8.6170],[47.6403,8.6175]],
     waypoints:[
       {t:'entry',lat:47.6781,lng:8.6154,emoji:'💦',name:'Below Rheinfall',desc:'Marked public entry, left bank downstream of basin'},
       {t:'hazard',lat:47.6770,lng:8.6130,emoji:'⚠️',name:'Initial turbulence',desc:'Stay left, 200m before you relax — falls backflow'},
@@ -3869,7 +4083,7 @@ const ROUTES=[
     pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Closest of all the routes'],
     cons:['Glacier-cold water (16–20°C)','Requires camping gear','Must book Eichholz ahead','Most commitment'],
     fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
-    mapCoords:[[46.7580,7.6250],[46.8183,7.5800],[46.9385,7.4632],[46.9480,7.4474],[46.9697,7.3883]],
+    mapCoords:[[46.7580,7.6250],[46.7660,7.6180],[46.7745,7.6100],[46.7830,7.6015],[46.7915,7.5925],[46.7995,7.5840],[46.8085,7.5760],[46.8183,7.5700],[46.8275,7.5625],[46.8370,7.5555],[46.8465,7.5485],[46.8560,7.5410],[46.8650,7.5340],[46.8740,7.5265],[46.8825,7.5180],[46.8910,7.5085],[46.8990,7.4985],[46.9065,7.4880],[46.9135,7.4770],[46.9200,7.4660],[46.9260,7.4560],[46.9320,7.4480],[46.9385,7.4432],[46.9440,7.4420],[46.9480,7.4374],[46.9530,7.4280],[46.9580,7.4170],[46.9625,7.4060],[46.9660,7.3965],[46.9697,7.3883]],
     waypoints:[
       {t:'entry',lat:46.7580,lng:7.6250,emoji:'🏔',name:'Thun Schwäbis',desc:'Right bank 400m downstream of Scherzligschleuse'},
       {t:'beach',lat:46.8183,lng:7.5800,emoji:'🏖',name:'Kiesen lunch stop',desc:'Wide sandy bank, km 12 — stop for food'},
@@ -3925,7 +4139,7 @@ const ROUTES=[
     pros:['Wildest of all routes','Empty — barely any other boats','Covered medieval bridges','End at Swiss Wasserschloss','Affordable riverside camp'],
     cons:['Advanced only — experience required','Must check water level carefully','Camping is basic','Hard to organise return transport'],
     fit:'For the group that\'s already done the Aare and wants something more remote. Save this for year two.',
-    mapCoords:[[47.3522,8.3421],[47.3892,8.3242],[47.4176,8.2824],[47.4174,8.2402],[47.4736,8.2400]],
+    mapCoords:[[47.3522,8.3421],[47.3580,8.3395],[47.3640,8.3355],[47.3700,8.3310],[47.3760,8.3270],[47.3820,8.3255],[47.3870,8.3260],[47.3892,8.3242],[47.3945,8.3180],[47.4005,8.3095],[47.4060,8.3000],[47.4105,8.2900],[47.4145,8.2800],[47.4176,8.2724],[47.4200,8.2650],[47.4215,8.2560],[47.4220,8.2470],[47.4195,8.2420],[47.4174,8.2402],[47.4240,8.2395],[47.4320,8.2390],[47.4405,8.2395],[47.4490,8.2400],[47.4575,8.2410],[47.4660,8.2405],[47.4736,8.2400]],
     waypoints:[
       {t:'entry',lat:47.3522,lng:8.3421,emoji:'🏰',name:'Bremgarten',desc:'Slip 300m downstream of the old covered bridge'},
       {t:'sight',lat:47.3750,lng:8.3300,emoji:'🌲',name:'Forest wilderness',desc:'Quiet forested stretch, km 6 — barely anyone around'},
@@ -3990,7 +4204,7 @@ const ROUTES=[
     pros:['Closest river escape from Zürich — tram from HB','Werdinsel beach + Kloster Fahr garden restaurant','Moonlight tour suitable (city lights, churches)','Easy return — 20 min from Dietikon to Zürich HB','Short variant available for half-day energy'],
     cons:['Two hazards need attention — Höngger Wehr portage + Mühliwuhr','High traffic on warm days — "party mile" energy','Furthest from Basel of all routes (~1h 15)','Industrial start (Schlieren, A1 parallel for 2km)'],
     fit:'For the day where you want to be in/around a city, drift past medieval towers and a Benedictine monastery, and end at a real train station with one transfer back. The "city escape" route — not the wilderness one.',
-    mapCoords:[[47.3885,8.5270],[47.3920,8.5170],[47.3940,8.5100],[47.3960,8.5050],[47.4020,8.4680],[47.4030,8.3970]],
+    mapCoords:[[47.3885,8.5270],[47.3900,8.5230],[47.3912,8.5190],[47.3920,8.5155],[47.3930,8.5125],[47.3940,8.5095],[47.3952,8.5065],[47.3960,8.5030],[47.3968,8.4990],[47.3978,8.4945],[47.3990,8.4900],[47.4000,8.4855],[47.4010,8.4805],[47.4015,8.4755],[47.4018,8.4705],[47.4020,8.4650],[47.4022,8.4580],[47.4025,8.4510],[47.4028,8.4435],[47.4030,8.4355],[47.4030,8.4275],[47.4028,8.4195],[47.4025,8.4115],[47.4028,8.4040],[47.4030,8.3970]],
     waypoints:[
       {t:'entry',lat:47.3885,lng:8.5270,emoji:'🏙',name:'Wipkingerpark',desc:'Wide stair landing put-in. Tram 2 min from Zürich HB.'},
       {t:'sight',lat:47.3920,lng:8.5170,emoji:'🏰',name:'Hardturm',desc:'Ivy-covered 13th-century medieval tower with tent roof. km 0.7.'},
@@ -4158,7 +4372,10 @@ function renderGallery(){
   const g=document.getElementById('gallery');
   if(!g)return;
   const filtered=ROUTES.filter(r=>matchesFilter(r,currentFilter));
-  g.innerHTML=filtered.map(r=>`
+  g.innerHTML=filtered.map(r=>{
+    // Extract a single editorial sentence from the verdict (first sentence)
+    const verdictLine=(r.verdict||'').split(/(?<=[.!?])\s/)[0];
+    return `
     <article class="g-card" data-route="${r.id}" onclick="openPoster('${r.id}')">
       <div class="g-photo">
         <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3';this.src=''">
@@ -4170,14 +4387,62 @@ function renderGallery(){
       <div class="g-body">
         <div class="g-title">${r.name}</div>
         <div class="g-sub">${r.sub}</div>
+        <div class="g-verdict">${verdictLine}</div>
         <div class="g-meta">
           <div class="g-meta-i">⏱ ${r.hours}</div>
           <div class="g-meta-i">🌡 ${r.temp}</div>
           <div class="g-meta-i">🚆 ${(r.travel.split('~')[1]||'').trim()}</div>
         </div>
+        <div class="g-mini-weather" id="gmw_${r.id}">
+          <div class="gmw-label">Weather at the launch point</div>
+          <div class="gmw-days">—</div>
+        </div>
       </div>
     </article>
-  `).join('');
+  `;}).join('');
+  // Fetch mini weather for each card (cached per session)
+  filtered.forEach(r=>fetchMiniWeather(r));
+}
+
+// Session cache so we don't re-fetch on every gallery re-render
+const MINI_WEATHER_CACHE={};
+async function fetchMiniWeather(r){
+  const el=document.getElementById('gmw_'+r.id);
+  if(!el)return;
+  const entry=r.waypoints&&r.waypoints.find(w=>w.t==='entry');
+  if(!entry)return;
+  // Use cached if available
+  if(MINI_WEATHER_CACHE[r.id]){
+    renderMiniWeather(r.id,MINI_WEATHER_CACHE[r.id]);
+    return;
+  }
+  const lat=entry.lat.toFixed(2);
+  const lng=entry.lng.toFixed(2);
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,precipitation_probability_max&timezone=Europe/Zurich&forecast_days=3`;
+  try{
+    const res=await fetch(url);
+    if(!res.ok)throw new Error();
+    const data=await res.json();
+    MINI_WEATHER_CACHE[r.id]=data.daily;
+    renderMiniWeather(r.id,data.daily);
+  }catch(e){
+    el.querySelector('.gmw-days').textContent='Weather unavailable';
+  }
+}
+
+function renderMiniWeather(routeId,daily){
+  const el=document.getElementById('gmw_'+routeId);
+  if(!el||!daily)return;
+  const dowNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const daysHtml=daily.time.slice(0,3).map((iso,i)=>{
+    const d=new Date(iso);
+    const dow=i===0?'Today':(i===1?'Tmrw':dowNames[d.getDay()]);
+    const tmax=Math.round(daily.temperature_2m_max[i]);
+    const code=daily.weather_code[i];
+    const rain=daily.precipitation_probability_max[i]||0;
+    return `<div class="gmw-day"><div class="gmw-dow">${dow}</div><div class="gmw-icon">${wcIcon(code)}</div><div class="gmw-t">${tmax}°</div></div>`;
+  }).join('');
+  el.querySelector('.gmw-days').innerHTML=daysHtml;
 }
 
 function galleryScroll(dir){
@@ -4200,7 +4465,7 @@ function scrollToRoutes(){
 // SWITZERLAND OVERVIEW MAP
 // ═══════════════════════════════════════
 let overviewMapInstance=null;
-const ROUTE_COLORS={d1:'#1d7a9c',d2:'#0d5773',d3:'#4ba4c7',o1:'#4f8b6b',o2:'#b85e14'};
+const ROUTE_COLORS={d1:'#1d7a9c',d2:'#0d5773',d3:'#4ba4c7',d4:'#e8832f',o1:'#4f8b6b',o2:'#b85e14'};
 
 function renderOverviewMap(){
   if(typeof L==='undefined')return;
@@ -4208,19 +4473,26 @@ function renderOverviewMap(){
   if(!el||overviewMapInstance)return;
   try{
     overviewMapInstance=L.map(el,{zoomControl:true,scrollWheelZoom:false});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      attribution:'© OpenStreetMap',maxZoom:18
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg',{
+      attribution:'© Stamen · Stadia Maps · OSM',maxZoom:16,
+      crossOrigin:true
+    }).addTo(overviewMapInstance);
+    // Soft labels on top — so you can still read village names
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}.png',{
+      attribution:'',maxZoom:18,opacity:0.7,crossOrigin:true
     }).addTo(overviewMapInstance);
     const bounds=[];
     ROUTES.forEach(r=>{
       const color=ROUTE_COLORS[r.id];
-      // polyline of the route
-      L.polyline(r.mapCoords,{color,weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(overviewMapInstance);
+      // Cream halo underneath for contrast against watercolor tiles
+      L.polyline(r.mapCoords,{color:'#fdfefa',weight:10,opacity:.9,lineCap:'round',lineJoin:'round'}).addTo(overviewMapInstance);
+      // Main route line
+      L.polyline(r.mapCoords,{color,weight:5,opacity:1,lineCap:'round',lineJoin:'round'}).addTo(overviewMapInstance);
       // entry marker with label
       const entryPt=r.mapCoords[0];
       const icon=L.divIcon({
         className:'',
-        html:`<div style="background:${color};color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:100px;box-shadow:0 2px 8px rgba(0,0,0,.25);white-space:nowrap;transform:translate(-50%,-50%)">${r.emoji} ${r.name.split('→')[0].trim()}</div>`,
+        html:`<div style="background:${color};color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:100px;box-shadow:0 2px 10px rgba(22,32,50,.35);white-space:nowrap;transform:translate(-50%,-50%);border:1.5px solid #fff">${r.emoji} ${r.name.split('→')[0].trim()}</div>`,
         iconSize:[0,0]
       });
       L.marker(entryPt,{icon}).addTo(overviewMapInstance).on('click',()=>openPoster(r.id));
@@ -4251,14 +4523,38 @@ function renderVotePosters(){
   const el=document.getElementById('votePosters');
   if(!el)return;
   const votes=getVotes();
-  let maxVotes=0,leaderId=null;
+  let maxVotes=0,leaderId=null,totalVotes=0;
   ROUTES.forEach(r=>{
     const n=(votes[r.id]||[]).length;
+    totalVotes+=n;
     if(n>maxVotes){maxVotes=n;leaderId=r.id;}
   });
   leadingRouteId=leaderId;
 
-  el.innerHTML=ROUTES.map(r=>{
+  // At-a-glance pulse chart — shows all 6 routes proportionally
+  const pulseHTML=`
+    <div class="vote-pulse">
+      <div class="vp-pulse-head">
+        <div class="vp-pulse-label">Where the crew is leaning</div>
+        <div class="vp-pulse-total">${totalVotes} ${totalVotes===1?'vote':'votes'} across ${ROUTES.length} routes</div>
+      </div>
+      <div class="vp-pulse-bars">
+        ${ROUTES.map(r=>{
+          const n=(votes[r.id]||[]).length;
+          const pct=maxVotes?(n/maxVotes)*100:0;
+          const isLead=r.id===leaderId&&n>0;
+          const color=({d1:'#1d7a9c',d2:'#0d5773',d3:'#4ba4c7',d4:'#e8832f',o1:'#4f8b6b',o2:'#b85e14'})[r.id];
+          return `<div class="vp-pulse-row${isLead?' lead':''}" onclick="openPoster('${r.id}')">
+            <div class="vp-pulse-name">${r.emoji} ${r.name.split('→')[0].trim()}${isLead?' <span class="vp-pulse-crown">👑</span>':''}</div>
+            <div class="vp-pulse-track"><div class="vp-pulse-fill" style="width:${Math.max(pct,n>0?6:0)}%;background:${color}"></div></div>
+            <div class="vp-pulse-n">${n}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  el.innerHTML=pulseHTML+ROUTES.map(r=>{
     const voters=votes[r.id]||[];
     const n=voters.length;
     const voted=voter&&voters.includes(voter);
@@ -4896,11 +5192,22 @@ function maybeShowBlessing(){
     const b=document.getElementById('blessing');
     const t=document.getElementById('blessingText');
     if(!b||!t)return;
-    t.innerHTML=BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)];
+    const rawBlessing=BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)];
+    // Split into tokens preserving <br> and <strong>...</strong>
+    // Strategy: tokenize by spaces, but keep tags intact
+    const parts=rawBlessing.split(/(\s+|<br>|<\/?strong>)/).filter(Boolean);
+    let wordIdx=0;
+    const animated=parts.map(p=>{
+      if(/^\s+$/.test(p))return p;
+      if(/^<\/?/.test(p))return p;
+      const delay=(wordIdx++*90)+200;
+      return `<span class="blw" style="animation-delay:${delay}ms">${p}</span>`;
+    }).join('');
+    t.innerHTML=animated;
     b.classList.add('show');
     setTimeout(()=>{
       if(b.classList.contains('show'))closeBlessing();
-    },5500);
+    },6500);
   },2200);
 }
 
@@ -5163,8 +5470,10 @@ function openPoster(rid){
         const mapEl=document.getElementById('pmap_'+r.id);
         if(!mapEl)return;
         const m=L.map(mapEl,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM',maxZoom:18}).addTo(m);
-        L.polyline(r.mapCoords,{color:ROUTE_COLORS[r.id]||'#e8832f',weight:5,opacity:.85,lineCap:'round'}).addTo(m);
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg',{attribution:'© Stamen · Stadia · OSM',maxZoom:16,crossOrigin:true}).addTo(m);
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}.png',{attribution:'',maxZoom:18,opacity:0.75,crossOrigin:true}).addTo(m);
+        L.polyline(r.mapCoords,{color:'#fdfefa',weight:10,opacity:.9,lineCap:'round',lineJoin:'round'}).addTo(m);
+        L.polyline(r.mapCoords,{color:ROUTE_COLORS[r.id]||'#e8832f',weight:5,opacity:1,lineCap:'round',lineJoin:'round'}).addTo(m);
         // Waypoints
         const wpts=r.waypoints||[];
         const bounds=[];
@@ -5323,14 +5632,42 @@ function renderCountdown(){
   const days=Math.ceil(ms/(1000*60*60*24));
   const el=document.getElementById('cdNum');
   const txt=document.getElementById('cdText');
+  const lbl=document.querySelector('#countdown .cd-label');
   if(!el)return;
-  if(days>0){
+  if(days>60){
     el.textContent=days;
+    if(lbl)lbl.textContent='Until the warmest weeks';
     txt.textContent='Days until the Rhine hits its warmest week. That\'s when the water\'s 22°C and the vote leader should happen.';
+  }else if(days>30){
+    el.textContent=days;
+    if(lbl)lbl.textContent='The summer is almost here';
+    txt.textContent='Less than two months. Time to lock in a weekend — the calendar fills up fast.';
+  }else if(days>14){
+    el.textContent=days;
+    if(lbl)lbl.textContent='Less than a month';
+    txt.textContent='A month out. Pack your boat, pump the valves, check the crew. This is happening.';
+  }else if(days>7){
+    el.textContent=days;
+    if(lbl)lbl.textContent='Two weeks out';
+    txt.textContent='Two weeks. Start watching the weather. Start buying the beer.';
+  }else if(days>1){
+    el.textContent=days;
+    if(lbl)lbl.textContent='The week of';
+    txt.textContent='One week. It\'s officially happening. Check flows at hydrodaten.admin.ch.';
+  }else if(days===1){
+    el.textContent='1';
+    if(lbl)lbl.textContent='Tomorrow';
+    txt.textContent='Tomorrow is the day. One more sleep. Charge everything.';
+  }else if(days===0){
+    el.textContent='TODAY';
+    el.style.fontSize='36px';
+    if(lbl)lbl.textContent='It\'s today';
+    txt.textContent='Go. The river is waiting. 🛶';
   }else if(days>-60){
     el.textContent='NOW';
     el.style.fontSize='36px';
-    txt.textContent='The warmest window is open. Drop everything — this is the weekend.';
+    if(lbl)lbl.textContent='The warmest window is open';
+    txt.textContent='Drop everything — this is the weekend.';
   }else{
     document.getElementById('countdown').style.display='none';
   }
