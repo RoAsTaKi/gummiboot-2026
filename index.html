@@ -3,8 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#faf6ec">
-<title>Gummiboot 2026 🛶</title>
+<meta name="theme-color" content="#f6f7f2">
+<title>Böötle · Gummiboot 2026 🛶</title>
+
+<!-- iOS home screen bookmark -->
+<link rel="apple-touch-icon" sizes="180x180" href="./icon_180.png">
+<link rel="apple-touch-icon" sizes="512x512" href="./icon_512.png">
+<link rel="icon" type="image/png" sizes="180x180" href="./icon_180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon_512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Böötle">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Böötle">
+
+<!-- PWA manifest (inline data URI so no extra file needed) -->
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Böötle · Gummiboot 2026","short_name":"Böötle","start_url":"./","display":"standalone","background_color":"%23f6f7f2","theme_color":"%23f6f7f2","icons":[{"src":"./icon_180.png","sizes":"180x180","type":"image/png"},{"src":"./icon_512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+
+<!-- Open Graph (for link previews when shared) -->
+<meta property="og:title" content="Böötle · Gummiboot 2026">
+<meta property="og:description" content="Swiss river routes for the summer. Vote, pick a weekend, say yes.">
+<meta property="og:image" content="./icon_512.png">
+<meta property="og:type" content="website">
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
@@ -97,9 +118,9 @@ a{color:inherit;text-decoration:none}
 }
 .hero-img{
   position:absolute;inset:0;
-  background-image:url('./aare%20interlaken.webp');
+  background-image:url('./Hero%20photo%202.JPG');
   background-size:cover;
-  background-position:center 60%;
+  background-position:center center;
   animation:heroZoom 18s ease-out forwards;
 }
 @keyframes heroZoom{0%{transform:scale(1.12)}100%{transform:scale(1.02)}}
@@ -240,18 +261,19 @@ a{color:inherit;text-decoration:none}
   position:sticky;
   top:0;
   z-index:80;
-  background:rgba(250,246,236,.92);
-  backdrop-filter:blur(16px) saturate(1.2);
-  -webkit-backdrop-filter:blur(16px) saturate(1.2);
-  border-bottom:1px solid var(--line);
+  background:rgba(225,235,242,.82);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid rgba(29,122,156,.12);
   padding:14px 16px;
+  box-shadow:0 1px 12px rgba(22,32,50,.04);
 }
 .tabs-inner{
   max-width:720px;
   margin:0 auto;
   display:flex;
   gap:6px;
-  background:var(--paper-d);
+  background:rgba(29,122,156,.10);
   padding:5px;
   border-radius:100px;
   position:relative;
@@ -411,15 +433,18 @@ a{color:inherit;text-decoration:none}
 .countdown{
   max-width:620px;
   margin:0 auto 10px;
-  padding:22px 24px;
-  background:linear-gradient(135deg,var(--sun-p),transparent);
-  border:1px solid var(--sun-pp);
-  border-radius:4px;
+  padding:24px 26px;
+  background:
+    linear-gradient(135deg,rgba(232,131,47,.14),rgba(29,122,156,.08) 70%,rgba(29,122,156,.12)),
+    #fffcf2;
+  border:1px solid rgba(232,131,47,.28);
+  border-radius:6px;
   display:flex;
   align-items:center;
   gap:20px;
   position:relative;
   overflow:hidden;
+  box-shadow:var(--sh-s);
 }
 .countdown::before{
   content:'';
@@ -782,9 +807,10 @@ a{color:inherit;text-decoration:none}
   max-width:720px;
   margin:0 auto 20px;
   background:var(--card);
-  border:1px solid var(--line);
+  border:1px solid rgba(29,122,156,.14);
   border-radius:6px;
   padding:20px 22px;
+  box-shadow:var(--sh-s);
 }
 .nc-title{
   font-size:10px;
@@ -2883,6 +2909,207 @@ body.poster-locked{overflow:hidden}
   margin-top:4px;
   letter-spacing:.3px;
 }
+/* ══════ V12: STATION CARDS + PER-ROUTE WEATHER ══════ */
+.station-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.station-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:14px 16px;
+  text-decoration:none;
+  transition:all .2s var(--ease);
+  display:block;
+}
+.station-card:hover{
+  border-color:var(--river);
+  transform:translateY(-2px);
+  box-shadow:var(--sh-m);
+}
+.station-card.entry{border-left:3px solid var(--sage)}
+.station-card.exit{border-left:3px solid var(--danger)}
+.station-lbl{
+  font-size:9px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:4px;
+}
+.station-name{
+  font-family:var(--serif);
+  font-size:16px;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1.3;
+  margin-bottom:6px;
+}
+.station-link{
+  font-size:10px;
+  color:var(--river);
+  font-weight:600;
+  letter-spacing:.3px;
+}
+.station-alt{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--ink-m);
+  padding:8px 12px;
+  background:var(--paper);
+  border-radius:4px;
+}
+.station-alt strong{color:var(--ink);font-weight:500}
+@media(max-width:520px){
+  .station-grid{grid-template-columns:1fr}
+}
+.route-weather{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:14px 16px;
+}
+.rw-loading{
+  text-align:center;
+  padding:16px;
+  color:var(--ink-l);
+  font-size:12px;
+  font-style:italic;
+}
+.rw-launch{
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:12px;
+}
+.rw-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.rw-day{
+  text-align:center;
+  padding:10px 4px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:4px;
+  transition:all .2s;
+}
+.rw-day.weekend{background:var(--river-p);border-color:var(--river-pp)}
+.rw-day.perfect{
+  background:linear-gradient(160deg,var(--sun-p),var(--sun-pp));
+  border-color:var(--sun);
+}
+.rw-dow{
+  font-size:8px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+}
+.rw-date{
+  font-family:var(--serif);
+  font-size:15px;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1;
+  margin:3px 0 5px;
+  font-weight:500;
+}
+.rw-icon{font-size:16px;line-height:1;margin-bottom:3px}
+.rw-temp{
+  font-size:11px;
+  font-weight:700;
+  color:var(--ink);
+}
+.rw-rain{
+  font-size:8px;
+  color:var(--ink-l);
+  margin-top:1px;
+}
+@media(max-width:600px){
+  .rw-days{grid-template-columns:repeat(4,1fr);gap:4px}
+}
+
+/* ══════ V12: CLOSING SUNSET HERO ══════ */
+.closing-hero{
+  position:relative;
+  width:100%;
+  height:70vh;
+  min-height:480px;
+  max-height:720px;
+  margin-top:60px;
+  overflow:hidden;
+  background:#000;
+}
+.closing-hero-img{
+  position:absolute;inset:0;
+  background-image:url('./Hero%20Photo%201.webp');
+  background-size:cover;
+  background-position:center center;
+}
+.closing-hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(22,32,50,.25) 0%,transparent 25%,transparent 60%,rgba(22,32,50,.55) 100%);
+}
+.closing-hero-text{
+  position:absolute;
+  bottom:10%;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  color:#fff;
+  padding:0 24px;
+  max-width:640px;
+}
+.closing-hero-eyebrow{
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  opacity:.82;
+  margin-bottom:14px;
+  font-weight:500;
+}
+.closing-hero-line{
+  font-family:var(--serif);
+  font-size:clamp(28px,5vw,42px);
+  font-style:italic;
+  font-weight:400;
+  line-height:1.25;
+  text-shadow:0 2px 24px rgba(0,0,0,.4);
+}
+.closing-hero-sig{
+  margin-top:18px;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  opacity:.7;
+}
+/* Save as PDF toast */
+.pdf-toast{
+  position:fixed;
+  bottom:-100px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:#fff;
+  padding:14px 22px;
+  border-radius:100px;
+  font-size:13px;
+  font-weight:500;
+  box-shadow:0 10px 40px rgba(22,32,50,.35);
+  z-index:999;
+  transition:bottom .4s var(--ease);
+  max-width:calc(100% - 40px);
+  text-align:center;
+}
+.pdf-toast.show{bottom:32px}
+
 .pw-empty{
   font-family:var(--serif);
   font-style:italic;
@@ -2933,12 +3160,12 @@ body.poster-locked{overflow:hidden}
   <div class="hero-img"></div>
   <div class="hero-grad"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Summer 2026 · Switzerland</div>
-    <h1 class="hero-title">Wherever the<br><strong>river takes us.</strong></h1>
-    <p class="hero-sub">Five inflatable-dinghy routes through Swiss rivers — all reachable from Basel. Vote, pick a weekend, and pack a cold drink. The current does the rest. 🛶</p>
+    <div class="hero-eyebrow">Böötle · Summer 2026</div>
+    <h1 class="hero-title">Summer is waiting.<br><strong>Let's go with the flow.</strong></h1>
+    <p class="hero-sub">Six inflatable-dinghy routes through Swiss rivers — all reachable from Basel. Vote, pick a weekend, and pack a cold drink. The current does the rest. 🛶</p>
     <div class="hero-meta">
-      <div class="hm"><span class="hm-n">5</span><span class="hm-l">Curated<br>routes</span></div>
-      <div class="hm"><span class="hm-n">106</span><span class="hm-l">Kilometres<br>of river</span></div>
+      <div class="hm"><span class="hm-n">6</span><span class="hm-l">Curated<br>routes</span></div>
+      <div class="hm"><span class="hm-n">116</span><span class="hm-l">Kilometres<br>of river</span></div>
       <div class="hm"><span class="hm-n">22°</span><span class="hm-l">Warmest<br>water</span></div>
     </div>
   </div>
@@ -3340,7 +3567,7 @@ body.poster-locked{overflow:hidden}
             <div class="td-btn-icon">🚆</div>Trains
           </a>
           <a class="td-btn" href="javascript:void(0)" onclick="printTripZine()">
-            <div class="td-btn-icon">🖨</div>Print zine
+            <div class="td-btn-icon">📄</div>Save as PDF
           </a>
         </div>
       </div>
@@ -3375,6 +3602,17 @@ body.poster-locked{overflow:hidden}
 
 </main>
 
+<!-- V12: Closing sunset hero — the adventure day is over -->
+<section class="closing-hero" aria-label="The day is done">
+  <div class="closing-hero-img"></div>
+  <div class="closing-hero-veil"></div>
+  <div class="closing-hero-text">
+    <div class="closing-hero-eyebrow">And then</div>
+    <div class="closing-hero-line">the day is done.<br>The current carries you home.</div>
+    <div class="closing-hero-sig">Böötle · Summer 2026</div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer class="footer">
   <div>Built with 🛶 for the Summer 2026 crew</div>
@@ -3408,10 +3646,7 @@ body.poster-locked{overflow:hidden}
   </div>
 </div>
 
-<!-- Audio element for river sound -->
-<audio id="riverAudio" loop preload="none">
-  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_347eadc9d0.mp3" type="audio/mpeg">
-</audio>
+<!-- V12: river sound is now procedural Web Audio, no audio element needed -->
 
 <!-- Poster modal -->
 <div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
@@ -3442,6 +3677,9 @@ const ROUTES=[
     difficulty:'Mittel',
     temp:'20–22°C',
     travel:'Basel → Laufenburg ~45 min',
+    entryStation:'Leibstadt (SBB · ~5 min walk to slip)',
+    exitStation:'Laufenburg (SBB · ~5 min walk from exit)',
+    returnTime:'~45 min back to Basel SBB',
     river:'Rhein',
     tags:['day','warmest','closest'],
     pills:[
@@ -3486,12 +3724,15 @@ const ROUTES=[
     name:'Stein am Rhein → Schaffhausen',
     sub:'Rhein · 18.8 km · Most scenic',
     verdict:'A UNESCO-worthy medieval old town launches you into the most picturesque stretch of the Rhine — frescoed houses, vineyards climbing the hills, a convent island, and a finish right before the waterfall (don\'t go over it).',
-    photos:['./Region%20Stein%20am%20Rhein.jpg','./steinamrhein-insel-werd-rhein.jpg','./blick-auf-stein-am-rhein-von-der-insel-werd.jpg'],
+    photos:['./Region%20Stein%20am%20Rhein.jpg','./steinamrhein-insel-werd-rhein.jpg','./blick-auf-stein-am-rhein-von-der-insel-werd.jpg','./Rhein.webp'],
     km:18.8,
     hours:'4–5h',
     difficulty:'Leicht',
     temp:'19–23°C',
     travel:'Basel Bad Bf → Stein am Rhein ~2h',
+    entryStation:'Stein am Rhein (SBB · ~3 min walk to slip)',
+    exitStation:'Schaffhausen (SBB · ~8 min walk from Schifflände)',
+    returnTime:'~2h back to Basel SBB',
     river:'Rhein',
     tags:['day','warmest'],
     pills:[
@@ -3538,12 +3779,15 @@ const ROUTES=[
     name:'Rheinfall → Kloster Rheinau',
     sub:'Rhein · 7 km · Most dramatic · 🌕 moonlight',
     verdict:'The shortest route, but the most cinematic. Launch below Europe\'s largest waterfall, drift past a baroque monastery island, finish at a thousand-year-old Benedictine complex. Works as a moonlight trip on clear nights.',
-    photos:['./Rheinfall.jpeg','./Rhein%20bei%20Neuhausen.jpg'],
+    photos:['./Rheinfall.jpeg','./Rhein%20bei%20Neuhausen.jpg','./Rhein%20zurcher%20weinland.jpg'],
     km:7,
     hours:'2–3h',
     difficulty:'Leicht',
     temp:'18–20°C',
     travel:'Basel → Neuhausen ~1h 30',
+    entryStation:'Neuhausen Rheinfall (SBB · ~10 min walk to slip below falls)',
+    exitStation:'Marthalen or Dachsen (SBB · ~15 min walk from Rheinau abbey)',
+    returnTime:'~1h 30 back to Basel SBB',
     river:'Rhein',
     tags:['day','moonlight'],
     pills:[
@@ -3594,6 +3838,9 @@ const ROUTES=[
     difficulty:'Mittel',
     temp:'16–20°C',
     travel:'Basel → Thun ~55 min',
+    entryStation:'Thun (SBB · ~15 min walk to Schwäbis Strand)',
+    exitStation:'Hinterkappelen (Postbus → Bern SBB ~20 min)',
+    returnTime:'~1h 15 back to Basel from Bern',
     river:'Aare',
     tags:['night','closest'],
     pills:[
@@ -3647,6 +3894,9 @@ const ROUTES=[
     difficulty:'Anspruchsvoll',
     temp:'18–21°C',
     travel:'Basel → Bremgarten AG ~1h 15',
+    entryStation:'Bremgarten West (BDWM · ~5 min walk to slip)',
+    exitStation:'Turgi (SBB · ~20 min walk from Wasserschloss Gebenstorf)',
+    returnTime:'~1h 15 back to Basel SBB',
     river:'Reuss',
     tags:['night'],
     pills:[
@@ -3684,6 +3934,75 @@ const ROUTES=[
       {t:'hazard',lat:47.4350,lng:8.2500,emoji:'⚠️',name:'Check level!',desc:'NEVER if Mellingen Q > 250 m³/s'},
       {t:'swim',lat:47.4500,lng:8.2410,emoji:'🏊',name:'Final swim',desc:'Calm stretch before the junction'},
       {t:'exit',lat:47.4736,lng:8.2400,emoji:'💎',name:'Wasserschloss Gebenstorf',desc:'Where Reuss, Aare + Limmat meet. Left bank, km 25.3'}
+    ]
+  },
+  {
+    id:'d4',
+    type:'day',
+    emoji:'🏙',
+    badge:'Day Trip · Urban escape',
+    name:'Zürich → Dietikon',
+    sub:'Limmat · 10 km · The party mile',
+    verdict:'"There\'s no more beautiful way to escape Zürich — at least if you like the agglomeration." Start at the Wipkingerpark stairs in the heart of Zurich, drift past the Hardturm, the Werdinsel beach, the Kloster Fahr nuns, and finish at Dietikon train station. In high summer it becomes a party mile.',
+    photos:['./zurich%2012.jpg','./zurich%209.jpeg','./zurich%205.jpg','./zurich%206.jpg','./zurich%203.jpg','./zurich%202.webp'],
+    km:10,
+    hours:'2–2½h',
+    difficulty:'Mittel',
+    temp:'19–22°C',
+    travel:'Basel → Zürich HB → tram to Wipkingerpark · ~1h 15 total',
+    river:'Limmat',
+    tags:['day','moonlight'],
+    entryStation:'Zürich Wipkingerpark (tram, 2 min)',
+    altEntryStation:'Zürich Tüffenwies (bus, 5 min walk to Höngger Wehr)',
+    exitStation:'Bahnhof Dietikon (1 min walk)',
+    returnTime:'~20 min S-Bahn back to Zürich HB',
+    shortVariant:'Werdinsel → Dietikon, ~1½h (skips the city section)',
+    nightTour:true,
+    pills:[
+      {c:'d',t:'10 km'},
+      {c:'d',t:'2–2½ hours'},
+      {c:'d',t:'Mittel'},
+      {c:'w',t:'🌡 19–22°C'},
+      {c:'b',t:'🚆 ~1h 15'},
+      {c:'s',t:'🌙 moonlight OK'}
+    ],
+    diag:[
+      {cls:'ds',emoji:'🏙',name:'Wipkingerpark',sub:'Entry · km 0'},
+      {cls:'dm',emoji:'🏰',name:'Hardturm',sub:'km 0.7'},
+      {cls:'dw',emoji:'⚠️',name:'Höngger Wehr',sub:'Portage LEFT · km 2.5'},
+      {cls:'dm',emoji:'🏖',name:'Werdinsel',sub:'Beach · km 3'},
+      {cls:'dw',emoji:'⚠️',name:'Mühliwuhr',sub:'Pass LEFT · km 6.5'},
+      {cls:'dm',emoji:'⛪',name:'Kloster Fahr',sub:'Monastery · km 7.5'},
+      {cls:'de',emoji:'🚆',name:'Dietikon',sub:'Exit · km 10'}
+    ],
+    flow:'SMS to 9234: Q 2099 · max 80 m³/s at Zürich',
+    facts:[
+      ['Entry','Wipkingerpark stair landing. Tram from Zürich HB ~2 min.'],
+      ['Exit','Nötzliwiese, Dietikon. End of long low concrete wall. Train station 1 min walk.'],
+      ['Hazard 1','Höngger Wehr (km 2.5) — PORTAGE required. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'],
+      ['Hazard 2','Mühliwuhr (km 6.5) — impassable wooden-stake row. Pass on the LEFT (verified).'],
+      ['Beach stops','Werdinsel (km 3) is the main one — half of Zürich is here on a sunny day.'],
+      ['Food on route','Kafi Tintenfisch at put-in · Werdinsel Bar (Apr–Oct) · Zu den Zwei Raben at Kloster Fahr (Wed–Sun)'],
+      ['Boat rental','None mentioned — bring your own.'],
+      ['Swimming','✅ Good. Avoid the Mühliwuhr zone between Strassenbrücke Unterengstringen and the stakes.'],
+      ['Short variant','Werdinsel → Dietikon, ~1½h. Skip the city start if you want.']
+    ],
+    pros:['Closest river escape from Zürich — tram from HB','Werdinsel beach + Kloster Fahr garden restaurant','Moonlight tour suitable (city lights, churches)','Easy return — 20 min from Dietikon to Zürich HB','Short variant available for half-day energy'],
+    cons:['Two hazards need attention — Höngger Wehr portage + Mühliwuhr','High traffic on warm days — "party mile" energy','Furthest from Basel of all routes (~1h 15)','Industrial start (Schlieren, A1 parallel for 2km)'],
+    fit:'For the day where you want to be in/around a city, drift past medieval towers and a Benedictine monastery, and end at a real train station with one transfer back. The "city escape" route — not the wilderness one.',
+    mapCoords:[[47.3885,8.5270],[47.3920,8.5170],[47.3940,8.5100],[47.3960,8.5050],[47.4020,8.4680],[47.4030,8.3970]],
+    waypoints:[
+      {t:'entry',lat:47.3885,lng:8.5270,emoji:'🏙',name:'Wipkingerpark',desc:'Wide stair landing put-in. Tram 2 min from Zürich HB.'},
+      {t:'sight',lat:47.3920,lng:8.5170,emoji:'🏰',name:'Hardturm',desc:'Ivy-covered 13th-century medieval tower with tent roof. km 0.7.'},
+      {t:'sight',lat:47.3935,lng:8.5130,emoji:'⛪',name:'Höngg church',desc:'Picturesque village on the vineyard hill. Current slows here.'},
+      {t:'hazard',lat:47.3940,lng:8.5100,emoji:'⚠️',name:'Höngger Wehr — PORTAGE',desc:'km 2.5. MUST portage. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'},
+      {t:'beach',lat:47.3960,lng:8.5050,emoji:'🏖',name:'Werdinsel',desc:'Half of Zürich is here on a sunny day. Werdinsel Bar & Restaurant (Apr–Oct daily). km 3.'},
+      {t:'swim',lat:47.3990,lng:8.4900,emoji:'🏊',name:'Schwallstrecken',desc:'Two gentle rapids after Werdinsel — audible from afar. Fun, harmless.'},
+      {t:'sight',lat:47.4000,lng:8.4800,emoji:'🛣',name:'A1 Autobahnbrücke',desc:'Leaving the city. A1 runs parallel for ~2 km. km 4.5.'},
+      {t:'hazard',lat:47.4050,lng:8.4600,emoji:'⚠️',name:'Mühliwuhr',desc:'Impassable wooden-stake weir. Pass on the LEFT (verified from satellite). 150m after Strassenbrücke Unterengstringen. km 6.5.'},
+      {t:'food',lat:47.4020,lng:8.4680,emoji:'⛪',name:'Kloster Fahr',desc:'Baroque Benedictine monastery (1130, 25 nuns today). Garden restaurant "Zu den Zwei Raben" Wed–Sun. Land on grass embankment. km 7.5.'},
+      {t:'sight',lat:47.4025,lng:8.4300,emoji:'🏭',name:'Schlieren',desc:'Industrial zone with Bauhaus building center. Right curve. km 8.5.'},
+      {t:'exit',lat:47.4030,lng:8.3970,emoji:'🚆',name:'Dietikon Nötzliwiese',desc:'Exit at end of long low concrete wall. Bahnhof Dietikon 1 min walk. S-Bahn back to Zürich HB ~20 min. km 10.'}
     ]
   }
 ];
@@ -4451,30 +4770,110 @@ function renderForecast(daily){
 // ═══════════════════════════════════════
 // HERO SOUND
 // ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// PROCEDURAL RIVER SOUND (V12)
+// Web Audio API: pink noise → lowpass → gentle LFO modulation
+// Zero network dependency. Literally cannot fail.
+// ═══════════════════════════════════════
 let soundPlaying=false;
+let audioCtx=null;
+let audioNodes=null;
+
+function createRiverSound(){
+  const ctx=new(window.AudioContext||window.webkitAudioContext)();
+  // Pink noise generator via script processor (broad-spectrum, water-like)
+  const bufferSize=2*ctx.sampleRate;
+  const noiseBuffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
+  const output=noiseBuffer.getChannelData(0);
+  // Paul Kellet pink noise approximation
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+  for(let i=0;i<bufferSize;i++){
+    const white=Math.random()*2-1;
+    b0=0.99886*b0+white*0.0555179;
+    b1=0.99332*b1+white*0.0750759;
+    b2=0.96900*b2+white*0.1538520;
+    b3=0.86650*b3+white*0.3104856;
+    b4=0.55000*b4+white*0.5329522;
+    b5=-0.7616*b5-white*0.0168980;
+    output[i]=(b0+b1+b2+b3+b4+b5+b6+white*0.5362)*0.11;
+    b6=white*0.115926;
+  }
+  const noise=ctx.createBufferSource();
+  noise.buffer=noiseBuffer;
+  noise.loop=true;
+
+  // Lowpass filter — rolls off the harshness, keeps it soft and water-like
+  const lp=ctx.createBiquadFilter();
+  lp.type='lowpass';
+  lp.frequency.value=820;
+  lp.Q.value=0.7;
+
+  // Highpass to cut deep rumble
+  const hp=ctx.createBiquadFilter();
+  hp.type='highpass';
+  hp.frequency.value=180;
+  hp.Q.value=0.5;
+
+  // Gentle LFO modulating the lowpass frequency — creates the "breathing" water feel
+  const lfo=ctx.createOscillator();
+  lfo.frequency.value=0.22;
+  const lfoGain=ctx.createGain();
+  lfoGain.gain.value=140;
+  lfo.connect(lfoGain);
+  lfoGain.connect(lp.frequency);
+
+  // Second LFO on gain for subtle volume variation (like current surges)
+  const lfo2=ctx.createOscillator();
+  lfo2.frequency.value=0.13;
+  const lfo2Gain=ctx.createGain();
+  lfo2Gain.gain.value=0.05;
+  const gainMod=ctx.createGain();
+  gainMod.gain.value=0.32;
+  lfo2.connect(lfo2Gain);
+  lfo2Gain.connect(gainMod.gain);
+
+  // Chain: noise → hp → lp → gainMod → destination
+  noise.connect(hp);
+  hp.connect(lp);
+  lp.connect(gainMod);
+  gainMod.connect(ctx.destination);
+
+  noise.start(0);
+  lfo.start(0);
+  lfo2.start(0);
+
+  return{ctx,gainMod,nodes:[noise,lp,hp,lfo,lfo2,lfoGain,lfo2Gain]};
+}
+
 function toggleHeroSound(){
-  const audio=document.getElementById('riverAudio');
   const btn=document.getElementById('heroSound');
   const playIcon=btn.querySelector('.hs-icon-play');
   const pauseIcon=btn.querySelector('.hs-icon-pause');
   const label=btn.querySelector('.hs-label');
-  if(!audio)return;
   if(soundPlaying){
-    audio.pause();
+    if(audioNodes&&audioNodes.ctx){
+      audioNodes.gainMod.gain.setTargetAtTime(0,audioNodes.ctx.currentTime,0.15);
+      setTimeout(()=>{try{audioNodes.ctx.close();}catch(e){}audioNodes=null;},400);
+    }
     btn.classList.remove('playing');
     playIcon.style.display='';
     pauseIcon.style.display='none';
     label.textContent='River sound';
     soundPlaying=false;
   }else{
-    audio.volume=0.35;
-    const p=audio.play();
-    if(p&&p.catch)p.catch(()=>showToast('Tap again to play sound'));
-    btn.classList.add('playing');
-    playIcon.style.display='none';
-    pauseIcon.style.display='';
-    label.textContent='Playing…';
-    soundPlaying=true;
+    try{
+      audioNodes=createRiverSound();
+      // fade in
+      audioNodes.gainMod.gain.setValueAtTime(0,audioNodes.ctx.currentTime);
+      audioNodes.gainMod.gain.linearRampToValueAtTime(0.32,audioNodes.ctx.currentTime+0.6);
+      btn.classList.add('playing');
+      playIcon.style.display='none';
+      pauseIcon.style.display='';
+      label.textContent='Playing…';
+      soundPlaying=true;
+    }catch(e){
+      showToast('Your browser doesn\'t support Web Audio');
+    }
   }
 }
 
@@ -4602,6 +5001,61 @@ function renderWishesInPoster(routeId){
 // ═══════════════════════════════════════
 // POSTER MODAL
 // ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// PER-ROUTE LIVE WEATHER
+// Each route has its own launch point — so each gets its own forecast
+// using the first waypoint (entry) coordinates.
+// ═══════════════════════════════════════
+async function fetchRouteWeather(r){
+  const el=document.getElementById('rweather_'+r.id);
+  if(!el)return;
+  const entry=r.waypoints&&r.waypoints.find(w=>w.t==='entry');
+  if(!entry){el.innerHTML='<div class="rw-loading">No coordinates available</div>';return;}
+  const lat=entry.lat.toFixed(2);
+  const lng=entry.lng.toFixed(2);
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe/Zurich&forecast_days=7`;
+  try{
+    const res=await fetch(url);
+    if(!res.ok)throw new Error('api fail');
+    const data=await res.json();
+    renderRouteWeather(r.id,data.daily,entry.name);
+  }catch(e){
+    el.innerHTML='<div class="rw-loading">Weather unavailable — check MeteoSwiss directly</div>';
+  }
+}
+
+function renderRouteWeather(routeId,daily,launchName){
+  const el=document.getElementById('rweather_'+routeId);
+  if(!el||!daily)return;
+  const dowNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const html=`
+    <div class="rw-launch">📍 ${escapeHtml(launchName||'Launch point')}</div>
+    <div class="rw-days">
+      ${daily.time.map((iso,i)=>{
+        const d=new Date(iso);
+        const dow=dowNames[d.getDay()];
+        const isWe=d.getDay()===6||d.getDay()===0;
+        const tmax=Math.round(daily.temperature_2m_max[i]);
+        const tmin=Math.round(daily.temperature_2m_min[i]);
+        const code=daily.weather_code[i];
+        const rain=daily.precipitation_probability_max[i]||0;
+        const perfect=code<=3&&tmax>=22&&rain<30;
+        let cls='rw-day';
+        if(isWe)cls+=' weekend';
+        if(perfect&&isWe)cls+=' perfect';
+        return `<div class="${cls}">
+          <div class="rw-dow">${dow}</div>
+          <div class="rw-date">${d.getDate()}</div>
+          <div class="rw-icon">${wcIcon(code)}</div>
+          <div class="rw-temp">${tmax}°</div>
+          <div class="rw-rain">${rain}%</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+  el.innerHTML=html;
+}
+
 function openPoster(rid){
   const r=ROUTES.find(x=>x.id===rid);
   if(!r)return;
@@ -4631,6 +5085,30 @@ function openPoster(rid){
       <div class="poster-section">
         <div class="poster-section-title">Getting there</div>
         <div class="rtravel">🚆 ${r.travel}</div>
+        ${r.entryStation?`
+        <div class="station-grid">
+          <a class="station-card entry" href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?nach=${encodeURIComponent(r.entryStation.split(' (')[0])}" target="_blank" rel="noopener">
+            <div class="station-lbl">Entry station</div>
+            <div class="station-name">${r.entryStation}</div>
+            <div class="station-link">Plan journey on SBB →</div>
+          </a>
+          <a class="station-card exit" href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=${encodeURIComponent(r.exitStation.split(' (')[0])}" target="_blank" rel="noopener">
+            <div class="station-lbl">Exit station</div>
+            <div class="station-name">${r.exitStation}</div>
+            <div class="station-link">Return trains →</div>
+          </a>
+        </div>
+        ${r.altEntryStation?`<div class="station-alt">⚡ Alternate entry: <strong>${r.altEntryStation}</strong></div>`:''}
+        ${r.returnTime?`<div class="station-alt">🔄 Return: <strong>${r.returnTime}</strong></div>`:''}
+        ${r.shortVariant?`<div class="station-alt">✂️ Short variant: <strong>${r.shortVariant}</strong></div>`:''}
+        `:''}
+      </div>
+
+      <div class="poster-section">
+        <div class="poster-section-title">Live weather at the launch point</div>
+        <div class="route-weather" id="rweather_${r.id}">
+          <div class="rw-loading">Loading forecast…</div>
+        </div>
       </div>
 
       <div class="poster-section">
@@ -4672,6 +5150,7 @@ function openPoster(rid){
   poster.classList.add('open');
   document.body.classList.add('poster-locked');
   renderWishesInPoster(r.id);
+  fetchRouteWeather(r);
 
   // Enter submits wish
   const pwInput=document.getElementById('pwInput_'+r.id);
@@ -4816,7 +5295,22 @@ function printTripZine(){
       Stay with the boat · Drift feet-first downstream
     </div>
   `;
-  window.print();
+  // Show helper toast first, then open print dialog
+  showPdfToast();
+  setTimeout(()=>window.print(),900);
+}
+
+function showPdfToast(){
+  let t=document.getElementById('pdfToast');
+  if(!t){
+    t=document.createElement('div');
+    t.id='pdfToast';
+    t.className='pdf-toast';
+    t.textContent='In the print dialog, choose "Save as PDF" 📄';
+    document.body.appendChild(t);
+  }
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>t.classList.remove('show'),4500);
 }
 
 // ═══════════════════════════════════════
