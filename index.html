@@ -10,46 +10,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
 :root{
-  /* CANVAS — warm cream, like magazine paper */
-  --paper:#faf6ec;
-  --paper-d:#f3ecd9;
-  --paper-dd:#ebe3cb;
-  --cream:#fff9ea;
+  /* CANVAS — cool fresh off-white, like morning light on paper */
+  --paper:#f6f7f2;
+  --paper-d:#eaece3;
+  --paper-dd:#dde0d3;
+  --cream:#fdfefa;
 
-  /* INK — text hierarchy */
-  --ink:#1a2332;
-  --ink-m:#3a4a5e;
-  --ink-l:#6b7a8c;
-  --ink-xl:#9aa5b3;
+  /* INK — deeper, more modern */
+  --ink:#162032;
+  --ink-m:#34425a;
+  --ink-l:#6b7889;
+  --ink-xl:#9ba5b4;
 
-  /* ACCENTS */
-  --river:#2c7da0;
-  --river-d:#1d5778;
-  --river-l:#5ba3c4;
-  --river-p:rgba(44,125,160,.08);
-  --river-pp:rgba(44,125,160,.16);
+  /* ACCENTS — fresher, punchier */
+  --river:#1d7a9c;
+  --river-d:#0d5773;
+  --river-l:#4ba4c7;
+  --river-p:rgba(29,122,156,.07);
+  --river-pp:rgba(29,122,156,.16);
 
-  --sun:#d97b2e;
-  --sun-d:#b85e18;
-  --sun-l:#e89956;
-  --sun-p:rgba(217,123,46,.08);
-  --sun-pp:rgba(217,123,46,.18);
+  --sun:#e8832f;
+  --sun-d:#b85e14;
+  --sun-l:#f3a14e;
+  --sun-p:rgba(232,131,47,.08);
+  --sun-pp:rgba(232,131,47,.18);
 
-  --sage:#5a8a6c;
-  --sage-l:#7ba58c;
-  --sage-p:rgba(90,138,108,.1);
-  --sage-pp:rgba(90,138,108,.2);
+  --sage:#4f8b6b;
+  --sage-l:#72a98c;
+  --sage-p:rgba(79,139,107,.09);
+  --sage-pp:rgba(79,139,107,.2);
 
-  --danger:#b84438;
-  --danger-p:rgba(184,68,56,.08);
+  --danger:#b8382c;
+  --danger-p:rgba(184,56,44,.08);
 
   --gold:#b8932b;
 
   /* SURFACES */
-  --card:#fff;
-  --card-el:#fffcf2;
-  --line:rgba(26,35,50,.08);
-  --line-m:rgba(26,35,50,.14);
+  --card:#ffffff;
+  --card-el:#fdfefa;
+  --line:rgba(22,32,50,.08);
+  --line-m:rgba(22,32,50,.14);
 
   /* TYPE */
   --serif:'Cormorant Garamond',Georgia,serif;
@@ -60,11 +60,11 @@
   --spring:cubic-bezier(.34,1.56,.64,1);
   --smooth:cubic-bezier(.16,1,.3,1);
 
-  /* SHADOWS */
-  --sh-s:0 1px 2px rgba(26,35,50,.04),0 2px 8px rgba(26,35,50,.04);
-  --sh-m:0 4px 16px rgba(26,35,50,.06),0 2px 6px rgba(26,35,50,.04);
-  --sh-l:0 16px 48px rgba(26,35,50,.1),0 4px 12px rgba(26,35,50,.05);
-  --sh-xl:0 32px 80px rgba(26,35,50,.14),0 8px 24px rgba(26,35,50,.08);
+  /* SHADOWS — crisper */
+  --sh-s:0 1px 2px rgba(22,32,50,.04),0 2px 8px rgba(22,32,50,.04);
+  --sh-m:0 4px 16px rgba(22,32,50,.06),0 2px 6px rgba(22,32,50,.05);
+  --sh-l:0 16px 48px rgba(22,32,50,.1),0 4px 12px rgba(22,32,50,.06);
+  --sh-xl:0 32px 80px rgba(22,32,50,.14),0 8px 24px rgba(22,32,50,.08);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -97,9 +97,9 @@ a{color:inherit;text-decoration:none}
 }
 .hero-img{
   position:absolute;inset:0;
-  background-image:url('./aarebootle_Mit%20dem%20gummiboot%20von%20thun%20nach%20bern.jpg');
+  background-image:url('./aare%20interlaken.webp');
   background-size:cover;
-  background-position:center 40%;
+  background-position:center 60%;
   animation:heroZoom 18s ease-out forwards;
 }
 @keyframes heroZoom{0%{transform:scale(1.12)}100%{transform:scale(1.02)}}
@@ -2032,21 +2032,895 @@ body.poster-locked{overflow:hidden}
 /* ═══════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════ */
-.footer{
-  text-align:center;
-  padding:72px 20px 50px;
+/* ═══════════════════════════════════════
+   V11 ADDITIONS
+   ═══════════════════════════════════════ */
+
+/* HERO SOUND BUTTON */
+.hero-sound{
+  position:absolute;
+  top:24px;
+  right:24px;
+  z-index:4;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:100px;
+  padding:9px 16px 9px 13px;
+  color:#fff;
   font-size:11px;
-  color:var(--ink-xl);
-  line-height:2;
-  margin-top:40px;
+  font-weight:500;
+  letter-spacing:.3px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  transition:all .25s var(--ease);
+  opacity:0;
+  animation:heroFadeUp 1s var(--smooth) 1.1s forwards;
 }
-.footer::before{
-  content:'🛶';
+.hero-sound:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4)}
+.hero-sound svg{width:14px;height:14px;flex-shrink:0}
+.hero-sound.playing{background:var(--sun);border-color:var(--sun)}
+.hs-label{font-family:var(--sans)}
+@media(max-width:520px){
+  .hero-sound{top:18px;right:18px;padding:8px 14px 8px 11px;font-size:10px}
+  .hero-sound svg{width:12px;height:12px}
+}
+
+/* CREW WALL */
+.crew-wall{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:8px 0 4px;
+  min-height:60px;
+}
+.crew-empty{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:15px;
+  color:var(--ink-l);
+  padding:12px 0;
+}
+.crew-avatar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:100px;
+  padding:8px 16px 8px 8px;
+  transition:all .2s var(--ease);
+}
+.crew-avatar:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--sh-m);
+  border-color:var(--line-m);
+}
+.crew-avatar.me{
+  background:linear-gradient(120deg,var(--sun-p),var(--sun-pp));
+  border-color:var(--sun);
+}
+.ca-face{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:var(--paper-d);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.crew-avatar.me .ca-face{background:var(--sun);color:#fff}
+.ca-name{
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+}
+.ca-meta{
+  font-size:10px;
+  color:var(--ink-l);
   display:block;
-  font-size:26px;
-  margin-bottom:18px;
-  opacity:.5;
+  margin-top:1px;
+  line-height:1.2;
 }
+
+/* OVERVIEW MAP */
+.overview-map-wrap{
+  max-width:1000px;
+  margin:0 auto 30px;
+  padding:0 20px;
+}
+.overview-map{
+  height:440px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:var(--sh-m);
+  background:var(--paper-d);
+}
+.overview-legend{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:8px;
+  margin-top:14px;
+}
+.ol-item{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:all .2s var(--ease);
+}
+.ol-item:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--sh-m);
+  border-color:var(--line-m);
+}
+.ol-dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(255,255,255,.8);
+}
+.ol-info{flex:1;min-width:0}
+.ol-name{
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.3;
+  margin-bottom:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.ol-meta{font-size:10px;color:var(--ink-l)}
+@media(max-width:600px){
+  .overview-map{height:360px}
+}
+
+/* FORECAST SCROLL */
+.forecast-scroll{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:4px 20px 26px;
+  max-width:760px;
+  margin:0 auto 10px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+}
+.forecast-scroll::-webkit-scrollbar{display:none}
+.forecast-loading{
+  padding:30px 20px;
+  text-align:center;
+  color:var(--ink-l);
+  font-size:12px;
+  font-style:italic;
+  width:100%;
+}
+.f-day{
+  flex-shrink:0;
+  width:84px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px 10px;
+  text-align:center;
+  scroll-snap-align:start;
+  transition:all .25s var(--ease);
+  cursor:default;
+}
+.f-day:hover{border-color:var(--line-m);transform:translateY(-2px)}
+.f-day.weekend{background:var(--river-p);border-color:var(--river-pp)}
+.f-day.perfect{
+  background:linear-gradient(160deg,var(--sun-p),var(--sun-pp));
+  border-color:var(--sun);
+}
+.f-dow{
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:3px;
+}
+.f-date{
+  font-family:var(--serif);
+  font-size:20px;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1;
+  margin-bottom:10px;
+  font-weight:500;
+}
+.f-icon{
+  font-size:22px;
+  margin-bottom:6px;
+  line-height:1;
+}
+.f-temp{
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink);
+  line-height:1;
+}
+.f-temp span{
+  font-size:10px;
+  font-weight:400;
+  color:var(--ink-l);
+  margin-left:2px;
+}
+.f-low{
+  font-size:9px;
+  color:var(--ink-l);
+  margin-top:3px;
+}
+
+/* PACK LIST — collaborative */
+.pack-card{
+  max-width:720px;
+  margin:0 auto 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:24px 26px;
+  box-shadow:var(--sh-s);
+}
+.pack-head{
+  margin-bottom:22px;
+}
+.pack-progress{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-bottom:12px;
+}
+.pack-p-num{
+  font-family:var(--serif);
+  font-size:36px;
+  font-weight:400;
+  font-style:italic;
+  color:var(--sage);
+  line-height:1;
+}
+.pack-p-num strong{font-weight:500}
+.pack-p-num span{color:var(--ink-l);font-size:22px}
+.pack-p-lbl{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+}
+.pack-bar{
+  height:5px;
+  background:var(--paper-d);
+  border-radius:10px;
+  overflow:hidden;
+}
+.pack-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--sage),var(--river));
+  border-radius:10px;
+  transition:width .5s var(--smooth);
+}
+.pack-group{margin-bottom:22px}
+.pack-group:last-child{margin-bottom:0}
+.pack-group-t{
+  font-size:9px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.pack-group-t::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+.pack-items{display:flex;flex-direction:column;gap:6px}
+.pack-i{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:6px;
+  background:var(--paper);
+  border:1px solid transparent;
+  transition:all .2s var(--ease);
+  cursor:pointer;
+}
+.pack-i:hover{background:var(--paper-d);border-color:var(--line-m)}
+.pack-i.mine{
+  background:linear-gradient(120deg,var(--sun-p),var(--sun-pp));
+  border-color:var(--sun);
+}
+.pack-i.claimed-solo{
+  background:var(--sage-p);
+  border-color:var(--sage-pp);
+}
+.pack-icon{
+  font-size:20px;
+  line-height:1;
+  flex-shrink:0;
+  width:32px;
+  text-align:center;
+}
+.pack-text{
+  flex:1;
+  min-width:0;
+}
+.pack-name{
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.3;
+}
+.pack-claimers{
+  font-size:11px;
+  color:var(--ink-l);
+  margin-top:2px;
+  line-height:1.3;
+}
+.pack-claimers.has-claims{color:var(--sage);font-weight:500}
+.pack-i.mine .pack-claimers{color:var(--sun-d)}
+.pack-tag{
+  font-size:8.5px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border-radius:100px;
+  font-weight:700;
+  flex-shrink:0;
+}
+.pack-tag.solo{background:var(--sun-pp);color:var(--sun-d)}
+.pack-tag.group{background:var(--sage-pp);color:var(--sage)}
+.pack-tag.req{background:var(--danger-p);color:var(--danger)}
+.pack-claim-btn{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:100px;
+  padding:7px 14px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.3px;
+  transition:all .2s var(--ease);
+  flex-shrink:0;
+}
+.pack-claim-btn:hover{background:var(--river)}
+.pack-claim-btn.unclaim{background:var(--sun);color:#fff}
+.pack-claim-btn.unclaim:hover{background:var(--sun-d)}
+.pack-claim-btn:disabled{opacity:.4;cursor:not-allowed}
+.pack-footer{
+  padding-top:16px;
+  margin-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:11px;
+  color:var(--ink-l);
+}
+.pack-reset{
+  color:var(--ink-l);
+  text-decoration:underline;
+  cursor:pointer;
+}
+.pack-reset:hover{color:var(--danger)}
+
+/* TRIP DAY — leading card */
+.td-leading{
+  max-width:720px;
+  margin:40px auto 30px;
+  background:linear-gradient(135deg,var(--ink),#253549);
+  border-radius:10px;
+  padding:40px 34px;
+  color:var(--cream);
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--sh-l);
+}
+.td-leading::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--sun),var(--river));
+}
+.td-leading::after{
+  content:'🛶';
+  position:absolute;
+  right:-30px;
+  bottom:-40px;
+  font-size:220px;
+  opacity:.05;
+  transform:rotate(-10deg);
+}
+.td-l-eyebrow{
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sun-l);
+  font-weight:600;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.td-l-eyebrow::before{
+  content:'';
+  width:28px;
+  height:1px;
+  background:var(--sun-l);
+}
+.td-l-title{
+  font-family:var(--serif);
+  font-size:clamp(32px,6.5vw,46px);
+  font-weight:400;
+  font-style:italic;
+  line-height:1.1;
+  color:#fff;
+  margin-bottom:14px;
+  letter-spacing:-.015em;
+  position:relative;
+  z-index:1;
+}
+.td-l-sub{
+  font-size:14px;
+  color:rgba(253,254,250,.72);
+  max-width:480px;
+  line-height:1.6;
+  margin-bottom:26px;
+  position:relative;
+  z-index:1;
+}
+.td-l-actions{position:relative;z-index:1}
+.td-l-btn{
+  background:var(--sun);
+  color:#fff;
+  border-radius:4px;
+  padding:14px 24px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  transition:all .25s var(--ease);
+}
+.td-l-btn:hover{background:var(--sun-d);transform:translateY(-1px)}
+
+/* TRIP DAY — status grid */
+.td-status-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  max-width:720px;
+  margin:0 auto 18px;
+}
+.td-status-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:18px 20px;
+  box-shadow:var(--sh-s);
+}
+.td-sc-lbl{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-l);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.td-sc-val{
+  font-family:var(--serif);
+  font-size:22px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.2;
+  margin-bottom:10px;
+  min-height:28px;
+}
+.td-sc-link{
+  font-size:11px;
+  color:var(--river);
+  font-weight:600;
+  letter-spacing:.3px;
+  cursor:pointer;
+}
+.td-sc-link:hover{color:var(--river-d);text-decoration:underline}
+@media(max-width:520px){
+  .td-status-grid{grid-template-columns:1fr}
+}
+
+/* Final checks */
+.final-checks{
+  max-width:720px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.fc-item{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:18px 22px;
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  font-size:13px;
+  color:var(--ink-m);
+  line-height:1.6;
+}
+.fc-num{
+  font-family:var(--serif);
+  font-size:24px;
+  font-style:italic;
+  color:var(--sun-d);
+  flex-shrink:0;
+  line-height:1;
+  margin-top:-2px;
+  font-weight:500;
+}
+.fc-item strong{color:var(--ink);font-weight:600}
+
+/* ROUTE MATCH overlay */
+.match-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(22,32,50,.88);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  z-index:1100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  opacity:0;
+  transition:opacity .3s var(--ease);
+}
+.match-overlay.show{display:flex;opacity:1}
+.match-card{
+  background:var(--card);
+  border-radius:12px;
+  padding:44px 38px 38px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  box-shadow:var(--sh-xl);
+  transform:scale(.92) translateY(20px);
+  transition:transform .5s var(--spring);
+  position:relative;
+  overflow:hidden;
+}
+.match-overlay.show .match-card{transform:scale(1) translateY(0)}
+.match-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--sun),var(--river),var(--sage));
+}
+.match-sparkle{
+  font-size:46px;
+  margin-bottom:18px;
+  animation:matchSparkle 1.8s ease-in-out infinite;
+}
+@keyframes matchSparkle{
+  0%,100%{transform:scale(1) rotate(0)}
+  50%{transform:scale(1.15) rotate(10deg)}
+}
+.match-title{
+  font-family:var(--serif);
+  font-size:28px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.2;
+  margin-bottom:14px;
+  letter-spacing:-.01em;
+}
+.match-body{
+  font-size:14px;
+  color:var(--ink-m);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.match-body strong{color:var(--sun-d)}
+.match-btn{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:100px;
+  padding:13px 32px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  transition:all .2s;
+}
+.match-btn:hover{background:var(--sun);transform:translateY(-1px)}
+
+/* BLESSING arrival */
+.blessing{
+  position:fixed;
+  inset:0;
+  background:rgba(22,32,50,.95);
+  backdrop-filter:blur(30px);
+  z-index:1200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+  opacity:0;
+  transition:opacity .6s var(--ease);
+  cursor:pointer;
+}
+.blessing.show{display:flex;opacity:1}
+.blessing-inner{
+  max-width:540px;
+  text-align:center;
+}
+.blessing-text{
+  font-family:var(--serif);
+  font-size:clamp(26px,5.5vw,38px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--cream);
+  line-height:1.35;
+  letter-spacing:-.005em;
+  opacity:0;
+  transform:translateY(12px);
+  transition:all 1.2s var(--smooth) .3s;
+}
+.blessing.show .blessing-text{opacity:1;transform:translateY(0)}
+.blessing-text strong{color:var(--sun-l);font-weight:400}
+
+/* EMOJI PICKER */
+.emoji-picker{
+  position:fixed;
+  inset:0;
+  background:rgba(22,32,50,.85);
+  backdrop-filter:blur(14px);
+  z-index:1150;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  opacity:0;
+  transition:opacity .3s var(--ease);
+}
+.emoji-picker.show{display:flex;opacity:1}
+.ep-card{
+  background:var(--card);
+  border-radius:12px;
+  padding:32px 30px 26px;
+  max-width:400px;
+  width:100%;
+  text-align:center;
+  box-shadow:var(--sh-xl);
+}
+.ep-title{
+  font-family:var(--serif);
+  font-size:24px;
+  font-style:italic;
+  font-weight:500;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+.ep-sub{
+  font-size:12px;
+  color:var(--ink-l);
+  margin-bottom:22px;
+}
+.ep-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+  margin-bottom:18px;
+}
+.ep-emoji{
+  aspect-ratio:1;
+  font-size:26px;
+  background:var(--paper);
+  border-radius:8px;
+  transition:all .15s var(--spring);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.ep-emoji:hover{background:var(--sun-p);transform:scale(1.1)}
+.ep-skip{
+  font-size:11px;
+  color:var(--ink-l);
+  text-decoration:underline;
+  cursor:pointer;
+  padding:6px 12px;
+}
+.ep-skip:hover{color:var(--ink)}
+
+/* THE WHISPER */
+.whisper{
+  max-width:720px;
+  margin:24px auto 0;
+  padding:0 24px;
+  text-align:center;
+  font-family:var(--serif);
+  font-size:clamp(17px,3.2vw,22px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink-m);
+  line-height:1.5;
+  opacity:0;
+  transition:opacity 1.2s var(--ease);
+  min-height:0;
+}
+.whisper.show{opacity:1}
+.whisper strong{color:var(--sun-d);font-weight:400}
+
+/* PRINT MODE — zine for the leading route */
+@media print{
+  body{background:#fff !important;color:#000}
+  .tabs,.hero,.footer,.hero-sound,.filter-row,.gallery-wrap,.crew-wall,.td-leading,.td-status-grid,.trip-day,.emergency,.final-checks,.section-head,.forecast-scroll,.pack-card,.updates-card,.safety-grid,.travel-card,.share-card,.leader,.name-card,.vote-posters,.letter,.countdown,.entry-cards,.cal-hero,.best-weekend,.cal-mnav,.cal-wrap,.cal-legend,.avail-results,.overview-map-wrap,.whisper,.nav,.section-kicker,.section-sub,.section-title:not(.print-show){display:none!important}
+  .panel{display:none!important}
+  .panel.active.print-show,.panel.print-show{display:block!important}
+  .print-zine{display:block!important}
+  .wrap{padding:0!important;max-width:100%!important}
+  .poster-close,.match-overlay,.blessing,.emoji-picker{display:none!important}
+}
+.print-zine{display:none;padding:40px 30px}
+@media print{
+  .print-zine{
+    font-family:Georgia,serif;
+    color:#000;
+    page-break-inside:avoid;
+  }
+  .pz-head{text-align:center;padding-bottom:20px;border-bottom:1px solid #000;margin-bottom:20px}
+  .pz-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+  .pz-title{font-size:36px;font-style:italic;font-weight:400;margin-bottom:4px;line-height:1}
+  .pz-sub{font-size:13px;font-style:italic;color:#555}
+  .pz-section{margin-bottom:22px;break-inside:avoid}
+  .pz-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;border-bottom:1px solid #000;padding-bottom:4px}
+  .pz-body{font-size:12px;line-height:1.6}
+  .pz-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pz-fact strong{display:block;font-size:9px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+  .pz-wpts{display:flex;justify-content:space-between;gap:10px;font-size:10px;flex-wrap:wrap}
+  .pz-emergency{border:2px solid #000;padding:10px;margin-top:20px;font-size:11px;text-align:center}
+  .pz-emergency strong{font-size:14px}
+}
+
+/* ENRICHED WAYPOINT MAPS — fancier markers in poster */
+.wpt-marker{
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:50%;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.wpt-marker.entry{border-color:var(--sage)}
+.wpt-marker.exit{border-color:var(--danger)}
+.wpt-marker.beach{border-color:var(--sun)}
+.wpt-marker.hazard{border-color:var(--danger);background:var(--danger-p)}
+.wpt-marker.swim{border-color:var(--river)}
+.wpt-marker.food{border-color:var(--sage)}
+.wpt-marker.camp{border-color:var(--ink)}
+.wpt-marker.sight{border-color:var(--gold)}
+
+/* LIGHT SECTIONS NEEDING COLOR FIXES */
+.avail-results{background:var(--card);border:1px solid var(--line);box-shadow:var(--sh-s)}
+.cal-wrap{background:var(--card);box-shadow:var(--sh-s)}
+
+/* WISH STRIP in poster */
+.poster-wishes{
+  margin:24px 0 32px;
+}
+.pw-title{
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--river);
+  font-weight:600;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.pw-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.pw-list{display:flex;flex-direction:column;gap:10px}
+.pw-item{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:14px 18px;
+  font-family:var(--serif);
+  font-size:16px;
+  font-style:italic;
+  color:var(--ink-m);
+  line-height:1.5;
+  position:relative;
+  padding-left:36px;
+}
+.pw-item::before{
+  content:'"';
+  position:absolute;
+  left:14px;
+  top:8px;
+  font-size:38px;
+  color:var(--sun);
+  line-height:1;
+  font-family:var(--serif);
+  font-weight:600;
+}
+.pw-item-who{
+  display:block;
+  font-size:11px;
+  font-style:normal;
+  font-family:var(--sans);
+  color:var(--ink-l);
+  margin-top:4px;
+  letter-spacing:.3px;
+}
+.pw-empty{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink-l);
+  text-align:center;
+  padding:18px;
+  background:var(--paper);
+  border-radius:6px;
+}
+.pw-input-row{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+.pw-input{
+  flex:1;
+  background:var(--card);
+  border:1px solid var(--line-m);
+  border-radius:4px;
+  padding:11px 14px;
+  font-size:13px;
+  color:var(--ink);
+  font-family:var(--sans);
+  outline:none;
+}
+.pw-input:focus{border-color:var(--river)}
+.pw-btn{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:4px;
+  padding:11px 18px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.pw-btn:hover{background:var(--river)}
 
 </style>
 </head>
@@ -2072,6 +2946,11 @@ body.poster-locked{overflow:hidden}
     <span>Scroll</span>
     <svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
   </div>
+  <button class="hero-sound" id="heroSound" onclick="toggleHeroSound()" aria-label="Play river sound">
+    <svg viewBox="0 0 24 24" class="hs-icon-play"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" class="hs-icon-pause" style="display:none"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>
+    <span class="hs-label">River sound</span>
+  </button>
 </header>
 
 <!-- ══════════════════════════════════════
@@ -2081,8 +2960,8 @@ body.poster-locked{overflow:hidden}
   <div class="tabs-inner">
     <div class="tab-indicator" id="tabIndicator"></div>
     <button class="tab active" data-tab="discover"><span class="tab-emoji">✨</span>Discover</button>
-    <button class="tab" data-tab="decide"><span class="tab-emoji">🗳</span>Decide</button>
-    <button class="tab" data-tab="dayof"><span class="tab-emoji">🎒</span>Day Of</button>
+    <button class="tab" data-tab="plan"><span class="tab-emoji">🤝</span>Plan Together</button>
+    <button class="tab" data-tab="tripday"><span class="tab-emoji">🛶</span>Trip Day</button>
   </div>
 </nav>
 
@@ -2129,7 +3008,7 @@ body.poster-locked{overflow:hidden}
         </div>
         <div class="ec-arrow">→</div>
       </button>
-      <button class="ec" style="--bar:var(--sun)" onclick="switchTab('decide','vote')">
+      <button class="ec" style="--bar:var(--sun)" onclick="switchTab('plan','vote')">
         <div class="ec-icon">❤️</div>
         <div class="ec-body">
           <div class="ec-num">02</div>
@@ -2138,7 +3017,7 @@ body.poster-locked{overflow:hidden}
         </div>
         <div class="ec-arrow">→</div>
       </button>
-      <button class="ec" style="--bar:var(--sage)" onclick="switchTab('decide','dates')">
+      <button class="ec" style="--bar:var(--sage)" onclick="switchTab('plan','dates')">
         <div class="ec-icon">📅</div>
         <div class="ec-body">
           <div class="ec-num">03</div>
@@ -2147,6 +3026,19 @@ body.poster-locked{overflow:hidden}
         </div>
         <div class="ec-arrow">→</div>
       </button>
+    </div>
+
+    <!-- Switzerland overview map -->
+    <div class="wrap" id="overviewAnchor">
+      <div class="section-head">
+        <div class="section-kicker">Where we're going</div>
+        <h2 class="section-title">Five rivers, one country</h2>
+        <p class="section-sub">All five routes placed on the map. Tap any pin to jump to the route.</p>
+      </div>
+    </div>
+    <div class="overview-map-wrap">
+      <div id="overviewMap" class="overview-map"></div>
+      <div class="overview-legend" id="overviewLegend"></div>
     </div>
 
     <!-- Filter + Gallery -->
@@ -2174,8 +3066,18 @@ body.poster-locked{overflow:hidden}
 
   </section>
 
-  <!-- ═══════════ DECIDE ═══════════ -->
-  <section class="panel" id="panel-decide">
+  <!-- ═══════════ PLAN TOGETHER ═══════════ -->
+  <section class="panel" id="panel-plan">
+
+    <!-- Crew Wall -->
+    <div class="wrap" id="crewAnchor">
+      <div class="section-head">
+        <div class="section-kicker">The crew</div>
+        <h2 class="section-title">Who's in so far</h2>
+        <p class="section-sub">Everyone who's entered their name and voted or marked days. Pick an emoji when you join.</p>
+      </div>
+      <div class="crew-wall" id="crewWall"></div>
+    </div>
 
     <div class="wrap" id="voteAnchor">
       <div class="section-head">
@@ -2266,66 +3168,42 @@ body.poster-locked{overflow:hidden}
       </div>
     </div>
 
-  </section>
-
-  <!-- ═══════════ DAY OF ═══════════ -->
-  <section class="panel" id="panel-dayof">
-
-    <div class="wrap">
-      <div class="trip-day">
-        <div class="td-eyebrow">When the day comes</div>
-        <h2 class="td-title">You're on the water<br>in a few hours.</h2>
-        <p class="td-sub">Quick links for the morning-of, so you're not scrolling through a guide at 9am with coffee in one hand.</p>
-        <div class="td-actions">
-          <a class="td-btn" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">🌊</div>Water level
-          </a>
-          <a class="td-btn" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">☀️</div>Weather
-          </a>
-          <a class="td-btn" href="https://www.sbb.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">🚆</div>Trains
-          </a>
-          <a class="td-btn" href="tel:117">
-            <div class="td-btn-icon">🚨</div>Emergency
-          </a>
-        </div>
-      </div>
-
-      <div class="emergency">
-        <div class="em-icon">🆘</div>
-        <div class="em-info">
-          <div class="em-title">In an emergency</div>
-          <div class="em-sub">Police <strong>117</strong> · Ambulance <strong>144</strong> · Rega air rescue <strong>1414</strong> · River SOS — stay with the boat, drift feet-first</div>
-        </div>
-        <a class="em-call" href="tel:117">Call 117</a>
-      </div>
-    </div>
-
-    <div class="wrap">
+    <!-- Weather forecast scroll -->
+    <div class="wrap" id="forecastAnchor">
       <div class="section-head">
-        <div class="section-kicker">The checklist</div>
-        <h2 class="section-title">Everything you need</h2>
-        <p class="section-sub">Tap to tick off as you pack. Saves automatically. Red = legally required in 2026.</p>
+        <div class="section-kicker">Live weather</div>
+        <h2 class="section-title">Looking ahead</h2>
+        <p class="section-sub">14-day forecast for Basel — scroll through to find your weekend. Sun icons = river-ready days.</p>
+      </div>
+    </div>
+    <div class="forecast-scroll" id="forecastScroll">
+      <div class="forecast-loading">Loading weather…</div>
+    </div>
+
+    <!-- Collaborative packing list -->
+    <div class="wrap" id="packAnchor">
+      <div class="section-head">
+        <div class="section-kicker">Who's bringing what</div>
+        <h2 class="section-title">The packing list</h2>
+        <p class="section-sub">Tap any item to claim it. <strong style="color:var(--sun-d)">Solo</strong> items = one person brings. <strong style="color:var(--sage)">Group</strong> items = many can help. Enter your name first (below).</p>
       </div>
 
-      <div class="kit-card">
-        <div class="kit-head">
-          <div class="kit-title-row">
-            <div class="kit-lbl">The kit</div>
-            <div class="kit-title">Packed & ready</div>
+      <div class="pack-card">
+        <div class="pack-head">
+          <div class="pack-progress">
+            <div class="pack-p-num"><strong id="packClaimedNum">0</strong>/<span id="packTotalNum">0</span></div>
+            <div class="pack-p-lbl">Claimed</div>
           </div>
-          <div class="kit-progress">
-            <strong id="kitProgressNum">0/0</strong>
-            items packed
-          </div>
+          <div class="pack-bar"><div class="pack-bar-fill" id="packBarFill" style="width:0%"></div></div>
         </div>
-        <div class="kit-bar"><div class="kit-bar-fill" id="kitBarFill" style="width:0%"></div></div>
-        <div id="kitGroups"></div>
-        <a class="kit-reset" onclick="resetKit()">Reset checklist</a>
+        <div id="packGroups"></div>
+        <div class="pack-footer">
+          <a class="pack-reset" onclick="resetPack()">Clear my claims</a>
+        </div>
       </div>
     </div>
 
+    <!-- 2026 updates -->
     <div class="wrap">
       <div class="section-head">
         <div class="section-kicker">2026 updates</div>
@@ -2346,6 +3224,7 @@ body.poster-locked{overflow:hidden}
       </div>
     </div>
 
+    <!-- Safety -->
     <div class="wrap">
       <div class="section-head">
         <div class="section-kicker">Safety</div>
@@ -2370,6 +3249,7 @@ body.poster-locked{overflow:hidden}
       </div>
     </div>
 
+    <!-- Travel -->
     <div class="wrap">
       <div class="section-head">
         <div class="section-kicker">Getting there</div>
@@ -2391,6 +3271,108 @@ body.poster-locked{overflow:hidden}
 
   </section>
 
+  <!-- ═══════════ TRIP DAY ═══════════ -->
+  <section class="panel" id="panel-tripday">
+
+    <!-- The Whisper (random morning blessing) -->
+    <div class="whisper" id="whisper"></div>
+
+    <!-- Hero: the chosen route -->
+    <div class="wrap">
+      <div class="td-leading" id="tdLeading">
+        <div class="td-l-eyebrow" id="tdLEyebrow">Leading right now</div>
+        <h2 class="td-l-title" id="tdLTitle">—</h2>
+        <p class="td-l-sub" id="tdLSub"></p>
+        <div class="td-l-actions">
+          <button class="td-l-btn" onclick="openLeadingPoster()">
+            <span>Open full route</span><span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live status for the chosen route -->
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Right now</div>
+        <h2 class="section-title">Is today a river day?</h2>
+        <p class="section-sub">Live water level, weather, and train check for the leading route — updates every time you open the app.</p>
+      </div>
+
+      <div class="td-status-grid">
+        <div class="td-status-card">
+          <div class="td-sc-lbl">🌊 Water level</div>
+          <div class="td-sc-val" id="tdWaterVal">—</div>
+          <a class="td-sc-link" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">Full data →</a>
+        </div>
+        <div class="td-status-card">
+          <div class="td-sc-lbl">☀️ Weather today</div>
+          <div class="td-sc-val" id="tdWeatherVal">—</div>
+          <a class="td-sc-link" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">MeteoSwiss →</a>
+        </div>
+        <div class="td-status-card">
+          <div class="td-sc-lbl">🚆 Next train from Basel</div>
+          <div class="td-sc-val" id="tdTrainVal">Check SBB</div>
+          <a class="td-sc-link" href="https://www.sbb.ch" target="_blank" rel="noopener">Book →</a>
+        </div>
+        <div class="td-status-card">
+          <div class="td-sc-lbl">🎒 Packing status</div>
+          <div class="td-sc-val" id="tdPackVal">—</div>
+          <a class="td-sc-link" onclick="switchTab('plan','pack')">Open list →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="wrap">
+      <div class="trip-day">
+        <div class="td-eyebrow">Quick links</div>
+        <h2 class="td-title">When it's the morning<br>of the adventure.</h2>
+        <p class="td-sub">Everything you need, one tap away — so you're not scrolling at 9am with coffee in one hand.</p>
+        <div class="td-actions">
+          <a class="td-btn" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">🌊</div>Water level
+          </a>
+          <a class="td-btn" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">☀️</div>Weather
+          </a>
+          <a class="td-btn" href="https://www.sbb.ch" target="_blank" rel="noopener">
+            <div class="td-btn-icon">🚆</div>Trains
+          </a>
+          <a class="td-btn" href="javascript:void(0)" onclick="printTripZine()">
+            <div class="td-btn-icon">🖨</div>Print zine
+          </a>
+        </div>
+      </div>
+
+      <div class="emergency">
+        <div class="em-icon">🆘</div>
+        <div class="em-info">
+          <div class="em-title">In an emergency</div>
+          <div class="em-sub">Police <strong>117</strong> · Ambulance <strong>144</strong> · Rega air rescue <strong>1414</strong> · River SOS — stay with the boat, drift feet-first</div>
+        </div>
+        <a class="em-call" href="tel:117">Call 117</a>
+      </div>
+    </div>
+
+    <!-- Final reminders -->
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Final check</div>
+        <h2 class="section-title">Before you leave the house</h2>
+      </div>
+
+      <div class="final-checks">
+        <div class="fc-item"><span class="fc-num">01</span><div><strong>Life jacket on each person.</strong> 75N river / 100N Rhine. Kids under 12: always on.</div></div>
+        <div class="fc-item"><span class="fc-num">02</span><div><strong>Boat labelled.</strong> Name, address, phone number — visible.</div></div>
+        <div class="fc-item"><span class="fc-num">03</span><div><strong>Told someone your plan.</strong> Entry point, exit point, ETA.</div></div>
+        <div class="fc-item"><span class="fc-num">04</span><div><strong>Phone in dry bag.</strong> Battery full. Offline maps downloaded.</div></div>
+        <div class="fc-item"><span class="fc-num">05</span><div><strong>Fit to navigate.</strong> No alcohol before launch — save it for the island.</div></div>
+      </div>
+    </div>
+
+  </section>
+
 </main>
 
 <!-- Footer -->
@@ -2398,6 +3380,38 @@ body.poster-locked{overflow:hidden}
   <div>Built with 🛶 for the Summer 2026 crew</div>
   <div>Sources: Salamander Verlag (7th ed. 2023) · hydrodaten.admin.ch · SBB</div>
 </footer>
+
+<!-- Route Match overlay (fires after voting) -->
+<div class="match-overlay" id="matchOverlay" onclick="closeMatch()">
+  <div class="match-card">
+    <div class="match-sparkle">✨</div>
+    <div class="match-title" id="matchTitle">You matched with the crew!</div>
+    <div class="match-body" id="matchBody"></div>
+    <button class="match-btn" onclick="closeMatch()">Nice</button>
+  </div>
+</div>
+
+<!-- Blessing Arrival (first-time welcome) -->
+<div class="blessing" id="blessing" onclick="closeBlessing()">
+  <div class="blessing-inner">
+    <div class="blessing-text" id="blessingText"></div>
+  </div>
+</div>
+
+<!-- Emoji picker (when someone first joins the crew) -->
+<div class="emoji-picker" id="emojiPicker">
+  <div class="ep-card">
+    <div class="ep-title">Pick your vibe</div>
+    <div class="ep-sub">This'll be your crew avatar.</div>
+    <div class="ep-grid" id="epGrid"></div>
+    <button class="ep-skip" onclick="closeEmojiPicker()">Skip</button>
+  </div>
+</div>
+
+<!-- Audio element for river sound -->
+<audio id="riverAudio" loop preload="none">
+  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_347eadc9d0.mp3" type="audio/mpeg">
+</audio>
 
 <!-- Poster modal -->
 <div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
@@ -2455,7 +3469,14 @@ const ROUTES=[
     pros:['Closest to Basel — ~1h','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
     cons:['Starts next to a nuclear plant 😅','No dedicated boat rental','Cross-current near bridge'],
     fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
-    mapCoords:[[47.5912,8.1772],[47.5702,8.0684],[47.5602,8.0434],[47.5615,8.0594]]
+    mapCoords:[[47.5912,8.1772],[47.5702,8.0684],[47.5602,8.0434],[47.5615,8.0594]],
+    waypoints:[
+      {t:'entry',lat:47.5912,lng:8.1772,emoji:'🚀',name:'Leibstadt',desc:'Slipanlage, left bank, below Stauwehr Dogern'},
+      {t:'beach',lat:47.5702,lng:8.0684,emoji:'🏖',name:'Dreispitz beach',desc:'Sandy stop + Fischerhütte bar, km 3.8'},
+      {t:'swim',lat:47.5602,lng:8.0434,emoji:'🏝',name:'The Caribbean',desc:'Sandbar + swim spot, km 6.8 — the book calls it the Caribbean'},
+      {t:'hazard',lat:47.5640,lng:8.0540,emoji:'⚠️',name:'Cross-current',desc:'Querströmung after bridge — stay left'},
+      {t:'exit',lat:47.5615,lng:8.0594,emoji:'🏰',name:'Laufenburg',desc:'Schlipf 200m after Laufenbrücke, left bank. Exit before double-city!'}
+    ]
   },
   {
     id:'d2',
@@ -2499,7 +3520,15 @@ const ROUTES=[
     pros:['Most picturesque route','Medieval towns at both ends','Vineyards + convent island','Rental service available'],
     cons:['Longest trip (4–5 hours)','Furthest from Basel (~2h)','⚠️ Rheinfall risk if you miss exit'],
     fit:'For the people who want the most Instagram-worthy day. Calm water, beautiful villages, zero drama if you pay attention at the exit.',
-    mapCoords:[[47.6602,8.8597],[47.6577,8.8543],[47.6883,8.7521],[47.6936,8.6316]]
+    mapCoords:[[47.6602,8.8597],[47.6577,8.8543],[47.6883,8.7521],[47.6936,8.6316]],
+    waypoints:[
+      {t:'entry',lat:47.6602,lng:8.8597,emoji:'🏯',name:'Stein am Rhein',desc:'Public slip, left bank 300m downstream of bridge'},
+      {t:'sight',lat:47.6577,lng:8.8543,emoji:'⛪',name:'Insel Werd',desc:'Convent island, km 1 — slow-float it'},
+      {t:'food',lat:47.6883,lng:8.7521,emoji:'🍇',name:'Diessenhofen',desc:'Vineyard village stop, km 8 — wine + bakery'},
+      {t:'swim',lat:47.6840,lng:8.7100,emoji:'🏊',name:'Calm swim stretch',desc:'Quiet bank, km 10–13'},
+      {t:'hazard',lat:47.6920,lng:8.6400,emoji:'🚨',name:'EXIT SOON',desc:'Rheinfall is 4km past exit. Do NOT continue!'},
+      {t:'exit',lat:47.6936,lng:8.6316,emoji:'🏛',name:'Schaffhausen Schifflände',desc:'Exit HERE — km 18.8. Clear signs, impossible to miss.'}
+    ]
   },
   {
     id:'d3',
@@ -2542,7 +3571,14 @@ const ROUTES=[
     pros:['Shortest, easiest day out','Start at iconic waterfall','Moonlight-trip capable','Baroque abbey finish'],
     cons:['Colder water than other routes','No rental','Initial turbulence requires attention'],
     fit:'When you want drama without commitment. Half a day, one beer at the abbey, home for dinner. Best under a full moon.',
-    mapCoords:[[47.6781,8.6154],[47.6681,8.6000],[47.6403,8.6175]]
+    mapCoords:[[47.6781,8.6154],[47.6681,8.6000],[47.6403,8.6175]],
+    waypoints:[
+      {t:'entry',lat:47.6781,lng:8.6154,emoji:'💦',name:'Below Rheinfall',desc:'Marked public entry, left bank downstream of basin'},
+      {t:'hazard',lat:47.6770,lng:8.6130,emoji:'⚠️',name:'Initial turbulence',desc:'Stay left, 200m before you relax — falls backflow'},
+      {t:'sight',lat:47.6681,lng:8.6000,emoji:'🌳',name:'Nohl forest',desc:'Quiet forest clearings, km 3'},
+      {t:'swim',lat:47.6550,lng:8.6100,emoji:'🏊',name:'Evening swim',desc:'Best calm stretch — magical at dusk'},
+      {t:'exit',lat:47.6403,lng:8.6175,emoji:'⛪',name:'Kloster Rheinau',desc:'Jetty at the Benedictine abbey, left bank'}
+    ]
   },
   {
     id:'o1',
@@ -2586,7 +3622,16 @@ const ROUTES=[
     pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Closest of all the routes'],
     cons:['Glacier-cold water (16–20°C)','Requires camping gear','Must book Eichholz ahead','Most commitment'],
     fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
-    mapCoords:[[46.7580,7.6250],[46.8183,7.5800],[46.9385,7.4632],[46.9480,7.4474],[46.9697,7.3883]]
+    mapCoords:[[46.7580,7.6250],[46.8183,7.5800],[46.9385,7.4632],[46.9480,7.4474],[46.9697,7.3883]],
+    waypoints:[
+      {t:'entry',lat:46.7580,lng:7.6250,emoji:'🏔',name:'Thun Schwäbis',desc:'Right bank 400m downstream of Scherzligschleuse'},
+      {t:'beach',lat:46.8183,lng:7.5800,emoji:'🏖',name:'Kiesen lunch stop',desc:'Wide sandy bank, km 12 — stop for food'},
+      {t:'swim',lat:46.8700,lng:7.5300,emoji:'🏊',name:'Uttigen swim',desc:'Classic local swim spot, km 20'},
+      {t:'camp',lat:46.9385,lng:7.4632,emoji:'⛺',name:'Camping Eichholz',desc:'Camp night one · CHF 14/night + tent · book ahead'},
+      {t:'sight',lat:46.9480,lng:7.4474,emoji:'🐻',name:'Bern: Bear Park + Parliament',desc:'Day 2 · drift through Bern past the parliament'},
+      {t:'hazard',lat:46.9650,lng:7.3950,emoji:'⚠️',name:'EXIT BEFORE bridge',desc:'Wohleibrücke = dam ahead. Exit at Hinterkappelen shore!'},
+      {t:'exit',lat:46.9697,lng:7.3883,emoji:'🌅',name:'Hinterkappelen',desc:'Wohlensee shore, left bank, km 44'}
+    ]
   },
   {
     id:'o2',
@@ -2630,7 +3675,16 @@ const ROUTES=[
     pros:['Wildest of all routes','Empty — barely any other boats','Covered medieval bridges','End at Swiss Wasserschloss','Affordable riverside camp'],
     cons:['Advanced only — experience required','Must check water level carefully','Camping is basic','Hard to organise return transport'],
     fit:'For the group that\'s already done the Aare and wants something more remote. Save this for year two.',
-    mapCoords:[[47.3522,8.3421],[47.3892,8.3242],[47.4176,8.2824],[47.4174,8.2402],[47.4736,8.2400]]
+    mapCoords:[[47.3522,8.3421],[47.3892,8.3242],[47.4176,8.2824],[47.4174,8.2402],[47.4736,8.2400]],
+    waypoints:[
+      {t:'entry',lat:47.3522,lng:8.3421,emoji:'🏰',name:'Bremgarten',desc:'Slip 300m downstream of the old covered bridge'},
+      {t:'sight',lat:47.3750,lng:8.3300,emoji:'🌲',name:'Forest wilderness',desc:'Quiet forested stretch, km 6 — barely anyone around'},
+      {t:'camp',lat:47.3892,lng:8.3242,emoji:'⛺',name:'Camping Sulz',desc:'Night camp · ~CHF 18/tent · camping-sulz.ch'},
+      {t:'sight',lat:47.4176,lng:8.2824,emoji:'🏰',name:'Mellingen covered bridge',desc:'Day 2 · historic wooden bridge'},
+      {t:'hazard',lat:47.4350,lng:8.2500,emoji:'⚠️',name:'Check level!',desc:'NEVER if Mellingen Q > 250 m³/s'},
+      {t:'swim',lat:47.4500,lng:8.2410,emoji:'🏊',name:'Final swim',desc:'Calm stretch before the junction'},
+      {t:'exit',lat:47.4736,lng:8.2400,emoji:'💎',name:'Wasserschloss Gebenstorf',desc:'Where Reuss, Aare + Limmat meet. Left bank, km 25.3'}
+    ]
   }
 ];
 
@@ -2645,11 +3699,94 @@ const getVotes=()=>S.get('gb_votes')||{};
 const saveVotes=v=>S.set('gb_votes',v);
 const getAvail=()=>S.get('gb_avail')||{};
 const saveAvail=a=>S.set('gb_avail',a);
-const getKit=()=>S.get('gb_kit')||{};
-const saveKit=k=>S.set('gb_kit',k);
+const getCrew=()=>S.get('gb_crew')||{};    // { name: {emoji, joined} }
+const saveCrew=c=>S.set('gb_crew',c);
+const getPack=()=>S.get('gb_pack')||{};    // { itemId: [name1, name2] }
+const savePack=p=>S.set('gb_pack',p);
+const getWishes=()=>S.get('gb_wishes')||{}; // { routeId: [{who, text}] }
+const saveWishes=w=>S.set('gb_wishes',w);
 
 let voter=S.get('gb_voter')||'';
 let availPerson=S.get('gb_avail_person')||'';
+let myName=voter||availPerson||'';
+let myEmoji=S.get('gb_my_emoji')||'';
+let leadingRouteId=null; // updated whenever we render votes
+
+// ═══════════════════════════════════════
+// CREW SYSTEM — shared identity across features
+// ═══════════════════════════════════════
+const CREW_EMOJIS=['🛶','🌊','☀️','🌿','🔥','✨','🏔','🌙','🦩','🐠','🌻','🍉','🥥','🎐','🪷','🫧','🦋','🌈','🌸','🍋','🌲','🧡','💙','💚'];
+
+function joinCrew(name,emoji){
+  if(!name)return;
+  const c=getCrew();
+  c[name]={emoji:emoji||c[name]?.emoji||'🛶',joined:c[name]?.joined||Date.now()};
+  saveCrew(c);
+  myName=name;
+  if(emoji){myEmoji=emoji;S.set('gb_my_emoji',emoji);}
+  renderCrewWall();
+}
+
+function renderCrewWall(){
+  const el=document.getElementById('crewWall');
+  if(!el)return;
+  const crew=getCrew();
+  const names=Object.keys(crew);
+  if(names.length===0){
+    el.innerHTML='<div class="crew-empty">No one yet. Be the first to vote or mark your dates 👇</div>';
+    return;
+  }
+  // sort: me first, then by join time
+  names.sort((a,b)=>{
+    if(a===myName)return -1;
+    if(b===myName)return 1;
+    return (crew[a].joined||0)-(crew[b].joined||0);
+  });
+  el.innerHTML=names.map(n=>{
+    const c=crew[n];
+    const isMe=n===myName;
+    const votes=getVotes();
+    const avail=getAvail();
+    const voteCount=Object.values(votes).reduce((s,v)=>s+(v.includes(n)?1:0),0);
+    const dayCount=Object.keys(avail[n]||{}).length;
+    const meta=[];
+    if(voteCount)meta.push(voteCount+' vote'+(voteCount>1?'s':''));
+    if(dayCount)meta.push(dayCount+' day'+(dayCount>1?'s':''));
+    const metaTxt=meta.join(' · ')||'Just joined';
+    return `<div class="crew-avatar${isMe?' me':''}">
+      <div class="ca-face">${c.emoji||'🛶'}</div>
+      <div><div class="ca-name">${escapeHtml(n)}${isMe?' (you)':''}</div><span class="ca-meta">${metaTxt}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ═══════════════════════════════════════
+// EMOJI PICKER — shown when joining
+// ═══════════════════════════════════════
+function showEmojiPicker(name){
+  const picker=document.getElementById('emojiPicker');
+  const grid=document.getElementById('epGrid');
+  if(!picker||!grid)return;
+  grid.innerHTML=CREW_EMOJIS.map(e=>`<button class="ep-emoji" onclick="pickEmoji('${e}','${escapeHtml(name)}')">${e}</button>`).join('');
+  picker.classList.add('show');
+}
+
+function pickEmoji(emoji,name){
+  joinCrew(name,emoji);
+  closeEmojiPicker();
+  renderVotePosters();
+  if(document.getElementById('panel-plan').classList.contains('active')){
+    renderCrewWall();
+  }
+}
+
+function closeEmojiPicker(){
+  document.getElementById('emojiPicker').classList.remove('show');
+}
 
 // ═══════════════════════════════════════
 // TABS
@@ -2659,6 +3796,9 @@ function switchTab(id,scrollTo){
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
   positionTabIndicator();
   window.scrollTo({top:0,behavior:'auto'});
+  // Re-render things that need fresh state
+  if(id==='plan'){renderCrewWall();renderPack();}
+  if(id==='tripday'){renderTripDay();maybeShowWhisper();}
   if(scrollTo){
     setTimeout(()=>{
       const el=document.getElementById(scrollTo+'Anchor');
@@ -2666,7 +3806,7 @@ function switchTab(id,scrollTo){
         const y=el.getBoundingClientRect().top+window.pageYOffset-70;
         window.scrollTo({top:y,behavior:'smooth'});
       }
-    },100);
+    },120);
   }
 }
 
@@ -2682,7 +3822,7 @@ function positionTabIndicator(){
 }
 
 // ═══════════════════════════════════════
-// GALLERY (horizontal route cards)
+// GALLERY + FILTERS
 // ═══════════════════════════════════════
 let currentFilter='all';
 
@@ -2714,7 +3854,7 @@ function renderGallery(){
         <div class="g-meta">
           <div class="g-meta-i">⏱ ${r.hours}</div>
           <div class="g-meta-i">🌡 ${r.temp}</div>
-          <div class="g-meta-i">🚆 ${r.travel.split('~')[1]||''}</div>
+          <div class="g-meta-i">🚆 ${(r.travel.split('~')[1]||'').trim()}</div>
         </div>
       </div>
     </article>
@@ -2738,6 +3878,54 @@ function scrollToRoutes(){
 }
 
 // ═══════════════════════════════════════
+// SWITZERLAND OVERVIEW MAP
+// ═══════════════════════════════════════
+let overviewMapInstance=null;
+const ROUTE_COLORS={d1:'#1d7a9c',d2:'#0d5773',d3:'#4ba4c7',o1:'#4f8b6b',o2:'#b85e14'};
+
+function renderOverviewMap(){
+  if(typeof L==='undefined')return;
+  const el=document.getElementById('overviewMap');
+  if(!el||overviewMapInstance)return;
+  try{
+    overviewMapInstance=L.map(el,{zoomControl:true,scrollWheelZoom:false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'© OpenStreetMap',maxZoom:18
+    }).addTo(overviewMapInstance);
+    const bounds=[];
+    ROUTES.forEach(r=>{
+      const color=ROUTE_COLORS[r.id];
+      // polyline of the route
+      L.polyline(r.mapCoords,{color,weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(overviewMapInstance);
+      // entry marker with label
+      const entryPt=r.mapCoords[0];
+      const icon=L.divIcon({
+        className:'',
+        html:`<div style="background:${color};color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:100px;box-shadow:0 2px 8px rgba(0,0,0,.25);white-space:nowrap;transform:translate(-50%,-50%)">${r.emoji} ${r.name.split('→')[0].trim()}</div>`,
+        iconSize:[0,0]
+      });
+      L.marker(entryPt,{icon}).addTo(overviewMapInstance).on('click',()=>openPoster(r.id));
+      bounds.push(...r.mapCoords);
+    });
+    overviewMapInstance.fitBounds(bounds,{padding:[40,40]});
+  }catch(e){console.error('overview map failed',e);}
+
+  // Legend
+  const leg=document.getElementById('overviewLegend');
+  if(leg){
+    leg.innerHTML=ROUTES.map(r=>`
+      <div class="ol-item" onclick="openPoster('${r.id}')">
+        <div class="ol-dot" style="background:${ROUTE_COLORS[r.id]}"></div>
+        <div class="ol-info">
+          <div class="ol-name">${r.emoji} ${r.name}</div>
+          <div class="ol-meta">${r.km} km · ${r.hours}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// ═══════════════════════════════════════
 // VOTING
 // ═══════════════════════════════════════
 function renderVotePosters(){
@@ -2749,7 +3937,7 @@ function renderVotePosters(){
     const n=(votes[r.id]||[]).length;
     if(n>maxVotes){maxVotes=n;leaderId=r.id;}
   });
-  const total=ROUTES.reduce((s,r)=>s+(votes[r.id]||[]).length,0);
+  leadingRouteId=leaderId;
 
   el.innerHTML=ROUTES.map(r=>{
     const voters=votes[r.id]||[];
@@ -2757,7 +3945,7 @@ function renderVotePosters(){
     const voted=voter&&voters.includes(voter);
     const pct=maxVotes?Math.round((n/maxVotes)*100):0;
     const isLeader=r.id===leaderId&&n>0;
-    const voterList=voters.length?'<strong>'+voters.join(', ')+'</strong>'+(voters.length===1?' is in':' are in'):'No votes yet';
+    const voterList=voters.length?'<strong>'+voters.map(escapeHtml).join(', ')+'</strong>'+(voters.length===1?' is in':' are in'):'No votes yet';
     return `<div class="vp${isLeader?' leading':''}" onclick="if(!event.target.closest('.vp-btn'))openPoster('${r.id}')">
       <div class="vp-photo">
         <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3'">
@@ -2777,7 +3965,6 @@ function renderVotePosters(){
     </div>`;
   }).join('');
 
-  // leader banner
   const leader=document.getElementById('leader');
   if(leaderId&&maxVotes>0){
     const r=ROUTES.find(x=>x.id===leaderId);
@@ -2785,7 +3972,7 @@ function renderVotePosters(){
     document.getElementById('leaderName').textContent=r.name;
     const voters=votes[leaderId]||[];
     document.getElementById('leaderVotes').textContent=`${maxVotes} vote${maxVotes>1?'s':''} · ${voters.join(', ')}`;
-  }else{
+  }else if(leader){
     leader.style.display='none';
   }
 }
@@ -2797,7 +3984,14 @@ function loadVoter(){
   const g=document.getElementById('vGreeting');
   document.getElementById('vSpan').textContent=n;
   g.classList.add('show');
-  renderVotePosters();
+  // If new to crew, ask for emoji
+  const crew=getCrew();
+  if(!crew[n]||!crew[n].emoji){
+    showEmojiPicker(n);
+  }else{
+    joinCrew(n);
+    renderVotePosters();
+  }
 }
 
 function toggleVote(rid){
@@ -2816,6 +4010,8 @@ function toggleVote(rid){
       setTimeout(()=>btn.classList.remove('just-voted','bursting'),700);
       fireHeartBurst(btn);
     }
+    // Check for route match
+    setTimeout(()=>checkRouteMatch(rid),900);
   }
 }
 
@@ -2844,6 +4040,32 @@ function fireHeartBurst(btn){
 }
 
 // ═══════════════════════════════════════
+// ROUTE MATCH — fires when you vote for something others voted for
+// ═══════════════════════════════════════
+function checkRouteMatch(rid){
+  const votes=getVotes();
+  const others=(votes[rid]||[]).filter(n=>n!==voter);
+  if(others.length===0)return;
+  const r=ROUTES.find(x=>x.id===rid);
+  if(!r)return;
+  const o=document.getElementById('matchOverlay');
+  const title=document.getElementById('matchTitle');
+  const body=document.getElementById('matchBody');
+  if(others.length===1){
+    title.textContent='Match!';
+    body.innerHTML=`You and <strong>${escapeHtml(others[0])}</strong> both picked <strong>${r.name}</strong>. Looks like you've got company.`;
+  }else{
+    title.textContent='It\'s a vibe.';
+    body.innerHTML=`You just joined <strong>${others.map(escapeHtml).join(', ')}</strong> on <strong>${r.name}</strong>. ${others.length+1} people in so far — the river is calling.`;
+  }
+  o.classList.add('show');
+}
+
+function closeMatch(){
+  document.getElementById('matchOverlay').classList.remove('show');
+}
+
+// ═══════════════════════════════════════
 // CALENDAR
 // ═══════════════════════════════════════
 const CAL_START=new Date(2026,3,1);
@@ -2863,6 +4085,13 @@ function loadAvail(){
   const g=document.getElementById('aGreeting');
   document.getElementById('aSpan').textContent=n;
   g.classList.add('show');
+  // Join crew
+  const crew=getCrew();
+  if(!crew[n]||!crew[n].emoji){
+    showEmojiPicker(n);
+  }else{
+    joinCrew(n);
+  }
   renderCal();
   refreshSummary();
 }
@@ -2976,7 +4205,6 @@ function refreshSummary(){
     </div>`;
   }).join('');
 
-  // Best weekend
   const weekends=findBestWeekend(avail);
   const bw=document.getElementById('bestWeekend');
   if(weekends){
@@ -3022,115 +4250,357 @@ function findBestWeekend(avail){
 }
 
 // ═══════════════════════════════════════
-// KIT CHECKLIST
+// COLLABORATIVE PACKING LIST
 // ═══════════════════════════════════════
-const KIT=[
+const PACK=[
   {group:'Required by law',items:[
-    {id:'lj',t:'Life jacket (min. 75N river / 100N Rhine)',req:true},
-    {id:'lbl',t:'Boat labelled with name, address, phone',req:true},
-    {id:'kid',t:'Life jacket on kids under 12 AT ALL TIMES',req:true}
+    {id:'lj',t:'Life jackets (75N+ per person)',kind:'group',req:true,icon:'🦺'},
+    {id:'lbl',t:'Boat labelled (name, address, phone)',kind:'solo',req:true,icon:'🏷'},
+    {id:'pump',t:'Boat pump',kind:'solo',req:true,icon:'💨'}
   ]},
-  {group:'Essential',items:[
-    {id:'pump',t:'Boat pump'},
-    {id:'patch',t:'Puncture repair kit'},
-    {id:'drybag',t:'Waterproof dry bag for phone + keys'},
-    {id:'shoes',t:'Closed-toe water shoes or old sneakers'},
-    {id:'sun',t:'Sunscreen (reef-safe)'},
-    {id:'hat',t:'Sun hat or cap'},
-    {id:'sunglasses',t:'Sunglasses with strap'},
-    {id:'water',t:'Drinking water (1.5L+ per person)'},
-    {id:'snacks',t:'Snacks + sandwiches in waterproof bag'},
-    {id:'cash',t:'Cash (some exit towns cash-only)'},
-    {id:'id',t:'ID + Swiss travel pass'},
-    {id:'towel',t:'Quick-dry towel'},
-    {id:'first',t:'Small first aid kit'}
+  {group:'Boat kit',items:[
+    {id:'boat',t:'The actual boat(s) 🛶',kind:'solo',icon:'🛶'},
+    {id:'patch',t:'Puncture repair kit',kind:'solo',icon:'🔧'},
+    {id:'rope',t:'Rope (to tie boats together)',kind:'solo',icon:'🪢'},
+    {id:'drybag',t:'Waterproof dry bag',kind:'group',icon:'🎒'}
   ]},
-  {group:'Nice to have',items:[
-    {id:'speaker',t:'Waterproof speaker'},
-    {id:'cooler',t:'Cooler bag + cold drinks 🍻'},
-    {id:'camera',t:'GoPro or waterproof camera'},
-    {id:'rope',t:'Rope (to tie boats together)'},
-    {id:'wickel',t:'Wickelfisch (Swiss swim bag)'},
-    {id:'jumper',t:'Warm layer for after swim'}
+  {group:'Food & drinks',items:[
+    {id:'water',t:'Drinking water (1.5L+ per person)',kind:'group',icon:'💧'},
+    {id:'sandwiches',t:'Sandwiches / lunch',kind:'group',icon:'🥪'},
+    {id:'fruit',t:'Fresh fruit for the boat',kind:'group',icon:'🍉'},
+    {id:'snacks',t:'Salty snacks',kind:'group',icon:'🥨'},
+    {id:'beers',t:'Cold drinks 🍻',kind:'group',icon:'🍻'},
+    {id:'cooler',t:'Cooler bag',kind:'solo',icon:'🧊'}
+  ]},
+  {group:'Sun & water',items:[
+    {id:'sun',t:'Sunscreen (reef-safe)',kind:'group',icon:'☀️'},
+    {id:'hat',t:'Sun hat',kind:'group',icon:'👒'},
+    {id:'shoes',t:'Water shoes / old sneakers',kind:'group',icon:'👟'},
+    {id:'towel',t:'Quick-dry towel',kind:'group',icon:'🧺'}
+  ]},
+  {group:'Vibes',items:[
+    {id:'speaker',t:'Waterproof speaker',kind:'solo',icon:'🔊'},
+    {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:'📸'},
+    {id:'music',t:'Playlist ready to go',kind:'solo',icon:'🎶'}
+  ]},
+  {group:'Safety + admin',items:[
+    {id:'first',t:'First aid kit',kind:'solo',icon:'🩹'},
+    {id:'cash',t:'Cash for exit towns',kind:'group',icon:'💶'},
+    {id:'id',t:'ID + Swiss travel pass',kind:'group',icon:'🪪'}
   ]},
   {group:'Overnight only',items:[
-    {id:'tent',t:'Tent + sleeping bag'},
-    {id:'headlamp',t:'Headlamp'},
-    {id:'camping-food',t:'Camping dinner + breakfast'},
-    {id:'booking',t:'Campsite booked in advance ⚠️'}
+    {id:'tent',t:'Tent',kind:'solo',icon:'⛺'},
+    {id:'sleeping',t:'Sleeping bag',kind:'group',icon:'🛏'},
+    {id:'headlamp',t:'Headlamp',kind:'group',icon:'🔦'},
+    {id:'dinner',t:'Camping dinner',kind:'solo',icon:'🍲'},
+    {id:'booking',t:'Campsite BOOKED',kind:'solo',req:true,icon:'📅'}
   ]}
 ];
 
-function renderKit(){
-  const el=document.getElementById('kitGroups');
+function renderPack(){
+  const el=document.getElementById('packGroups');
   if(!el)return;
-  const state=getKit();
-  el.innerHTML=KIT.map(g=>`
-    <div class="kit-group">
-      <div class="kit-group-t">${g.group}</div>
-      <div class="kit-items">
-        ${g.items.map(i=>`
-          <div class="kit-i${state[i.id]?' done':''}" onclick="toggleKit('${i.id}')">
-            <div class="kit-chk"></div>
-            <div class="kit-text">${i.t}</div>
-            ${i.req?'<div class="kit-req">Required</div>':''}
-          </div>
-        `).join('')}
+  const pack=getPack();
+  const me=myName||voter||availPerson||'';
+
+  let totalItems=0,claimedItems=0;
+  PACK.forEach(g=>{
+    g.items.forEach(i=>{
+      totalItems++;
+      const claimers=pack[i.id]||[];
+      if(claimers.length>0)claimedItems++;
+    });
+  });
+
+  el.innerHTML=PACK.map(g=>`
+    <div class="pack-group">
+      <div class="pack-group-t">${g.group}</div>
+      <div class="pack-items">
+        ${g.items.map(i=>{
+          const claimers=pack[i.id]||[];
+          const mine=me&&claimers.includes(me);
+          const hasClaims=claimers.length>0;
+          const isSolo=i.kind==='solo';
+          let classes='pack-i';
+          if(mine)classes+=' mine';
+          else if(isSolo&&hasClaims)classes+=' claimed-solo';
+          const claimText=hasClaims
+            ? (isSolo ? '✓ '+escapeHtml(claimers[0])+(mine?' (you)':'')+' is bringing this'
+                     : '✓ '+claimers.map(escapeHtml).join(', ')+(mine?'':'').replace(me,me+' (you)'))
+            : (isSolo ? 'Unclaimed — who\'s bringing this?' : 'Anyone can bring some');
+          const btnDisabled=!me||(isSolo&&hasClaims&&!mine);
+          const btnLabel=mine?'Unclaim':(isSolo?'I\'ll bring':'I\'ll help');
+          const btnClass='pack-claim-btn'+(mine?' unclaim':'');
+          return `<div class="${classes}">
+            <div class="pack-icon">${i.icon||'•'}</div>
+            <div class="pack-text">
+              <div class="pack-name">${i.t}</div>
+              <div class="pack-claimers${hasClaims?' has-claims':''}">${claimText}</div>
+            </div>
+            ${i.req?'<div class="pack-tag req">Required</div>':`<div class="pack-tag ${i.kind}">${i.kind}</div>`}
+            <button class="${btnClass}" onclick="togglePackClaim('${i.id}','${i.kind}')" ${btnDisabled?'disabled':''}>${btnLabel}</button>
+          </div>`;
+        }).join('')}
       </div>
     </div>
   `).join('');
-  updateKitProgress();
+
+  // Progress bar
+  const claimedEl=document.getElementById('packClaimedNum');
+  const totalEl=document.getElementById('packTotalNum');
+  const barEl=document.getElementById('packBarFill');
+  if(claimedEl)claimedEl.textContent=claimedItems;
+  if(totalEl)totalEl.textContent=totalItems;
+  if(barEl)barEl.style.width=(totalItems?(claimedItems/totalItems)*100:0)+'%';
 }
 
-function toggleKit(id){
-  const s=getKit();
-  s[id]=!s[id];
-  if(!s[id])delete s[id];
-  saveKit(s);
-  renderKit();
-}
-
-function resetKit(){
-  if(!confirm('Reset the whole checklist?'))return;
-  saveKit({});
-  renderKit();
-}
-
-function updateKitProgress(){
-  const s=getKit();
-  const total=KIT.reduce((a,g)=>a+g.items.length,0);
-  const done=Object.values(s).filter(Boolean).length;
-  const num=document.getElementById('kitProgressNum');
-  const bar=document.getElementById('kitBarFill');
-  if(num)num.textContent=`${done}/${total}`;
-  if(bar)bar.style.width=(total?(done/total)*100:0)+'%';
-}
-
-// ═══════════════════════════════════════
-// COUNTDOWN
-// ═══════════════════════════════════════
-function renderCountdown(){
-  const target=new Date(2026,6,18); // July 18 — peak warm week
-  const now=new Date();
-  const ms=target-now;
-  const days=Math.ceil(ms/(1000*60*60*24));
-  const el=document.getElementById('cdNum');
-  const txt=document.getElementById('cdText');
-  if(!el)return;
-  if(days>0){
-    el.textContent=days;
-    txt.textContent=`Days until the Rhine hits its warmest week. That's when the water's 22°C and the vote leader should happen.`;
-  }else if(days>-60){
-    el.textContent='NOW';
-    el.style.fontSize='36px';
-    txt.textContent=`The warmest window is open. Drop everything — this is the weekend.`;
+function togglePackClaim(itemId,kind){
+  const me=myName||voter||availPerson||'';
+  if(!me){showToast('Enter your name first (in the Vote or Calendar section)');return;}
+  const pack=getPack();
+  if(!pack[itemId])pack[itemId]=[];
+  const i=pack[itemId].indexOf(me);
+  if(i>=0){
+    pack[itemId].splice(i,1);
+    if(pack[itemId].length===0)delete pack[itemId];
   }else{
-    document.getElementById('countdown').style.display='none';
+    if(kind==='solo'&&pack[itemId].length>0){
+      showToast('Someone already claimed this one');
+      return;
+    }
+    pack[itemId].push(me);
+  }
+  savePack(pack);
+  renderPack();
+}
+
+function resetPack(){
+  const me=myName||voter||availPerson||'';
+  if(!me)return;
+  if(!confirm('Remove all your claims from the packing list?'))return;
+  const pack=getPack();
+  Object.keys(pack).forEach(k=>{
+    pack[k]=pack[k].filter(n=>n!==me);
+    if(pack[k].length===0)delete pack[k];
+  });
+  savePack(pack);
+  renderPack();
+  showToast('Your claims cleared');
+}
+
+// ═══════════════════════════════════════
+// WEATHER FORECAST (open-meteo, no key)
+// ═══════════════════════════════════════
+async function fetchForecast(){
+  const el=document.getElementById('forecastScroll');
+  if(!el)return;
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.56&longitude=7.59&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe/Zurich&forecast_days=14');
+    if(!r.ok)throw new Error('api');
+    const data=await r.json();
+    renderForecast(data.daily);
+  }catch(e){
+    el.innerHTML='<div class="forecast-loading">Weather data temporarily unavailable. Check MeteoSwiss directly 🌤</div>';
+  }
+}
+
+function wcIcon(code){
+  // WMO weather codes → emoji
+  if(code===0)return '☀️';
+  if(code<=3)return '⛅';
+  if(code<=49)return '🌫';
+  if(code<=67)return '🌧';
+  if(code<=77)return '❄️';
+  if(code<=82)return '🌦';
+  if(code<=99)return '⛈';
+  return '🌤';
+}
+
+function wcIsPerfect(code,tempMax,rain){
+  return code<=3 && tempMax>=22 && (rain||0)<30;
+}
+
+function renderForecast(daily){
+  const el=document.getElementById('forecastScroll');
+  if(!el||!daily)return;
+  const dowNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthShort=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const html=daily.time.map((iso,i)=>{
+    const d=new Date(iso);
+    const dow=dowNames[d.getDay()];
+    const isWe=d.getDay()===6||d.getDay()===0;
+    const tmax=Math.round(daily.temperature_2m_max[i]);
+    const tmin=Math.round(daily.temperature_2m_min[i]);
+    const code=daily.weather_code[i];
+    const rain=daily.precipitation_probability_max[i]||0;
+    const perfect=wcIsPerfect(code,tmax,rain);
+    let cls='f-day';
+    if(isWe)cls+=' weekend';
+    if(perfect&&isWe)cls+=' perfect';
+    return `<div class="${cls}">
+      <div class="f-dow">${dow}</div>
+      <div class="f-date">${d.getDate()}</div>
+      <div class="f-icon">${wcIcon(code)}</div>
+      <div class="f-temp">${tmax}°<span>/${tmin}°</span></div>
+      <div class="f-low">${rain}% rain</div>
+    </div>`;
+  }).join('');
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════════════════
+// HERO SOUND
+// ═══════════════════════════════════════
+let soundPlaying=false;
+function toggleHeroSound(){
+  const audio=document.getElementById('riverAudio');
+  const btn=document.getElementById('heroSound');
+  const playIcon=btn.querySelector('.hs-icon-play');
+  const pauseIcon=btn.querySelector('.hs-icon-pause');
+  const label=btn.querySelector('.hs-label');
+  if(!audio)return;
+  if(soundPlaying){
+    audio.pause();
+    btn.classList.remove('playing');
+    playIcon.style.display='';
+    pauseIcon.style.display='none';
+    label.textContent='River sound';
+    soundPlaying=false;
+  }else{
+    audio.volume=0.35;
+    const p=audio.play();
+    if(p&&p.catch)p.catch(()=>showToast('Tap again to play sound'));
+    btn.classList.add('playing');
+    playIcon.style.display='none';
+    pauseIcon.style.display='';
+    label.textContent='Playing…';
+    soundPlaying=true;
   }
 }
 
 // ═══════════════════════════════════════
-// CINEMATIC POSTER MODAL
+// BLESSING ARRIVAL — first-time welcome
+// ═══════════════════════════════════════
+const BLESSINGS=[
+  'Get on board, darling.<br>The river is waiting.',
+  'Say yes to the summer.<br><strong>Go with the flow.</strong>',
+  'This is the one.<br><strong>Clear your calendar.</strong>',
+  'The water is warmer than last year.<br>You in?',
+  'A cold drink. The current.<br><strong>Nothing else required.</strong>'
+];
+
+function maybeShowBlessing(){
+  const seen=S.get('gb_blessed');
+  if(seen)return;
+  S.set('gb_blessed',Date.now());
+  setTimeout(()=>{
+    const b=document.getElementById('blessing');
+    const t=document.getElementById('blessingText');
+    if(!b||!t)return;
+    t.innerHTML=BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)];
+    b.classList.add('show');
+    setTimeout(()=>{
+      if(b.classList.contains('show'))closeBlessing();
+    },5500);
+  },2200);
+}
+
+function closeBlessing(){
+  document.getElementById('blessing').classList.remove('show');
+}
+
+// ═══════════════════════════════════════
+// THE WHISPER — trip day random blessing
+// ═══════════════════════════════════════
+const WHISPERS=[
+  'Go with the flow, darling.<br>The river knows the way.',
+  'Get on board.<br><strong>The current is doing the work.</strong>',
+  'Trust the water.<br>Trust the crew. Trust the day.',
+  'The river doesn\'t rush.<br><strong>Neither should you.</strong>',
+  'You planned this.<br>Now let it happen.',
+  'Soft hands. Open heart.<br><strong>Cold drink ready.</strong>'
+];
+
+function maybeShowWhisper(){
+  // Only ~1 in 3 trip day opens
+  if(Math.random()>0.33)return;
+  const el=document.getElementById('whisper');
+  if(!el)return;
+  el.innerHTML=WHISPERS[Math.floor(Math.random()*WHISPERS.length)];
+  setTimeout(()=>el.classList.add('show'),400);
+  setTimeout(()=>el.classList.remove('show'),8000);
+}
+
+// ═══════════════════════════════════════
+// TRIP DAY — live status for leading route
+// ═══════════════════════════════════════
+function renderTripDay(){
+  const chosen=leadingRouteId?ROUTES.find(r=>r.id===leadingRouteId):ROUTES[0];
+  if(!chosen)return;
+  document.getElementById('tdLEyebrow').textContent=leadingRouteId?'Leading the vote':'Pick a route first';
+  document.getElementById('tdLTitle').innerHTML=chosen.name.replace('→','<br>→');
+  document.getElementById('tdLSub').textContent=chosen.verdict.split('.')[0]+'.';
+
+  // Water level placeholder
+  document.getElementById('tdWaterVal').textContent='Check live →';
+  // Weather
+  document.getElementById('tdWeatherVal').textContent='Loading…';
+  fetchForecast().then(()=>{
+    const el=document.getElementById('forecastScroll');
+    const first=el&&el.querySelector('.f-temp');
+    const w=document.getElementById('tdWeatherVal');
+    if(first&&w)w.textContent=first.textContent.split('/')[0]+' today';
+  });
+  // Train
+  document.getElementById('tdTrainVal').textContent=chosen.travel.split('~')[1]||'Check →';
+  // Pack status
+  const pack=getPack();
+  let totalItems=0,claimedItems=0;
+  PACK.forEach(g=>g.items.forEach(i=>{
+    totalItems++;
+    if((pack[i.id]||[]).length>0)claimedItems++;
+  }));
+  const missing=totalItems-claimedItems;
+  document.getElementById('tdPackVal').textContent=missing===0?'All claimed ✓':`${missing} still open`;
+}
+
+function openLeadingPoster(){
+  const id=leadingRouteId||ROUTES[0].id;
+  openPoster(id);
+}
+
+// ═══════════════════════════════════════
+// WISH STRIP
+// ═══════════════════════════════════════
+function addWish(routeId){
+  const input=document.getElementById('pwInput_'+routeId);
+  if(!input)return;
+  const text=input.value.trim();
+  if(!text)return;
+  const me=myName||voter||availPerson||'someone';
+  const wishes=getWishes();
+  if(!wishes[routeId])wishes[routeId]=[];
+  wishes[routeId].push({who:me,text:text,at:Date.now()});
+  saveWishes(wishes);
+  input.value='';
+  renderWishesInPoster(routeId);
+}
+
+function renderWishesInPoster(routeId){
+  const wrap=document.getElementById('wishList_'+routeId);
+  if(!wrap)return;
+  const wishes=(getWishes()[routeId]||[]);
+  if(wishes.length===0){
+    wrap.innerHTML='<div class="pw-empty">No wishes yet. Be the first to say what you\'re looking forward to.</div>';
+  }else{
+    wrap.innerHTML=wishes.map(w=>`
+      <div class="pw-item">${escapeHtml(w.text)}<span class="pw-item-who">— ${escapeHtml(w.who)}</span></div>
+    `).join('');
+  }
+}
+
+// ═══════════════════════════════════════
+// POSTER MODAL
 // ═══════════════════════════════════════
 function openPoster(rid){
   const r=ROUTES.find(x=>x.id===rid);
@@ -3140,14 +4610,6 @@ function openPoster(rid){
 
   const pillClass={d:'rpd',w:'rpw',b:'rpb',s:'rps',x:'rpx'};
   const pillsHTML=r.pills.map(p=>`<span class="rp ${pillClass[p.c]||'rpd'}">${p.t}</span>`).join('');
-
-  const diagHTML=r.diag.map((s,i,arr)=>`
-    <div class="dstop">
-      <div class="ddot ${s.cls}">${s.emoji}</div>
-      <div class="dname">${s.name}</div>
-      <div class="dsub">${s.sub}</div>
-    </div>${i<arr.length-1?'<div class="darrow">→</div>':''}
-  `).join('');
 
   const factsHTML=r.facts.map(([l,v])=>`<div class="fact"><strong>${l}</strong>${v}</div>`).join('');
   const prosHTML=r.pros.map(p=>`<div class="pci"><span class="pcd"></span>${p}</div>`).join('');
@@ -3172,12 +4634,8 @@ function openPoster(rid){
       </div>
 
       <div class="poster-section">
-        <div class="poster-section-title">Route waypoints</div>
-        <div class="rdiag">
-          <div class="diag-l">Entry → Exit</div>
-          <div class="dpath">${diagHTML}</div>
-          <div class="dsms">Flow check: ${r.flow}</div>
-        </div>
+        <div class="poster-section-title">Full route map</div>
+        <div class="rmap" id="pmap_${r.id}"></div>
       </div>
 
       <div class="poster-section">
@@ -3200,30 +4658,51 @@ function openPoster(rid){
         </div>
       </div>
 
-      <div class="poster-section">
-        <div class="poster-section-title">On the map</div>
-        <div class="rmap" id="pmap_${r.id}"></div>
+      <div class="poster-wishes">
+        <div class="pw-title">Wishes from the crew</div>
+        <div class="pw-list" id="wishList_${r.id}"></div>
+        <div class="pw-input-row">
+          <input class="pw-input" id="pwInput_${r.id}" type="text" placeholder="What are you looking forward to?" maxlength="120">
+          <button class="pw-btn" onclick="addWish('${r.id}')">Add</button>
+        </div>
       </div>
     </div>
   `;
 
   poster.classList.add('open');
   document.body.classList.add('poster-locked');
+  renderWishesInPoster(r.id);
 
-  // Init map if leaflet loaded
+  // Enter submits wish
+  const pwInput=document.getElementById('pwInput_'+r.id);
+  if(pwInput)pwInput.addEventListener('keydown',e=>{if(e.key==='Enter')addWish(r.id);});
+
+  // Init map with full waypoints
   if(typeof L!=='undefined'){
     setTimeout(()=>{
       try{
         const mapEl=document.getElementById('pmap_'+r.id);
         if(!mapEl)return;
-        const m=L.map(mapEl,{zoomControl:false,attributionControl:true});
+        const m=L.map(mapEl,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM',maxZoom:18}).addTo(m);
-        const latlngs=r.mapCoords;
-        L.polyline(latlngs,{color:'#d97b2e',weight:4,opacity:.85}).addTo(m);
-        L.circleMarker(latlngs[0],{radius:7,color:'#5a8a6c',fillColor:'#5a8a6c',fillOpacity:1}).addTo(m).bindPopup('Entry');
-        L.circleMarker(latlngs[latlngs.length-1],{radius:7,color:'#b84438',fillColor:'#b84438',fillOpacity:1}).addTo(m).bindPopup('Exit');
-        m.fitBounds(latlngs,{padding:[30,30]});
-      }catch(e){}
+        L.polyline(r.mapCoords,{color:ROUTE_COLORS[r.id]||'#e8832f',weight:5,opacity:.85,lineCap:'round'}).addTo(m);
+        // Waypoints
+        const wpts=r.waypoints||[];
+        const bounds=[];
+        wpts.forEach(w=>{
+          const color={entry:'#4f8b6b',exit:'#b8382c',beach:'#e8832f',hazard:'#b8382c',swim:'#1d7a9c',food:'#4f8b6b',camp:'#162032',sight:'#b8932b'}[w.t]||'#162032';
+          const icon=L.divIcon({
+            className:'',
+            html:`<div class="wpt-marker ${w.t}" style="border-color:${color}">${w.emoji}</div>`,
+            iconSize:[30,30],
+            iconAnchor:[15,15]
+          });
+          L.marker([w.lat,w.lng],{icon}).addTo(m).bindPopup(`<strong>${w.emoji} ${w.name}</strong><br>${w.desc}`);
+          bounds.push([w.lat,w.lng]);
+        });
+        r.mapCoords.forEach(c=>bounds.push(c));
+        m.fitBounds(bounds,{padding:[25,25]});
+      }catch(e){console.error('poster map',e);}
     },350);
   }
 }
@@ -3254,12 +4733,8 @@ function buildTripSummary(){
   const best=findBestWeekend(avail);
 
   let s='🛶 GUMMIBOOT 2026\n\n';
-  if(top){
-    s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   🚆 ${top.travel}\n\n`;
-  }
-  if(best){
-    s+=`📅 Best weekend: ${best.label}\n   ${best.who}\n\n`;
-  }
+  if(top)s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   🚆 ${top.travel}\n\n`;
+  if(best)s+=`📅 Best weekend: ${best.label}\n   ${best.who}\n\n`;
   s+=`Vote + mark your days: ${location.href}\n`;
   return s;
 }
@@ -3300,6 +4775,74 @@ function showToast(msg){
 }
 
 // ═══════════════════════════════════════
+// PRINT ZINE
+// ═══════════════════════════════════════
+function printTripZine(){
+  const chosen=leadingRouteId?ROUTES.find(r=>r.id===leadingRouteId):ROUTES[0];
+  if(!chosen){showToast('Pick a route first');return;}
+  // Inject zine into body
+  let zine=document.getElementById('printZine');
+  if(!zine){
+    zine=document.createElement('div');
+    zine.id='printZine';
+    zine.className='print-zine';
+    document.body.appendChild(zine);
+  }
+  const avail=getAvail();
+  const best=findBestWeekend(avail);
+  const wptHTML=(chosen.waypoints||[]).map(w=>`<span>${w.emoji} ${w.name}</span>`).join(' → ');
+  const factsHTML=chosen.facts.slice(0,6).map(([l,v])=>`<div class="pz-fact"><strong>${l}</strong>${v}</div>`).join('');
+  zine.innerHTML=`
+    <div class="pz-head">
+      <div class="pz-eyebrow">Gummiboot 2026 · Field zine</div>
+      <div class="pz-title">${chosen.name}</div>
+      <div class="pz-sub">${chosen.sub}</div>
+    </div>
+    <div class="pz-section">
+      <div class="pz-lbl">The route</div>
+      <div class="pz-wpts">${wptHTML}</div>
+    </div>
+    <div class="pz-section">
+      <div class="pz-lbl">The plan</div>
+      <div class="pz-body">${chosen.verdict}</div>
+    </div>
+    <div class="pz-section">
+      <div class="pz-lbl">Details</div>
+      <div class="pz-facts">${factsHTML}</div>
+    </div>
+    ${best?`<div class="pz-section"><div class="pz-lbl">Best weekend</div><div class="pz-body">${best.label} · ${best.who}</div></div>`:''}
+    <div class="pz-emergency">
+      <strong>EMERGENCY · 117 · 144 · 1414 (Rega)</strong><br>
+      Stay with the boat · Drift feet-first downstream
+    </div>
+  `;
+  window.print();
+}
+
+// ═══════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════
+function renderCountdown(){
+  const target=new Date(2026,6,18);
+  const now=new Date();
+  const ms=target-now;
+  const days=Math.ceil(ms/(1000*60*60*24));
+  const el=document.getElementById('cdNum');
+  const txt=document.getElementById('cdText');
+  if(!el)return;
+  if(days>0){
+    el.textContent=days;
+    txt.textContent='Days until the Rhine hits its warmest week. That\'s when the water\'s 22°C and the vote leader should happen.';
+  }else if(days>-60){
+    el.textContent='NOW';
+    el.style.fontSize='36px';
+    txt.textContent='The warmest window is open. Drop everything — this is the weekend.';
+  }else{
+    document.getElementById('countdown').style.display='none';
+  }
+}
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 function init(){
@@ -3323,27 +4866,34 @@ function init(){
 
   // Restore names
   if(voter){
-    document.getElementById('voterName').value=voter;
-    document.getElementById('vSpan').textContent=voter;
-    document.getElementById('vGreeting').classList.add('show');
+    const vn=document.getElementById('voterName');
+    if(vn)vn.value=voter;
+    const vs=document.getElementById('vSpan');
+    if(vs)vs.textContent=voter;
+    const vg=document.getElementById('vGreeting');
+    if(vg)vg.classList.add('show');
   }
   if(availPerson){
-    document.getElementById('availName').value=availPerson;
-    document.getElementById('aSpan').textContent=availPerson;
-    document.getElementById('aGreeting').classList.add('show');
+    const an=document.getElementById('availName');
+    if(an)an.value=availPerson;
+    const as_=document.getElementById('aSpan');
+    if(as_)as_.textContent=availPerson;
+    const ag=document.getElementById('aGreeting');
+    if(ag)ag.classList.add('show');
   }
 
-  // Set current month
   const now=new Date();
   if(now.getFullYear()===2026&&now.getMonth()>=3&&now.getMonth()<=8)calM=now.getMonth();
 
-  // Render everything
+  // First render pass
   renderGallery();
+  renderOverviewMap();
   renderVotePosters();
   renderCal();
   refreshSummary();
-  renderKit();
+  renderPack();
   renderCountdown();
+  fetchForecast();
 
   // Enter-to-submit
   const vn=document.getElementById('voterName');
@@ -3356,18 +4906,29 @@ function init(){
   if(poster){
     poster.addEventListener('click',e=>{if(e.target===poster)closePoster();});
   }
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePoster();});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      closePoster();
+      closeMatch();
+      closeBlessing();
+      closeEmojiPicker();
+    }
+  });
+
+  // Blessing (first-time)
+  maybeShowBlessing();
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-  // Load leaflet (optional — for poster maps)
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   s.crossOrigin='';
   s.onload=init;
-  s.onerror=init; // still init even if maps fail
+  s.onerror=init;
   document.head.appendChild(s);
 });
+
+
 </script>
 
 </body>
