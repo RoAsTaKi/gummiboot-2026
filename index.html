@@ -1924,13 +1924,14 @@ a{color:inherit;text-decoration:none}
   color:var(--ink);
   font-size:22px;
   z-index:1001;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
   transition:all .25s;
   box-shadow:var(--sh-m);
   line-height:1;
 }
+body.poster-locked .poster-close{display:flex}
 .poster-close:hover{background:var(--sun);color:#fff;transform:rotate(90deg)}
 
 .poster-hero{
@@ -3699,8 +3700,8 @@ body.poster-locked{overflow:hidden}
     <div class="wrap">
       <div class="section-head">
         <div class="section-kicker">2026 updates</div>
-        <h2 class="section-title">What changed since the book</h2>
-        <p class="section-sub">The Salamander Verlag guidebook is still the bible — but three laws changed in 2020. Read before you go.</p>
+        <h2 class="section-title">What's new in 2026</h2>
+        <p class="section-sub">Three laws changed in 2020 — and a few apps and rentals shifted since. Read before you go.</p>
       </div>
 
       <div class="updates-card">
@@ -3872,8 +3873,8 @@ body.poster-locked{overflow:hidden}
   <div class="closing-hero-img"></div>
   <div class="closing-hero-veil"></div>
   <div class="closing-hero-text">
-    <div class="closing-hero-eyebrow">And then</div>
-    <div class="closing-hero-line">golden hour arrives.<br>The current carries you home.</div>
+    <div class="closing-hero-eyebrow">And then…</div>
+    <div class="closing-hero-line">Golden hour arrives.<br>The current carries you home.</div>
     <div class="closing-hero-sig">Böötle · Summer 2026</div>
     <div class="closing-hero-credits">
       Built with 🛶 for the Summer 2026 crew<br>
@@ -3916,9 +3917,9 @@ body.poster-locked{overflow:hidden}
 
 <!-- Poster modal -->
 <div class="poster" id="poster" role="dialog" aria-modal="true" aria-label="Route details">
-  <button class="poster-close" onclick="closePoster()" aria-label="Close">×</button>
   <div class="poster-inner" id="posterInner"></div>
 </div>
+<button class="poster-close" id="posterClose" onclick="closePoster()" aria-label="Close">×</button>
 
 <!-- Toast -->
 <div class="sc-toast" id="toast"></div>
