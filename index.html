@@ -177,6 +177,20 @@ a{color:inherit;text-decoration:none}
   display:block;
   color:#fff;
 }
+.hero-calling{
+  background:linear-gradient(100deg,#fff 0%,#ffd89a 30%,#f7af5f 50%,#ffd89a 70%,#fff 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  animation:heroCallingShimmer 6s ease-in-out infinite;
+  display:inline-block;
+}
+@keyframes heroCallingShimmer{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
 .hero-sub{
   font-size:clamp(14px,2.2vw,17px);
   color:rgba(255,249,234,.85);
@@ -725,6 +739,28 @@ a{color:inherit;text-decoration:none}
   padding-top:12px;
   border-top:1px solid var(--line);
 }
+.g-wish{
+  margin-top:12px;
+  padding:10px 12px;
+  background:linear-gradient(135deg,rgba(232,131,47,.08),rgba(184,147,43,.06));
+  border-left:2px solid var(--sun-l);
+  border-radius:3px;
+  font-family:var(--serif);
+  font-size:13.5px;
+  font-style:italic;
+  color:var(--ink-m);
+  line-height:1.45;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+}
+.g-wish-icon{
+  color:var(--sun);
+  font-size:14px;
+  line-height:1.4;
+  flex-shrink:0;
+}
+.g-wish-text strong{color:var(--ink);font-weight:500;font-style:normal;font-family:var(--sans);font-size:12px;letter-spacing:.2px}
 .gmw-label{
   font-size:8.5px;
   letter-spacing:1.6px;
@@ -2368,6 +2404,22 @@ body.poster-locked{overflow:hidden}
 }
 
 /* V12: forecast kicker note */
+.live-dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--sage);
+  margin-right:8px;
+  position:relative;
+  vertical-align:middle;
+  animation:livePulse 2.4s ease-in-out infinite;
+  box-shadow:0 0 0 0 rgba(79,139,107,.5);
+}
+@keyframes livePulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(79,139,107,.55)}
+  50%{box-shadow:0 0 0 6px rgba(79,139,107,0)}
+}
 .forecast-note{
   max-width:720px;
   margin:14px auto 20px;
@@ -3369,7 +3421,7 @@ body.poster-locked{overflow:hidden}
   <div class="hero-grad"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Böötle · Summer 2026</div>
-    <h1 class="hero-title">Summer is calling.<br><strong>Let's go with the flow…</strong></h1>
+    <h1 class="hero-title">Summer is <span class="hero-calling">calling</span>.<br><strong>Let's go with the flow…</strong></h1>
     <p class="hero-sub">Six river routes for inflatable boats — all reachable from Basel. Vote, pick a weekend, pack a cold drink. The current does the rest. 🛶</p>
     <div class="hero-meta">
       <div class="hm"><span class="hm-n">6</span><span class="hm-l">Curated<br>routes</span></div>
@@ -3439,7 +3491,7 @@ body.poster-locked{overflow:hidden}
         <div class="ec-body">
           <div class="ec-num">01</div>
           <div class="ec-title">Browse the routes</div>
-          <div class="ec-desc">5 river adventures, tap to see full details</div>
+          <div class="ec-desc">6 river adventures, tap any for full details</div>
         </div>
         <div class="ec-arrow">→</div>
       </button>
@@ -3467,8 +3519,8 @@ body.poster-locked{overflow:hidden}
     <div class="wrap" id="overviewAnchor">
       <div class="section-head">
         <div class="section-kicker">Where we're going</div>
-        <h2 class="section-title">Five rivers, one country</h2>
-        <p class="section-sub">All five routes placed on the map. Tap any pin to jump to the route.</p>
+        <h2 class="section-title">Six rivers, one country</h2>
+        <p class="section-sub">All six routes placed on the map. Tap any pin to jump to the route.</p>
       </div>
     </div>
     <div class="overview-map-wrap">
@@ -3480,7 +3532,7 @@ body.poster-locked{overflow:hidden}
     <div class="wrap" id="routesAnchor">
       <div class="section-head">
         <div class="section-kicker">The routes</div>
-        <h2 class="section-title">Five rivers, one summer</h2>
+        <h2 class="section-title">Six rivers, one summer</h2>
         <p class="section-sub">Swipe through — tap any card to open the full cinematic poster with waypoints, maps, and everything you need to plan.</p>
       </div>
     </div>
@@ -3607,7 +3659,7 @@ body.poster-locked{overflow:hidden}
     <!-- Weather forecast scroll -->
     <div class="wrap" id="forecastAnchor">
       <div class="section-head">
-        <div class="section-kicker">Live weather</div>
+        <div class="section-kicker"><span class="live-dot"></span>Live weather</div>
         <h2 class="section-title">Looking ahead</h2>
         <p class="section-sub">14-day forecast for Basel — scroll through to find your weekend. Sun icons = river-ready days.</p>
       </div>
@@ -4372,9 +4424,18 @@ function renderGallery(){
   const g=document.getElementById('gallery');
   if(!g)return;
   const filtered=ROUTES.filter(r=>matchesFilter(r,currentFilter));
+  const allWishes=getWishes();
   g.innerHTML=filtered.map(r=>{
     // Extract a single editorial sentence from the verdict (first sentence)
     const verdictLine=(r.verdict||'').split(/(?<=[.!?])\s/)[0];
+    // Latest wish for this route (if any)
+    const routeWishes=allWishes[r.id]||[];
+    const latestWish=routeWishes[routeWishes.length-1];
+    const wishHtml=latestWish?`
+      <div class="g-wish">
+        <span class="g-wish-icon">✧</span>
+        <span class="g-wish-text"><strong>${escapeHtml(latestWish.who)}</strong>: ${escapeHtml(latestWish.text)}</span>
+      </div>`:'';
     return `
     <article class="g-card" data-route="${r.id}" onclick="openPoster('${r.id}')">
       <div class="g-photo">
@@ -4393,6 +4454,7 @@ function renderGallery(){
           <div class="g-meta-i">🌡 ${r.temp}</div>
           <div class="g-meta-i">🚆 ${(r.travel.split('~')[1]||'').trim()}</div>
         </div>
+        ${wishHtml}
         <div class="g-mini-weather" id="gmw_${r.id}">
           <div class="gmw-label">Weather at the launch point</div>
           <div class="gmw-days">—</div>
@@ -4473,13 +4535,8 @@ function renderOverviewMap(){
   if(!el||overviewMapInstance)return;
   try{
     overviewMapInstance=L.map(el,{zoomControl:true,scrollWheelZoom:false});
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg',{
-      attribution:'© Stamen · Stadia Maps · OSM',maxZoom:16,
-      crossOrigin:true
-    }).addTo(overviewMapInstance);
-    // Soft labels on top — so you can still read village names
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}.png',{
-      attribution:'',maxZoom:18,opacity:0.7,crossOrigin:true
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+      attribution:'© CARTO · OpenStreetMap',maxZoom:19,subdomains:'abcd'
     }).addTo(overviewMapInstance);
     const bounds=[];
     ROUTES.forEach(r=>{
@@ -5470,8 +5527,7 @@ function openPoster(rid){
         const mapEl=document.getElementById('pmap_'+r.id);
         if(!mapEl)return;
         const m=L.map(mapEl,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg',{attribution:'© Stamen · Stadia · OSM',maxZoom:16,crossOrigin:true}).addTo(m);
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}.png',{attribution:'',maxZoom:18,opacity:0.75,crossOrigin:true}).addTo(m);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© CARTO · OSM',maxZoom:19,subdomains:'abcd'}).addTo(m);
         L.polyline(r.mapCoords,{color:'#fdfefa',weight:10,opacity:.9,lineCap:'round',lineJoin:'round'}).addTo(m);
         L.polyline(r.mapCoords,{color:ROUTE_COLORS[r.id]||'#e8832f',weight:5,opacity:1,lineCap:'round',lineJoin:'round'}).addTo(m);
         // Waypoints
