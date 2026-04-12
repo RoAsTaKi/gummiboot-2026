@@ -3410,9 +3410,17 @@ body.poster-locked{overflow:hidden}
 }
 .pw-btn:hover{background:var(--river)}
 
+/* sync indicator */
+.sync-dot{position:fixed;bottom:14px;right:14px;display:flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;background:rgba(255,253,247,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:0.5px solid rgba(0,0,0,0.08);border-radius:999px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;color:rgba(0,0,0,0.5);z-index:9999;pointer-events:none;transition:opacity .4s ease}
+.sync-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:#9caf88;box-shadow:0 0 0 0 rgba(156,175,136,0.6);transition:background .3s ease}
+.sync-synced::before{background:#9caf88}
+.sync-syncing::before{background:#d4a574;animation:syncPulse 1.4s ease-in-out infinite}
+.sync-offline::before{background:#c97a6b}
+@keyframes syncPulse{0%,100%{opacity:.4}50%{opacity:1}}
 </style>
 </head>
 <body>
+<div id="syncDot" class="sync-dot sync-syncing"><span class="sync-label">syncing…</span></div>
 
 <!-- ══════════════════════════════════════
      HERO
@@ -4277,9 +4285,67 @@ const ROUTES=[
 // ═══════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════
+// Shared keys live in Upstash via /api/state. Identity keys stay device-local.
+const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes']);
+const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji']);
+let _cache={};
+let _cacheLoaded=false;
+let _syncStatus='syncing'; // 'synced' | 'syncing' | 'offline'
+function _setSync(s){_syncStatus=s;const el=document.getElementById('syncDot');if(!el)return;el.className='sync-dot sync-'+s;el.querySelector('.sync-label').textContent=s==='synced'?'synced':s==='syncing'?'syncing…':'offline';}
+async function _postState(k,v){
+  try{
+    _setSync('syncing');
+    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v})});
+    if(!r.ok)throw new Error('post failed');
+    _setSync('synced');
+  }catch(e){
+    // retry once
+    try{
+      await new Promise(res=>setTimeout(res,800));
+      const r2=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v})});
+      if(!r2.ok)throw new Error('retry failed');
+      _setSync('synced');
+    }catch(e2){
+      _setSync('offline');
+      // localStorage fallback so the value survives a refresh on this device
+      try{localStorage.setItem(k,JSON.stringify(v))}catch{}
+    }
+  }
+}
 const S={
-  get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+  async load(){
+    try{
+      const r=await fetch('/api/state',{cache:'no-store'});
+      if(!r.ok)throw new Error('load failed');
+      const data=await r.json();
+      _cache=data&&typeof data==='object'?data:{};
+      _cacheLoaded=true;
+      _setSync('synced');
+    }catch(e){
+      // offline boot — read shared keys from localStorage as fallback
+      _cache={};
+      SHARED_KEYS.forEach(k=>{
+        try{const v=localStorage.getItem(k);if(v)_cache[k]=JSON.parse(v)}catch{}
+      });
+      _cacheLoaded=true;
+      _setSync('offline');
+    }
+  },
+  get(k){
+    if(LOCAL_KEYS.has(k)){
+      try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}
+    }
+    return _cacheLoaded?(_cache[k]??null):null;
+  },
+  set(k,v){
+    if(LOCAL_KEYS.has(k)){
+      try{localStorage.setItem(k,JSON.stringify(v))}catch{}
+      return;
+    }
+    _cache[k]=v;                      // optimistic local cache update
+    try{localStorage.setItem(k,JSON.stringify(v))}catch{} // also mirror locally for offline resilience
+    _postState(k,v);                  // background POST to Upstash
+  }
 };
 const getVotes=()=>S.get('gb_votes')||{};
 const saveVotes=v=>S.set('gb_votes',v);
@@ -5807,7 +5873,8 @@ function init(){
   maybeShowBlessing();
 }
 
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener('DOMContentLoaded',async function(){
+  await S.load();
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   s.crossOrigin='';
