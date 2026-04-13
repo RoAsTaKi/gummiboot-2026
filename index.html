@@ -3097,26 +3097,34 @@ body.poster-locked{overflow:hidden}
    V16 — THE WELCOME · CSS
    ═══════════════════════════════════════ */
 
-/* 🌊 WHISPER DRIFT — ambient text, no card */
+/* 🌊 WHISPER DRIFT — ambient text on cream background */
 .whisper-drift{
   position:fixed;
   z-index:1100;
-  max-width:280px;
+  max-width:320px;
+  padding:16px 22px;
   font-family:var(--serif);
-  font-size:clamp(18px,3.6vw,22px);
+  font-size:clamp(20px,4.2vw,26px);
   font-style:italic;
-  font-weight:300;
-  color:#fffaf0;
+  font-weight:400;
+  color:#2a1c08;
   opacity:0;
-  letter-spacing:.02em;
+  letter-spacing:.01em;
   line-height:1.45;
-  text-shadow:0 1px 12px rgba(0,0,0,.55), 0 0 24px rgba(0,0,0,.3);
+  text-align:center;
+  background:radial-gradient(ellipse at center, rgba(253,246,232,.92) 0%, rgba(253,246,232,.7) 50%, rgba(253,246,232,0) 80%);
+  border-radius:50%;
+  text-shadow:0 1px 2px rgba(255,255,255,.8), 0 0 18px rgba(253,246,232,.95);
   pointer-events:auto;
   cursor:pointer;
   transform:translate3d(0,0,0);
   --drift-x:0px;
   --drift-y:60px;
   will-change:transform,opacity;
+}
+.whisper-drift::first-letter{
+  font-size:1.15em;
+  color:#7a5210;
 }
 .whisper-drift.show{
   animation:whisperLifecycle 12000ms cubic-bezier(.4,0,.2,1) forwards;
@@ -3125,12 +3133,12 @@ body.poster-locked{overflow:hidden}
 .whisper-drift.fade-out-fast{opacity:0;transition:opacity .3s ease-out;}
 @keyframes whisperLifecycle{
   0%   {opacity:0; transform:translate3d(0,0,0);}
-  12%  {opacity:.78;}
-  20%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .15), calc(var(--drift-y) * .15), 0);}
-  40%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .9), calc(var(--drift-y) * .35), 0);}
-  60%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .3), calc(var(--drift-y) * .6), 0);}
-  85%  {opacity:.5;  transform:translate3d(calc(var(--drift-x) * .7), calc(var(--drift-y) * .85), 0);}
-  100% {opacity:0;   transform:translate3d(var(--drift-x), var(--drift-y), 0);}
+  12%  {opacity:1;}
+  20%  {opacity:1; transform:translate3d(calc(var(--drift-x) * .15), calc(var(--drift-y) * .15), 0);}
+  40%  {opacity:1; transform:translate3d(calc(var(--drift-x) * .9), calc(var(--drift-y) * .35), 0);}
+  60%  {opacity:1; transform:translate3d(calc(var(--drift-x) * .3), calc(var(--drift-y) * .6), 0);}
+  85%  {opacity:.6; transform:translate3d(calc(var(--drift-x) * .7), calc(var(--drift-y) * .85), 0);}
+  100% {opacity:0;  transform:translate3d(var(--drift-x), var(--drift-y), 0);}
 }
 
 /* 🍾 BOTTLE DOCK */
@@ -5220,8 +5228,8 @@ function fireWhisper(text){
 
   const vw=Math.max(document.documentElement.clientWidth,window.innerWidth||0);
   const vh=Math.max(document.documentElement.clientHeight,window.innerHeight||0);
-  const W=280;
-  const H=90;
+  const W=320;
+  const H=120;
   const minX=16;
   const maxX=Math.max(minX,vw-W-16);
   const minY=60+16;
@@ -5308,21 +5316,35 @@ let _idChainedFromLetter=false;
 function maybeShowArrival(){
   const me=getMe();
   if(!me){
-    setTimeout(()=>showArrivalCeremony(),900);
+    // First visit: full ceremony chained to identity
+    setTimeout(()=>showArrivalCeremony({chainIdentity:true}),900);
+  }else if(hasNewLetter()){
+    // Returning visit, new letter waiting: ceremony WITHOUT identity chain
+    setTimeout(()=>showArrivalCeremony({chainIdentity:false}),900);
   }
   refreshBottleGlow();
 }
 
-function showArrivalCeremony(){
+function showArrivalCeremony(opts){
+  opts=opts||{};
+  const chainIdentity=opts.chainIdentity!==false;
   const modal=document.getElementById('letterModal');
   if(!modal)return;
+  // Force a reflow before adding .show so the bottle drift-in keyframe fires reliably
+  modal.classList.remove('show','ceremony');
+  void modal.offsetWidth;
   modal.classList.add('show','ceremony');
   const bottle=modal.querySelector('.lm-bottle');
   const reader=modal.querySelector('.lm-reader');
   const editor=modal.querySelector('.lm-editor');
   if(reader)reader.style.display='none';
   if(editor)editor.style.display='none';
-  if(bottle)bottle.style.display='flex';
+  if(bottle){
+    bottle.style.display='flex';
+    // Force animation restart
+    bottle.classList.remove('uncorking');
+    void bottle.offsetWidth;
+  }
   populateLetterReader();
 
   setTimeout(()=>{
@@ -5330,11 +5352,24 @@ function showArrivalCeremony(){
   },1700);
   setTimeout(()=>{
     if(bottle){bottle.style.display='none';bottle.classList.remove('uncorking');}
-    if(reader){reader.style.display='block';reader.classList.add('unfurling');}
+    if(reader){
+      reader.style.display='block';
+      reader.classList.remove('unfurling');
+      void reader.offsetWidth;
+      reader.classList.add('unfurling');
+    }
     const cont=modal.querySelector('.lm-continue');
-    if(cont)cont.style.display='inline-flex';
     const closeBtn=modal.querySelector('.lm-close');
-    if(closeBtn)closeBtn.style.display='none';
+    if(chainIdentity){
+      // First-visit: show Continue → identity chain
+      if(cont)cont.style.display='inline-flex';
+      if(closeBtn)closeBtn.style.display='none';
+    }else{
+      // New-letter ceremony for returning user: show Close
+      if(cont)cont.style.display='none';
+      if(closeBtn)closeBtn.style.display='inline-flex';
+      markLetterRead();
+    }
   },2500);
 }
 
@@ -5601,6 +5636,11 @@ function closeConfirmModal(){
   const m=document.getElementById('confirmModal');
   if(m)m.classList.remove('show');
 }
+
+// V16 debug helpers — run from console to test ceremony without resetting identity
+window.gbReplayCeremony=function(){showArrivalCeremony({chainIdentity:false});};
+window.gbResetLetterRead=function(){S.set('gb_last_read_letter_v',0);refreshBottleGlow();console.log('Letter marked unread. Reload to see ceremony.');};
+window.gbBumpLetter=function(){S.set('gb_letter_v',Date.now());S.set('gb_last_read_letter_v',0);refreshBottleGlow();console.log('Letter version bumped. Reload to see new-letter ceremony.');};
 
 // ═══════════════════════════════════════
 // IDENTITY MODAL (V15) — name + emoji in one flow
