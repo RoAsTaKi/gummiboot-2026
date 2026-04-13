@@ -388,61 +388,6 @@ a{color:inherit;text-decoration:none}
    ═══════════════════════════════════════ */
 
 /* Letter — a warm moment on cream */
-.letter{
-  max-width:620px;
-  margin:0 auto;
-  padding:72px 24px 30px;
-  text-align:left;
-}
-.letter-from{
-  font-size:10px;
-  letter-spacing:4px;
-  text-transform:uppercase;
-  color:var(--sun-d);
-  font-weight:600;
-  margin-bottom:28px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.letter-from::before{
-  content:'';
-  width:30px;
-  height:1px;
-  background:var(--sun);
-  opacity:.5;
-}
-.letter-body{
-  font-family:var(--serif);
-  font-size:clamp(19px,3.6vw,24px);
-  font-style:italic;
-  font-weight:300;
-  color:var(--ink);
-  line-height:1.85;
-  margin-bottom:32px;
-  letter-spacing:.003em;
-}
-.letter-body strong{
-  font-style:normal;
-  font-weight:500;
-  color:var(--ink);
-  background:linear-gradient(180deg,transparent 62%,var(--sun-pp) 62%,var(--sun-pp) 92%,transparent 92%);
-  padding:0 3px;
-}
-.letter-sign{
-  font-family:var(--serif);
-  font-size:15px;
-  font-style:italic;
-  color:var(--ink-l);
-  margin-top:24px;
-  line-height:1.7;
-}
-.letter-sign em{
-  color:var(--sun-d);
-  font-style:italic;
-  opacity:.85;
-}
-
 /* Trip countdown strip */
 .countdown{
   max-width:620px;
@@ -2933,46 +2878,6 @@ body.poster-locked{overflow:hidden}
 }
 .match-btn:hover{background:var(--sun);transform:translateY(-1px)}
 
-/* BLESSING arrival */
-.blessing{
-  position:fixed;
-  inset:0;
-  background:rgba(22,32,50,.95);
-  backdrop-filter:blur(30px);
-  z-index:1200;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:40px;
-  opacity:0;
-  transition:opacity .6s var(--ease);
-  cursor:pointer;
-}
-.blessing.show{display:flex;opacity:1}
-.blessing-inner{
-  max-width:540px;
-  text-align:center;
-}
-.blessing-text{
-  font-family:var(--serif);
-  font-size:clamp(26px,5.5vw,38px);
-  font-style:italic;
-  font-weight:300;
-  color:var(--cream);
-  line-height:1.35;
-  letter-spacing:-.005em;
-}
-.blw{
-  display:inline-block;
-  opacity:0;
-  transform:translateY(18px);
-  animation:blessingWordIn 1.1s var(--smooth) forwards;
-}
-@keyframes blessingWordIn{
-  to{opacity:1;transform:translateY(0)}
-}
-.blessing-text strong{color:var(--sun-l);font-weight:400}
-
 /* EMOJI PICKER */
 .emoji-picker{
   position:fixed;
@@ -3188,34 +3093,480 @@ body.poster-locked{overflow:hidden}
 }
 .crew-avatar:hover .ca-hint{opacity:.7}
 
-/* THE WHISPER */
-.whisper{
-  max-width:720px;
-  margin:24px auto 0;
-  padding:0 24px;
-  text-align:center;
+/* ═══════════════════════════════════════
+   V16 — THE WELCOME · CSS
+   ═══════════════════════════════════════ */
+
+/* 🌊 WHISPER DRIFT — ambient text, no card */
+.whisper-drift{
+  position:fixed;
+  z-index:1100;
+  max-width:280px;
   font-family:var(--serif);
-  font-size:clamp(17px,3.2vw,22px);
+  font-size:clamp(18px,3.6vw,22px);
   font-style:italic;
   font-weight:300;
-  color:var(--ink-m);
-  line-height:1.5;
+  color:#fffaf0;
   opacity:0;
-  transition:opacity 1.2s var(--ease);
-  min-height:0;
+  letter-spacing:.02em;
+  line-height:1.45;
+  text-shadow:0 1px 12px rgba(0,0,0,.55), 0 0 24px rgba(0,0,0,.3);
+  pointer-events:auto;
+  cursor:pointer;
+  transform:translate3d(0,0,0);
+  --drift-x:0px;
+  --drift-y:60px;
+  will-change:transform,opacity;
 }
-.whisper.show{opacity:1}
-.whisper strong{color:var(--sun-d);font-weight:400}
+.whisper-drift.show{
+  animation:whisperLifecycle 12000ms cubic-bezier(.4,0,.2,1) forwards;
+}
+.whisper-drift.fade-out{opacity:0;transition:opacity 1.5s ease-out;}
+.whisper-drift.fade-out-fast{opacity:0;transition:opacity .3s ease-out;}
+@keyframes whisperLifecycle{
+  0%   {opacity:0; transform:translate3d(0,0,0);}
+  12%  {opacity:.78;}
+  20%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .15), calc(var(--drift-y) * .15), 0);}
+  40%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .9), calc(var(--drift-y) * .35), 0);}
+  60%  {opacity:.78; transform:translate3d(calc(var(--drift-x) * .3), calc(var(--drift-y) * .6), 0);}
+  85%  {opacity:.5;  transform:translate3d(calc(var(--drift-x) * .7), calc(var(--drift-y) * .85), 0);}
+  100% {opacity:0;   transform:translate3d(var(--drift-x), var(--drift-y), 0);}
+}
+
+/* 🍾 BOTTLE DOCK */
+.bottle-dock{
+  position:fixed;
+  right:18px;
+  bottom:96px;
+  width:72px;
+  height:104px;
+  z-index:1050;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  animation:bottleBob 4.2s ease-in-out infinite;
+  filter:drop-shadow(0 8px 18px rgba(20,30,50,.35));
+  transition:transform .25s var(--ease), filter .4s var(--ease);
+}
+.bottle-dock:hover{transform:scale(1.06);}
+.bottle-dock.pressing{animation:bottleShake .3s ease-in-out infinite;}
+.bottle-dock.has-new{
+  animation:bottleBobFast 2.2s ease-in-out infinite;
+  filter:drop-shadow(0 0 16px rgba(255,210,120,.85)) drop-shadow(0 8px 18px rgba(20,30,50,.35));
+}
+.bottle-dock.has-new::after{
+  content:'';
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,220,140,.35),transparent 60%);
+  animation:bottleHalo 2.2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes bottleBob{
+  0%,100%{transform:translateY(0) rotate(-2deg);}
+  50%{transform:translateY(-6px) rotate(2deg);}
+}
+@keyframes bottleBobFast{
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  50%{transform:translateY(-9px) rotate(3deg);}
+}
+@keyframes bottleShake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-2px) rotate(-4deg);}
+  75%{transform:translateX(2px) rotate(4deg);}
+}
+@keyframes bottleHalo{
+  0%,100%{opacity:.4;transform:scale(1);}
+  50%{opacity:.8;transform:scale(1.15);}
+}
+.bottle-svg{width:100%;height:100%;display:block;}
+
+/* 🍾 LETTER MODAL — reader, editor, ceremony */
+.letter-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(18,28,44,0);
+  backdrop-filter:blur(0px);
+  z-index:1300;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  transition:background .8s var(--ease), backdrop-filter .8s var(--ease);
+}
+.letter-modal.show{
+  display:flex;
+  background:rgba(18,28,44,.78);
+  backdrop-filter:blur(22px);
+}
+.letter-modal.ceremony{
+  background:rgba(18,28,44,.92);
+  backdrop-filter:blur(30px);
+}
+
+/* Center bottle (ceremony stage) */
+.lm-bottle{
+  width:160px;
+  height:240px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  animation:bottleDriftIn 1.7s var(--smooth) forwards;
+}
+.lm-bottle .lm-bottle-svg{width:100%;height:100%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.55));}
+.lm-bottle .lm-cork{
+  position:absolute;
+  top:18px;
+  left:50%;
+  transform:translateX(-50%);
+  transition:transform .6s cubic-bezier(.5,-0.4,.3,1.4), opacity .6s ease-out;
+}
+.lm-bottle.uncorking .lm-cork{
+  transform:translateX(-50%) translateY(-180px) rotate(35deg);
+  opacity:0;
+}
+@keyframes bottleDriftIn{
+  0%   {transform:translate(-60vw,40vh) rotate(-25deg); opacity:0;}
+  20%  {opacity:1;}
+  60%  {transform:translate(0,0) rotate(8deg);}
+  80%  {transform:translate(0,-4px) rotate(-4deg);}
+  100% {transform:translate(0,0) rotate(0deg);}
+}
+
+/* Letter reader card */
+.lm-reader{
+  display:none;
+  max-width:560px;
+  width:100%;
+  background:linear-gradient(180deg,#fdf6e8,#f7ecd2);
+  border-radius:6px;
+  padding:48px 38px 36px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06);
+  position:relative;
+  max-height:88vh;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.lm-reader.unfurling{
+  animation:letterUnfurl 1s var(--smooth) forwards;
+  transform-origin:top center;
+}
+@keyframes letterUnfurl{
+  0%   {opacity:0; transform:scaleY(.05) translateY(-40px);}
+  30%  {opacity:1;}
+  60%  {transform:scaleY(1.02) translateY(0);}
+  100% {opacity:1; transform:scaleY(1) translateY(0);}
+}
+.lm-reader::before,
+.lm-reader::after{
+  content:'';
+  position:absolute;
+  left:0;right:0;
+  height:14px;
+  background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(120,90,40,.12) 8px 9px);
+  pointer-events:none;
+}
+.lm-reader::before{top:0;border-radius:6px 6px 0 0;}
+.lm-reader::after{bottom:0;border-radius:0 0 6px 6px;}
+.lm-reader-title{
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:#a36b1f;
+  font-weight:600;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.lm-reader-title::before{
+  content:'';width:30px;height:1px;background:#c98a2c;opacity:.5;
+}
+.lm-reader-body{
+  font-family:var(--serif);
+  font-size:clamp(17px,3.4vw,21px);
+  font-style:italic;
+  font-weight:300;
+  color:#3a2812;
+  line-height:1.85;
+  margin-bottom:28px;
+  letter-spacing:.003em;
+}
+.lm-reader-body strong{
+  font-style:normal;font-weight:500;color:#2a1c08;
+  background:linear-gradient(180deg,transparent 62%,rgba(255,200,100,.55) 62%,rgba(255,200,100,.55) 92%,transparent 92%);
+  padding:0 3px;
+}
+.lm-reader-sign{
+  font-family:var(--serif);font-size:15px;font-style:italic;color:#5a3e1c;
+  margin-top:18px;line-height:1.7;
+}
+.lm-reader-sign-loc{display:block;color:#9a6a25;opacity:.85;margin-top:4px;font-size:13px;}
+.lm-reader-actions{
+  margin-top:28px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+.lm-continue,.lm-close{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 28px;
+  border-radius:30px;
+  border:0;
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:.02em;
+  cursor:pointer;
+  background:#3a2812;
+  color:#fdf6e8;
+  transition:transform .2s var(--ease), background .2s var(--ease);
+}
+.lm-continue:hover,.lm-close:hover{transform:translateY(-1px);background:#5a3e1c;}
+
+/* Letter editor */
+.lm-editor{
+  display:none;
+  max-width:560px;
+  width:100%;
+  background:linear-gradient(180deg,#fdf6e8,#f7ecd2);
+  border-radius:6px;
+  padding:36px 32px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55);
+  max-height:90vh;
+  overflow-y:auto;
+}
+.lm-editor h3{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  color:#3a2812;margin:0 0 18px;font-size:22px;
+}
+.lm-editor label{
+  display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:#9a6a25;font-weight:600;margin:14px 0 6px;
+}
+.lm-editor input,.lm-editor textarea{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid rgba(120,90,40,.25);
+  border-radius:6px;
+  background:#fffcf3;
+  font-family:var(--serif);
+  font-size:16px;
+  color:#3a2812;
+  font-style:italic;
+  line-height:1.6;
+  box-sizing:border-box;
+  resize:vertical;
+}
+.lm-editor textarea{min-height:200px;}
+.lm-editor input:focus,.lm-editor textarea:focus{
+  outline:none;border-color:#c98a2c;background:#fffaeb;
+}
+.lm-editor-hint{
+  font-size:12px;color:#9a6a25;font-style:italic;margin-top:6px;
+}
+.lm-editor-actions{
+  margin-top:22px;display:flex;gap:10px;justify-content:flex-end;
+}
+.lm-editor-actions button{
+  padding:11px 22px;border-radius:24px;border:0;
+  font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;
+  transition:transform .2s var(--ease);
+}
+.lm-editor-actions .lm-save{background:#3a2812;color:#fdf6e8;}
+.lm-editor-actions .lm-cancel{background:transparent;color:#5a3e1c;border:1px solid rgba(120,90,40,.3);}
+.lm-editor-actions button:hover{transform:translateY(-1px);}
+
+/* Password modal */
+.pw-modal{
+  position:fixed;inset:0;
+  background:rgba(18,28,44,0);
+  backdrop-filter:blur(0px);
+  z-index:1400;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:24px;
+  transition:background .4s var(--ease), backdrop-filter .4s var(--ease);
+}
+.pw-modal.show{
+  display:flex;
+  background:rgba(18,28,44,.85);
+  backdrop-filter:blur(20px);
+  animation:pwRise .4s var(--smooth);
+}
+@keyframes pwRise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.pw-card{
+  background:linear-gradient(180deg,#fdf6e8,#f7ecd2);
+  padding:32px 28px;
+  border-radius:16px;
+  max-width:380px;width:100%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+.pw-title{
+  font-family:var(--serif);font-style:italic;font-size:20px;
+  color:#3a2812;margin-bottom:6px;
+}
+.pw-sub{font-size:12px;color:#9a6a25;margin-bottom:18px;font-style:italic;}
+.pw-input{
+  width:100%;
+  padding:13px 16px;
+  border:1px solid rgba(120,90,40,.3);
+  border-radius:30px;
+  background:#fffcf3;
+  font-family:var(--sans);font-size:15px;
+  text-align:center;
+  color:#3a2812;
+  box-sizing:border-box;
+  letter-spacing:.05em;
+}
+.pw-input:focus{outline:none;border-color:#c98a2c;}
+.pw-input.shake{animation:pwShake .42s ease-in-out;}
+@keyframes pwShake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-5px);}
+  80%{transform:translateX(5px);}
+}
+.pw-actions{margin-top:14px;display:flex;gap:10px;justify-content:center;}
+.pw-actions button{
+  padding:10px 22px;border-radius:24px;border:0;
+  font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;
+}
+.pw-actions .pw-go{background:#3a2812;color:#fdf6e8;}
+.pw-actions .pw-cancel{background:transparent;color:#5a3e1c;border:1px solid rgba(120,90,40,.3);}
+
+/* Identity modal — back arrow when chained from letter */
+.identity-modal.chained .id-card{position:relative;}
+.identity-modal.chained .id-back-from-letter{
+  position:absolute;top:14px;left:14px;
+  background:transparent;border:0;cursor:pointer;
+  font-size:20px;color:var(--ink-l);padding:6px 10px;
+  border-radius:50%;transition:background .2s var(--ease);
+}
+.identity-modal.chained .id-back-from-letter:hover{background:rgba(0,0,0,.06);}
+.id-back-from-letter{display:none;}
+.identity-modal.chained .id-back-from-letter{display:block;}
+
+/* Manage identities modal */
+.manage-modal{
+  position:fixed;inset:0;
+  background:rgba(18,28,44,0);
+  backdrop-filter:blur(0px);
+  z-index:1350;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:24px;
+  transition:background .4s var(--ease), backdrop-filter .4s var(--ease);
+}
+.manage-modal.show{
+  display:flex;
+  background:rgba(18,28,44,.78);
+  backdrop-filter:blur(20px);
+}
+.manage-card{
+  background:var(--cream);
+  padding:28px 24px 22px;
+  border-radius:18px;
+  max-width:440px;width:100%;
+  max-height:86vh;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+.manage-title{
+  font-family:var(--serif);font-style:italic;font-size:22px;
+  color:var(--ink);margin-bottom:4px;
+}
+.manage-sub{font-size:12px;color:var(--ink-l);margin-bottom:18px;font-style:italic;}
+.manage-list{display:flex;flex-direction:column;gap:10px;}
+.mg-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(0,0,0,.03);
+  border:1px solid transparent;
+}
+.mg-row.me{background:rgba(255,200,100,.12);border-color:rgba(255,200,100,.35);}
+.mg-face{font-size:28px;}
+.mg-body{flex:1;min-width:0;}
+.mg-name{font-size:15px;font-weight:500;color:var(--ink);}
+.mg-name em{font-size:11px;color:var(--sun-d);font-style:italic;font-weight:400;margin-left:4px;}
+.mg-meta{font-size:12px;color:var(--ink-l);margin-top:2px;}
+.mg-actions{display:flex;gap:6px;}
+.mg-btn{
+  padding:7px 14px;border-radius:18px;border:0;
+  font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;
+  transition:transform .2s var(--ease);
+}
+.mg-btn:hover{transform:translateY(-1px);}
+.mg-rename{background:rgba(0,0,0,.06);color:var(--ink);}
+.mg-delete{background:rgba(200,60,60,.12);color:#a83232;}
+.mg-readonly{font-size:11px;color:var(--ink-l);font-style:italic;opacity:.6;}
+.manage-empty{text-align:center;color:var(--ink-l);font-style:italic;padding:24px 0;}
+.manage-close{
+  margin-top:18px;width:100%;padding:12px;
+  border-radius:24px;border:0;background:var(--ink);color:var(--cream);
+  font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;
+}
+
+/* Confirm modal (for delete) */
+.confirm-modal{
+  position:fixed;inset:0;
+  background:rgba(18,28,44,0);
+  backdrop-filter:blur(0px);
+  z-index:1450;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:24px;
+  transition:background .3s var(--ease);
+}
+.confirm-modal.show{
+  display:flex;
+  background:rgba(18,28,44,.85);
+  backdrop-filter:blur(22px);
+}
+.confirm-card{
+  background:var(--cream);
+  padding:28px 26px 22px;
+  border-radius:18px;
+  max-width:400px;width:100%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+.confirm-card h3{
+  font-family:var(--serif);font-style:italic;font-size:22px;
+  color:var(--ink);margin:0 0 8px;
+}
+.confirm-card p{font-size:14px;color:var(--ink-l);line-height:1.6;margin:0 0 20px;}
+.confirm-actions{display:flex;flex-direction:column;gap:8px;}
+.confirm-actions button{
+  padding:13px 20px;border-radius:24px;border:0;
+  font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;
+  transition:transform .2s var(--ease);
+}
+.confirm-actions button:hover{transform:translateY(-1px);}
+.confirm-cancel{background:rgba(0,0,0,.06);color:var(--ink);}
+.confirm-rename-btn{background:rgba(255,200,100,.25);color:#7a5210;}
+.confirm-delete-btn{background:#a83232;color:#fff;}
+
+/* Manage link in id-pill area */
+.id-manage-link{
+  margin-left:6px;font-size:11px;color:var(--ink-l);
+  text-decoration:underline;cursor:pointer;font-style:italic;
+}
+.id-manage-link:hover{color:var(--ink);}
 
 /* PRINT MODE — zine for the leading route */
 @media print{
   body{background:#fff !important;color:#000}
-  .tabs,.hero,.footer,.hero-sound,.filter-row,.gallery-wrap,.crew-wall,.td-leading,.td-status-grid,.trip-day,.emergency,.final-checks,.section-head,.forecast-scroll,.pack-card,.updates-card,.safety-grid,.travel-card,.share-card,.leader,.name-card,.vote-posters,.letter,.countdown,.entry-cards,.cal-hero,.best-weekend,.cal-mnav,.cal-wrap,.cal-legend,.avail-results,.overview-map-wrap,.whisper,.nav,.section-kicker,.section-sub,.section-title:not(.print-show){display:none!important}
+  .tabs,.hero,.footer,.hero-sound,.filter-row,.gallery-wrap,.crew-wall,.td-leading,.td-status-grid,.trip-day,.emergency,.final-checks,.section-head,.forecast-scroll,.pack-card,.updates-card,.safety-grid,.travel-card,.share-card,.leader,.name-card,.vote-posters,.countdown,.entry-cards,.cal-hero,.best-weekend,.cal-mnav,.cal-wrap,.cal-legend,.avail-results,.overview-map-wrap,.nav,.section-kicker,.section-sub,.section-title:not(.print-show),.bottle-dock,.whisper-drift,.letter-modal,.pw-modal,.manage-modal,.confirm-modal{display:none!important}
   .panel{display:none!important}
   .panel.active.print-show,.panel.print-show{display:block!important}
   .print-zine{display:block!important}
   .wrap{padding:0!important;max-width:100%!important}
-  .poster-close,.match-overlay,.blessing,.emoji-picker{display:none!important}
+  .poster-close,.match-overlay,.emoji-picker{display:none!important}
 }
 .print-zine{display:none;padding:40px 30px}
 @media print{
@@ -3621,21 +3972,6 @@ body.poster-locked{overflow:hidden}
   <!-- ═══════════ DISCOVER ═══════════ -->
   <section class="panel active" id="panel-discover">
 
-    <!-- Letter -->
-    <div class="letter">
-      <div class="letter-from">A note from Roxane</div>
-      <div class="letter-body">
-        Okay. I need you to clear a weekend this summer — or two.<br><br>
-        I've been dreaming about this for years: <strong>inflatable dinghies, Swiss rivers, all of us together.</strong> No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.<br><br>
-        I've done the research (obviously 😅). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.<br><br>
-        <strong>Pick a route. Mark your days. Say yes.</strong> The rest takes care of itself.
-      </div>
-      <div class="letter-sign">
-        — Roxane<br>
-        <em>Written from Basel, with the rivers already running warm</em>
-      </div>
-    </div>
-
     <!-- Countdown -->
     <div class="countdown" id="countdown">
       <div class="cd-num" id="cdNum">—</div>
@@ -3746,6 +4082,7 @@ body.poster-locked{overflow:hidden}
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
+        <span class="id-manage-link" onclick="openManageModal()">manage crew</span>
       </div>
 
       <div class="vote-posters" id="votePosters"></div>
@@ -3769,6 +4106,7 @@ body.poster-locked{overflow:hidden}
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
+        <span class="id-manage-link" onclick="openManageModal()">manage crew</span>
       </div>
 
       <div class="cal-mnav">
@@ -3914,9 +4252,6 @@ body.poster-locked{overflow:hidden}
   <!-- ═══════════ TRIP DAY ═══════════ -->
   <section class="panel" id="panel-tripday">
 
-    <!-- The Whisper (random morning blessing) -->
-    <div class="whisper" id="whisper"></div>
-
     <!-- Hero: the chosen route -->
     <div class="wrap">
       <div class="td-leading" id="tdLeading">
@@ -4043,16 +4378,10 @@ body.poster-locked{overflow:hidden}
   </div>
 </div>
 
-<!-- Blessing Arrival (first-time welcome) -->
-<div class="blessing" id="blessing" onclick="closeBlessing()">
-  <div class="blessing-inner">
-    <div class="blessing-text" id="blessingText"></div>
-  </div>
-</div>
-
 <!-- Emoji picker (when someone first joins the crew) -->
 <div class="identity-modal emoji-picker" id="identityModal">
   <div class="ep-card id-card">
+    <button class="id-back-from-letter" type="button" onclick="backFromIdentityToLetter()" aria-label="Back to letter">←</button>
     <div id="idNameStage">
       <div class="ep-title">What should we call you?</div>
       <div class="ep-sub">One name. Shared with the crew. Remembered everywhere.</div>
@@ -4079,6 +4408,139 @@ body.poster-locked{overflow:hidden}
   <div class="poster-inner" id="posterInner"></div>
 </div>
 <button class="poster-close" id="posterClose" onclick="closePoster()" aria-label="Close">×</button>
+
+<!-- ═══════════════════════════════════════
+     V16 — THE WELCOME · HTML
+     ═══════════════════════════════════════ -->
+
+<!-- 🍾 Corner bottle dock -->
+<div class="bottle-dock" id="bottleDock"
+     onclick="bottleClick(event)"
+     onmousedown="bottlePressStart(event)"
+     onmouseup="bottlePressEnd()"
+     onmouseleave="bottlePressEnd()"
+     ontouchstart="bottlePressStart(event)"
+     ontouchend="bottlePressEnd()"
+     ontouchcancel="bottlePressEnd()"
+     aria-label="Letter from Roxane (long-press to edit)">
+  <svg class="bottle-svg" viewBox="0 0 72 104" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bottleGlass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#7eb89a" stop-opacity=".75"/>
+        <stop offset="50%" stop-color="#3a6b54" stop-opacity=".88"/>
+        <stop offset="100%" stop-color="#1f4032" stop-opacity=".95"/>
+      </linearGradient>
+      <linearGradient id="bottleHighlight" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff" stop-opacity=".55"/>
+        <stop offset="60%" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <!-- Cork -->
+    <rect x="28" y="6" width="16" height="14" rx="2" fill="#c69c5d"/>
+    <rect x="28" y="6" width="16" height="3" rx="1" fill="#a87f3e"/>
+    <!-- Neck -->
+    <path d="M30 20 L30 32 L26 38 L26 92 Q26 100 36 100 Q46 100 46 92 L46 38 L42 32 L42 20 Z" fill="url(#bottleGlass)"/>
+    <!-- Highlight -->
+    <path d="M31 40 Q31 38 33 38 L33 88 Q33 90 31 90 Z" fill="url(#bottleHighlight)"/>
+    <!-- Letter inside (faintly visible) -->
+    <rect x="29" y="48" width="14" height="36" rx="1" fill="#fdf6e8" opacity=".55"/>
+    <line x1="31" y1="54" x2="41" y2="54" stroke="#9a6a25" stroke-width=".5" opacity=".4"/>
+    <line x1="31" y1="58" x2="41" y2="58" stroke="#9a6a25" stroke-width=".5" opacity=".4"/>
+    <line x1="31" y1="62" x2="40" y2="62" stroke="#9a6a25" stroke-width=".5" opacity=".4"/>
+    <line x1="31" y1="66" x2="41" y2="66" stroke="#9a6a25" stroke-width=".5" opacity=".4"/>
+    <line x1="31" y1="70" x2="38" y2="70" stroke="#9a6a25" stroke-width=".5" opacity=".4"/>
+  </svg>
+</div>
+
+<!-- 🍾 Letter modal: ceremony bottle + reader + editor stages -->
+<div class="letter-modal" id="letterModal" onclick="if(event.target===this)closeLetterModal()">
+  <!-- Ceremony bottle (only first visit) -->
+  <div class="lm-bottle">
+    <svg class="lm-bottle-svg" viewBox="0 0 160 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bigBottleGlass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7eb89a" stop-opacity=".75"/>
+          <stop offset="50%" stop-color="#3a6b54" stop-opacity=".88"/>
+          <stop offset="100%" stop-color="#1f4032" stop-opacity=".95"/>
+        </linearGradient>
+      </defs>
+      <path d="M62 38 L62 70 L52 84 L52 210 Q52 228 80 228 Q108 228 108 210 L108 84 L98 70 L98 38 Z" fill="url(#bigBottleGlass)"/>
+      <rect x="63" y="92" width="34" height="100" rx="2" fill="#fdf6e8" opacity=".5"/>
+    </svg>
+    <div class="lm-cork">
+      <svg width="40" height="34" viewBox="0 0 40 34" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="36" height="28" rx="3" fill="#c69c5d"/>
+        <rect x="2" y="4" width="36" height="6" rx="2" fill="#a87f3e"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Reader stage -->
+  <div class="lm-reader">
+    <div class="lm-reader-title" id="lmReaderTitle">A note from Roxane</div>
+    <div class="lm-reader-body" id="lmReaderBody"></div>
+    <div class="lm-reader-sign" id="lmReaderSign">— Roxane</div>
+    <em class="lm-reader-sign-loc" id="lmReaderSignLoc"></em>
+    <div class="lm-reader-actions">
+      <button class="lm-continue" type="button" onclick="continueFromLetter()">Continue →</button>
+      <button class="lm-close" type="button" onclick="closeLetterModal()" style="display:none">Close</button>
+    </div>
+  </div>
+
+  <!-- Editor stage -->
+  <div class="lm-editor">
+    <h3>Edit the letter</h3>
+    <label>Title</label>
+    <input id="lmEditTitle" type="text" maxlength="60">
+    <label>Body</label>
+    <textarea id="lmEditBody"></textarea>
+    <div class="lm-editor-hint">Wrap text in **double asterisks** for emphasis. Press Enter for line breaks.</div>
+    <label>Signature</label>
+    <input id="lmEditSign" type="text" maxlength="40">
+    <label>Sign location</label>
+    <input id="lmEditSignLoc" type="text" maxlength="80">
+    <div class="lm-editor-actions">
+      <button class="lm-cancel" type="button" onclick="cancelLetterEdit()">Cancel</button>
+      <button class="lm-save" type="button" onclick="saveLetterEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🤫 Password modal -->
+<div class="pw-modal" id="pwModal" onclick="if(event.target===this)closePasswordModal()">
+  <div class="pw-card">
+    <div class="pw-title">🤫 Roxane only</div>
+    <div class="pw-sub">Password to edit the letter</div>
+    <input class="pw-input" id="pwInput" type="password" autocomplete="off" onkeydown="if(event.key==='Enter')submitPassword()">
+    <div class="pw-actions">
+      <button class="pw-cancel" type="button" onclick="closePasswordModal()">Cancel</button>
+      <button class="pw-go" type="button" onclick="submitPassword()">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- 👥 Manage identities modal -->
+<div class="manage-modal" id="manageModal" onclick="if(event.target===this)closeManageModal()">
+  <div class="manage-card">
+    <div class="manage-title">Manage crew</div>
+    <div class="manage-sub">You can rename or delete yourself. Other crew are read-only.</div>
+    <div class="manage-list" id="manageList"></div>
+    <button class="manage-close" type="button" onclick="closeManageModal()">Done</button>
+  </div>
+</div>
+
+<!-- ⚠️ Delete confirm modal -->
+<div class="confirm-modal" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
+  <div class="confirm-card">
+    <h3 id="confirmTitle">Delete?</h3>
+    <p id="confirmText"></p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" type="button" onclick="closeConfirmModal()">Cancel</button>
+      <button class="confirm-rename-btn" id="confirmRename" type="button">Rename instead</button>
+      <button class="confirm-delete-btn" id="confirmDelete" type="button">Delete forever</button>
+    </div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div class="sc-toast" id="toast"></div>
@@ -4437,8 +4899,8 @@ const ROUTES=[
 // STORAGE
 // ═══════════════════════════════════════
 // Shared keys live in Upstash via /api/state. Identity keys stay device-local.
-const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes']);
-const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji','gb_identity']);
+const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes','gb_letter','gb_letter_v']);
+const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji','gb_identity','gb_last_read_letter_v']);
 let _cache={};
 let _cacheLoaded=false;
 let _syncStatus='syncing'; // 'synced' | 'syncing' | 'offline'
@@ -4499,15 +4961,15 @@ const S={
   }
 };
 const getVotes=()=>S.get('gb_votes')||{};
-const saveVotes=v=>S.set('gb_votes',v);
+const saveVotes=v=>{S.set('gb_votes',v);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
 const getAvail=()=>S.get('gb_avail')||{};
-const saveAvail=a=>S.set('gb_avail',a);
+const saveAvail=a=>{S.set('gb_avail',a);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
 const getCrew=()=>S.get('gb_crew')||{};    // { name: {emoji, joined} }
 const saveCrew=c=>S.set('gb_crew',c);
 const getPack=()=>S.get('gb_pack')||{};    // { itemId: [name1, name2] }
-const savePack=p=>S.set('gb_pack',p);
+const savePack=p=>{S.set('gb_pack',p);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
 const getWishes=()=>S.get('gb_wishes')||{}; // { routeId: [{who, text}] }
-const saveWishes=w=>S.set('gb_wishes',w);
+const saveWishes=w=>{S.set('gb_wishes',w);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
 
 // ═══════════════════════════════════════
 // IDENTITY LAYER (V15) — one name, one emoji, one source of truth
@@ -4521,6 +4983,7 @@ function setMe(name,emoji,{cascade=true}={}){
   const finalEmoji=emoji||prev?.emoji||'🛶';
   const next={name:trimmed,emoji:finalEmoji};
   S.set('gb_identity',next);
+  if(typeof maybeFireOnAction==='function')maybeFireOnAction();
   try{localStorage.setItem('gb_voter',JSON.stringify(trimmed))}catch{}
   try{localStorage.setItem('gb_avail_person',JSON.stringify(trimmed))}catch{}
   try{localStorage.setItem('gb_my_emoji',JSON.stringify(finalEmoji))}catch{}
@@ -4656,6 +5119,487 @@ function renderCrewWall(){
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ═══════════════════════════════════════
+// V16 — THE WELCOME
+// Two atmospheric layers: 🍾 The Bottle (Roxane's voice) + 🌊 The Whispers (the river's voice)
+// ═══════════════════════════════════════
+
+// FRIEND-LOCK, NOT FORT KNOX
+// This password stops a friend from accidentally or jokingly rewriting
+// the letter during a long-press. Anyone who reads source can find it.
+// That's fine — this is a Gummiboot trip planner, not a bank vault.
+const LETTER_EDIT_PW='böötle';
+
+const DEFAULT_LETTER={
+  title:'A note from Roxane',
+  body:"Okay. I need you to clear a weekend this summer — or two.\n\nI've been dreaming about this for years: **inflatable dinghies, Swiss rivers, all of us together.** No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.\n\nI've done the research (obviously 😅). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.\n\n**Pick a route. Mark your days. Say yes.** The rest takes care of itself.",
+  sign:'— Roxane',
+  signLocation:'Written from Basel, with the rivers already running warm'
+};
+
+function getLetter(){
+  const stored=S.get('gb_letter');
+  if(stored&&typeof stored==='object'&&stored.body)return stored;
+  return DEFAULT_LETTER;
+}
+function saveLetter(obj){
+  S.set('gb_letter',obj);
+  S.set('gb_letter_v',Date.now());
+}
+function getLetterVersion(){
+  return S.get('gb_letter_v')||0;
+}
+function getLastReadLetterVersion(){
+  const v=S.get('gb_last_read_letter_v');
+  return typeof v==='number'?v:0;
+}
+function markLetterRead(){
+  S.set('gb_last_read_letter_v',getLetterVersion()||1);
+  refreshBottleGlow();
+}
+function hasNewLetter(){
+  const cur=getLetterVersion();
+  if(!cur)return false;
+  return getLastReadLetterVersion()<cur;
+}
+
+// Render letter body: plain text with **bold** convention → <strong>, newlines → <br>
+function renderLetterBody(text){
+  const safe=escapeHtml(text||'');
+  return safe.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+}
+
+// 🌊 THE WHISPERS — ambient + contextual
+const AMBIENT_WHISPERS=[
+  'Get on board, dear. The river is waiting!',
+  'Say yes to summer. Go with the flow!',
+  'Just you and the crew. Ready for an adventure!',
+  'Sun shining, cold drink in hand, water flowing. Let\u2019s go!',
+  'Go with the flow, darling. The river knows the way!',
+  'Get on board. Let the river take you away!',
+  'Trust the water. The current is doing the work!',
+  'The river flows slow and steady. So should you!',
+  'Pack light, float far. Trust the day!',
+  'No plans on the water. Just the crew and the current!',
+  'Sunscreen, snacks, and giggles. The river takes care of the rest!'
+];
+
+const CONTEXTUAL_WHISPERS={
+  'river-sound-play':'Close your eyes. Listen to the water whispering!'
+  // future entries can be added here as more contextual moments arise
+};
+
+let _whisperLastFired=0;
+let _whisperDismissedUntil=0;
+let _whisperVisible=false;
+let _whisperBootTime=Date.now();
+const WHISPER_COOLDOWN_MS=60000;
+const WHISPER_DISMISSAL_PAUSE_MS=120000;
+const WHISPER_STARTUP_GRACE_MS=8000;
+
+function canFireWhisper(){
+  if(_whisperVisible)return false;
+  if(document.hidden)return false;
+  if(Date.now()-_whisperBootTime<WHISPER_STARTUP_GRACE_MS)return false;
+  if(Date.now()-_whisperLastFired<WHISPER_COOLDOWN_MS)return false;
+  if(Date.now()<_whisperDismissedUntil)return false;
+  if(document.querySelector('.identity-modal.show, .letter-modal.show, .pw-modal.show, .manage-modal.show, .poster.show'))return false;
+  return true;
+}
+
+function fireWhisper(text){
+  if(!canFireWhisper())return;
+  _whisperLastFired=Date.now();
+  _whisperVisible=true;
+
+  const el=document.createElement('div');
+  el.className='whisper-drift';
+  el.textContent=text;
+
+  const vw=Math.max(document.documentElement.clientWidth,window.innerWidth||0);
+  const vh=Math.max(document.documentElement.clientHeight,window.innerHeight||0);
+  const W=280;
+  const H=90;
+  const minX=16;
+  const maxX=Math.max(minX,vw-W-16);
+  const minY=60+16;
+  const maxY=Math.max(minY,vh-80-H-16);
+
+  let x=minX+Math.random()*(maxX-minX);
+  let y=minY+Math.random()*(maxY-minY);
+
+  // Keep-out zone: bottle dock bottom-right ~136x200
+  const koX=vw-152;
+  const koY=vh-216;
+  if(x+W>koX&&y+H>koY){
+    x=Math.max(minX,koX-W-8);
+  }
+
+  el.style.left=x+'px';
+  el.style.top=y+'px';
+
+  const driftX=(Math.random()<0.5?-1:1)*(20+Math.random()*30);
+  const driftY=40+Math.random()*40;
+  el.style.setProperty('--drift-x',driftX+'px');
+  el.style.setProperty('--drift-y',driftY+'px');
+
+  el.addEventListener('click',()=>dismissWhisper(el),{once:true});
+
+  document.body.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add('show');
+
+  // Lifecycle: fade in 1.5s + drift 9s + fade out 1.5s = ~12s
+  setTimeout(()=>{
+    el.classList.remove('show');
+    el.classList.add('fade-out');
+  },10500);
+  setTimeout(()=>{
+    if(el.parentNode)el.parentNode.removeChild(el);
+    _whisperVisible=false;
+  },12200);
+}
+
+function fireAmbientWhisper(){
+  const msg=AMBIENT_WHISPERS[Math.floor(Math.random()*AMBIENT_WHISPERS.length)];
+  fireWhisper(msg);
+}
+
+function fireContextualWhisper(key){
+  const msg=CONTEXTUAL_WHISPERS[key];
+  if(!msg)return;
+  fireWhisper(msg);
+}
+
+function maybeFireOnAction(){
+  if(Math.random()<0.20)fireAmbientWhisper();
+}
+
+function dismissWhisper(el){
+  _whisperDismissedUntil=Date.now()+WHISPER_DISMISSAL_PAUSE_MS;
+  if(el){
+    el.classList.remove('show');
+    el.classList.add('fade-out-fast');
+    setTimeout(()=>{
+      if(el.parentNode)el.parentNode.removeChild(el);
+      _whisperVisible=false;
+    },350);
+  }
+}
+
+function startWhisperTimer(){
+  setInterval(()=>{
+    if(Math.random()<0.35)fireAmbientWhisper();
+  },90000);
+}
+
+// 🍾 THE BOTTLE — corner dock
+function refreshBottleGlow(){
+  const dock=document.getElementById('bottleDock');
+  if(!dock)return;
+  if(hasNewLetter())dock.classList.add('has-new');
+  else dock.classList.remove('has-new');
+}
+
+let _idChainedFromLetter=false;
+
+function maybeShowArrival(){
+  const me=getMe();
+  if(!me){
+    setTimeout(()=>showArrivalCeremony(),900);
+  }
+  refreshBottleGlow();
+}
+
+function showArrivalCeremony(){
+  const modal=document.getElementById('letterModal');
+  if(!modal)return;
+  modal.classList.add('show','ceremony');
+  const bottle=modal.querySelector('.lm-bottle');
+  const reader=modal.querySelector('.lm-reader');
+  const editor=modal.querySelector('.lm-editor');
+  if(reader)reader.style.display='none';
+  if(editor)editor.style.display='none';
+  if(bottle)bottle.style.display='flex';
+  populateLetterReader();
+
+  setTimeout(()=>{
+    if(bottle)bottle.classList.add('uncorking');
+  },1700);
+  setTimeout(()=>{
+    if(bottle){bottle.style.display='none';bottle.classList.remove('uncorking');}
+    if(reader){reader.style.display='block';reader.classList.add('unfurling');}
+    const cont=modal.querySelector('.lm-continue');
+    if(cont)cont.style.display='inline-flex';
+    const closeBtn=modal.querySelector('.lm-close');
+    if(closeBtn)closeBtn.style.display='none';
+  },2500);
+}
+
+function showLetterReader(){
+  const modal=document.getElementById('letterModal');
+  if(!modal)return;
+  populateLetterReader();
+  const bottle=modal.querySelector('.lm-bottle');
+  const reader=modal.querySelector('.lm-reader');
+  const editor=modal.querySelector('.lm-editor');
+  if(bottle)bottle.style.display='none';
+  if(editor)editor.style.display='none';
+  if(reader){reader.style.display='block';reader.classList.add('unfurling');}
+  const cont=modal.querySelector('.lm-continue');
+  if(cont)cont.style.display='none';
+  const closeBtn=modal.querySelector('.lm-close');
+  if(closeBtn)closeBtn.style.display='inline-flex';
+  modal.classList.add('show');
+  modal.classList.remove('ceremony');
+  markLetterRead();
+}
+
+function populateLetterReader(){
+  const L=getLetter();
+  const t=document.getElementById('lmReaderTitle');
+  const b=document.getElementById('lmReaderBody');
+  const s=document.getElementById('lmReaderSign');
+  const sl=document.getElementById('lmReaderSignLoc');
+  if(t)t.textContent=L.title||DEFAULT_LETTER.title;
+  if(b)b.innerHTML=renderLetterBody(L.body||DEFAULT_LETTER.body);
+  if(s)s.textContent=L.sign||DEFAULT_LETTER.sign;
+  if(sl)sl.textContent=L.signLocation||DEFAULT_LETTER.signLocation;
+}
+
+function closeLetterModal(){
+  const modal=document.getElementById('letterModal');
+  if(!modal)return;
+  modal.classList.remove('show','ceremony');
+  const reader=modal.querySelector('.lm-reader');
+  if(reader)reader.classList.remove('unfurling');
+  markLetterRead();
+}
+
+function continueFromLetter(){
+  const modal=document.getElementById('letterModal');
+  if(!modal)return;
+  const reader=modal.querySelector('.lm-reader');
+  if(reader)reader.style.display='none';
+  modal.classList.remove('show','ceremony');
+  _idChainedFromLetter=true;
+  setTimeout(()=>{
+    openIdentityModal({
+      reason:'',
+      allowSkip:false,
+      onComplete:()=>{
+        _idChainedFromLetter=false;
+        markLetterRead();
+      }
+    });
+    setTimeout(()=>{
+      const m=document.getElementById('identityModal');
+      if(m)m.classList.add('chained');
+    },50);
+  },300);
+}
+
+function backFromIdentityToLetter(){
+  closeIdentityModal();
+  _idChainedFromLetter=false;
+  const m=document.getElementById('identityModal');
+  if(m)m.classList.remove('chained');
+  setTimeout(()=>showLetterReader(),200);
+}
+
+// 🍾 BOTTLE EDIT MODE — long-press password flow
+let _bottlePressTimer=null;
+let _bottlePressFired=false;
+let _pwFails=0;
+
+function bottlePressStart(e){
+  _bottlePressFired=false;
+  const dock=document.getElementById('bottleDock');
+  if(dock)dock.classList.add('pressing');
+  _bottlePressTimer=setTimeout(()=>{
+    _bottlePressFired=true;
+    if(dock)dock.classList.remove('pressing');
+    openPasswordModal();
+    if(navigator.vibrate)try{navigator.vibrate(40)}catch{}
+  },3000);
+}
+function bottlePressEnd(){
+  if(_bottlePressTimer){clearTimeout(_bottlePressTimer);_bottlePressTimer=null;}
+  const dock=document.getElementById('bottleDock');
+  if(dock)dock.classList.remove('pressing');
+}
+function bottleClick(e){
+  if(_bottlePressFired){_bottlePressFired=false;return;}
+  showLetterReader();
+}
+
+function openPasswordModal(){
+  _pwFails=0;
+  const m=document.getElementById('pwModal');
+  if(!m)return;
+  m.classList.add('show');
+  const inp=document.getElementById('pwInput');
+  if(inp){inp.value='';setTimeout(()=>inp.focus(),140);}
+}
+function closePasswordModal(){
+  const m=document.getElementById('pwModal');
+  if(m)m.classList.remove('show');
+}
+function submitPassword(){
+  const inp=document.getElementById('pwInput');
+  if(!inp)return;
+  if(inp.value===LETTER_EDIT_PW){
+    closePasswordModal();
+    showLetterEditor();
+  }else{
+    _pwFails++;
+    inp.classList.add('shake');
+    setTimeout(()=>inp.classList.remove('shake'),420);
+    inp.value='';
+    if(_pwFails>=3)closePasswordModal();
+  }
+}
+
+function showLetterEditor(){
+  const modal=document.getElementById('letterModal');
+  if(!modal)return;
+  const L=getLetter();
+  document.getElementById('lmEditTitle').value=L.title||'';
+  document.getElementById('lmEditBody').value=L.body||'';
+  document.getElementById('lmEditSign').value=L.sign||'';
+  document.getElementById('lmEditSignLoc').value=L.signLocation||'';
+  const bottle=modal.querySelector('.lm-bottle');
+  const reader=modal.querySelector('.lm-reader');
+  const editor=modal.querySelector('.lm-editor');
+  if(bottle)bottle.style.display='none';
+  if(reader)reader.style.display='none';
+  if(editor)editor.style.display='block';
+  modal.classList.add('show');
+  modal.classList.remove('ceremony');
+}
+function saveLetterEdit(){
+  const obj={
+    title:document.getElementById('lmEditTitle').value.trim()||DEFAULT_LETTER.title,
+    body:document.getElementById('lmEditBody').value.trim()||DEFAULT_LETTER.body,
+    sign:document.getElementById('lmEditSign').value.trim()||DEFAULT_LETTER.sign,
+    signLocation:document.getElementById('lmEditSignLoc').value.trim()||DEFAULT_LETTER.signLocation
+  };
+  saveLetter(obj);
+  markLetterRead();
+  closeLetterModal();
+  showToast('Letter saved 🍾');
+}
+function cancelLetterEdit(){
+  closeLetterModal();
+}
+
+// 🗑 IDENTITY DELETE + MANAGE
+function deleteIdentity(name){
+  if(!name)return;
+  const votes=getVotes();let vT=false;
+  Object.keys(votes).forEach(rid=>{
+    const arr=votes[rid]||[];
+    if(arr.includes(name)){votes[rid]=arr.filter(n=>n!==name);vT=true;}
+  });
+  if(vT)S.set('gb_votes',votes);
+  const avail=getAvail();
+  if(avail[name]){delete avail[name];S.set('gb_avail',avail);}
+  const pack=getPack();let pT=false;
+  Object.keys(pack).forEach(id=>{
+    const arr=pack[id]||[];
+    if(arr.includes(name)){pack[id]=arr.filter(n=>n!==name);pT=true;}
+  });
+  if(pT)S.set('gb_pack',pack);
+  const wishes=getWishes();let wT=false;
+  Object.keys(wishes).forEach(rid=>{
+    const before=(wishes[rid]||[]).length;
+    wishes[rid]=(wishes[rid]||[]).filter(w=>w.who!==name);
+    if((wishes[rid]||[]).length!==before)wT=true;
+  });
+  if(wT)S.set('gb_wishes',wishes);
+  const crew=getCrew();
+  if(crew[name]){delete crew[name];saveCrew(crew);}
+  const me=getMe();
+  if(me&&me.name===name){
+    S.set('gb_identity',null);
+    try{localStorage.removeItem('gb_voter')}catch{}
+    try{localStorage.removeItem('gb_avail_person')}catch{}
+    try{localStorage.removeItem('gb_my_emoji')}catch{}
+  }
+  try{renderVotePosters()}catch{}
+  try{renderCal()}catch{}
+  try{refreshSummary()}catch{}
+  try{renderPack()}catch{}
+  try{renderCrewWall()}catch{}
+  try{refreshIdentityPills()}catch{}
+}
+
+function openManageModal(){
+  const m=document.getElementById('manageModal');
+  if(!m)return;
+  renderManageList();
+  m.classList.add('show');
+}
+function closeManageModal(){
+  const m=document.getElementById('manageModal');
+  if(m)m.classList.remove('show');
+}
+function renderManageList(){
+  const list=document.getElementById('manageList');
+  if(!list)return;
+  const crew=getCrew();
+  const me=getMe();
+  const names=Object.keys(crew);
+  if(names.length===0){
+    list.innerHTML='<div class="manage-empty">No crew yet.</div>';
+    return;
+  }
+  names.sort((a,b)=>{
+    if(me&&a===me.name)return -1;
+    if(me&&b===me.name)return 1;
+    return (crew[a].joined||0)-(crew[b].joined||0);
+  });
+  const votes=getVotes();
+  const avail=getAvail();
+  list.innerHTML=names.map(n=>{
+    const c=crew[n];
+    const isMe=me&&n===me.name;
+    const voteCount=Object.values(votes).reduce((s,v)=>s+(v.includes(n)?1:0),0);
+    const dayCount=Object.keys(avail[n]||{}).length;
+    const meta=[];
+    if(voteCount)meta.push(voteCount+' vote'+(voteCount>1?'s':''));
+    if(dayCount)meta.push(dayCount+' day'+(dayCount>1?'s':''));
+    const metaTxt=meta.join(' · ')||'Just joined';
+    const safeName=String(n).replace(/'/g,"\\'");
+    const actions=isMe
+      ?'<div class="mg-actions"><button class="mg-btn mg-rename" type="button" onclick="closeManageModal();openIdentityModal({allowSkip:true})">Rename</button><button class="mg-btn mg-delete" type="button" onclick="confirmDeleteIdentity(\''+safeName+'\')">Delete</button></div>'
+      :'<div class="mg-readonly">read-only</div>';
+    return '<div class="mg-row'+(isMe?' me':'')+'">'+
+      '<div class="mg-face">'+(c.emoji||'🛶')+'</div>'+
+      '<div class="mg-body">'+
+        '<div class="mg-name">'+escapeHtml(n)+(isMe?' <em>← you</em>':'')+'</div>'+
+        '<div class="mg-meta">'+metaTxt+'</div>'+
+      '</div>'+
+      actions+
+    '</div>';
+  }).join('');
+}
+function confirmDeleteIdentity(name){
+  const m=document.getElementById('confirmModal');
+  if(!m)return;
+  document.getElementById('confirmTitle').textContent='Delete '+name+'?';
+  document.getElementById('confirmText').textContent='This will remove all of '+name+'\u2019s votes, days, pack claims, and wishes. This cannot be undone.';
+  const renameBtn=document.getElementById('confirmRename');
+  const deleteBtn=document.getElementById('confirmDelete');
+  if(renameBtn)renameBtn.onclick=function(){closeConfirmModal();closeManageModal();openIdentityModal({allowSkip:true});};
+  if(deleteBtn)deleteBtn.onclick=function(){closeConfirmModal();closeManageModal();deleteIdentity(name);showToast('Identity deleted');};
+  m.classList.add('show');
+}
+function closeConfirmModal(){
+  const m=document.getElementById('confirmModal');
+  if(m)m.classList.remove('show');
 }
 
 // ═══════════════════════════════════════
@@ -4800,7 +5744,7 @@ function switchTab(id,scrollTo){
   window.scrollTo({top:0,behavior:'auto'});
   // Re-render things that need fresh state
   if(id==='plan'){renderCrewWall();renderPack();}
-  if(id==='tripday'){renderTripDay();maybeShowWhisper();}
+  if(id==='tripday'){renderTripDay();}
   if(scrollTo){
     setTimeout(()=>{
       const el=document.getElementById(scrollTo+'Anchor');
@@ -5610,74 +6554,11 @@ function toggleHeroSound(){
       pauseIcon.style.display='';
       label.textContent='Playing…';
       soundPlaying=true;
+      if(typeof fireContextualWhisper==='function')fireContextualWhisper('river-sound-play');
     }catch(e){
       showToast('Your browser doesn\'t support Web Audio');
     }
   }
-}
-
-// ═══════════════════════════════════════
-// BLESSING ARRIVAL — first-time welcome
-// ═══════════════════════════════════════
-const BLESSINGS=[
-  'Get on board, darling.<br>The river is waiting.',
-  'Say yes to the summer.<br><strong>Go with the flow.</strong>',
-  'This is the one.<br><strong>Clear your calendar.</strong>',
-  'The water is warmer than last year.<br>You in?',
-  'A cold drink. The current.<br><strong>Nothing else required.</strong>'
-];
-
-function maybeShowBlessing(){
-  const seen=S.get('gb_blessed');
-  if(seen)return;
-  S.set('gb_blessed',Date.now());
-  setTimeout(()=>{
-    const b=document.getElementById('blessing');
-    const t=document.getElementById('blessingText');
-    if(!b||!t)return;
-    const rawBlessing=BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)];
-    // Split into tokens preserving <br> and <strong>...</strong>
-    // Strategy: tokenize by spaces, but keep tags intact
-    const parts=rawBlessing.split(/(\s+|<br>|<\/?strong>)/).filter(Boolean);
-    let wordIdx=0;
-    const animated=parts.map(p=>{
-      if(/^\s+$/.test(p))return p;
-      if(/^<\/?/.test(p))return p;
-      const delay=(wordIdx++*90)+200;
-      return `<span class="blw" style="animation-delay:${delay}ms">${p}</span>`;
-    }).join('');
-    t.innerHTML=animated;
-    b.classList.add('show');
-    setTimeout(()=>{
-      if(b.classList.contains('show'))closeBlessing();
-    },6500);
-  },2200);
-}
-
-function closeBlessing(){
-  document.getElementById('blessing').classList.remove('show');
-}
-
-// ═══════════════════════════════════════
-// THE WHISPER — trip day random blessing
-// ═══════════════════════════════════════
-const WHISPERS=[
-  'Go with the flow, darling.<br>The river knows the way.',
-  'Get on board.<br><strong>The current is doing the work.</strong>',
-  'Trust the water.<br>Trust the crew. Trust the day.',
-  'The river doesn\'t rush.<br><strong>Neither should you.</strong>',
-  'You planned this.<br>Now let it happen.',
-  'Soft hands. Open heart.<br><strong>Cold drink ready.</strong>'
-];
-
-function maybeShowWhisper(){
-  // Only ~1 in 3 trip day opens
-  if(Math.random()>0.33)return;
-  const el=document.getElementById('whisper');
-  if(!el)return;
-  el.innerHTML=WHISPERS[Math.floor(Math.random()*WHISPERS.length)];
-  setTimeout(()=>el.classList.add('show'),400);
-  setTimeout(()=>el.classList.remove('show'),8000);
 }
 
 // ═══════════════════════════════════════
@@ -6164,15 +7045,18 @@ function init(){
     if(e.key==='Escape'){
       closePoster();
       closeMatch();
-      closeBlessing();
       closeEmojiPicker();
+      closeLetterModal();
+      closePasswordModal();
+      closeManageModal();
+      closeConfirmModal();
     }
   });
 
-  // Blessing (first-time)
-  maybeShowBlessing();
-  // V15: soft identity prompt if no identity set yet
-  maybeShowIdentityPrompt();
+  // V16 — The Welcome: arrival ceremony + ambient whispers
+  _whisperBootTime=Date.now();
+  maybeShowArrival();
+  startWhisperTimer();
 }
 
 document.addEventListener('DOMContentLoaded',async function(){
