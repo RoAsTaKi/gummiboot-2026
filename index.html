@@ -3036,6 +3036,158 @@ body.poster-locked{overflow:hidden}
 }
 .ep-skip:hover{color:var(--ink)}
 
+.ep-emoji.selected{
+  background:var(--sun);
+  color:#fff;
+  box-shadow:0 0 0 2px var(--sun-d) inset;
+}
+
+/* V15 · IDENTITY LAYER */
+.id-pill-wrap{
+  max-width:720px;
+  margin:0 auto 22px;
+  padding:0 24px;
+  display:flex;
+  justify-content:center;
+}
+.id-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  background:var(--card);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:999px;
+  font-family:var(--serif);
+  font-size:15px;
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink-m);
+  cursor:pointer;
+  transition:all .2s var(--ease);
+  box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
+.id-pill:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  border-color:var(--sun);
+}
+.id-pill.has-id{color:var(--ink)}
+.id-pill strong{font-weight:500;font-style:normal;color:var(--ink)}
+.id-pill-label{font-size:13px;color:var(--ink-l);font-style:italic}
+.id-pill-emoji{font-size:18px;font-style:normal}
+.id-pill-change{
+  font-size:11px;
+  color:var(--ink-l);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-style:normal;
+  padding-left:6px;
+  border-left:1px solid rgba(0,0,0,.12);
+  margin-left:4px;
+}
+.id-pill-prompt{font-size:14px}
+
+.identity-modal .id-card{
+  max-width:420px;
+  padding:36px 32px 24px;
+}
+.id-reason{
+  font-family:var(--serif);
+  font-size:14px;
+  font-style:italic;
+  color:var(--sun-d);
+  background:var(--sun-p);
+  padding:10px 14px;
+  border-radius:8px;
+  margin:0 0 18px;
+  line-height:1.5;
+}
+.id-input{
+  width:100%;
+  padding:14px 18px;
+  font-family:var(--serif);
+  font-size:20px;
+  font-style:italic;
+  font-weight:400;
+  color:var(--ink);
+  background:var(--paper);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:10px;
+  margin-bottom:16px;
+  text-align:center;
+  transition:all .2s var(--ease);
+}
+.id-input:focus{
+  outline:none;
+  border-color:var(--sun);
+  box-shadow:0 0 0 3px var(--sun-p);
+}
+.id-input::placeholder{color:var(--ink-l);font-style:italic}
+.id-input.shake{animation:idShake .4s var(--ease)}
+@keyframes idShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+.id-actions{display:flex;justify-content:center;margin-bottom:14px}
+.id-next{
+  padding:12px 28px;
+  background:var(--ink);
+  color:var(--card);
+  border-radius:999px;
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:all .2s var(--ease);
+}
+.id-next:hover{background:var(--sun-d);transform:translateY(-1px)}
+.id-back{
+  display:inline-block;
+  margin-top:14px;
+  font-size:12px;
+  color:var(--ink-l);
+  font-style:italic;
+  font-family:var(--serif);
+  cursor:pointer;
+  padding:6px 12px;
+}
+.id-back:hover{color:var(--ink)}
+
+/* Crew wall tap affordances */
+.crew-avatar{
+  cursor:pointer;
+  transition:all .2s var(--ease);
+}
+.crew-avatar:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.crew-avatar .ca-body{display:flex;flex-direction:column;gap:2px}
+.ca-you{
+  font-size:10px;
+  color:var(--sun-d);
+  font-style:italic;
+  font-family:var(--serif);
+  font-weight:400;
+  margin-left:4px;
+}
+.ca-hint{
+  display:block;
+  font-size:9px;
+  color:var(--ink-l);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-top:2px;
+  opacity:0;
+  transition:opacity .2s var(--ease);
+}
+.crew-avatar:hover .ca-hint{opacity:.7}
+
 /* THE WHISPER */
 .whisper{
   max-width:720px;
@@ -3592,15 +3744,8 @@ body.poster-locked{overflow:hidden}
         </div>
       </div>
 
-      <div class="name-card">
-        <div class="nc-opener">Who's in?</div>
-        <div class="nc-title">Enter your name</div>
-        <div class="nc-sub">Once, and then you're part of the crew. Vote on routes, mark your days, claim what you're bringing.</div>
-        <div class="nc-row">
-          <input class="nc-input" id="voterName" type="text" placeholder="Your name…" autocomplete="given-name" maxlength="24">
-          <button class="nc-btn" onclick="loadVoter()">Join the crew</button>
-        </div>
-        <div class="nc-greet" id="vGreeting">Welcome back, <strong id="vSpan"></strong> ✨</div>
+      <div class="id-pill-wrap">
+        <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
       </div>
 
       <div class="vote-posters" id="votePosters"></div>
@@ -3622,14 +3767,8 @@ body.poster-locked{overflow:hidden}
         </div>
       </div>
 
-      <div class="name-card">
-        <div class="nc-title">Mark your available days</div>
-        <div class="nc-sub">Tap any day to cycle: <strong style="color:var(--sage)">free ✓</strong> → <strong style="color:var(--sun-d)">maybe ◐</strong> → unmark. Weekend free? Tap both days — overnight trips unlock.</div>
-        <div class="nc-row">
-          <input class="nc-input" id="availName" type="text" placeholder="Your name…" autocomplete="given-name" maxlength="24">
-          <button class="nc-btn" onclick="loadAvail()">Load my dates</button>
-        </div>
-        <div class="nc-greet" id="aGreeting">Hi <strong id="aSpan"></strong>! Tap any day to mark it.</div>
+      <div class="id-pill-wrap">
+        <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
       </div>
 
       <div class="cal-mnav">
@@ -3912,12 +4051,24 @@ body.poster-locked{overflow:hidden}
 </div>
 
 <!-- Emoji picker (when someone first joins the crew) -->
-<div class="emoji-picker" id="emojiPicker">
-  <div class="ep-card">
-    <div class="ep-title">Pick your vibe</div>
-    <div class="ep-sub">This'll be your crew avatar.</div>
-    <div class="ep-grid" id="epGrid"></div>
-    <button class="ep-skip" onclick="closeEmojiPicker()">Skip</button>
+<div class="identity-modal emoji-picker" id="identityModal">
+  <div class="ep-card id-card">
+    <div id="idNameStage">
+      <div class="ep-title">What should we call you?</div>
+      <div class="ep-sub">One name. Shared with the crew. Remembered everywhere.</div>
+      <div class="id-reason" id="idReason" style="display:none"></div>
+      <input class="id-input" id="idNameInput" type="text" placeholder="your name…" autocomplete="given-name" maxlength="24" onkeydown="if(event.key==='Enter')submitIdentityName()">
+      <div class="id-actions">
+        <button class="id-next" type="button" onclick="submitIdentityName()">Continue →</button>
+      </div>
+      <button class="ep-skip" id="idSkipBtn" type="button" onclick="skipIdentityModal()">skip for now · just browsing</button>
+    </div>
+    <div id="idEmojiStage" style="display:none">
+      <div class="ep-title">Pick your vibe</div>
+      <div class="ep-sub">This'll be you in the crew.</div>
+      <div class="ep-grid" id="idEmojiGrid"></div>
+      <button class="id-back" id="idBackBtn" type="button" onclick="backToNameStage()">← back</button>
+    </div>
   </div>
 </div>
 
@@ -4287,7 +4438,7 @@ const ROUTES=[
 // ═══════════════════════════════════════
 // Shared keys live in Upstash via /api/state. Identity keys stay device-local.
 const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes']);
-const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji']);
+const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji','gb_identity']);
 let _cache={};
 let _cacheLoaded=false;
 let _syncStatus='syncing'; // 'synced' | 'syncing' | 'offline'
@@ -4358,11 +4509,103 @@ const savePack=p=>S.set('gb_pack',p);
 const getWishes=()=>S.get('gb_wishes')||{}; // { routeId: [{who, text}] }
 const saveWishes=w=>S.set('gb_wishes',w);
 
-let voter=S.get('gb_voter')||'';
-let availPerson=S.get('gb_avail_person')||'';
-let myName=voter||availPerson||'';
-let myEmoji=S.get('gb_my_emoji')||'';
-let leadingRouteId=null; // updated whenever we render votes
+// ═══════════════════════════════════════
+// IDENTITY LAYER (V15) — one name, one emoji, one source of truth
+// ═══════════════════════════════════════
+function getMe(){const id=S.get('gb_identity');return(id&&id.name)?id:null;}
+function setMe(name,emoji,{cascade=true}={}){
+  const trimmed=(name||'').trim().slice(0,24);
+  if(!trimmed)return null;
+  const prev=getMe();
+  const oldName=prev&&prev.name;
+  const finalEmoji=emoji||prev?.emoji||'🛶';
+  const next={name:trimmed,emoji:finalEmoji};
+  S.set('gb_identity',next);
+  try{localStorage.setItem('gb_voter',JSON.stringify(trimmed))}catch{}
+  try{localStorage.setItem('gb_avail_person',JSON.stringify(trimmed))}catch{}
+  try{localStorage.setItem('gb_my_emoji',JSON.stringify(finalEmoji))}catch{}
+  const crew=getCrew();
+  if(oldName&&oldName!==trimmed&&cascade){
+    renameIdentity(oldName,trimmed);
+  }else{
+    crew[trimmed]={emoji:finalEmoji,joined:crew[trimmed]?.joined||Date.now()};
+    saveCrew(crew);
+  }
+  try{renderVotePosters()}catch{}
+  try{renderCal()}catch{}
+  try{refreshSummary()}catch{}
+  try{renderPack()}catch{}
+  try{renderCrewWall()}catch{}
+  try{refreshIdentityPills()}catch{}
+  return next;
+}
+function renameIdentity(oldName,newName){
+  if(!oldName||!newName||oldName===newName)return;
+  const votes=getVotes();let vT=false;
+  Object.keys(votes).forEach(rid=>{
+    const arr=votes[rid]||[];
+    if(arr.includes(oldName)){
+      const nxt=arr.filter(n=>n!==oldName);
+      if(!nxt.includes(newName))nxt.push(newName);
+      votes[rid]=nxt;vT=true;
+    }
+  });
+  if(vT)saveVotes(votes);
+  const avail=getAvail();
+  if(avail[oldName]){
+    const target=avail[newName]||{};
+    Object.keys(avail[oldName]).forEach(dk=>{
+      if(!target[dk]||avail[oldName][dk]===1)target[dk]=avail[oldName][dk];
+    });
+    avail[newName]=target;
+    delete avail[oldName];
+    saveAvail(avail);
+  }
+  const crew=getCrew();
+  if(crew[oldName]){
+    const p=crew[newName];
+    crew[newName]={
+      emoji:crew[oldName].emoji||p?.emoji||'🛶',
+      joined:Math.min(crew[oldName].joined||Date.now(),p?.joined||Date.now())
+    };
+    delete crew[oldName];
+    saveCrew(crew);
+  }
+  const pack=getPack();let pT=false;
+  Object.keys(pack).forEach(id=>{
+    const arr=pack[id]||[];
+    if(arr.includes(oldName)){
+      const nxt=arr.filter(n=>n!==oldName);
+      if(!nxt.includes(newName))nxt.push(newName);
+      pack[id]=nxt;pT=true;
+    }
+  });
+  if(pT)savePack(pack);
+  const wishes=getWishes();let wT=false;
+  Object.keys(wishes).forEach(rid=>{
+    (wishes[rid]||[]).forEach(w=>{
+      if(w.who===oldName){w.who=newName;wT=true;}
+    });
+  });
+  if(wT)saveWishes(wishes);
+}
+function migrateIdentity(){
+  if(getMe())return;
+  let lV='',lA='',lE='';
+  try{lV=JSON.parse(localStorage.getItem('gb_voter')||'""')||''}catch{}
+  try{lA=JSON.parse(localStorage.getItem('gb_avail_person')||'""')||''}catch{}
+  try{lE=JSON.parse(localStorage.getItem('gb_my_emoji')||'""')||''}catch{}
+  const chosen=lV||lA||'';
+  if(!chosen)return;
+  const other=(lV&&lA&&lV!==lA)?(chosen===lV?lA:lV):null;
+  setMe(chosen,lE||'🛶',{cascade:false});
+  if(other)renameIdentity(other,chosen);
+}
+Object.defineProperty(window,'voter',{get:()=>getMe()?.name||'',configurable:true});
+Object.defineProperty(window,'availPerson',{get:()=>getMe()?.name||'',configurable:true});
+Object.defineProperty(window,'myName',{get:()=>getMe()?.name||'',configurable:true});
+Object.defineProperty(window,'myEmoji',{get:()=>getMe()?.emoji||'',configurable:true});
+let leadingRouteId=null;
 
 // ═══════════════════════════════════════
 // CREW SYSTEM — shared identity across features
@@ -4371,11 +4614,7 @@ const CREW_EMOJIS=['🛶','🌊','☀️','🌿','🔥','✨','🏔','🌙','�
 
 function joinCrew(name,emoji){
   if(!name)return;
-  const c=getCrew();
-  c[name]={emoji:emoji||c[name]?.emoji||'🛶',joined:c[name]?.joined||Date.now()};
-  saveCrew(c);
-  myName=name;
-  if(emoji){myEmoji=emoji;S.set('gb_my_emoji',emoji);}
+  setMe(name,emoji);
   renderCrewWall();
 }
 
@@ -4405,9 +4644,12 @@ function renderCrewWall(){
     if(voteCount)meta.push(voteCount+' vote'+(voteCount>1?'s':''));
     if(dayCount)meta.push(dayCount+' day'+(dayCount>1?'s':''));
     const metaTxt=meta.join(' · ')||'Just joined';
-    return `<div class="crew-avatar${isMe?' me':''}">
+    const safeName=String(n).replace(/'/g,"\\'");
+    const tap=isMe?`onclick="openIdentityModal({allowSkip:true})"`:`onclick="switchToCrewMember('${safeName}')"`;
+    const hint=isMe?'<span class="ca-hint">tap to change</span>':'<span class="ca-hint">tap to switch</span>';
+    return `<div class="crew-avatar${isMe?' me':''}" ${tap}>
       <div class="ca-face">${c.emoji||'🛶'}</div>
-      <div><div class="ca-name">${escapeHtml(n)}${isMe?' (you)':''}</div><span class="ca-meta">${metaTxt}</span></div>
+      <div class="ca-body"><div class="ca-name">${escapeHtml(n)}${isMe?' <em class="ca-you">← this is you</em>':''}</div><span class="ca-meta">${metaTxt}</span>${hint}</div>
     </div>`;
   }).join('');
 }
@@ -4417,28 +4659,136 @@ function escapeHtml(s){
 }
 
 // ═══════════════════════════════════════
-// EMOJI PICKER — shown when joining
+// IDENTITY MODAL (V15) — name + emoji in one flow
 // ═══════════════════════════════════════
-function showEmojiPicker(name){
-  const picker=document.getElementById('emojiPicker');
-  const grid=document.getElementById('epGrid');
-  if(!picker||!grid)return;
-  grid.innerHTML=CREW_EMOJIS.map(e=>`<button class="ep-emoji" onclick="pickEmoji('${e}','${escapeHtml(name)}')">${e}</button>`).join('');
-  picker.classList.add('show');
-}
+let _idPending=null,_idStage='name',_idDraftName='',_idDraftEmoji='',_idAllowSkip=true;
 
-function pickEmoji(emoji,name){
-  joinCrew(name,emoji);
-  closeEmojiPicker();
-  renderVotePosters();
-  if(document.getElementById('panel-plan').classList.contains('active')){
-    renderCrewWall();
+function openIdentityModal({onComplete,reason,allowSkip=true,startStage='name'}={}){
+  _idPending=onComplete||null;
+  _idAllowSkip=allowSkip;
+  const me=getMe();
+  _idDraftName=me?.name||'';
+  _idDraftEmoji=me?.emoji||'';
+  _idStage=startStage;
+  const rEl=document.getElementById('idReason');
+  if(rEl){rEl.textContent=reason||'';rEl.style.display=reason?'block':'none';}
+  renderIdentityStage();
+  const modal=document.getElementById('identityModal');
+  if(modal)modal.classList.add('show');
+  setTimeout(()=>{
+    if(_idStage==='name'){
+      const inp=document.getElementById('idNameInput');
+      if(inp){inp.focus();inp.select();}
+    }
+  },140);
+}
+function renderIdentityStage(){
+  const nW=document.getElementById('idNameStage');
+  const eW=document.getElementById('idEmojiStage');
+  const sk=document.getElementById('idSkipBtn');
+  const bk=document.getElementById('idBackBtn');
+  if(!nW||!eW)return;
+  if(_idStage==='name'){
+    nW.style.display='block';eW.style.display='none';
+    const inp=document.getElementById('idNameInput');
+    if(inp)inp.value=_idDraftName;
+    if(sk)sk.style.display=_idAllowSkip?'inline-block':'none';
+    if(bk)bk.style.display='none';
+  }else{
+    nW.style.display='none';eW.style.display='block';
+    const grid=document.getElementById('idEmojiGrid');
+    if(grid){
+      grid.innerHTML=CREW_EMOJIS.map(e=>{
+        const sel=e===_idDraftEmoji?' selected':'';
+        return `<button class="ep-emoji${sel}" type="button" onclick="pickIdentityEmoji('${e}')">${e}</button>`;
+      }).join('');
+    }
+    if(sk)sk.style.display='none';
+    if(bk)bk.style.display='inline-block';
   }
 }
-
-function closeEmojiPicker(){
-  document.getElementById('emojiPicker').classList.remove('show');
+function submitIdentityName(){
+  const inp=document.getElementById('idNameInput');
+  if(!inp)return;
+  const n=inp.value.trim();
+  if(!n){
+    inp.classList.add('shake');
+    setTimeout(()=>inp.classList.remove('shake'),420);
+    return;
+  }
+  _idDraftName=n;
+  _idStage='emoji';
+  renderIdentityStage();
 }
+function pickIdentityEmoji(emoji){
+  _idDraftEmoji=emoji;
+  const me=setMe(_idDraftName,emoji);
+  closeIdentityModal();
+  if(typeof _idPending==='function'){
+    const cb=_idPending;_idPending=null;
+    try{cb(me)}catch(e){console.error(e)}
+  }
+}
+function skipIdentityModal(){closeIdentityModal();_idPending=null;}
+function closeIdentityModal(){
+  const m=document.getElementById('identityModal');
+  if(m)m.classList.remove('show');
+}
+function backToNameStage(){
+  _idStage='name';
+  renderIdentityStage();
+  setTimeout(()=>{
+    const inp=document.getElementById('idNameInput');
+    if(inp){inp.focus();inp.select();}
+  },80);
+}
+function requireIdentity(onReady,{reason}={}){
+  const me=getMe();
+  if(me&&me.name){try{onReady(me)}catch(e){console.error(e)}return;}
+  openIdentityModal({onComplete:onReady,reason:reason||'',allowSkip:true});
+}
+function refreshIdentityPills(){
+  const me=getMe();
+  document.querySelectorAll('.id-pill').forEach(p=>{
+    if(me&&me.name){
+      p.innerHTML=`<span class="id-pill-label">you are</span> <strong>${escapeHtml(me.name)}</strong> <span class="id-pill-emoji">${me.emoji||'🛶'}</span> <span class="id-pill-change">change</span>`;
+      p.classList.add('has-id');
+    }else{
+      p.innerHTML=`<em class="id-pill-prompt">tell us who you are</em> <span class="id-pill-change">→</span>`;
+      p.classList.remove('has-id');
+    }
+  });
+}
+function maybeShowIdentityPrompt(){
+  if(getMe())return;
+  setTimeout(()=>{
+    if(getMe())return;
+    openIdentityModal({
+      reason:'Pick your name and a vibe — this is you across the app. You can skip and just browse.',
+      allowSkip:true
+    });
+  },1400);
+}
+function switchToCrewMember(name){
+  const crew=getCrew();
+  const entry=crew[name];
+  if(!entry)return;
+  const cur=getMe();
+  if(cur&&cur.name===name){openIdentityModal({allowSkip:true});return;}
+  if(!confirm(`Switch to ${name}? You'll vote, mark days, and claim as them from now on.`))return;
+  setMe(name,entry.emoji||'🛶',{cascade:false});
+  showToast(`Now you're ${name} ${entry.emoji||'🛶'}`);
+}
+
+// ═══════════════════════════════════════
+// LEGACY EMOJI PICKER ENTRIES — route to identity modal
+// ═══════════════════════════════════════
+function showEmojiPicker(name){
+  _idDraftName=name||getMe()?.name||'';
+  openIdentityModal({allowSkip:false,startStage:'emoji'});
+}
+function pickEmoji(emoji,name){setMe(name,emoji);closeIdentityModal();}
+function closeEmojiPicker(){closeIdentityModal();}
 
 // ═══════════════════════════════════════
 // TABS
@@ -4681,7 +5031,8 @@ function renderVotePosters(){
   el.innerHTML=pulseHTML+ROUTES.map(r=>{
     const voters=votes[r.id]||[];
     const n=voters.length;
-    const voted=voter&&voters.includes(voter);
+    const me=getMe();
+    const voted=me&&voters.includes(me.name);
     const pct=maxVotes?Math.round((n/maxVotes)*100):0;
     const isLeader=r.id===leaderId&&n>0;
     const voterList=voters.length?'<strong>'+voters.map(escapeHtml).join(', ')+'</strong>'+(voters.length===1?' is in':' are in'):'No votes yet';
@@ -4695,7 +5046,7 @@ function renderVotePosters(){
           <div class="vp-sub">${r.sub}</div>
           <div class="vp-bar"><div class="vp-fill" style="width:${pct}%"></div></div>
         </div>
-        <button class="vp-btn${voted?' voted':''}" id="vpbtn_${r.id}" onclick="toggleVote('${r.id}')" ${!voter?'disabled':''}>
+        <button class="vp-btn${voted?' voted':''}" id="vpbtn_${r.id}" onclick="toggleVote('${r.id}')">
           <span class="vp-h">${voted?'♥':'♡'}</span>
           <span class="vp-count">${n}</span>
         </button>
@@ -4716,42 +5067,27 @@ function renderVotePosters(){
   }
 }
 
-function loadVoter(){
-  const n=document.getElementById('voterName').value.trim();
-  if(!n)return;
-  voter=n;S.set('gb_voter',n);
-  const g=document.getElementById('vGreeting');
-  document.getElementById('vSpan').textContent=n;
-  g.classList.add('show');
-  // If new to crew, ask for emoji
-  const crew=getCrew();
-  if(!crew[n]||!crew[n].emoji){
-    showEmojiPicker(n);
-  }else{
-    joinCrew(n);
-    renderVotePosters();
-  }
-}
+function loadVoter(){openIdentityModal({allowSkip:true});}
 
 function toggleVote(rid){
-  if(!voter)return;
-  const v=getVotes();
-  if(!v[rid])v[rid]=[];
-  const i=v[rid].indexOf(voter);
-  const isNew=i<0;
-  if(i>=0)v[rid].splice(i,1);else v[rid].push(voter);
-  saveVotes(v);
-  renderVotePosters();
-  if(isNew){
-    const btn=document.getElementById('vpbtn_'+rid);
-    if(btn){
-      btn.classList.add('just-voted','bursting');
-      setTimeout(()=>btn.classList.remove('just-voted','bursting'),700);
-      fireHeartBurst(btn);
+  requireIdentity(me=>{
+    const v=getVotes();
+    if(!v[rid])v[rid]=[];
+    const i=v[rid].indexOf(me.name);
+    const isNew=i<0;
+    if(i>=0)v[rid].splice(i,1);else v[rid].push(me.name);
+    saveVotes(v);
+    renderVotePosters();
+    if(isNew){
+      const btn=document.getElementById('vpbtn_'+rid);
+      if(btn){
+        btn.classList.add('just-voted','bursting');
+        setTimeout(()=>btn.classList.remove('just-voted','bursting'),700);
+        fireHeartBurst(btn);
+      }
+      setTimeout(()=>checkRouteMatch(rid),900);
     }
-    // Check for route match
-    setTimeout(()=>checkRouteMatch(rid),900);
-  }
+  },{reason:'Tell us your name so your vote counts.'});
 }
 
 function fireHeartBurst(btn){
@@ -4815,25 +5151,7 @@ let calY=2026,calM=3;
 
 function dk(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
 
-function loadAvail(){
-  const n=document.getElementById('availName').value.trim();
-  if(!n)return;
-  availPerson=n;S.set('gb_avail_person',n);
-  const a=getAvail();
-  if(!a[n]){a[n]={};saveAvail(a);}
-  const g=document.getElementById('aGreeting');
-  document.getElementById('aSpan').textContent=n;
-  g.classList.add('show');
-  // Join crew
-  const crew=getCrew();
-  if(!crew[n]||!crew[n].emoji){
-    showEmojiPicker(n);
-  }else{
-    joinCrew(n);
-  }
-  renderCal();
-  refreshSummary();
-}
+function loadAvail(){openIdentityModal({allowSkip:true});}
 
 function renderCal(){
   const lbl=document.getElementById('calMonthLabel');
@@ -4872,7 +5190,7 @@ function renderCal(){
     if(myState===2)cls+=' maybe';
 
     const st=myState===1?'✓':myState===2?'◐':'';
-    const click=availPerson&&inRange?`onclick="tapDay('${key}')"`:' ';
+    const click=inRange?`onclick="tapDay('${key}')"`:' ';
     const dots=fp.slice(0,3).map(()=>'<div class="cdot free"></div>').join('')+
                mp.slice(0,3).map(()=>'<div class="cdot maybe"></div>').join('');
 
@@ -4892,14 +5210,15 @@ function prevMonth(){if(calY===2026&&calM===3)return;calM--;if(calM<0){calM=11;c
 function nextMonth(){if(calY===2026&&calM===8)return;calM++;if(calM>11){calM=0;calY++;}renderCal();}
 
 function tapDay(key){
-  if(!availPerson)return;
-  const a=getAvail();
-  if(!a[availPerson])a[availPerson]={};
-  const cur=a[availPerson][key]||0;
-  const next=(cur+1)%3;
-  if(next===0)delete a[availPerson][key];
-  else a[availPerson][key]=next;
-  saveAvail(a);renderCal();refreshSummary();
+  requireIdentity(me=>{
+    const a=getAvail();
+    if(!a[me.name])a[me.name]={};
+    const cur=a[me.name][key]||0;
+    const next=(cur+1)%3;
+    if(next===0)delete a[me.name][key];
+    else a[me.name][key]=next;
+    saveAvail(a);renderCal();refreshSummary();
+  },{reason:'Tell us your name so we can mark your days.'});
 }
 
 function refreshSummary(){
@@ -5040,7 +5359,7 @@ function renderPack(){
   const el=document.getElementById('packGroups');
   if(!el)return;
   const pack=getPack();
-  const me=myName||voter||availPerson||'';
+  const me=getMe()?.name||'';
 
   let totalItems=0,claimedItems=0;
   PACK.forEach(g=>{
@@ -5094,27 +5413,27 @@ function renderPack(){
 }
 
 function togglePackClaim(itemId,kind){
-  const me=myName||voter||availPerson||'';
-  if(!me){showToast('Enter your name first (in the Vote or Calendar section)');return;}
-  const pack=getPack();
-  if(!pack[itemId])pack[itemId]=[];
-  const i=pack[itemId].indexOf(me);
-  if(i>=0){
-    pack[itemId].splice(i,1);
-    if(pack[itemId].length===0)delete pack[itemId];
-  }else{
-    if(kind==='solo'&&pack[itemId].length>0){
-      showToast('Someone already claimed this one');
-      return;
+  requireIdentity(me=>{
+    const pack=getPack();
+    if(!pack[itemId])pack[itemId]=[];
+    const i=pack[itemId].indexOf(me.name);
+    if(i>=0){
+      pack[itemId].splice(i,1);
+      if(pack[itemId].length===0)delete pack[itemId];
+    }else{
+      if(kind==='solo'&&pack[itemId].length>0){
+        showToast('Someone already claimed this one');
+        return;
+      }
+      pack[itemId].push(me.name);
     }
-    pack[itemId].push(me);
-  }
-  savePack(pack);
-  renderPack();
+    savePack(pack);
+    renderPack();
+  },{reason:'Tell us your name so we know who\'s bringing what.'});
 }
 
 function resetPack(){
-  const me=myName||voter||availPerson||'';
+  const me=getMe()?.name||'';
   if(!me)return;
   if(!confirm('Remove all your claims from the packing list?'))return;
   const pack=getPack();
@@ -5407,13 +5726,14 @@ function addWish(routeId){
   if(!input)return;
   const text=input.value.trim();
   if(!text)return;
-  const me=myName||voter||availPerson||'someone';
-  const wishes=getWishes();
-  if(!wishes[routeId])wishes[routeId]=[];
-  wishes[routeId].push({who:me,text:text,at:Date.now()});
-  saveWishes(wishes);
-  input.value='';
-  renderWishesInPoster(routeId);
+  requireIdentity(me=>{
+    const wishes=getWishes();
+    if(!wishes[routeId])wishes[routeId]=[];
+    wishes[routeId].push({who:me.name,text:text,at:Date.now()});
+    saveWishes(wishes);
+    input.value='';
+    renderWishesInPoster(routeId);
+  },{reason:'Tell us your name so your wish has a voice.'});
 }
 
 function renderWishesInPoster(routeId){
@@ -5818,24 +6138,7 @@ function init(){
     });
   });
 
-  // Restore names
-  if(voter){
-    const vn=document.getElementById('voterName');
-    if(vn)vn.value=voter;
-    const vs=document.getElementById('vSpan');
-    if(vs)vs.textContent=voter;
-    const vg=document.getElementById('vGreeting');
-    if(vg)vg.classList.add('show');
-  }
-  if(availPerson){
-    const an=document.getElementById('availName');
-    if(an)an.value=availPerson;
-    const as_=document.getElementById('aSpan');
-    if(as_)as_.textContent=availPerson;
-    const ag=document.getElementById('aGreeting');
-    if(ag)ag.classList.add('show');
-  }
-
+  // V15: identity is restored via refreshIdentityPills() below
   const now=new Date();
   if(now.getFullYear()===2026&&now.getMonth()>=3&&now.getMonth()<=8)calM=now.getMonth();
 
@@ -5849,11 +6152,8 @@ function init(){
   renderCountdown();
   fetchForecast();
 
-  // Enter-to-submit
-  const vn=document.getElementById('voterName');
-  const an=document.getElementById('availName');
-  if(vn)vn.addEventListener('keydown',e=>{if(e.key==='Enter')loadVoter();});
-  if(an)an.addEventListener('keydown',e=>{if(e.key==='Enter')loadAvail();});
+  // V15: identity pills reflect current state, enter-key handled in modal inline
+  refreshIdentityPills();
 
   // Poster close handlers
   const poster=document.getElementById('poster');
@@ -5871,10 +6171,13 @@ function init(){
 
   // Blessing (first-time)
   maybeShowBlessing();
+  // V15: soft identity prompt if no identity set yet
+  maybeShowIdentityPrompt();
 }
 
 document.addEventListener('DOMContentLoaded',async function(){
   await S.load();
+  migrateIdentity();
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   s.crossOrigin='';
