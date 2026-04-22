@@ -762,6 +762,54 @@ a{color:inherit;text-decoration:none}
 }
 .g-card:hover .g-open{opacity:1;transform:translateY(0)}
 @media(hover:none){.g-open{opacity:.92;transform:none}}
+/* Gallery heart/vote button */
+.g-heart-btn{
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  width:34px;height:34px;
+  border-radius:50%;
+  background:rgba(14,24,32,.52);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  cursor:pointer;
+  z-index:3;
+  transition:transform .2s var(--spring),background .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.g-heart-btn:active{transform:scale(.88)}
+.g-heart-btn.voted{
+  background:rgba(212,137,58,.85);
+  border-color:rgba(212,137,58,.6);
+}
+.g-heart-btn.voted::after{
+  content:'';
+  position:absolute;inset:-4px;
+  border-radius:50%;
+  background:rgba(212,137,58,.25);
+  animation:gHeartRing .5s ease-out forwards;
+}
+@keyframes gHeartRing{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.7)}
+}
+.g-heart-count{
+  position:absolute;
+  bottom:12px;
+  left:54px;
+  font-family:var(--serif);
+  font-size:11px;
+  font-style:italic;
+  color:rgba(255,255,255,.85);
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  pointer-events:none;
+  z-index:3;
+  transition:opacity .3s ease;
+}
+.g-heart-count:empty{display:none}
 
 /* Gallery nav arrows (desktop) */
 .g-nav{
@@ -1304,6 +1352,16 @@ a{color:inherit;text-decoration:none}
 .cdots{display:flex;gap:1px;justify-content:center;min-height:10px;flex-wrap:wrap;}
 .cdot{font-size:9px;line-height:1;flex-shrink:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.8));}
 .cdot.maybe{opacity:.6;}
+.ccrew-count{
+  position:absolute;
+  top:3px;right:4px;
+  font-size:8px;
+  font-weight:700;
+  font-family:var(--sans);
+  line-height:1;
+  color:var(--sage);
+  opacity:.8;
+}
 
 .cal-legend{
   max-width:720px;
@@ -3430,6 +3488,116 @@ body.poster-locked{overflow:hidden}
 }
 .bottle-svg{display:none;}
 
+/* 🏮 LIGHTHOUSE — group status beacon */
+.lighthouse-charm{
+  position:fixed;
+  left:16px;
+  bottom:88px;
+  width:44px;height:44px;
+  z-index:1050;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  animation:lighthouseBob 6s ease-in-out infinite;
+}
+@keyframes lighthouseBob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.lighthouse-charm .lh-body{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:rgba(255,253,247,0.82);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 2px 14px rgba(0,0,0,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+  position:relative;
+  transition:transform .2s var(--spring), box-shadow .3s ease;
+}
+.lighthouse-charm:active .lh-body{transform:scale(.88)}
+.lighthouse-charm .lh-count{
+  position:absolute;
+  top:-5px;right:-5px;
+  min-width:16px;height:16px;
+  background:var(--sage);
+  color:#fff;
+  border-radius:999px;
+  font-size:9px;font-weight:700;
+  font-family:var(--sans);
+  display:flex;align-items:center;justify-content:center;
+  padding:0 3px;
+  border:1.5px solid var(--cream);
+  opacity:0;
+  transform:scale(0);
+  transition:opacity .3s ease, transform .3s var(--spring);
+}
+.lighthouse-charm.has-crew .lh-count{opacity:1;transform:scale(1);}
+.lighthouse-charm.all-voted .lh-body{
+  box-shadow:0 2px 14px rgba(156,175,136,.5), 0 0 20px rgba(156,175,136,.35);
+  background:rgba(220,235,210,.9);
+}
+/* Beacon pulse when fully active */
+.lighthouse-charm.all-voted::before{
+  content:'';
+  position:absolute;
+  width:44px;height:44px;
+  border-radius:50%;
+  border:2px solid rgba(156,175,136,.5);
+  animation:lighthouseBeacon 2s ease-out infinite;
+  top:0;left:0;
+}
+@keyframes lighthouseBeacon{
+  0%{transform:scale(1);opacity:.8}
+  100%{transform:scale(2.2);opacity:0}
+}
+
+/* Lighthouse status popover */
+.lh-popover{
+  position:fixed;
+  left:16px;
+  bottom:142px;
+  width:200px;
+  background:rgba(255,253,247,.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+  padding:14px 16px;
+  z-index:1060;
+  opacity:0;pointer-events:none;
+  transform:translateY(8px);
+  transition:opacity .25s ease, transform .25s var(--spring);
+}
+.lh-popover.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+.lh-pop-title{
+  font-family:var(--serif);font-style:italic;
+  font-size:14px;color:var(--ink);
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.lh-pop-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--ink-m);
+  padding:4px 0;
+  border-bottom:1px solid var(--line);
+}
+.lh-pop-row:last-child{border-bottom:none;}
+.lh-pop-val{
+  font-weight:600;color:var(--ink);
+  font-family:var(--sans);
+}
+.lh-pop-best{
+  margin-top:10px;
+  font-size:11px;font-style:italic;color:var(--sage);
+  text-align:center;line-height:1.4;
+}
+
 /* 🍾 LETTER MODAL — reader, editor, ceremony */
 .letter-modal{
   position:fixed;
@@ -3916,6 +4084,107 @@ body.poster-locked{overflow:hidden}
   transition:background .2s;
 }
 .manage-close:hover{background:var(--river);}
+
+/* ── Personal dashboard modal ── */
+.dash-modal{
+  position:fixed;inset:0;
+  background:rgba(18,28,44,0);
+  backdrop-filter:blur(0px);
+  z-index:1350;
+  display:none;
+  align-items:flex-end;justify-content:center;
+  padding:0;
+  transition:background .35s var(--ease),backdrop-filter .35s var(--ease);
+}
+.dash-modal.show{
+  display:flex;
+  background:rgba(18,28,44,.72);
+  backdrop-filter:blur(18px);
+}
+.dash-card{
+  background:var(--cream);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:520px;
+  max-height:88vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 -20px 60px rgba(0,0,0,.35);
+  overflow:hidden;
+  transform:translateY(100%);
+  transition:transform .4s var(--spring);
+}
+.dash-modal.show .dash-card{transform:translateY(0)}
+.dash-handle{
+  width:36px;height:4px;
+  background:rgba(0,0,0,.12);
+  border-radius:2px;
+  margin:12px auto 0;
+  flex-shrink:0;
+}
+.dash-header{
+  padding:18px 22px 14px;
+  flex-shrink:0;
+}
+.dash-who{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:6px;
+}
+.dash-emoji{font-size:36px;line-height:1;}
+.dash-name{
+  font-family:var(--serif);font-style:italic;
+  font-size:26px;font-weight:300;color:var(--ink);line-height:1;
+}
+.dash-name-sub{font-size:11px;color:var(--ink-l);margin-top:3px;letter-spacing:.3px;}
+.dash-body{flex:1;overflow-y:auto;padding:0 22px 24px;}
+.dash-section{margin-bottom:22px;}
+.dash-section-title{
+  font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--river);font-weight:600;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.dash-section-title::after{content:'';flex:1;height:1px;background:var(--line);}
+.dash-votes{display:flex;flex-wrap:wrap;gap:7px;}
+.dash-vote-pill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(212,137,58,.1);border:1px solid rgba(212,137,58,.3);
+  border-radius:100px;padding:5px 11px;
+  font-size:12px;font-style:italic;font-family:var(--serif);color:var(--ink);
+}
+.dash-dates{display:flex;flex-wrap:wrap;gap:6px;}
+.dash-date-pill{
+  font-size:11px;padding:4px 10px;border-radius:100px;
+  font-family:var(--sans);font-weight:500;
+}
+.dash-date-pill.free{background:var(--sage-pp);color:var(--sage);border:1px solid rgba(156,175,136,.35);}
+.dash-date-pill.maybe{background:var(--sun-pp);color:var(--sun-d);border:1px solid rgba(212,137,58,.3);}
+.dash-wishes{display:flex;flex-direction:column;gap:8px;}
+.dash-wish-row{
+  font-size:13px;font-style:italic;font-family:var(--serif);
+  color:var(--ink-m);line-height:1.5;
+  padding:10px 13px;
+  background:rgba(0,0,0,.03);border-radius:10px;
+  border-left:2px solid var(--sun);
+}
+.dash-empty{font-size:12px;color:var(--ink-l);font-style:italic;}
+.dash-footer{
+  padding:12px 22px 20px;
+  border-top:1px solid var(--line);
+  flex-shrink:0;
+  display:flex;gap:10px;
+}
+.dash-btn-manage{
+  flex:1;padding:12px;border-radius:22px;
+  border:1px solid var(--line-m);background:transparent;
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  color:var(--ink-m);cursor:pointer;transition:background .2s;
+}
+.dash-btn-manage:hover{background:var(--paper-d);}
+.dash-btn-close{
+  flex:2;padding:12px;border-radius:22px;border:0;
+  background:var(--ink);color:var(--cream);
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  cursor:pointer;transition:background .2s;
+}
+.dash-btn-close:hover{background:var(--river);}
 
 /* PRINT MODE — zine for the leading route */
 @media print{
@@ -4442,7 +4711,7 @@ body.poster-locked{overflow:hidden}
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
-        <button class="paper-boat-btn" type="button" onclick="openManageModal()" aria-label="Manage crew" title="Manage crew">🚤</button>
+        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">🚤</button>
       </div>
     </div>
 
@@ -4464,7 +4733,7 @@ body.poster-locked{overflow:hidden}
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
-        <button class="paper-boat-btn" type="button" onclick="openManageModal()" aria-label="Manage crew" title="Manage crew">🚤</button>
+        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">🚤</button>
       </div>
 
       <div class="cal-mnav">
@@ -4776,6 +5045,21 @@ body.poster-locked{overflow:hidden}
      ═══════════════════════════════════════ -->
 
 <!-- 🍾 Corner bottle dock -->
+<!-- 🏮 Lighthouse — group status beacon -->
+<div class="lighthouse-charm" id="lighthouseCharm" onclick="toggleLighthouse()" aria-label="Group status">
+  <div class="lh-body">
+    🏮
+    <div class="lh-count" id="lhCount">0</div>
+  </div>
+</div>
+<div class="lh-popover" id="lhPopover">
+  <div class="lh-pop-title">🏮 Group status</div>
+  <div class="lh-pop-row"><span>Crew joined</span><span class="lh-pop-val" id="lhCrew">—</span></div>
+  <div class="lh-pop-row"><span>Total votes</span><span class="lh-pop-val" id="lhVotes">—</span></div>
+  <div class="lh-pop-row"><span>Dates marked</span><span class="lh-pop-val" id="lhDates">—</span></div>
+  <div class="lh-pop-best" id="lhBest"></div>
+</div>
+
 <div class="bottle-dock" id="bottleDock"
      onclick="bottleClick(event)"
      onmousedown="bottlePressStart(event)"
@@ -4865,6 +5149,40 @@ body.poster-locked{overflow:hidden}
     <div class="manage-list" id="manageList"></div>
     <div class="manage-footer">
       <button class="manage-close" type="button" onclick="closeManageModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🚤 Personal dashboard modal -->
+<div class="dash-modal" id="dashModal" onclick="if(event.target===this)closeDash()">
+  <div class="dash-card">
+    <div class="dash-handle"></div>
+    <div class="dash-header">
+      <div class="dash-who">
+        <div class="dash-emoji" id="dashEmoji">🛶</div>
+        <div>
+          <div class="dash-name" id="dashName">—</div>
+          <div class="dash-name-sub" id="dashSub">your journey so far</div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-section">
+        <div class="dash-section-title">Your votes</div>
+        <div class="dash-votes" id="dashVotes"></div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-title">Your free days</div>
+        <div class="dash-dates" id="dashDates"></div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-title">Your wishes</div>
+        <div class="dash-wishes" id="dashWishes"></div>
+      </div>
+    </div>
+    <div class="dash-footer">
+      <button class="dash-btn-manage" type="button" onclick="closeDash();setTimeout(openManageModal,180)">👥 Crew</button>
+      <button class="dash-btn-close" type="button" onclick="closeDash()">Done</button>
     </div>
   </div>
 </div>
@@ -5494,6 +5812,7 @@ function renderCrewActivity(){
       </div>
     </div>`;
   }).join('');
+  updateLighthouse();
 }
 
 function renderCrewWall(){
@@ -5620,7 +5939,7 @@ function canFireWhisper(){
   if(Date.now()-_whisperBootTime<WHISPER_STARTUP_GRACE_MS)return false;
   if(Date.now()-_whisperLastFired<WHISPER_COOLDOWN_MS)return false;
   if(Date.now()<_whisperDismissedUntil)return false;
-  if(document.querySelector('.identity-modal.show, .letter-modal.show, .pw-modal.show, .manage-modal.show, .poster.show'))return false;
+  if(document.querySelector('.identity-modal.show, .letter-modal.show, .pw-modal.show, .manage-modal.show, .dash-modal.show, .lh-popover.show, .poster.show'))return false;
   return true;
 }
 
@@ -5981,6 +6300,150 @@ function deleteIdentity(name){
   try{refreshIdentityPills()}catch{}
 }
 
+// ── Lighthouse — group status beacon ──
+function updateLighthouse(){
+  const charm=document.getElementById('lighthouseCharm');
+  const countEl=document.getElementById('lhCount');
+  if(!charm)return;
+  const crew=getCrew();
+  const votes=getVotes();
+  const avail=getAvail();
+  const crewNames=Object.keys(crew);
+  const crewCount=crewNames.length;
+
+  // Total votes across all routes
+  const totalVotes=Object.values(votes).reduce((s,v)=>s+(Array.isArray(v)?v.length:0),0);
+
+  // Unique people who marked dates
+  const datesCount=Object.keys(avail).filter(n=>{
+    const d=avail[n]||{};
+    return Object.values(d).some(v=>v===1||v===2);
+  }).length;
+
+  // Has anyone voted on anything?
+  const hasActivity=totalVotes>0||datesCount>0;
+
+  // All crew voted? (at least 1 vote each, min 2 crew)
+  const allVoted=crewCount>=2&&crewNames.every(n=>
+    Object.values(votes).some(v=>Array.isArray(v)&&v.includes(n))
+  );
+
+  // Update charm state
+  if(crewCount>0)charm.classList.add('has-crew'); else charm.classList.remove('has-crew');
+  if(allVoted)charm.classList.add('all-voted'); else charm.classList.remove('all-voted');
+  if(countEl)countEl.textContent=crewCount;
+
+  // Update popover content
+  document.getElementById('lhCrew').textContent=crewCount||'—';
+  document.getElementById('lhVotes').textContent=totalVotes||'—';
+  document.getElementById('lhDates').textContent=datesCount||'—';
+
+  // Best date — most free members
+  const bestEl=document.getElementById('lhBest');
+  if(bestEl){
+    // Count free (state=1) per date across all crew
+    const dateTotals={};
+    crewNames.forEach(n=>{
+      const d=avail[n]||{};
+      Object.entries(d).forEach(([k,v])=>{
+        if(v===1){dateTotals[k]=(dateTotals[k]||0)+1;}
+      });
+    });
+    const best=Object.entries(dateTotals).sort((a,b)=>b[1]-a[1])[0];
+    if(best&&best[1]>0){
+      const[y,m,d]=best[0].split('-');
+      const dt=new Date(+y,+m-1,+d);
+      const label=dt.toLocaleDateString('en-CH',{weekday:'short',month:'short',day:'numeric'});
+      bestEl.textContent=`✦ ${best[1]} free on ${label}`;
+    } else {
+      bestEl.textContent=crewCount>0?'Mark your free days in Dates 📅':'';
+    }
+  }
+}
+
+let _lhOpen=false;
+function toggleLighthouse(){
+  const pop=document.getElementById('lhPopover');
+  if(!pop)return;
+  _lhOpen=!_lhOpen;
+  if(_lhOpen){
+    updateLighthouse();
+    pop.classList.add('show');
+    // Auto-close after 5s
+    setTimeout(()=>{_lhOpen=false;pop.classList.remove('show');},5000);
+  } else {
+    pop.classList.remove('show');
+  }
+}
+// Close popover on outside tap
+document.addEventListener('click',e=>{
+  if(_lhOpen&&!e.target.closest('#lighthouseCharm')&&!e.target.closest('#lhPopover')){
+    _lhOpen=false;
+    document.getElementById('lhPopover')?.classList.remove('show');
+  }
+});
+
+// ── Personal dashboard ──
+function openDash(){
+  const me=getMe();
+  if(!me){
+    requireIdentity(()=>openDash(),{reason:'Tell us who you are first!'});
+    return;
+  }
+  renderDash(me);
+  document.getElementById('dashModal').classList.add('show');
+  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='paused');
+}
+function closeDash(){
+  document.getElementById('dashModal').classList.remove('show');
+  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='');
+}
+function renderDash(me){
+  document.getElementById('dashEmoji').textContent=me.emoji||'🛶';
+  document.getElementById('dashName').textContent=me.name;
+
+  // Votes
+  const votes=getVotes();
+  const myVotes=Object.entries(votes).filter(([,v])=>Array.isArray(v)&&v.includes(me.name));
+  const vEl=document.getElementById('dashVotes');
+  if(myVotes.length===0){
+    vEl.innerHTML='<div class="dash-empty">No votes yet — head to Align ♡</div>';
+  } else {
+    vEl.innerHTML=myVotes.map(([rid])=>{
+      const r=ROUTES.find(x=>x.id===rid);
+      return `<div class="dash-vote-pill">♥ ${r?r.name:rid}</div>`;
+    }).join('');
+  }
+
+  // Dates
+  const avail=getAvail();
+  const myAvail=avail[me.name]||{};
+  const freeDays=Object.entries(myAvail).filter(([,v])=>v===1).map(([k])=>k).sort();
+  const maybeDays=Object.entries(myAvail).filter(([,v])=>v===2).map(([k])=>k).sort();
+  const dEl=document.getElementById('dashDates');
+  if(freeDays.length===0&&maybeDays.length===0){
+    dEl.innerHTML='<div class="dash-empty">No dates marked yet — head to Dates 📅</div>';
+  } else {
+    const fmt=k=>{const[y,m,d]=k.split('-');const dt=new Date(+y,+m-1,+d);return dt.toLocaleDateString('en-CH',{month:'short',day:'numeric'});};
+    dEl.innerHTML=freeDays.map(k=>`<div class="dash-date-pill free">${fmt(k)}</div>`).join('')+
+                  maybeDays.map(k=>`<div class="dash-date-pill maybe">${fmt(k)} ◐</div>`).join('');
+  }
+
+  // Wishes
+  const wishes=getWishes();
+  const myWishes=Object.values(wishes).flat().filter(w=>w.who===me.name);
+  const wEl=document.getElementById('dashWishes');
+  if(myWishes.length===0){
+    wEl.innerHTML='<div class="dash-empty">No wishes yet — add one from a route ✧</div>';
+  } else {
+    wEl.innerHTML=myWishes.slice(-5).reverse().map(w=>`<div class="dash-wish-row">"${escapeHtml(w.text)}"</div>`).join('');
+  }
+
+  // Sub line
+  const total=myVotes.length+freeDays.length+maybeDays.length+myWishes.length;
+  document.getElementById('dashSub').textContent=total===0?'your journey starts here':'your journey so far';
+}
+
 function openManageModal(){
   const m=document.getElementById('manageModal');
   if(!m)return;
@@ -6244,7 +6707,12 @@ function renderGallery(){
   if(!g)return;
   const filtered=ROUTES.filter(r=>matchesFilter(r,currentFilter));
   const allWishes=getWishes();
+  const _gVotes=getVotes();
+  const _gMe=getMe();
   g.innerHTML=filtered.map(r=>{
+    const _rv=_gVotes[r.id]||[];
+    const voted=!!(_gMe&&_rv.includes(_gMe.name));
+    const vCount=_rv.length;
     // Extract a single editorial sentence from the verdict (first sentence)
     const verdictLine=(r.verdict||'').split(/(?<=[.!?])\s/)[0];
     // Latest wish for this route (if any)
@@ -6262,6 +6730,8 @@ function renderGallery(){
         <div class="g-photo-ov"></div>
         <div class="g-badge ${r.type}">${r.badge}</div>
         <div class="g-km">${r.km}<span> km</span></div>
+        <button class="g-heart-btn${voted?` voted`:``}" onclick="event.stopPropagation();gHeartTap('${r.id}')" aria-label="Vote">${voted?'♥':'♡'}</button>
+        ${vCount>0?`<div class="g-heart-count">${vCount}</div>`:''}
         <div class="g-open">⤢ Open</div>
       </div>
       <div class="g-body">
@@ -6481,6 +6951,7 @@ function toggleVote(rid){
     if(i>=0)v[rid].splice(i,1);else v[rid].push(me.name);
     saveVotes(v);
     renderVotePosters();
+    renderGallery();
     renderCrewActivity();
     if(isNew){
       const btn=document.getElementById('vpbtn_'+rid);
@@ -6516,6 +6987,26 @@ function fireHeartBurst(btn){
     requestAnimationFrame(()=>el.classList.add('go'));
     setTimeout(()=>el.remove(),1100);
   });
+}
+
+// Gallery card heart tap — mirrors toggleVote but re-renders gallery
+function gHeartTap(rid){
+  requireIdentity(me=>{
+    const v=getVotes();
+    if(!v[rid])v[rid]=[];
+    const i=v[rid].indexOf(me.name);
+    const isNew=i<0;
+    if(i>=0)v[rid].splice(i,1);else v[rid].push(me.name);
+    saveVotes(v);
+    renderGallery();
+    renderVotePosters();
+    renderCrewActivity();
+    if(isNew){
+      const btn=document.querySelector(`.g-card[data-route="${rid}"] .g-heart-btn`);
+      if(btn)fireHeartBurst(btn);
+      setTimeout(()=>checkRouteMatch(rid),900);
+    }
+  },{reason:'Tell us your name so your vote counts.'});
 }
 
 // ═══════════════════════════════════════
@@ -6599,8 +7090,10 @@ function renderCal(){
     const dots=fp.slice(0,4).map(n=>`<span class="cdot free" title="${n}">${(crew[n]&&crew[n].emoji)||'🛶'}</span>`).join('')+
                mp.slice(0,4).map(n=>`<span class="cdot maybe" title="${n}">${(crew[n]&&crew[n].emoji)||'🛶'}</span>`).join('');
 
-    html+=`<div class="${cls}" ${click}>
+    const crewTotal=fp.length+mp.length;
+    html+=`<div class="${cls}" style="position:relative" ${click}>
       <div class="cday">${d}</div>
+      ${crewTotal>0?`<div class="ccrew-count">${crewTotal}</div>`:''}
       ${st?`<div class="cst">${st}</div>`:''}
       <div class="cdots">${dots}</div>
     </div>`;
@@ -7622,6 +8115,7 @@ function init(){
   _whisperBootTime=Date.now();
   maybeShowArrival();
   startWhisperTimer();
+  updateLighthouse();
 }
 
 document.addEventListener('DOMContentLoaded',async function(){
