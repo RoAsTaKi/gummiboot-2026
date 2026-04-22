@@ -5823,6 +5823,7 @@ function setMe(name,emoji,{cascade=true}={}){
   try{renderPack()}catch{}
   try{renderCrewWall();renderCrewActivity();}catch{}
   try{refreshIdentityPills()}catch{}
+  try{const dm=document.getElementById('dashModal');if(dm&&dm.classList.contains('show'))renderDash(next);}catch{}
   return next;
 }
 function renameIdentity(oldName,newName){
@@ -6426,22 +6427,22 @@ function deleteIdentity(name){
     const arr=votes[rid]||[];
     if(arr.includes(name)){votes[rid]=arr.filter(n=>n!==name);vT=true;}
   });
-  if(vT)S.set('gb_votes',votes);
+  if(vT)saveVotes(votes);
   const avail=getAvail();
-  if(avail[name]){delete avail[name];S.set('gb_avail',avail);}
+  if(avail[name]){delete avail[name];saveAvail(avail);}
   const pack=getPack();let pT=false;
   Object.keys(pack).forEach(id=>{
     const arr=pack[id]||[];
     if(arr.includes(name)){pack[id]=arr.filter(n=>n!==name);pT=true;}
   });
-  if(pT)S.set('gb_pack',pack);
+  if(pT)savePack(pack);
   const wishes=getWishes();let wT=false;
   Object.keys(wishes).forEach(rid=>{
     const before=(wishes[rid]||[]).length;
     wishes[rid]=(wishes[rid]||[]).filter(w=>w.who!==name);
     if((wishes[rid]||[]).length!==before)wT=true;
   });
-  if(wT)S.set('gb_wishes',wishes);
+  if(wT)saveWishes(wishes);
   const crew=getCrew();
   if(crew[name]){delete crew[name];saveCrew(crew);}
   const me=getMe();
@@ -6457,6 +6458,7 @@ function deleteIdentity(name){
   try{renderPack()}catch{}
   try{renderCrewWall();renderCrewActivity();}catch{}
   try{refreshIdentityPills()}catch{}
+  try{updateLighthouse()}catch{}
 }
 
 // ── Lighthouse — group status beacon ──
@@ -6608,12 +6610,12 @@ function openManageModal(){
   if(!m)return;
   renderManageList();
   m.classList.add('show');
-  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='paused');
+  document.querySelectorAll('.paper-boat-btn,.boat-charm').forEach(b=>b.style.animationPlayState='paused');
 }
 function closeManageModal(){
   const m=document.getElementById('manageModal');
   if(m)m.classList.remove('show');
-  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='');
+  document.querySelectorAll('.paper-boat-btn,.boat-charm').forEach(b=>b.style.animationPlayState='');
 }
 function renderManageList(){
   const list=document.getElementById('manageList');
@@ -6675,6 +6677,11 @@ function confirmDeleteIdentity(name){
 function closeConfirmModal(){
   const m=document.getElementById('confirmModal');
   if(m)m.classList.remove('show');
+  // Reset button states for next use
+  const renameBtn=document.getElementById('confirmRename');
+  const deleteBtn=document.getElementById('confirmDelete');
+  if(renameBtn)renameBtn.style.display='';
+  if(deleteBtn){deleteBtn.textContent='Delete forever';}
 }
 
 // V16 debug helpers — run from console to test ceremony without resetting identity
@@ -6777,7 +6784,7 @@ function backToNameStage(){
 function requireIdentity(onReady,{reason}={}){
   const me=getMe();
   if(me&&me.name){try{onReady(me)}catch(e){console.error(e)}return;}
-  openIdentityModal({onComplete:onReady,reason:reason||'',allowSkip:true});
+  openIdentityModal({onComplete:onReady,reason:reason||'',allowSkip:false});
 }
 function refreshIdentityPills(){
   const me=getMe();
@@ -6796,7 +6803,7 @@ function maybeShowIdentityPrompt(){
   setTimeout(()=>{
     if(getMe())return;
     openIdentityModal({
-      reason:'Pick your name and a vibe — this is you across the app. You can skip and just browse.',
+      reason:'Pick your name and a vibe — this is you across the app.',
       allowSkip:true
     });
   },1400);
@@ -6807,9 +6814,25 @@ function switchToCrewMember(name){
   if(!entry)return;
   const cur=getMe();
   if(cur&&cur.name===name){openIdentityModal({allowSkip:true});return;}
-  if(!confirm(`Switch to ${name}? You'll vote, mark days, and claim as them from now on.`))return;
-  setMe(name,entry.emoji||'🛶',{cascade:false});
-  showToast(`Now you're ${name} ${entry.emoji||'🛶'}`);
+  // Use custom modal instead of confirm() — confirm() is broken in iOS PWA/WKWebView
+  const m=document.getElementById('confirmModal');
+  if(!m)return;
+  document.getElementById('confirmTitle').textContent=`Switch to ${name}?`;
+  document.getElementById('confirmText').textContent=`You'll vote, mark days, and claim as ${name} ${entry.emoji||'🛶'} from now on.`;
+  const renameBtn=document.getElementById('confirmRename');
+  const deleteBtn=document.getElementById('confirmDelete');
+  if(renameBtn)renameBtn.style.display='none';
+  if(deleteBtn){
+    deleteBtn.textContent=`Switch to ${name}`;
+    deleteBtn.onclick=function(){
+      closeConfirmModal();
+      setMe(name,entry.emoji||'🛶',{cascade:false});
+      showToast(`Now you're ${name} ${entry.emoji||'🛶'}`);
+      if(deleteBtn){deleteBtn.textContent='Delete forever';deleteBtn.style.background='';}
+      if(renameBtn)renameBtn.style.display='';
+    };
+  }
+  m.classList.add('show');
 }
 
 // ═══════════════════════════════════════
@@ -6832,6 +6855,7 @@ function switchTab(id,scrollTo){
   window.scrollTo({top:0,behavior:'auto'});
   // Re-render things that need fresh state
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
+  if(id==='align'){renderVotePosters();renderGallery();}
   if(id==='tripday'){renderTripDay();}
   if(scrollTo){
     setTimeout(()=>{
@@ -7527,15 +7551,29 @@ function togglePackClaim(itemId,kind){
 function resetPack(){
   const me=getMe()?.name||'';
   if(!me)return;
-  if(!confirm('Remove all your claims from the packing list?'))return;
-  const pack=getPack();
-  Object.keys(pack).forEach(k=>{
-    pack[k]=pack[k].filter(n=>n!==me);
-    if(pack[k].length===0)delete pack[k];
-  });
-  savePack(pack);
-  renderPack();
-  showToast('Your claims cleared');
+  // Use custom modal — confirm() is broken in iOS PWA/WKWebView
+  const m=document.getElementById('confirmModal');
+  if(!m)return;
+  document.getElementById('confirmTitle').textContent='Clear your pack claims?';
+  document.getElementById('confirmText').textContent='This removes everything you claimed from the packing list. Others keep their claims.';
+  const renameBtn=document.getElementById('confirmRename');
+  const deleteBtn=document.getElementById('confirmDelete');
+  if(renameBtn)renameBtn.style.display='none';
+  if(deleteBtn){
+    deleteBtn.textContent='Clear my claims';
+    deleteBtn.onclick=function(){
+      closeConfirmModal();
+      const pack=getPack();
+      Object.keys(pack).forEach(k=>{
+        pack[k]=pack[k].filter(n=>n!==me);
+        if(pack[k].length===0)delete pack[k];
+      });
+      savePack(pack);
+      renderPack();
+      showToast('Your claims cleared');
+    };
+  }
+  m.classList.add('show');
 }
 
 // ═══════════════════════════════════════
@@ -7804,6 +7842,12 @@ function addWish(routeId){
   requireIdentity(me=>{
     const wishes=getWishes();
     if(!wishes[routeId])wishes[routeId]=[];
+    // Cap at 3 wishes per person per route
+    const myCount=wishes[routeId].filter(w=>w.who===me.name).length;
+    if(myCount>=3){
+      showToast('You already have 3 wishes on this route 🌊');
+      return;
+    }
     wishes[routeId].push({who:me.name,text:text,at:Date.now()});
     saveWishes(wishes);
     input.value='';
@@ -8275,6 +8319,8 @@ function init(){
       closePasswordModal();
       closeManageModal();
       closeConfirmModal();
+      closeDash();
+      closeIdentityModal();
     }
   });
 
