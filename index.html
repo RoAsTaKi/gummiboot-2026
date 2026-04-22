@@ -2393,6 +2393,88 @@ body.poster-locked{overflow:hidden}
   line-height:1.2;
 }
 
+/* CREW ACTIVITY — who's done what */
+.crew-activity{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:8px;
+}
+.crew-activity-empty{
+  font-family:var(--serif);font-style:italic;
+  font-size:15px;color:var(--ink-l);padding:12px 0;
+}
+.ca-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 18px;
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:16px;
+  transition:box-shadow .2s var(--ease);
+  cursor:pointer;
+}
+.ca-row:hover{box-shadow:var(--sh-m);}
+.ca-row.me{
+  background:linear-gradient(120deg,rgba(255,200,100,.08),rgba(255,200,100,.03));
+  border-color:rgba(255,200,100,.4);
+}
+.ca-face-lg{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--paper-d);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+  border:2px solid var(--line);
+}
+.ca-row.me .ca-face-lg{border-color:rgba(255,200,100,.5);}
+.ca-info{flex:1;min-width:0;}
+.ca-row-name{
+  font-size:14px;font-weight:600;color:var(--ink);
+  display:flex;align-items:center;gap:7px;margin-bottom:7px;
+}
+.ca-you-tag{
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  background:rgba(255,200,100,.28);color:#7a5210;
+  padding:2px 7px;border-radius:12px;font-weight:500;
+}
+.ca-badges{display:flex;gap:7px;flex-wrap:wrap;}
+.ca-badge{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 11px;border-radius:20px;
+  font-size:11px;font-weight:500;
+  transition:transform .15s;
+  cursor:pointer;
+  border:1.5px solid transparent;
+}
+.ca-badge:hover{transform:translateY(-1px);}
+.ca-badge.done{
+  background:var(--sage-pp);
+  border-color:var(--sage);
+  color:var(--sage-d,#2d5c3f);
+}
+.ca-badge.partial{
+  background:var(--sun-pp);
+  border-color:rgba(255,200,100,.5);
+  color:var(--sun-d);
+}
+.ca-badge.empty{
+  background:rgba(0,0,0,.04);
+  border-color:rgba(0,0,0,.08);
+  color:var(--ink-l);
+}
+.ca-badge-icon{font-size:13px;}
+/* Total counts header row */
+.ca-header{
+  display:flex;gap:10px;margin-bottom:6px;
+  padding:0 2px;
+}
+.ca-header-stat{
+  font-size:11px;color:var(--ink-l);
+  display:flex;align-items:center;gap:4px;
+}
+.ca-header-stat strong{color:var(--ink);font-weight:600;}
+
 /* OVERVIEW MAP */
 .overview-map-wrap{
   max-width:1000px;
@@ -4334,10 +4416,11 @@ body.poster-locked{overflow:hidden}
     <div class="wrap" id="crewAnchor">
       <div class="section-head">
         <div class="section-kicker">The crew</div>
-        <h2 class="section-title">Who's in so far</h2>
-        <p class="section-sub">Everyone who's entered their name and voted or marked days. Pick an emoji when you join.</p>
+        <h2 class="section-title">Who's done what</h2>
+        <p class="section-sub">Everyone who's joined. At a glance — who's voted their routes, who's marked their days.</p>
       </div>
-      <div class="crew-wall" id="crewWall"></div>
+      <div class="crew-activity" id="crewActivity"></div>
+      <div class="crew-wall" id="crewWall" style="display:none"></div>
     </div>
 
     <div class="wrap" id="voteAnchor">
@@ -5261,7 +5344,7 @@ function setMe(name,emoji,{cascade=true}={}){
   try{renderCal()}catch{}
   try{refreshSummary()}catch{}
   try{renderPack()}catch{}
-  try{renderCrewWall()}catch{}
+  try{renderCrewWall();renderCrewActivity();}catch{}
   try{refreshIdentityPills()}catch{}
   return next;
 }
@@ -5342,6 +5425,75 @@ function joinCrew(name,emoji){
   if(!name)return;
   setMe(name,emoji);
   renderCrewWall();
+  renderCrewActivity();
+}
+
+function renderCrewActivity(){
+  const el=document.getElementById('crewActivity');
+  if(!el)return;
+  const crew=getCrew();
+  const me=getMe();
+  const names=Object.keys(crew);
+  if(names.length===0){
+    el.innerHTML='<div class="crew-activity-empty">No one yet — be the first to join, vote, and mark your days 👇</div>';
+    return;
+  }
+  // sort: me first, then by join time
+  names.sort((a,b)=>{
+    if(me&&a===me.name)return -1;
+    if(me&&b===me.name)return 1;
+    return (crew[a].joined||0)-(crew[b].joined||0);
+  });
+  const votes=getVotes();
+  const avail=getAvail();
+  const totalRoutes=ROUTES.length;
+  // header summary
+  const totalVoters=names.filter(n=>Object.values(votes).some(v=>v.includes(n))).length;
+  const totalDaters=names.filter(n=>Object.keys(avail[n]||{}).filter(k=>(avail[n]||{})[k]==='free'||(avail[n]||{})[k]===1).length>0).length;
+  const headerHTML=`<div class="ca-header">
+    <span class="ca-header-stat">👥 <strong>${names.length}</strong> joined</span>
+    <span class="ca-header-stat">❤️ <strong>${totalVoters}</strong> voted</span>
+    <span class="ca-header-stat">📅 <strong>${totalDaters}</strong> marked dates</span>
+  </div>`;
+  el.innerHTML=headerHTML+names.map(n=>{
+    const c=crew[n];
+    const isMe=me&&n===me.name;
+    const voteCount=Object.values(votes).reduce((s,v)=>s+(Array.isArray(v)&&v.includes(n)?1:0),0);
+    const freeDays=Object.keys(avail[n]||{}).filter(k=>{const v=(avail[n]||{})[k]; return v===1||v==='free';}).length;
+    const maybeDays=Object.keys(avail[n]||{}).filter(k=>{const v=(avail[n]||{})[k]; return v===2||v==='maybe';}).length;
+    const totalDays=freeDays+maybeDays;
+    // vote badge
+    const voteBadge=voteCount>0
+      ?`<span class="ca-badge done" onclick="event.stopPropagation();switchTab('plan','vote')" title="Voted for ${voteCount} route${voteCount>1?'s':''}">
+          <span class="ca-badge-icon">❤️</span>${voteCount} vote${voteCount>1?'s':''}
+        </span>`
+      :`<span class="ca-badge empty" onclick="event.stopPropagation();switchTab('plan','vote')" title="Hasn't voted yet">
+          <span class="ca-badge-icon">🤍</span>No votes yet
+        </span>`;
+    // dates badge
+    const dateBadge=freeDays>0
+      ?`<span class="ca-badge done" onclick="event.stopPropagation();switchTab('plan','dates')" title="${freeDays} free day${freeDays>1?'s':''}${maybeDays>0?', '+maybeDays+' maybe':''}">
+          <span class="ca-badge-icon">📅</span>${freeDays} free${maybeDays>0?` · ${maybeDays} maybe`:''}
+        </span>`
+      : totalDays>0
+        ?`<span class="ca-badge partial" onclick="event.stopPropagation();switchTab('plan','dates')" title="${maybeDays} maybe day${maybeDays>1?'s':''}">
+            <span class="ca-badge-icon">📅</span>${maybeDays} maybe
+          </span>`
+        :`<span class="ca-badge empty" onclick="event.stopPropagation();switchTab('plan','dates')" title="No days marked yet">
+            <span class="ca-badge-icon">🗓</span>No days yet
+          </span>`;
+    const safeName=String(n).replace(/'/g,"\\'");
+    const rowClick=isMe
+      ?`onclick="openIdentityModal({allowSkip:true})"`
+      :`onclick="switchToCrewMember('${safeName}')"`;
+    return `<div class="ca-row${isMe?' me':''}" ${rowClick}>
+      <div class="ca-face-lg">${c.emoji||'🛶'}</div>
+      <div class="ca-info">
+        <div class="ca-row-name">${escapeHtml(n)}${isMe?'<span class="ca-you-tag">you</span>':''}</div>
+        <div class="ca-badges">${voteBadge}${dateBadge}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderCrewWall(){
@@ -5825,7 +5977,7 @@ function deleteIdentity(name){
   try{renderCal()}catch{}
   try{refreshSummary()}catch{}
   try{renderPack()}catch{}
-  try{renderCrewWall()}catch{}
+  try{renderCrewWall();renderCrewActivity();}catch{}
   try{refreshIdentityPills()}catch{}
 }
 
@@ -6049,7 +6201,7 @@ function switchTab(id,scrollTo){
   positionTabIndicator();
   window.scrollTo({top:0,behavior:'auto'});
   // Re-render things that need fresh state
-  if(id==='plan'){renderCrewWall();renderPack();}
+  if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
   if(id==='tripday'){renderTripDay();}
   if(scrollTo){
     setTimeout(()=>{
@@ -6329,6 +6481,7 @@ function toggleVote(rid){
     if(i>=0)v[rid].splice(i,1);else v[rid].push(me.name);
     saveVotes(v);
     renderVotePosters();
+    renderCrewActivity();
     if(isNew){
       const btn=document.getElementById('vpbtn_'+rid);
       if(btn){
@@ -6469,7 +6622,7 @@ function tapDay(key){
     const next=(cur+1)%3;
     if(next===0)delete a[me.name][key];
     else a[me.name][key]=next;
-    saveAvail(a);renderCal();refreshSummary();
+    saveAvail(a);renderCal();refreshSummary();renderCrewActivity();
     showDayDetail(key);
   },{reason:'Tell us your name so we can mark your days.'});
 }
@@ -7442,6 +7595,7 @@ function init(){
   refreshSummary();
   renderPack();
   renderCountdown();
+  renderCrewActivity();
   fetchForecast();
 
   // V15: identity pills reflect current state, enter-key handled in modal inline
