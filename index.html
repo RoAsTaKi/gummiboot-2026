@@ -3817,6 +3817,23 @@ body.poster-locked{overflow:hidden}
   transition:transform .2s var(--ease), background .2s var(--ease);
 }
 .lm-continue:hover,.lm-close:hover{transform:translateY(-1px);background:#5a3e1c;}
+.lm-reader-actions{flex-direction:column;align-items:center;}
+.lm-skip{
+  margin-top:6px;
+  font-family:var(--serif);
+  font-size:13px;
+  font-style:italic;
+  color:#9a6a25;
+  opacity:.8;
+  background:none;
+  border:none;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  padding:4px 8px;
+  transition:opacity .2s ease;
+}
+.lm-skip:hover{opacity:1;}
 
 /* Letter editor */
 .lm-editor{
@@ -5263,6 +5280,7 @@ body.poster-locked{overflow:hidden}
     <div class="lm-reader-actions">
       <button class="lm-continue" type="button" onclick="continueFromLetter()">Continue →</button>
       <button class="lm-close" type="button" onclick="closeLetterModal()" style="display:none">Close</button>
+      <button class="lm-skip" id="lmSkipBtn" type="button" onclick="skipFromLetter()" style="display:none">Just explore for now →</button>
     </div>
   </div>
 
@@ -6249,14 +6267,17 @@ function showArrivalCeremony(opts){
     }
     const cont=modal.querySelector('.lm-continue');
     const closeBtn=modal.querySelector('.lm-close');
+    const skipBtn=document.getElementById('lmSkipBtn');
     if(chainIdentity){
-      // First-visit: show Continue → identity chain
+      // First-visit: show Continue + skip option
       if(cont)cont.style.display='inline-flex';
       if(closeBtn)closeBtn.style.display='none';
+      if(skipBtn)skipBtn.style.display='inline-block';
     }else{
-      // New-letter ceremony for returning user: show Close
+      // New-letter ceremony for returning user: show Close only
       if(cont)cont.style.display='none';
       if(closeBtn)closeBtn.style.display='inline-flex';
+      if(skipBtn)skipBtn.style.display='none';
       markLetterRead();
     }
   },2500);
@@ -6274,6 +6295,8 @@ function showLetterReader(){
   if(reader){reader.style.display='block';reader.classList.add('unfurling');}
   const cont=modal.querySelector('.lm-continue');
   if(cont)cont.style.display='none';
+  const skipBtn=document.getElementById('lmSkipBtn');
+  if(skipBtn)skipBtn.style.display='none';
   const closeBtn=modal.querySelector('.lm-close');
   if(closeBtn)closeBtn.style.display='inline-flex';
   modal.classList.add('show');
@@ -6299,6 +6322,14 @@ function closeLetterModal(){
   modal.classList.remove('show','ceremony');
   const reader=modal.querySelector('.lm-reader');
   if(reader)reader.classList.remove('unfurling');
+  markLetterRead();
+}
+
+function skipFromLetter(){
+  // Close the letter, mark as read, land in app — no identity needed yet
+  const modal=document.getElementById('letterModal');
+  if(modal)modal.classList.remove('show','ceremony');
+  _idChainedFromLetter=false;
   markLetterRead();
 }
 
@@ -6852,10 +6883,15 @@ function switchTab(id,scrollTo){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
   positionTabIndicator();
-  window.scrollTo({top:0,behavior:'auto'});
-  // Re-render things that need fresh state
+  // Scroll to the tab bar (not page top) so users don't lose context
+  const tabBar=document.querySelector('.tabs');
+  if(tabBar){
+    const y=tabBar.getBoundingClientRect().top+window.pageYOffset-8;
+    window.scrollTo({top:Math.max(0,y),behavior:'auto'});
+  }
+  // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
-  if(id==='align'){renderVotePosters();renderGallery();}
+  if(id==='plan'||id==='discover'){renderVotePosters();renderGallery();}
   if(id==='tripday'){renderTripDay();}
   if(scrollTo){
     setTimeout(()=>{
