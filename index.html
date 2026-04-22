@@ -769,16 +769,18 @@ a{color:inherit;text-decoration:none}
   left:12px;
   width:34px;height:34px;
   border-radius:50%;
-  background:rgba(14,24,32,.52);
+  background:rgba(255,255,255,.22);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.18);
+  border:1.5px solid rgba(212,137,58,.75);
   display:flex;align-items:center;justify-content:center;
   font-size:15px;
+  color:rgba(255,210,150,.95);
   cursor:pointer;
   z-index:3;
   transition:transform .2s var(--spring),background .2s ease;
   -webkit-tap-highlight-color:transparent;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 .g-heart-btn:active{transform:scale(.88)}
 .g-heart-btn.voted{
@@ -3501,25 +3503,62 @@ body.poster-locked{overflow:hidden}
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   animation:lighthouseBob 6s ease-in-out infinite;
+  transition:transform .25s var(--ease), filter .4s var(--ease);
 }
 @keyframes lighthouseBob{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
-.lighthouse-charm .lh-body{
-  width:34px;height:34px;
+/* Soap bubble sphere — matches bottle dock */
+.lighthouse-charm::before{
+  content:'';
+  position:absolute;
+  inset:0;
   border-radius:50%;
-  background:rgba(255,253,247,0.82);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.6);
-  box-shadow:0 2px 14px rgba(0,0,0,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:17px;
-  position:relative;
-  transition:transform .2s var(--spring), box-shadow .3s ease;
+  background:radial-gradient(
+    ellipse at 35% 30%,
+    rgba(255,255,255,.65) 0%,
+    rgba(200,240,255,.25) 30%,
+    rgba(160,220,255,.12) 55%,
+    rgba(120,200,240,.08) 75%,
+    rgba(180,255,220,.06) 100%
+  );
+  border:1.5px solid rgba(255,255,255,.55);
+  box-shadow:
+    inset 0 -2px 8px rgba(100,200,255,.2),
+    inset 2px 2px 6px rgba(255,255,255,.4),
+    0 4px 16px rgba(100,180,255,.18),
+    0 2px 6px rgba(0,0,0,.08);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
 }
-.lighthouse-charm:active .lh-body{transform:scale(.88)}
+/* Iridescent shimmer ring */
+.lighthouse-charm::after{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  border-radius:50%;
+  background:conic-gradient(
+    from 0deg,
+    rgba(255,180,220,.0),
+    rgba(180,220,255,.3),
+    rgba(200,255,200,.2),
+    rgba(255,220,180,.3),
+    rgba(220,180,255,.3),
+    rgba(255,180,220,.0)
+  );
+  opacity:.7;
+  animation:bubbleShimmer 4s linear infinite;
+}
+.lighthouse-charm .lh-body{
+  position:relative;
+  z-index:2;
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));
+}
+.lighthouse-charm:active{transform:scale(.88);}
 .lighthouse-charm .lh-count{
   position:absolute;
   top:-5px;right:-5px;
@@ -3535,14 +3574,26 @@ body.poster-locked{overflow:hidden}
   opacity:0;
   transform:scale(0);
   transition:opacity .3s ease, transform .3s var(--spring);
+  z-index:3;
 }
 .lighthouse-charm.has-crew .lh-count{opacity:1;transform:scale(1);}
-.lighthouse-charm.all-voted .lh-body{
-  box-shadow:0 2px 14px rgba(156,175,136,.5), 0 0 20px rgba(156,175,136,.35);
-  background:rgba(220,235,210,.9);
+.lighthouse-charm.all-voted::before{
+  box-shadow:
+    inset 0 -2px 8px rgba(100,200,255,.2),
+    inset 2px 2px 6px rgba(255,255,255,.4),
+    0 4px 16px rgba(156,175,136,.5),
+    0 0 20px rgba(156,175,136,.35);
+  background:radial-gradient(
+    ellipse at 35% 30%,
+    rgba(255,255,255,.75) 0%,
+    rgba(220,255,210,.35) 30%,
+    rgba(180,240,180,.18) 55%,
+    rgba(140,220,140,.1) 75%,
+    rgba(180,255,200,.06) 100%
+  );
 }
 /* Beacon pulse when fully active */
-.lighthouse-charm.all-voted::before{
+.lighthouse-charm.all-voted .lh-beacon{
   content:'';
   position:absolute;
   width:44px;height:44px;
@@ -3550,6 +3601,8 @@ body.poster-locked{overflow:hidden}
   border:2px solid rgba(156,175,136,.5);
   animation:lighthouseBeacon 2s ease-out infinite;
   top:0;left:0;
+  z-index:1;
+  pointer-events:none;
 }
 @keyframes lighthouseBeacon{
   0%{transform:scale(1);opacity:.8}
@@ -3649,6 +3702,29 @@ body.poster-locked{overflow:hidden}
   60%  {transform:translate(0,0) rotate(8deg);}
   80%  {transform:translate(0,-4px) rotate(-4deg);}
   100% {transform:translate(0,0) rotate(0deg);}
+}
+
+/* Scroll emerging from bottle neck */
+.lm-scroll-emerge{
+  position:absolute;
+  top:38px;
+  left:50%;
+  transform:translateX(-50%) translateY(0) scaleY(0);
+  transform-origin:top center;
+  width:44px;
+  z-index:10;
+  pointer-events:none;
+  opacity:0;
+}
+.lm-bottle.uncorking .lm-scroll-emerge{
+  animation:scrollEmerge 1.1s cubic-bezier(.3,0,.2,1) 0.55s forwards;
+}
+@keyframes scrollEmerge{
+  0%  {opacity:0;transform:translateX(-50%) translateY(0) scaleY(0);}
+  15% {opacity:1;}
+  55% {transform:translateX(-50%) translateY(-68px) scaleY(1);}
+  75% {transform:translateX(-50%) translateY(-72px) scaleY(1.04);}
+  100%{transform:translateX(-50%) translateY(-70px) scaleY(1);}
 }
 
 /* Letter reader card */
@@ -3997,6 +4073,70 @@ body.poster-locked{overflow:hidden}
   35%{transform:translateY(-2px) rotate(1deg);}
   65%{transform:translateY(-1px) rotate(-0.5deg);}
 }
+
+/* Fixed boat charm — personal dashboard (right side, above bottle) */
+.boat-charm{
+  position:fixed;
+  right:16px;
+  bottom:144px;
+  width:44px;height:44px;
+  z-index:1050;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  animation:boatDrift 5s ease-in-out infinite;
+  transition:transform .25s var(--ease), filter .4s var(--ease);
+}
+.boat-charm::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(
+    ellipse at 35% 30%,
+    rgba(255,255,255,.65) 0%,
+    rgba(200,240,255,.25) 30%,
+    rgba(160,220,255,.12) 55%,
+    rgba(120,200,240,.08) 75%,
+    rgba(180,255,220,.06) 100%
+  );
+  border:1.5px solid rgba(255,255,255,.55);
+  box-shadow:
+    inset 0 -2px 8px rgba(100,200,255,.2),
+    inset 2px 2px 6px rgba(255,255,255,.4),
+    0 4px 16px rgba(100,180,255,.18),
+    0 2px 6px rgba(0,0,0,.08);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+.boat-charm::after{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  border-radius:50%;
+  background:conic-gradient(
+    from 0deg,
+    rgba(255,180,220,.0),
+    rgba(180,220,255,.3),
+    rgba(200,255,200,.2),
+    rgba(255,220,180,.3),
+    rgba(220,180,255,.3),
+    rgba(255,180,220,.0)
+  );
+  opacity:.7;
+  animation:bubbleShimmer 4s linear infinite;
+}
+.boat-charm-emoji{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  z-index:1;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));
+}
+.boat-charm:active{transform:scale(.88);}
 /* Improved manage modal */
 .manage-card{
   background:var(--cream);
@@ -4700,6 +4840,8 @@ body.poster-locked{overflow:hidden}
       </div>
     </div>
 
+    <div class="vote-posters" id="votePosters"></div>
+
     <div class="wrap">
       <div class="leader" id="leader" style="display:none">
         <div class="leader-info">
@@ -5021,7 +5163,7 @@ body.poster-locked{overflow:hidden}
       <div class="id-actions">
         <button class="id-next" type="button" onclick="submitIdentityName()">Continue →</button>
       </div>
-      <button class="ep-skip" id="idSkipBtn" type="button" onclick="skipIdentityModal()">skip for now · just browsing</button>
+      <button class="ep-skip" id="idSkipBtn" type="button" onclick="skipIdentityModal()">Just explore for now →</button>
     </div>
     <div id="idEmojiStage" style="display:none">
       <div class="ep-title">Pick your vibe</div>
@@ -5045,19 +5187,25 @@ body.poster-locked{overflow:hidden}
      ═══════════════════════════════════════ -->
 
 <!-- 🍾 Corner bottle dock -->
-<!-- 🏮 Lighthouse — group status beacon -->
+<!-- ⛵ Sailboat — group status beacon -->
 <div class="lighthouse-charm" id="lighthouseCharm" onclick="toggleLighthouse()" aria-label="Group status">
+  <div class="lh-beacon" id="lhBeacon"></div>
   <div class="lh-body">
-    🏮
+    ⛵
     <div class="lh-count" id="lhCount">0</div>
   </div>
 </div>
 <div class="lh-popover" id="lhPopover">
-  <div class="lh-pop-title">🏮 Group status</div>
+  <div class="lh-pop-title">⛵ Group status</div>
   <div class="lh-pop-row"><span>Crew joined</span><span class="lh-pop-val" id="lhCrew">—</span></div>
   <div class="lh-pop-row"><span>Total votes</span><span class="lh-pop-val" id="lhVotes">—</span></div>
   <div class="lh-pop-row"><span>Dates marked</span><span class="lh-pop-val" id="lhDates">—</span></div>
   <div class="lh-pop-best" id="lhBest"></div>
+</div>
+
+<!-- 🚤 Paper boat — personal dashboard fixed charm -->
+<div class="boat-charm" id="boatCharm" onclick="openDash()" aria-label="My dashboard">
+  <span class="boat-charm-emoji">🚤</span>
 </div>
 
 <div class="bottle-dock" id="bottleDock"
@@ -5091,6 +5239,17 @@ body.poster-locked{overflow:hidden}
       <svg width="40" height="34" viewBox="0 0 40 34" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="4" width="36" height="28" rx="3" fill="#c69c5d"/>
         <rect x="2" y="4" width="36" height="6" rx="2" fill="#a87f3e"/>
+      </svg>
+    </div>
+    <!-- Scroll that emerges from the bottle neck -->
+    <div class="lm-scroll-emerge">
+      <svg width="44" height="64" viewBox="0 0 44 64" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="6" width="40" height="52" rx="3" fill="#fdf6e8" stroke="#d4a840" stroke-width="1"/>
+        <rect x="2" y="6" width="40" height="8" rx="3" fill="#e8c878" opacity=".7"/>
+        <rect x="2" y="50" width="40" height="8" rx="3" fill="#e8c878" opacity=".7"/>
+        <line x1="10" y1="22" x2="34" y2="22" stroke="#c49a38" stroke-width="1.2" opacity=".5"/>
+        <line x1="10" y1="30" x2="34" y2="30" stroke="#c49a38" stroke-width="1.2" opacity=".5"/>
+        <line x1="10" y1="38" x2="28" y2="38" stroke="#c49a38" stroke-width="1.2" opacity=".5"/>
       </svg>
     </div>
   </div>
@@ -6152,7 +6311,7 @@ function continueFromLetter(){
   setTimeout(()=>{
     openIdentityModal({
       reason:'',
-      allowSkip:false,
+      allowSkip:true,
       onComplete:()=>{
         _idChainedFromLetter=false;
         markLetterRead();
@@ -6392,11 +6551,11 @@ function openDash(){
   }
   renderDash(me);
   document.getElementById('dashModal').classList.add('show');
-  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='paused');
+  document.querySelectorAll('.paper-boat-btn,.boat-charm').forEach(b=>b.style.animationPlayState='paused');
 }
 function closeDash(){
   document.getElementById('dashModal').classList.remove('show');
-  document.querySelectorAll('.paper-boat-btn').forEach(b=>b.style.animationPlayState='');
+  document.querySelectorAll('.paper-boat-btn,.boat-charm').forEach(b=>b.style.animationPlayState='');
 }
 function renderDash(me){
   document.getElementById('dashEmoji').textContent=me.emoji||'🛶';
@@ -6594,7 +6753,15 @@ function pickIdentityEmoji(emoji){
     try{cb(me)}catch(e){console.error(e)}
   }
 }
-function skipIdentityModal(){closeIdentityModal();_idPending=null;}
+function skipIdentityModal(){
+  closeIdentityModal();
+  _idPending=null;
+  // If skipping from the first-visit ceremony, still mark letter as read so they're not re-prompted
+  if(_idChainedFromLetter){
+    _idChainedFromLetter=false;
+    markLetterRead();
+  }
+}
 function closeIdentityModal(){
   const m=document.getElementById('identityModal');
   if(m)m.classList.remove('show');
