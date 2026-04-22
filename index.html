@@ -1436,6 +1436,8 @@ a{color:inherit;text-decoration:none}
 .dd-person.free{background:var(--sage-pp);color:var(--sage-d,#2d5c3f);}
 .dd-person.maybe{background:var(--sun-pp);color:var(--sun-d);}
 .dd-nobody{font-size:13px;color:var(--ink-l);font-style:italic;}
+.dd-person.notyet{background:rgba(0,0,0,.04);color:var(--ink-l);opacity:.6;}
+.dd-section-label{width:100%;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-l);opacity:.5;margin:6px 0 2px;font-weight:600;}
 .ar-t{
   font-size:10px;
   letter-spacing:2.5px;
@@ -3829,6 +3831,7 @@ body.poster-locked{overflow:hidden}
   margin-top:18px;line-height:1.7;
 }
 .lm-reader-sign-loc{display:block;color:#9a6a25;opacity:.85;margin-top:4px;font-size:13px;}
+.lm-reader-author{display:block;color:#b09060;opacity:.6;margin-top:10px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;}
 .lm-reader-actions{
   margin-top:28px;
   display:flex;
@@ -5334,6 +5337,7 @@ body.poster-locked{overflow:hidden}
     <div class="lm-reader-body" id="lmReaderBody"></div>
     <div class="lm-reader-sign" id="lmReaderSign">— Roxane</div>
     <em class="lm-reader-sign-loc" id="lmReaderSignLoc"></em>
+    <em class="lm-reader-author" id="lmReaderAuthor"></em>
     <div class="lm-reader-actions">
       <button class="lm-continue" type="button" onclick="continueFromLetter()">Continue →</button>
       <button class="lm-close" type="button" onclick="closeLetterModal()" style="display:none">Close</button>
@@ -5863,7 +5867,26 @@ const S={
 const getVotes=()=>S.get('gb_votes')||{};
 const saveVotes=v=>{S.set('gb_votes',v);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
 const getAvail=()=>S.get('gb_avail')||{};
-const saveAvail=a=>{S.set('gb_avail',a);if(typeof maybeFireOnAction==='function')maybeFireOnAction();};
+function getBestDate(avail){
+  const names=Object.keys(avail||{});
+  if(!names.length)return null;
+  const totals={};
+  names.forEach(n=>{Object.entries(avail[n]||{}).forEach(([k,v])=>{if(v===1)totals[k]=(totals[k]||0)+1;});});
+  const best=Object.entries(totals).sort((a,b)=>b[1]-a[1])[0];
+  return best&&best[1]>0?best[0]:null;
+}
+const saveAvail=a=>{
+  const prevBest=getBestDate(getAvail());
+  S.set('gb_avail',a);
+  if(typeof maybeFireOnAction==='function')maybeFireOnAction();
+  const newBest=getBestDate(a);
+  if(newBest&&newBest!==prevBest&&typeof fireWhisper==='function'){
+    const[y,m,d]=newBest.split('-');
+    const dt=new Date(+y,+m-1,+d);
+    const label=dt.toLocaleDateString('en-CH',{weekday:'long',month:'long',day:'numeric'});
+    setTimeout(()=>fireWhisper('A new best day just appeared — '+label+'. ❆'),1200);
+  }
+};
 const getCrew=()=>S.get('gb_crew')||{};    // { name: {emoji, joined} }
 const saveCrew=c=>S.set('gb_crew',c);
 const getPack=()=>S.get('gb_pack')||{};    // { itemId: [name1, name2] }
@@ -6375,10 +6398,20 @@ function populateLetterReader(){
   const b=document.getElementById('lmReaderBody');
   const s=document.getElementById('lmReaderSign');
   const sl=document.getElementById('lmReaderSignLoc');
+  const au=document.getElementById('lmReaderAuthor');
   if(t)t.textContent=L.title||DEFAULT_LETTER.title;
   if(b)b.innerHTML=renderLetterBody(L.body||DEFAULT_LETTER.body);
   if(s)s.textContent=L.sign||DEFAULT_LETTER.sign;
   if(sl)sl.textContent=L.signLocation||DEFAULT_LETTER.signLocation;
+  if(au){
+    if(L.author&&L.editedAt){
+      const d=new Date(L.editedAt);
+      const when=d.toLocaleDateString('en-CH',{day:'numeric',month:'short',year:'numeric'});
+      au.textContent=`Last edited by ${L.author} · ${when}`;
+    } else {
+      au.textContent='';
+    }
+  }
 }
 
 function closeLetterModal(){
@@ -6500,11 +6533,14 @@ function showLetterEditor(){
   modal.classList.remove('ceremony');
 }
 function saveLetterEdit(){
+  const me=getMe();
   const obj={
     title:document.getElementById('lmEditTitle').value.trim()||DEFAULT_LETTER.title,
     body:document.getElementById('lmEditBody').value.trim()||DEFAULT_LETTER.body,
     sign:document.getElementById('lmEditSign').value.trim()||DEFAULT_LETTER.sign,
-    signLocation:document.getElementById('lmEditSignLoc').value.trim()||DEFAULT_LETTER.signLocation
+    signLocation:document.getElementById('lmEditSignLoc').value.trim()||DEFAULT_LETTER.signLocation,
+    author:me?`${me.emoji} ${me.name}`:'',
+    editedAt:Date.now()
   };
   saveLetter(obj);
   markLetterRead();
@@ -7491,16 +7527,20 @@ function showDayDetail(key){
   dateEl.textContent=`${dayNames[dt.getDay()]} ${dt.getDate()} ${monthNames[dt.getMonth()]} — who's in?`;
   const avail=getAvail();
   const crew=getCrew();
-  const names=Object.keys(avail);
-  const freeOnes=names.filter(n=>(avail[n]||{})[key]===1);
-  const maybeOnes=names.filter(n=>(avail[n]||{})[key]===2);
-  if(freeOnes.length===0&&maybeOnes.length===0){
-    crewEl.innerHTML='<span class="dd-nobody">Nobody marked yet — be the first!</span>';
+  const allCrew=Object.keys(crew);
+  const allNames=[...new Set([...Object.keys(avail),...allCrew])];
+  const freeOnes=allNames.filter(n=>(avail[n]||{})[key]===1);
+  const maybeOnes=allNames.filter(n=>(avail[n]||{})[key]===2);
+  const notYet=allNames.filter(n=>!((avail[n]||{})[key]));
+  let html='';
+  if(freeOnes.length===0&&maybeOnes.length===0&&notYet.length===0){
+    html='<span class="dd-nobody">Nobody marked yet — be the first!</span>';
   } else {
-    crewEl.innerHTML=
-      freeOnes.map(n=>`<span class="dd-person free">${(crew[n]&&crew[n].emoji)||'🛶'} ${n}</span>`).join('')+
-      maybeOnes.map(n=>`<span class="dd-person maybe">${(crew[n]&&crew[n].emoji)||'🛶'} ${n} maybe</span>`).join('');
+    if(freeOnes.length) html+='<span class="dd-section-label">✓ free</span>'+freeOnes.map(n=>`<span class="dd-person free">${(crew[n]&&crew[n].emoji)||'🛶'} ${n}</span>`).join('');
+    if(maybeOnes.length) html+='<span class="dd-section-label">~ maybe</span>'+maybeOnes.map(n=>`<span class="dd-person maybe">${(crew[n]&&crew[n].emoji)||'🛶'} ${n}</span>`).join('');
+    if(notYet.length) html+='<span class="dd-section-label">· not yet</span>'+notYet.map(n=>`<span class="dd-person notyet">${(crew[n]&&crew[n].emoji)||'🛶'} ${n}</span>`).join('');
   }
+  crewEl.innerHTML=html;
   card.classList.add('show');
 }
 
