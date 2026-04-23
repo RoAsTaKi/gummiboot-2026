@@ -2,28 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
-<title>Böötle · Gummiboot 2026 🛶</title>
+<title>Böötle</title>
 
 <!-- iOS home screen bookmark -->
 <link rel="apple-touch-icon" sizes="180x180" href="./icon_180.png">
 <link rel="apple-touch-icon" sizes="512x512" href="./icon_512.png">
 <link rel="icon" type="image/png" sizes="180x180" href="./icon_180.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./icon_512.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'><rect width='100' height='100' fill='%23B8DBEE'/><g transform='matrix(1 0 0 0.82 0 2.5)'><polygon points='8,52 92,52 78,82 22,82' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='1.1'/><polygon points='50,14 70,52 30,52' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='1.1'/><line x1='50' y1='14' x2='50' y2='82' stroke='%230B2A4A' stroke-width='0.9'/></g></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'><rect width='100' height='100' fill='%230B2A4A'/><g transform='translate(50 58)'><polygon points='-34,-4 34,-4 27,22 -27,22' fill='%23F4F8FB' stroke='%23B8DBEE' stroke-width='1'/><polygon points='0,-36 18,-4 -18,-4' fill='%23F4F8FB' stroke='%23B8DBEE' stroke-width='1'/><line x1='0' y1='-36' x2='0' y2='22' stroke='%232E6BC7' stroke-width='1' opacity='.6'/><line x1='-34' y1='-4' x2='27' y2='22' stroke='%232E6BC7' stroke-width='0.8' opacity='.5'/><line x1='34' y1='-4' x2='-27' y2='22' stroke='%232E6BC7' stroke-width='0.8' opacity='.5'/></g><g transform='translate(50 80) scale(1 -0.35)' opacity='.4'><polygon points='-34,-4 34,-4 27,22 -27,22' fill='%232E6BC7'/><polygon points='0,-36 18,-4 -18,-4' fill='%232E6BC7'/></g></svg>">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Böötle">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Böötle">
+<meta name="format-detection" content="telephone=no">
+
+<!-- iOS launch screens — splash shown on cold launch from home screen -->
+<link rel="apple-touch-startup-image" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1170 2532'><rect width='1170' height='2532' fill='%23f7f2e6'/><g transform='translate(585 1180)'><polygon points='-180,-20 180,-20 140,120 -140,120' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='3'/><polygon points='0,-200 100,-20 -100,-20' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='3'/><line x1='0' y1='-200' x2='0' y2='120' stroke='%232E6BC7' stroke-width='2' opacity='.5'/></g><g transform='translate(585 1380) scale(1 -0.3)' opacity='.25'><polygon points='-180,-20 180,-20 140,120 -140,120' fill='%232E6BC7'/><polygon points='0,-200 100,-20 -100,-20' fill='%232E6BC7'/></g><text x='585' y='1620' font-family='Georgia,serif' font-size='72' font-style='italic' fill='%230B2A4A' text-anchor='middle' opacity='.85'>Böötle</text><text x='585' y='1690' font-family='system-ui' font-size='28' fill='%230B2A4A' text-anchor='middle' opacity='.45' letter-spacing='4'>SUMMER 2026</text></svg>" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1284 2778'><rect width='1284' height='2778' fill='%23f7f2e6'/><g transform='translate(642 1300)'><polygon points='-180,-20 180,-20 140,120 -140,120' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='3'/><polygon points='0,-200 100,-20 -100,-20' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='3'/><line x1='0' y1='-200' x2='0' y2='120' stroke='%232E6BC7' stroke-width='2' opacity='.5'/></g><g transform='translate(642 1500) scale(1 -0.3)' opacity='.25'><polygon points='-180,-20 180,-20 140,120 -140,120' fill='%232E6BC7'/><polygon points='0,-200 100,-20 -100,-20' fill='%232E6BC7'/></g><text x='642' y='1740' font-family='Georgia,serif' font-size='80' font-style='italic' fill='%230B2A4A' text-anchor='middle' opacity='.85'>Böötle</text><text x='642' y='1810' font-family='system-ui' font-size='30' fill='%230B2A4A' text-anchor='middle' opacity='.45' letter-spacing='4'>SUMMER 2026</text></svg>" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 750 1334'><rect width='750' height='1334' fill='%23f7f2e6'/><g transform='translate(375 600)'><polygon points='-140,-20 140,-20 108,96 -108,96' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='2.5'/><polygon points='0,-150 78,-20 -78,-20' fill='%23F4F8FB' stroke='%230B2A4A' stroke-width='2.5'/></g><text x='375' y='850' font-family='Georgia,serif' font-size='60' font-style='italic' fill='%230B2A4A' text-anchor='middle' opacity='.85'>Böötle</text></svg>" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
 
 <!-- PWA manifest (inline data URI so no extra file needed) -->
-<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Böötle · Gummiboot 2026","short_name":"Böötle","start_url":"./","display":"standalone","background_color":"%23f6f7f2","theme_color":"%23f6f7f2","icons":[{"src":"./icon_180.png","sizes":"180x180","type":"image/png"},{"src":"./icon_512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Böötle · Gummiboot 2026","short_name":"Böötle","description":"Swiss river routes for the summer. Vote, pick a weekend, say yes.","start_url":"./","display":"standalone","orientation":"portrait","background_color":"%23f7f2e6","theme_color":"%23f7f2e6","icons":[{"src":"./icon_180.png","sizes":"180x180","type":"image/png","purpose":"any"},{"src":"./icon_512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}],"categories":["travel","lifestyle"],"lang":"en"}'>
 
 <!-- Open Graph (for link previews when shared) -->
-<meta property="og:title" content="Böötle · Gummiboot 2026">
-<meta property="og:description" content="Swiss river routes for the summer. Vote, pick a weekend, say yes.">
+<meta property="og:title" content="Böötle · Summer 2026">
+<meta property="og:description" content="Six Swiss rivers. One perfect weekend. Vote your favourite and we'll do the rest.">
 <meta property="og:image" content="./icon_512.png">
 <meta property="og:type" content="website">
 
@@ -299,18 +306,46 @@ a{color:inherit;text-decoration:none}
   backdrop-filter:blur(20px) saturate(1.3);
   -webkit-backdrop-filter:blur(20px) saturate(1.3);
   border-bottom:1px solid rgba(11,42,74,.06);
-  padding:0 20px;
-  height:52px;
+  padding:env(safe-area-inset-top,0px) 20px 0;
+  min-height:calc(52px + env(safe-area-inset-top,0px));
   display:flex;
   align-items:center;
   justify-content:space-between;
   box-shadow:0 1px 8px rgba(11,42,74,.04);
 }
+/* When installed as PWA (standalone mode), give the top bar the full status-bar area */
+@media (display-mode: standalone){
+  body{background:var(--paper);}
+  .top-bar{padding-top:max(env(safe-area-inset-top,0px), 44px);}
+}
 .tb-brand{
   display:flex;
   align-items:center;
   gap:9px;
+  background:none;
+  border:none;
+  padding:4px 6px 4px 0;
+  cursor:pointer;
+  color:inherit;
+  font:inherit;
+  border-radius:8px;
+  transition:background .2s var(--ease);
+  -webkit-tap-highlight-color:transparent;
 }
+.tb-brand:hover{background:rgba(11,42,74,.05);}
+.tb-brand:active{transform:scale(.97);}
+.tb-me{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  width:28px;height:28px;
+  line-height:1;
+  border-radius:50%;
+  background:var(--paper-d);
+  margin-left:4px;
+}
+.tb-me:empty{display:none;}
 .tb-logo{
   width:28px;height:28px;
   flex-shrink:0;
@@ -402,8 +437,8 @@ a{color:inherit;text-decoration:none}
 /* hide old pill indicator */
 .tab-indicator{display:none}
 .tab-emoji{display:none}
-/* Main content needs padding for fixed bottom nav */
-.panels{padding-bottom:70px}
+/* Main content needs padding for fixed bottom nav + iOS safe area */
+.panels{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
 @media(max-width:420px){
   .tab{font-size:9px;padding:9px 4px 7px}
 }
@@ -411,7 +446,7 @@ a{color:inherit;text-decoration:none}
 /* ═══════════════════════════════════════
    TAB PANELS
    ═══════════════════════════════════════ */
-.panels{position:relative;padding-bottom:90px;padding-top:4px}
+.panels{position:relative;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px));padding-top:4px}
 .panel{display:none;animation:panelIn .5s var(--smooth)}
 .panel.active{display:block}
 @keyframes panelIn{
@@ -3419,22 +3454,32 @@ body.poster-locked{overflow:hidden}
 }
 .ep-grid{
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(7,1fr);
   gap:6px;
   margin-bottom:18px;
+  max-height:300px;
+  overflow-y:auto;
+  padding:4px;
+  -webkit-overflow-scrolling:touch;
 }
+.ep-grid::-webkit-scrollbar{width:4px}
+.ep-grid::-webkit-scrollbar-track{background:transparent}
+.ep-grid::-webkit-scrollbar-thumb{background:rgba(11,42,74,.15);border-radius:2px}
 .ep-emoji{
   aspect-ratio:1;
   background:var(--paper);
-  border-radius:8px;
+  border:1px solid transparent;
+  border-radius:10px;
   transition:all .15s var(--spring);
   display:flex;
   align-items:center;
   justify-content:center;
-  color:var(--ink-m);
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+  padding:0;
 }
-.ep-emoji svg{width:22px;height:22px;stroke:currentColor}
-.ep-emoji:hover{background:var(--sun-p);color:var(--sun);transform:scale(1.1)}
+.ep-emoji:hover{background:var(--sun-p);transform:scale(1.12);border-color:var(--sun)}
 .ep-skip{
   font-size:11px;
   color:var(--ink-l);
@@ -3446,8 +3491,13 @@ body.poster-locked{overflow:hidden}
 
 .ep-emoji.selected{
   background:var(--sun);
-  color:#fff;
-  box-shadow:0 0 0 2px rgba(11,42,74,.1);
+  border-color:var(--sun);
+  box-shadow:0 0 0 2px rgba(232,131,47,.25), 0 4px 12px rgba(232,131,47,.3);
+  transform:scale(1.08);
+}
+@media(max-width:380px){
+  .ep-grid{grid-template-columns:repeat(6,1fr);}
+  .ep-emoji{font-size:20px}
 }
 
 /* V15 · IDENTITY LAYER */
@@ -3703,16 +3753,12 @@ body.poster-locked{overflow:hidden}
   padding:0 6px 0 2px;
 }
 .bottle-dock .bd-icon{
-  width:22px;height:22px;
+  width:24px;height:36px;
   flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
 }
 .bottle-dock .bd-icon svg{
-  width:18px;height:18px;
-  stroke:#fff;
-  stroke-width:1.8;
-  fill:none;
-  stroke-linecap:round;stroke-linejoin:round;
+  width:22px;height:32px;
 }
 .bottle-dock .bd-label{
   font-size:10px;
@@ -3914,57 +3960,60 @@ body.poster-locked{overflow:hidden}
   backdrop-filter:blur(30px);
 }
 
-/* Center bottle (ceremony stage) */
+/* Center bottle (ceremony stage) — V24: larger, slower breath, more cinematic */
 .lm-bottle{
-  width:160px;
-  height:240px;
+  width:200px;
+  height:300px;
   display:flex;
   align-items:center;
   justify-content:center;
   position:relative;
-  animation:bottleDriftIn 1.7s var(--smooth) forwards;
+  animation:bottleDriftIn 2.2s var(--smooth) forwards;
 }
-.lm-bottle .lm-bottle-svg{width:100%;height:100%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.55));}
+.lm-bottle .lm-bottle-svg{width:100%;height:100%;filter:drop-shadow(0 22px 50px rgba(0,0,0,.6));}
 .lm-bottle .lm-cork{
   position:absolute;
-  top:18px;
+  top:22px;
   left:50%;
   transform:translateX(-50%);
-  transition:transform .6s cubic-bezier(.5,-0.4,.3,1.4), opacity .6s ease-out;
+  transition:transform .85s cubic-bezier(.5,-0.5,.3,1.5), opacity .7s ease-out;
+  z-index:12;
 }
 .lm-bottle.uncorking .lm-cork{
-  transform:translateX(-50%) translateY(-180px) rotate(35deg);
+  transform:translateX(-50%) translateY(-260px) rotate(55deg);
   opacity:0;
 }
 @keyframes bottleDriftIn{
   0%   {transform:translate(-60vw,40vh) rotate(-25deg); opacity:0;}
-  20%  {opacity:1;}
-  60%  {transform:translate(0,0) rotate(8deg);}
-  80%  {transform:translate(0,-4px) rotate(-4deg);}
+  15%  {opacity:1;}
+  55%  {transform:translate(0,0) rotate(10deg);}
+  72%  {transform:translate(0,-6px) rotate(-5deg);}
+  86%  {transform:translate(0,-2px) rotate(2deg);}
   100% {transform:translate(0,0) rotate(0deg);}
 }
 
-/* Scroll emerging from bottle neck */
+/* Scroll emerging from bottle neck — V24: larger, more visible */
 .lm-scroll-emerge{
   position:absolute;
-  top:38px;
+  top:48px;
   left:50%;
   transform:translateX(-50%) translateY(0) scaleY(0);
   transform-origin:top center;
-  width:44px;
+  width:58px;
   z-index:10;
   pointer-events:none;
   opacity:0;
+  filter:drop-shadow(0 6px 12px rgba(120,80,20,.4));
 }
 .lm-bottle.uncorking .lm-scroll-emerge{
-  animation:scrollEmerge 1.1s cubic-bezier(.3,0,.2,1) 0.55s forwards;
+  animation:scrollEmerge 1.5s cubic-bezier(.3,0,.2,1) 0.7s forwards;
 }
 @keyframes scrollEmerge{
   0%  {opacity:0;transform:translateX(-50%) translateY(0) scaleY(0);}
-  15% {opacity:1;}
-  55% {transform:translateX(-50%) translateY(-68px) scaleY(1);}
-  75% {transform:translateX(-50%) translateY(-72px) scaleY(1.04);}
-  100%{transform:translateX(-50%) translateY(-70px) scaleY(1);}
+  12% {opacity:1;}
+  55% {transform:translateX(-50%) translateY(-95px) scaleY(1);}
+  75% {transform:translateX(-50%) translateY(-100px) scaleY(1.06);}
+  100%{transform:translateX(-50%) translateY(-98px) scaleY(1);}
 }
 
 /* Letter reader card */
@@ -4862,21 +4911,31 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
      ══════════════════════════════════════ -->
 <!-- TOP BAR -->
 <header class="top-bar" id="topBar">
-  <div class="tb-brand">
+  <button class="tb-brand" type="button" onclick="openDash()" aria-label="My dashboard" title="Tap to open your dashboard">
     <svg class="tb-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <g transform="matrix(1 0 0 0.82 0 2.5)">
-        <polygon points="8,52 92,52 78,82 22,82" fill="#F4F8FB" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
-        <polygon points="50,14 70,52 30,52" fill="#F4F8FB" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
-        <g stroke="#0B2A4A" stroke-width="1" opacity=".7" fill="none" stroke-linecap="round">
-          <line x1="50" y1="14" x2="50" y2="82"/>
-          <line x1="8" y1="52" x2="78" y2="82"/>
-          <line x1="92" y1="52" x2="22" y2="82"/>
-        </g>
+      <!-- faceted boat, navy + white sails, blue hull shadow (Logo #05 direction) -->
+      <g transform="translate(50 44)">
+        <!-- hull: two-tone faceted -->
+        <polygon points="-38,-5 38,-5 30,22 -30,22" fill="#F4F8FB" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="0,-5 30,22 -30,22" fill="#4A86DB" opacity=".35"/>
+        <!-- sail: white face + blue shadow -->
+        <polygon points="0,-38 20,-5 -20,-5" fill="#F4F8FB" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
+        <polygon points="0,-38 0,-5 20,-5" fill="#4A86DB" opacity=".4"/>
+        <!-- mast/fold lines -->
+        <line x1="0" y1="-38" x2="0" y2="22" stroke="#0B2A4A" stroke-width="0.9" opacity=".6"/>
+        <line x1="-38" y1="-5" x2="30" y2="22" stroke="#0B2A4A" stroke-width="0.7" opacity=".4"/>
       </g>
-      <line x1="6" y1="72" x2="94" y2="72" stroke="#0B2A4A" stroke-width="0.8" opacity=".45"/>
+      <!-- reflection below -->
+      <g transform="translate(50 70) scale(1 -0.35)" opacity=".3">
+        <polygon points="-38,-5 38,-5 30,22 -30,22" fill="#2E6BC7"/>
+        <polygon points="0,-38 20,-5 -20,-5" fill="#2E6BC7"/>
+      </g>
+      <!-- waterline -->
+      <line x1="4" y1="66" x2="96" y2="66" stroke="#0B2A4A" stroke-width="0.6" opacity=".35"/>
     </svg>
     <span class="tb-wordmark">Böötle</span>
-  </div>
+    <span class="tb-me" id="tbMe"></span>
+  </button>
   <span class="tb-tab-label" id="tbTabLabel">Discover</span>
 </header>
 
@@ -5395,21 +5454,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   <div class="lh-pop-jump" id="lhJump" style="display:none;font-size:10px;opacity:.55;text-align:center;padding-top:6px;letter-spacing:.5px">jumping to best date…</div>
 </div>
 
-<!-- 🚤 Paper boat — personal dashboard fixed charm -->
-<div class="boat-charm" id="boatCharm" onclick="openDash()" aria-label="My dashboard">
-  <span class="boat-charm-emoji"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="26" height="26" style="display:block">
-  <g transform="matrix(1 0 0 0.82 0 2.5)">
-    <polygon points="8,52 92,52 78,82 22,82" fill="rgba(255,255,255,0.92)" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
-    <polygon points="50,14 70,52 30,52" fill="rgba(255,255,255,0.92)" stroke="#0B2A4A" stroke-width="1.4" stroke-linejoin="round"/>
-    <g stroke="#0B2A4A" stroke-width="1.1" opacity=".7" fill="none" stroke-linecap="round">
-      <line x1="50" y1="14" x2="50" y2="82"/>
-      <line x1="8" y1="52" x2="78" y2="82"/>
-      <line x1="92" y1="52" x2="22" y2="82"/>
-    </g>
-  </g>
-  <line x1="6" y1="72" x2="94" y2="72" stroke="#0B2A4A" stroke-width="1" opacity=".45"/>
-</svg></span>
-</div>
+<!-- V24: Navy boat charm removed. Personal dashboard opens from the top-bar brand tap. -->
 
 <div class="bottle-dock" id="bottleDock"
      onclick="bottleClick(event)"
@@ -5421,7 +5466,19 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
      ontouchcancel="bottlePressEnd()"
      aria-label="Letter from Roxane (long-press to edit)">
   <div class="bd-pill-inner">
-    <span class="bd-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1 0 0 0.82 0 2.5)"><polygon points="8,52 92,52 78,82 22,82" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.9)" stroke-width="1"/><polygon points="50,14 70,52 30,52" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.9)" stroke-width="1"/><g stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"><line x1="50" y1="14" x2="50" y2="82"/><line x1="8" y1="52" x2="78" y2="82"/><line x1="92" y1="52" x2="22" y2="82"/></g></g></svg></span>
+    <span class="bd-icon"><svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- cork -->
+      <rect x="15" y="3" width="10" height="7" rx="1.5"/>
+      <!-- bottle neck -->
+      <path d="M16 10 L16 18 Q16 20 14 22"/>
+      <path d="M24 10 L24 18 Q24 20 26 22"/>
+      <!-- bottle body -->
+      <path d="M14 22 Q10 26 10 32 L10 50 Q10 56 16 56 L24 56 Q30 56 30 50 L30 32 Q30 26 26 22"/>
+      <!-- scroll inside, hinted -->
+      <line x1="15" y1="32" x2="25" y2="32" opacity=".55"/>
+      <line x1="15" y1="38" x2="25" y2="38" opacity=".55"/>
+      <line x1="15" y1="44" x2="23" y2="44" opacity=".55"/>
+    </svg></span>
     <span class="bd-label">a whisper</span>
   </div>
 </div>
@@ -5591,18 +5648,18 @@ const ROUTES=[
     hoursTotal:'4–5.5h incl. breaks',
     difficulty:'Mittel',
     temp:'20–22°C',
-    travel:'Basel → Laufenburg ~45 min',
+    travel:'Basel SBB → Leibstadt ~1h 15 (RegioExpress + S-Bahn)',
     entryStation:'Leibstadt (SBB · ~5 min walk to slip)',
     exitStation:'Laufenburg (SBB · ~5 min walk from exit)',
-    returnTime:'~45 min back to Basel SBB',
+    returnTime:'~1h 20 back to Basel SBB',
     river:'Rhein',
     tags:['day','warmest','closest'],
     pills:[
       {c:'d','t':'11.6 km'},
       {c:'d','t':'3–4 hours'},
       {c:'d','t':'Mittel'},
-      {c:'w','t':'🌡 20–22°C warmest'},
-      {c:'b','t':'🚆 ~1h from Basel'}
+      {c:'w','t':'20–22°C warmest'},
+      {c:'b','t':'Basel ~1h 15'}
     ],
     diag:[
       {cls:'ds',emoji:'🚀',name:'Leibstadt',sub:'Entry · km 0'},
@@ -5615,12 +5672,12 @@ const ROUTES=[
       ['Entry','Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank'],
       ['Exit','Laufenburg: Schlipf 200m after Laufenbrücke, left bank. ⚠️ Stay left'],
       ['Hazard','Querströmung after bridge — stay left of channel'],
-      ['Beach stops','Dreispitz km 3.8 + Caribbean island km 6.8 🏖'],
+      ['Beach stops','Dreispitz km 3.8 + Caribbean island km 6.8'],
       ['Boat rental','No dedicated rental — bring own boats'],
       ['Swimming','✅ Good. Avoid weir backflow at start']
     ],
-    pros:['Closest to Basel — ~1h','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
-    cons:['Starts next to a nuclear plant 😅','No dedicated boat rental','Cross-current near bridge'],
+    pros:['Closest of the Rhine day routes','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
+    cons:['Starts next to a nuclear plant','No dedicated boat rental','Cross-current near bridge'],
     fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
     mapCoords:[[47.5912,8.1772],[47.5898,8.1680],[47.5876,8.1585],[47.5848,8.1490],[47.5820,8.1395],[47.5790,8.1295],[47.5762,8.1190],[47.5740,8.1085],[47.5720,8.0975],[47.5702,8.0870],[47.5690,8.0775],[47.5680,8.0680],[47.5665,8.0590],[47.5640,8.0510],[47.5615,8.0475],[47.5602,8.0434],[47.5610,8.0510],[47.5615,8.0594]],
     waypoints:[
@@ -5645,7 +5702,7 @@ const ROUTES=[
     hoursTotal:'6–7h incl. breaks',
     difficulty:'Leicht',
     temp:'19–23°C',
-    travel:'Basel Bad Bf → Stein am Rhein ~2h',
+    travel:'Basel SBB → Stein am Rhein ~1h 50 (IC via Zürich HB)',
     entryStation:'Stein am Rhein (SBB · ~3 min walk to slip)',
     exitStation:'Schaffhausen (SBB · ~8 min walk from Schifflände)',
     returnTime:'~2h back to Basel SBB',
@@ -5655,8 +5712,8 @@ const ROUTES=[
       {c:'d','t':'18.8 km'},
       {c:'d','t':'4–5 hours'},
       {c:'d','t':'Leicht'},
-      {c:'w','t':'🌡 19–23°C'},
-      {c:'b','t':'🚆 ~2h'}
+      {c:'w','t':'19–23°C'},
+      {c:'b','t':'Basel ~1h 50'}
     ],
     diag:[
       {cls:'ds',emoji:'🏯',name:'Stein am Rhein',sub:'Entry · km 0'},
@@ -5693,7 +5750,7 @@ const ROUTES=[
     emoji:'💦',
     badge:'Day Trip · Dramatic',
     name:'Rheinfall → Kloster Rheinau',
-    sub:'Rhein · 7 km · Most dramatic · 🌕 moonlight',
+    sub:'Rhein · 7 km · Most dramatic · moonlight trip',
     verdict:'The shortest route, but the most cinematic. Launch below Europe\'s largest waterfall, drift past a baroque monastery island, finish at a thousand-year-old Benedictine complex. Works as a moonlight trip on clear nights.',
     photos:['./Rheinfall.jpeg','./Rhein bei Neuhausen.jpg','./Rhein zurcher weinland.jpg'],
     km:7,
@@ -5701,18 +5758,18 @@ const ROUTES=[
     hoursTotal:'3.5–5h incl. breaks',
     difficulty:'Leicht',
     temp:'18–20°C',
-    travel:'Basel → Neuhausen ~1h 30',
+    travel:'Basel SBB → Neuhausen Rheinfall ~1h 10 (via Schaffhausen)',
     entryStation:'Neuhausen Rheinfall (SBB · ~10 min walk to slip below falls)',
     exitStation:'Marthalen or Dachsen (SBB · ~15 min walk from Rheinau abbey)',
-    returnTime:'~1h 30 back to Basel SBB',
+    returnTime:'~1h 10 back to Basel SBB',
     river:'Rhein',
     tags:['day','moonlight'],
     pills:[
       {c:'d','t':'7 km'},
       {c:'d','t':'2–3 hours'},
       {c:'d','t':'Leicht'},
-      {c:'w','t':'🌕 moonlight'},
-      {c:'b','t':'🚆 ~1h 30'}
+      {c:'w','t':'moonlight trip'},
+      {c:'b','t':'Basel ~1h 10'}
     ],
     diag:[
       {cls:'ds',emoji:'💦',name:'Rheinfall',sub:'Entry · km 0'},
@@ -5747,7 +5804,7 @@ const ROUTES=[
     emoji:'⛰️',
     badge:'Overnight · The Dream',
     name:'Thun → Bern → Hinterkappelen',
-    sub:'Aare · 44 km · The dream route ⭐',
+    sub:'Aare · 44 km · The dream route',
     verdict:'The big one. The turquoise glacier-fed Aare, two perfect days, camping under the stars at Eichholz, drifting through Bern the second morning past the parliament, past the bear park, into the final sandy curves. This is the trip people talk about for years.',
     photos:['./Mit dem Gummiboot auf der Aare.webp','./Aare von Thun nach Bern.webp','./aarebootle_Mit dem gummiboot von thun nach bern.jpg','./thun bern.jpg'],
     km:44,
@@ -5755,18 +5812,18 @@ const ROUTES=[
     hoursTotal:'2 days · ~5h paddling each',
     difficulty:'Mittel',
     temp:'16–20°C',
-    travel:'Basel → Thun ~55 min',
+    travel:'Basel SBB → Thun ~1h 25 (direct IC)',
     entryStation:'Thun (SBB · ~15 min walk to Schwäbis Strand)',
     exitStation:'Hinterkappelen (Postbus → Bern SBB ~20 min)',
-    returnTime:'~1h 15 back to Basel from Bern',
+    returnTime:'~1h from Bern SBB → Basel',
     river:'Aare',
-    tags:['night','closest'],
+    tags:['night'],
     pills:[
       {c:'d','t':'44 km · 2 days'},
       {c:'d','t':'Mittel'},
-      {c:'w','t':'🌡 16–20°C glacier'},
-      {c:'s','t':'⛺ Camping Eichholz'},
-      {c:'b','t':'🚆 ~55 min closest!'}
+      {c:'w','t':'16–20°C glacier'},
+      {c:'s','t':'Camping Eichholz'},
+      {c:'b','t':'Basel ~1h 25'}
     ],
     diag:[
       {cls:'ds',emoji:'🏔',name:'Thun',sub:'Entry · km 0'},
@@ -5784,7 +5841,7 @@ const ROUTES=[
       ['Camping','Camping Eichholz: CHF 14/night + tent. Book early. campingeichholz.ch'],
       ['Swimming','✅ Cold but incredible. Swiss locals swim here daily.']
     ],
-    pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Closest of all the routes'],
+    pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Direct IC train all the way'],
     cons:['Glacier-cold water (16–20°C)','Requires camping gear','Must book Eichholz ahead','Most commitment'],
     fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
     mapCoords:[[46.7580,7.6250],[46.7660,7.6180],[46.7745,7.6100],[46.7830,7.6015],[46.7915,7.5925],[46.7995,7.5840],[46.8085,7.5760],[46.8183,7.5700],[46.8275,7.5625],[46.8370,7.5555],[46.8465,7.5485],[46.8560,7.5410],[46.8650,7.5340],[46.8740,7.5265],[46.8825,7.5180],[46.8910,7.5085],[46.8990,7.4985],[46.9065,7.4880],[46.9135,7.4770],[46.9200,7.4660],[46.9260,7.4560],[46.9320,7.4480],[46.9385,7.4432],[46.9440,7.4420],[46.9480,7.4374],[46.9530,7.4280],[46.9580,7.4170],[46.9625,7.4060],[46.9660,7.3965],[46.9697,7.3883]],
@@ -5812,18 +5869,18 @@ const ROUTES=[
     hoursTotal:'2 days · ~4h paddling each',
     difficulty:'Anspruchsvoll',
     temp:'18–21°C',
-    travel:'Basel → Bremgarten AG ~1h 15',
+    travel:'Basel SBB → Bremgarten West ~1h 40 (via Dietikon/BDWM)',
     entryStation:'Bremgarten West (BDWM · ~5 min walk to slip)',
     exitStation:'Turgi (SBB · ~20 min walk from Wasserschloss Gebenstorf)',
-    returnTime:'~1h 15 back to Basel SBB',
+    returnTime:'~45 min from Turgi back to Basel SBB',
     river:'Reuss',
     tags:['night'],
     pills:[
       {c:'d','t':'25.3 km · 2 days'},
       {c:'x','t':'⚠️ Advanced'},
-      {c:'w','t':'🌡 18–21°C'},
-      {c:'s','t':'⛺ Camping Sulz'},
-      {c:'b','t':'🚆 ~1h 15'}
+      {c:'w','t':'18–21°C'},
+      {c:'s','t':'Camping Sulz'},
+      {c:'b','t':'Basel ~1h 40'}
     ],
     diag:[
       {cls:'ds',emoji:'🏰',name:'Bremgarten',sub:'Entry · km 0'},
@@ -5882,8 +5939,8 @@ const ROUTES=[
       {c:'d',t:'10 km'},
       {c:'d',t:'2–2½ hours'},
       {c:'d',t:'Mittel'},
-      {c:'w',t:'🌡 19–22°C'},
-      {c:'b',t:'🚆 ~1h 15'},
+      {c:'w',t:'19–22°C'},
+      {c:'b',t:'Basel ~1h 15'},
       {c:'s',t:'🌙 moonlight OK'}
     ],
     diag:[
@@ -5938,12 +5995,139 @@ let _cacheLoaded=false;
 let _syncStatus='syncing'; // 'synced' | 'syncing' | 'offline'
 let _syncHideTimer=null;
 function _setSync(s){_syncStatus=s;const el=document.getElementById('syncDot');if(!el)return;el.className='sync-dot sync-'+s;el.querySelector('.sync-label').textContent=s==='synced'?'synced':s==='syncing'?'syncing…':'offline';if(_syncHideTimer){clearTimeout(_syncHideTimer);_syncHideTimer=null;}if(s==='synced'){_syncHideTimer=setTimeout(()=>el.classList.add('hide-synced'),3000);}else{el.classList.remove('hide-synced');}}
+// V24: merge helpers — prevents races when multiple friends write concurrently.
+// Each shared key has an associated merge strategy so we can safely read-modify-write.
+function _mergeKey(key, localValue, serverValue){
+  // If no server value, our local is authoritative
+  if(!serverValue || typeof serverValue!=='object')return localValue;
+  if(!localValue || typeof localValue!=='object')return serverValue;
+  switch(key){
+    case 'gb_votes':{
+      // votes = { routeId: [name1, name2, ...] }
+      // Merge: union of voter arrays per route
+      const out={...serverValue};
+      Object.keys(localValue).forEach(rid=>{
+        const local=new Set(localValue[rid]||[]);
+        const server=new Set(out[rid]||[]);
+        // For each name, the local version is authoritative (this user just toggled for themselves)
+        // Server names we don't touch stay; server names we removed stay removed only if we deliberately removed them.
+        // Since a user only ever toggles their OWN name, we union everyone else's from server + our own final state.
+        const me=getMe()?.name;
+        const merged=new Set(server);
+        // Our view for OTHER people — trust server
+        // Our view for ME — trust local
+        if(me){
+          if(local.has(me))merged.add(me);else merged.delete(me);
+        }
+        // Union any new names we added (e.g. admin ops)
+        local.forEach(n=>{ if(n!==me) merged.add(n); });
+        out[rid]=Array.from(merged);
+      });
+      return out;
+    }
+    case 'gb_avail':{
+      // avail = { name: { 'YYYY-MM-DD': 1 | 2 } }
+      // Per-user namespace — each user only writes their OWN name's entry.
+      // Merge: take server for everyone EXCEPT the current user; our local wins for ourselves.
+      const out={...serverValue};
+      const me=getMe()?.name;
+      if(me && localValue[me]!==undefined){
+        out[me]=localValue[me];
+      }
+      // Also preserve any other names we know about locally (edge case)
+      Object.keys(localValue).forEach(n=>{
+        if(!(n in out)) out[n]=localValue[n];
+      });
+      return out;
+    }
+    case 'gb_pack':{
+      // pack = { itemId: [name1, name2] } — claim/unclaim items
+      const out={...serverValue};
+      const me=getMe()?.name;
+      Object.keys(localValue).forEach(iid=>{
+        const local=new Set(localValue[iid]||[]);
+        const server=new Set(out[iid]||[]);
+        const merged=new Set(server);
+        // Our ME state is authoritative for ourselves
+        if(me){
+          if(local.has(me))merged.add(me);else merged.delete(me);
+        }
+        // Preserve any other claimers we added
+        local.forEach(n=>{ if(n!==me) merged.add(n); });
+        out[iid]=Array.from(merged);
+      });
+      // Preserve items on server we didn't touch
+      return out;
+    }
+    case 'gb_wishes':{
+      // wishes = { routeId: [{who, text}, ...] } — append-only from users
+      const out={...serverValue};
+      Object.keys(localValue).forEach(rid=>{
+        const local=localValue[rid]||[];
+        const server=out[rid]||[];
+        // Dedupe by who+text
+        const seen=new Set(server.map(w=>w.who+'|'+w.text));
+        const merged=[...server];
+        local.forEach(w=>{
+          const key=w.who+'|'+w.text;
+          if(!seen.has(key)){ merged.push(w); seen.add(key); }
+        });
+        out[rid]=merged;
+      });
+      return out;
+    }
+    case 'gb_crew':{
+      // crew = { name: {emoji, joined} }
+      // Merge: union of all members, local wins for names the local user owns (renames, emoji changes)
+      const out={...serverValue};
+      const me=getMe()?.name;
+      Object.keys(localValue).forEach(n=>{
+        if(n===me){
+          out[n]=localValue[n]; // my identity is mine
+        }else if(!(n in out)){
+          out[n]=localValue[n]; // new member we know about
+        }
+        // else: leave server version in place
+      });
+      return out;
+    }
+    case 'gb_letter':
+    case 'gb_letter_v':
+      // Letter is last-write-wins by design (Roxane is the sole editor via password)
+      return localValue;
+    default:
+      return localValue;
+  }
+}
 async function _postState(k,v){
   try{
     _setSync('syncing');
-    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v})});
+    // RACE-SAFE WRITE: fetch current server state first, merge, then POST.
+    // This prevents the "Sarah just voted but Mia's tab still had the old snapshot" data-loss pattern.
+    let merged=v;
+    if(SHARED_KEYS.has(k)){
+      try{
+        const rGet=await fetch('/api/state',{cache:'no-store'});
+        if(rGet.ok){
+          const serverState=await rGet.json();
+          const serverVal=serverState?.[k];
+          merged=_mergeKey(k,v,serverVal);
+          // Reflect the merged state back into local cache so the UI updates if Sarah's change matters
+          _cache[k]=merged;
+        }
+      }catch{/* if GET fails, we still POST our local — that's the old behavior, no worse */}
+    }
+    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:merged})});
     if(!r.ok)throw new Error('post failed');
     _setSync('synced');
+    // Trigger a re-render if the merge brought in other people's changes
+    if(SHARED_KEYS.has(k)){
+      try{renderVotePosters&&renderVotePosters();}catch{}
+      try{renderCal&&renderCal();}catch{}
+      try{renderCrewActivity&&renderCrewActivity();}catch{}
+      try{renderPack&&renderPack();}catch{}
+      try{renderDiscoverLeader&&renderDiscoverLeader();}catch{}
+    }
   }catch(e){
     // retry once
     try{
@@ -6126,23 +6310,23 @@ let leadingRouteId=null;
 // ═══════════════════════════════════════
 // CREW SYSTEM — shared identity across features
 // ═══════════════════════════════════════
-// E2 identity icons — thin-line SVG set (curated per Claude Design)
-const CREW_ICONS={
-  boat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l9 4 9-4"/><path d="M12 2l5 10H7L12 2z"/><line x1="12" y1="2" x2="12" y2="21"/></svg>',
-  compass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
-  droplet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
-  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-  mountain:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 20 11 4 19 20 3 20"/><polyline points="3 20 10 11 14 15"/></svg>',
-  tent:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L12 4l9 16H3z"/><path d="M12 4L8 20"/><path d="M12 4l4 16"/></svg>',
-  fire:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
-  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="11"/><path d="M7 4h10l-1 7H8L7 4z"/><path d="M5 4H3v3a4 4 0 0 0 4 4"/><path d="M19 4h2v3a4 4 0 0 1-4 4"/></svg>',
-  waves:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg>'
-};
-const CREW_ICON_KEYS=Object.keys(CREW_ICONS);
-// Legacy — keep for any old stored identities
-const CREW_EMOJIS=CREW_ICON_KEYS;
+// Crew identity emojis — curated by Roxane (V24 Tidewater)
+// 48 emojis across nature, animals, landscape, mystical. No hearts/trophies.
+const CREW_EMOJIS=[
+  // Core
+  '🛶','🌊','☀️','🌙','🏔','⛺','🔥','🍀','🧘‍♀️','🌸','🦊','🍉','🐟','🌻','✨',
+  // Animals
+  '🐞','🐺','🐢','🐚','🪼','🐙','🦦','🦔','🐇','🐬','🐳',
+  // Nature + landscape
+  '🌲','🍃','🌴','🌱','🍄','🌵','🌷','🪷','🗻','🌋','🏝','❄️','🌈',
+  // Mystical / cutesy
+  '🧿','🔮','🌀','🦄','🧚','🧜‍♀️',
+  // Fruit
+  '🫐','🍑','🍊','🥥','🍋'
+];
+// Legacy compatibility — any renderIcon() calls with a key string now just output the emoji
+const CREW_ICONS={};  // deprecated but kept for safety
+const CREW_ICON_KEYS=CREW_EMOJIS;  // picker source
 
 function joinCrew(name,emoji){
   if(!name)return;
@@ -6151,15 +6335,17 @@ function joinCrew(name,emoji){
   renderCrewActivity();
 }
 
-// Render icon from key — falls back to emoji string if legacy
+// Legacy key → emoji mapping (for identities saved under V23's SVG-icon system)
+const LEGACY_ICON_MAP={
+  boat:'🛶',compass:'🧭',droplet:'💧',sun:'☀️',moon:'🌙',
+  mountain:'🏔',tent:'',fire:'🔥',heart:'🌻',trophy:'✨',waves:'🌊'
+};
+// Render identity emoji — outputs the emoji directly (V24: no more SVG icons)
 function renderIcon(key,size=18){
-  if(!key)return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l9 4 9-4"/><path d="M12 2l5 10H7L12 2z"/></svg>';
-  if(CREW_ICONS[key]){
-    // inject width/height into the SVG
-    return CREW_ICONS[key].replace('<svg ','<svg width="'+size+'" height="'+size+'" ');
-  }
-  // legacy emoji — wrap in span
-  return '<span style="font-size:'+Math.round(size*.9)+'px;line-height:1">'+key+'</span>';
+  if(!key)return '<span style="font-size:'+Math.round(size*.95)+'px;line-height:1">🛶</span>';
+  // Legacy SVG-icon key from V23 → map to emoji
+  const emoji=LEGACY_ICON_MAP[key]||key;
+  return '<span style="font-size:'+Math.round(size*.95)+'px;line-height:1;display:inline-block">'+emoji+'</span>';
 }
 
 function renderCrewActivity(){
@@ -6284,7 +6470,7 @@ const LETTER_EDIT_PW='böötle';
 
 const DEFAULT_LETTER={
   title:'A note from Roxane',
-  body:"Okay. I need you to clear a weekend this summer — or two.\n\nI've been dreaming about this for years: **inflatable dinghies, Swiss rivers, all of us together.** No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.\n\nI've done the research (obviously 😅). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.\n\n**Pick a route. Mark your days. Say yes.** The rest takes care of itself.",
+  body:"Okay. I need you to clear a weekend this summer — or two.\n\nI've been dreaming about this for years: **inflatable dinghies, Swiss rivers, all of us together.** No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.\n\nI've done the research (obviously ). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.\n\n**Pick a route. Mark your days. Say yes.** The rest takes care of itself.",
   sign:'— Roxane',
   signLocation:'Written from Basel, with the rivers already running warm'
 };
@@ -6477,7 +6663,7 @@ function showArrivalCeremony(opts){
 
   setTimeout(()=>{
     if(bottle)bottle.classList.add('uncorking');
-  },1700);
+  },2200);
   setTimeout(()=>{
     if(bottle){bottle.style.display='none';bottle.classList.remove('uncorking');}
     if(reader){
@@ -6501,7 +6687,7 @@ function showArrivalCeremony(opts){
       if(skipBtn)skipBtn.style.display='none';
       markLetterRead();
     }
-  },2500);
+  },3400);
 }
 
 function showLetterReader(){
@@ -7025,8 +7211,7 @@ function renderIdentityStage(){
     if(grid){
       grid.innerHTML=CREW_EMOJIS.map(e=>{
         const sel=e===_idDraftEmoji?' selected':'';
-        const svgIcon=CREW_ICONS[e]||e;
-        return `<button class="ep-emoji${sel}" type="button" onclick="pickIdentityEmoji('${e}')" title="${e}">${svgIcon}</button>`;
+        return `<button class="ep-emoji${sel}" type="button" onclick="pickIdentityEmoji('${e}')" title="${e}">${e}</button>`;
       }).join('');
     }
     if(sk)sk.style.display='none';
@@ -7092,6 +7277,16 @@ function refreshIdentityPills(){
       p.classList.remove('has-id');
     }
   });
+  // V24: top-bar emoji chip — your identity tucked next to the wordmark
+  const tbMe=document.getElementById('tbMe');
+  if(tbMe){
+    if(me && me.name){
+      const emoji=me.emoji||'🛶';
+      tbMe.innerHTML=`<span title="${escapeHtml(me.name)} — tap to open your dashboard">${emoji}</span>`;
+    }else{
+      tbMe.innerHTML='';
+    }
+  }
 }
 function maybeShowIdentityPrompt(){
   if(getMe())return;
@@ -7226,8 +7421,8 @@ function renderGallery(){
         <div class="g-verdict">${verdictLine}</div>
         <div class="g-meta">
           <div class="g-meta-i">⏱ ${r.hours}</div>
-          <div class="g-meta-i">🌡 ${r.temp}</div>
-          <div class="g-meta-i">🚆 ${(r.travel.split('~')[1]||'').trim()}</div>
+          <div class="g-meta-i">${r.temp}</div>
+          <div class="g-meta-i">${(r.travel.split('~')[1]||'').trim()}</div>
         </div>
         ${wishHtml}
         <div class="g-mini-weather" id="gmw_${r.id}">
@@ -7852,7 +8047,7 @@ const PACK=[
   ]},
   {group:'Vibes',items:[
     {id:'speaker',t:'Waterproof speaker',kind:'solo',icon:'🔊'},
-    {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:'📸'},
+    {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:''},
     {id:'music',t:'Playlist ready to go',kind:'solo',icon:'🎶'}
   ]},
   {group:'Safety + admin',items:[
@@ -8335,7 +8530,7 @@ function openPoster(rid){
 
       <div class="poster-section">
         <div class="poster-section-title">Getting there</div>
-        <div class="rtravel">🚆 ${r.travel}</div>
+        <div class="rtravel">${r.travel}</div>
         ${r.entryStation?`
         <div class="station-grid">
           <a class="station-card entry" href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?nach=${encodeURIComponent(r.entryStation.split(' (')[0])}" target="_blank" rel="noopener">
@@ -8512,7 +8707,7 @@ function buildTripSummary(){
   const best=findBestWeekend(avail);
 
   let s='🛶 GUMMIBOOT 2026\n\n';
-  if(top)s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   🚆 ${top.travel}\n\n`;
+  if(top)s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   ${top.travel}\n\n`;
   if(best)s+=`📅 Best weekend: ${best.label}\n   ${best.who}\n\n`;
   s+=`Vote + mark your days: ${location.href}\n`;
   return s;
@@ -8729,15 +8924,25 @@ function init(){
   startWhisperTimer();
   updateLighthouse();
 
-  // Golden-hour mode — warm amber palette near sunset
-  (function checkGoldenHour(){
-    const h=new Date().getHours();
-    const m=new Date().getMinutes();
-    const mins=h*60+m;
-    if(mins>=17*60&&mins<19*60+30){
+  // Golden-hour mode — warm amber palette in the 90min before sunset (17:00–19:30 window)
+  // Runs on init + re-checks every 10min so the transition is live, not stale
+  function checkGoldenHour(){
+    const now=new Date();
+    const mins=now.getHours()*60+now.getMinutes();
+    const month=now.getMonth(); // 0=Jan
+    // Adjust window by season (summer: later sunset; winter: earlier)
+    // Apr–Sep: 18:30–21:00  |  Oct–Mar: 16:30–18:30
+    const summer=(month>=3 && month<=8);
+    const start=summer?18*60+30:16*60+30;
+    const end  =summer?21*60:18*60+30;
+    if(mins>=start && mins<end){
       document.body.classList.add('golden-hour');
+    }else{
+      document.body.classList.remove('golden-hour');
     }
-  })();
+  }
+  checkGoldenHour();
+  setInterval(checkGoldenHour, 10*60*1000); // re-check every 10 minutes
 
   // Init top bar label
   const initLabel=document.getElementById('tbTabLabel');
