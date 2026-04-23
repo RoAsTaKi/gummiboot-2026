@@ -301,7 +301,7 @@ a{color:inherit;text-decoration:none}
 .top-bar{
   position:sticky;
   top:0;
-  z-index:80;
+  z-index:1100;
   background:rgba(247,242,230,.92);
   backdrop-filter:blur(20px) saturate(1.3);
   -webkit-backdrop-filter:blur(20px) saturate(1.3);
@@ -372,7 +372,7 @@ a{color:inherit;text-decoration:none}
   position:fixed;
   bottom:0;
   left:0;right:0;
-  z-index:80;
+  z-index:1100;
   background:rgba(247,242,230,.95);
   backdrop-filter:blur(24px) saturate(1.3);
   -webkit-backdrop-filter:blur(24px) saturate(1.3);
@@ -2228,7 +2228,7 @@ a{color:inherit;text-decoration:none}
 .poster.open .poster-inner{transform:translateY(0);opacity:1}
 .poster-close{
   position:fixed;
-  top:20px;
+  top:calc(20px + env(safe-area-inset-top,0px));
   right:20px;
   width:46px;
   height:46px;
@@ -2248,7 +2248,7 @@ a{color:inherit;text-decoration:none}
 body.poster-locked .poster-close{display:flex}
 .poster-close:hover{background:var(--sun);color:#fff;transform:rotate(90deg)}
 .poster-vote-btn{
-  position:fixed;top:16px;right:64px;z-index:1010;
+  position:fixed;top:calc(16px + env(safe-area-inset-top,0px));right:64px;z-index:1010;
   width:42px;height:42px;border-radius:50%;
   background:rgba(255,255,255,.15);backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
@@ -2363,6 +2363,7 @@ body.poster-locked .poster-close{display:flex}
   margin-bottom:20px;
   color:#fff;
   text-shadow:0 4px 40px rgba(0,0,0,.4);
+  padding-right:110px;
 }
 .poster-sub{
   font-family:var(--serif);
@@ -4916,7 +4917,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
      ══════════════════════════════════════ -->
 <!-- TOP BAR -->
 <header class="top-bar" id="topBar">
-  <button class="tb-brand" type="button" onclick="openDash()" aria-label="My dashboard" title="Tap to open your dashboard">
+  <button class="tb-brand" type="button" onclick="openDash()" aria-label="Open your dashboard">
     <svg class="tb-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <!-- faceted boat, navy + white sails, blue hull shadow (Logo #05 direction) -->
       <g transform="translate(50 44)">
@@ -5237,7 +5238,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="safety-grid">
         <div class="sg-card">
-          <div class="sg-t">⚠️ Before you launch</div>
+          <div class="sg-t">Before you launch</div>
           <div class="sg-i"><div class="sg-i-i">✓</div>Check water level on hydrodaten.admin.ch</div>
           <div class="sg-i"><div class="sg-i-i">✓</div>Tell someone your route + ETA</div>
           <div class="sg-i"><div class="sg-i-i">✓</div>Life jackets on before you enter the water</div>
@@ -5347,7 +5348,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
       </div>
 
       <div class="emergency">
-        <div class="em-icon">🆘</div>
+        <div class="em-icon"></div>
         <div class="em-info">
           <div class="em-title">In an emergency</div>
           <div class="em-sub">Police <strong>117</strong> · Ambulance <strong>144</strong> · Rega air rescue <strong>1414</strong> · River SOS — stay with the boat, drift feet-first</div>
@@ -5617,7 +5618,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   </div>
 </div>
 
-<!-- ⚠️ Delete confirm modal -->
+<!-- Delete confirm modal -->
 <div class="confirm-modal" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
   <div class="confirm-card">
     <h3 id="confirmTitle">Delete?</h3>
@@ -5641,24 +5642,24 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 const ROUTES=[
   {
     id:'d1',
-    type:'day',
-    emoji:'🏰',
-    badge:'Day Trip · Closest',
+ type:'day',
+ emoji:'🏰',
+ badge:'Day Trip · Closest',
     name:'Leibstadt → Laufenburg',
-    sub:'Rhein · 11.6 km · Warmest + closest',
-    verdict:'Starts at a nuclear power plant, ends in a medieval double-city split by Napoleon. In between: sandy islands, Black Forest views, and a sandbar the book literally calls the Caribbean.',
-    photos:['./Laufenburg.jpg','./aare interlaken.webp'],
-    km:11.6,
-    hours:'3–4h',
-    hoursTotal:'4–5.5h incl. breaks',
-    difficulty:'Mittel',
-    temp:'20–22°C',
-    travel:'Basel SBB → Leibstadt ~1h 15 (RegioExpress + S-Bahn)',
+ sub:'Rhein · 11.6 km · Warmest + closest',
+ verdict:'Starts at a nuclear power plant, ends in a medieval double-city split by Napoleon. In between: sandy islands, Black Forest views, and a sandbar the book literally calls the Caribbean.',
+ photos:['./Laufenburg.jpg','./aare interlaken.webp'],
+ km:11.6,
+ hours:'3–4h',
+ hoursTotal:'4–5.5h incl. breaks',
+ difficulty:'Mittel',
+ temp:'20–22°C',
+ travel:'Basel SBB → Leibstadt ~1h 15 (RegioExpress + S-Bahn)',
     entryStation:'Leibstadt (SBB · ~5 min walk to slip)',
     exitStation:'Laufenburg (SBB · ~5 min walk from exit)',
     returnTime:'~1h 20 back to Basel SBB',
     river:'Rhein',
-    tags:['day','warmest','closest'],
+ tags:['day','warmest','closest'],
     pills:[
       {c:'d','t':'11.6 km'},
       {c:'d','t':'3–4 hours'},
@@ -5668,51 +5669,51 @@ const ROUTES=[
     ],
     diag:[
       {cls:'ds',emoji:'🚀',name:'Leibstadt',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'🏖',name:'Dreispitz',sub:'Beach · km 3.8'},
+ {cls:'dm',emoji:'🏖',name:'Dreispitz',sub:'Beach · km 3.8'},
       {cls:'dm',emoji:'🏝',name:'Etzgen',sub:'Caribbean · km 6.8'},
-      {cls:'de',emoji:'🏰',name:'Laufenburg',sub:'Exit · km 11.6'}
-    ],
-    flow:'SMS 9234 · Q 2091 · Max 1300 m³/s',
-    facts:[
-      ['Entry','Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank'],
-      ['Exit','Laufenburg: Schlipf 200m after Laufenbrücke, left bank. ⚠️ Stay left'],
-      ['Hazard','Querströmung after bridge — stay left of channel'],
-      ['Beach stops','Dreispitz km 3.8 + Caribbean island km 6.8'],
-      ['Boat rental','No dedicated rental — bring own boats'],
-      ['Swimming','✅ Good. Avoid weir backflow at start']
+ {cls:'de',emoji:'🏰',name:'Laufenburg',sub:'Exit · km 11.6'}
+ ],
+ flow:'SMS 9234 · Q 2091 · Max 1300 m³/s',
+ facts:[
+ ['Entry','Leibstadt: Slipanlage 200m below Stauwehr Dogern, left bank'],
+ ['Exit','Laufenburg: Schlipf 200m after Laufenbrücke, left bank. Stay left'],
+ ['Hazard','Querströmung after bridge — stay left of channel'],
+ ['Beach stops','Dreispitz km 3.8 + Caribbean island km 6.8'],
+ ['Boat rental','No dedicated rental — bring own boats'],
+ ['Swimming','Good. Avoid weir backflow at start']
     ],
     pros:['Closest of the Rhine day routes','Warmest water of all routes','Sandy Caribbean beach mid-route','Medieval old town finish'],
     cons:['Starts next to a nuclear plant','No dedicated boat rental','Cross-current near bridge'],
-    fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
+ fit:'Easiest to organise, warmest water, best beach, most beautiful finish. Perfect first trip — everyone will want more.',
     mapCoords:[[47.5912,8.1772],[47.5898,8.1680],[47.5876,8.1585],[47.5848,8.1490],[47.5820,8.1395],[47.5790,8.1295],[47.5762,8.1190],[47.5740,8.1085],[47.5720,8.0975],[47.5702,8.0870],[47.5690,8.0775],[47.5680,8.0680],[47.5665,8.0590],[47.5640,8.0510],[47.5615,8.0475],[47.5602,8.0434],[47.5610,8.0510],[47.5615,8.0594]],
     waypoints:[
       {t:'entry',lat:47.5912,lng:8.1772,emoji:'🚀',name:'Leibstadt',desc:'Slipanlage, left bank, below Stauwehr Dogern'},
-      {t:'beach',lat:47.5702,lng:8.0684,emoji:'🏖',name:'Dreispitz beach',desc:'Sandy stop + Fischerhütte bar, km 3.8'},
-      {t:'swim',lat:47.5602,lng:8.0434,emoji:'🏝',name:'The Caribbean',desc:'Sandbar + swim spot, km 6.8 — the book calls it the Caribbean'},
-      {t:'hazard',lat:47.5640,lng:8.0540,emoji:'⚠️',name:'Cross-current',desc:'Querströmung after bridge — stay left'},
-      {t:'exit',lat:47.5615,lng:8.0594,emoji:'🏰',name:'Laufenburg',desc:'Schlipf 200m after Laufenbrücke, left bank. Exit before double-city!'}
-    ]
-  },
-  {
-    id:'d2',
-    type:'day',
-    emoji:'🏯',
-    badge:'Day Trip · Scenic',
+ {t:'beach',lat:47.5702,lng:8.0684,emoji:'🏖',name:'Dreispitz beach',desc:'Sandy stop + Fischerhütte bar, km 3.8'},
+ {t:'swim',lat:47.5602,lng:8.0434,emoji:'🏝',name:'The Caribbean',desc:'Sandbar + swim spot, km 6.8 — the book calls it the Caribbean'},
+ {t:'hazard',lat:47.5640,lng:8.0540,emoji:'',name:'Cross-current',desc:'Querströmung after bridge — stay left'},
+ {t:'exit',lat:47.5615,lng:8.0594,emoji:'🏰',name:'Laufenburg',desc:'Schlipf 200m after Laufenbrücke, left bank. Exit before double-city!'}
+ ]
+ },
+ {
+ id:'d2',
+ type:'day',
+ emoji:'🏯',
+ badge:'Day Trip · Scenic',
     name:'Stein am Rhein → Schaffhausen',
-    sub:'Rhein · 18.8 km · Most scenic',
-    verdict:'A UNESCO-worthy medieval old town launches you into the most picturesque stretch of the Rhine — frescoed houses, vineyards climbing the hills, a convent island, and a finish right before the waterfall (don\'t go over it).',
+ sub:'Rhein · 18.8 km · Most scenic',
+ verdict:'A UNESCO-worthy medieval old town launches you into the most picturesque stretch of the Rhine — frescoed houses, vineyards climbing the hills, a convent island, and a finish right before the waterfall (don\'t go over it).',
     photos:['./Region Stein am Rhein.jpg','./steinamrhein-insel-werd-rhein.jpg','./blick-auf-stein-am-rhein-von-der-insel-werd.jpg','./Rhein.webp'],
-    km:18.8,
-    hours:'4–5h',
-    hoursTotal:'6–7h incl. breaks',
-    difficulty:'Leicht',
-    temp:'19–23°C',
-    travel:'Basel SBB → Stein am Rhein ~1h 50 (IC via Zürich HB)',
+ km:18.8,
+ hours:'4–5h',
+ hoursTotal:'6–7h incl. breaks',
+ difficulty:'Leicht',
+ temp:'19–23°C',
+ travel:'Basel SBB → Stein am Rhein ~1h 50 (IC via Zürich HB)',
     entryStation:'Stein am Rhein (SBB · ~3 min walk to slip)',
     exitStation:'Schaffhausen (SBB · ~8 min walk from Schifflände)',
     returnTime:'~2h back to Basel SBB',
     river:'Rhein',
-    tags:['day','warmest'],
+ tags:['day','warmest'],
     pills:[
       {c:'d','t':'18.8 km'},
       {c:'d','t':'4–5 hours'},
@@ -5722,218 +5723,218 @@ const ROUTES=[
     ],
     diag:[
       {cls:'ds',emoji:'🏯',name:'Stein am Rhein',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'⛪',name:'Insel Werd',sub:'Convent · km 1'},
-      {cls:'dm',emoji:'🍇',name:'Diessenhofen',sub:'Vineyards · km 8'},
-      {cls:'dw',emoji:'⚠️',name:'EXIT NOW',sub:'km 18.8'},
+ {cls:'dm',emoji:'⛪',name:'Insel Werd',sub:'Convent · km 1'},
+ {cls:'dm',emoji:'🍇',name:'Diessenhofen',sub:'Vineyards · km 8'},
+ {cls:'dw',emoji:'',name:'EXIT NOW',sub:'km 18.8'},
       {cls:'de',emoji:'🏛',name:'Schaffhausen',sub:'Finish'}
-    ],
-    flow:'Stein am Rhein · Q 350 · Max 800 m³/s',
-    facts:[
-      ['Entry','Stein am Rhein: Public slip on left bank 300m downstream of bridge'],
-      ['Exit','Schaffhausen: ⚠️ CRITICAL — exit at Schifflände BEFORE Rheinfall. Do NOT continue.'],
-      ['Hazard','🚨 Rheinfall 4km past exit. Signs are clear. Exit WILL BE obvious.'],
-      ['Beach stops','Diessenhofen village (km 8), multiple vineyard stops'],
-      ['Boat rental','Rheinschlauchboot.ch — CHF 160/boat, rental + return'],
-      ['Swimming','✅ Excellent. Current is calm.']
-    ],
-    pros:['Most picturesque route','Medieval towns at both ends','Vineyards + convent island','Rental service available'],
-    cons:['Longest trip (4–5 hours)','Furthest from Basel (~2h)','⚠️ Rheinfall risk if you miss exit'],
-    fit:'For the people who want the most Instagram-worthy day. Calm water, beautiful villages, zero drama if you pay attention at the exit.',
+ ],
+ flow:'Stein am Rhein · Q 350 · Max 800 m³/s',
+ facts:[
+ ['Entry','Stein am Rhein: Public slip on left bank 300m downstream of bridge'],
+ ['Exit','Schaffhausen: CRITICAL — exit at Schifflände BEFORE Rheinfall. Do NOT continue.'],
+ ['Hazard','Rheinfall 4km past exit. Signs are clear. Exit WILL BE obvious.'],
+ ['Beach stops','Diessenhofen village (km 8), multiple vineyard stops'],
+ ['Boat rental','Rheinschlauchboot.ch — CHF 160/boat, rental + return'],
+ ['Swimming','Excellent. Current is calm.']
+ ],
+ pros:['Most picturesque route','Medieval towns at both ends','Vineyards + convent island','Rental service available'],
+    cons:['Longest trip (4–5 hours)','Furthest from Basel (~2h)','Rheinfall risk if you miss exit'],
+ fit:'For the people who want the most Instagram-worthy day. Calm water, beautiful villages, zero drama if you pay attention at the exit.',
     mapCoords:[[47.6602,8.8597],[47.6610,8.8540],[47.6635,8.8475],[47.6670,8.8395],[47.6700,8.8300],[47.6725,8.8195],[47.6745,8.8080],[47.6770,8.7960],[47.6810,8.7840],[47.6855,8.7720],[47.6883,8.7605],[47.6900,8.7490],[47.6912,8.7370],[47.6925,8.7250],[47.6940,8.7130],[47.6955,8.7010],[47.6970,8.6890],[47.6985,8.6770],[47.6992,8.6650],[47.6975,8.6530],[47.6950,8.6430],[47.6936,8.6316]],
     waypoints:[
       {t:'entry',lat:47.6602,lng:8.8597,emoji:'🏯',name:'Stein am Rhein',desc:'Public slip, left bank 300m downstream of bridge'},
-      {t:'sight',lat:47.6577,lng:8.8543,emoji:'⛪',name:'Insel Werd',desc:'Convent island, km 1 — slow-float it'},
-      {t:'food',lat:47.6883,lng:8.7521,emoji:'🍇',name:'Diessenhofen',desc:'Vineyard village stop, km 8 — wine + bakery'},
-      {t:'swim',lat:47.6840,lng:8.7100,emoji:'🏊',name:'Calm swim stretch',desc:'Quiet bank, km 10–13'},
-      {t:'hazard',lat:47.6920,lng:8.6400,emoji:'🚨',name:'EXIT SOON',desc:'Rheinfall is 4km past exit. Do NOT continue!'},
-      {t:'exit',lat:47.6936,lng:8.6316,emoji:'🏛',name:'Schaffhausen Schifflände',desc:'Exit HERE — km 18.8. Clear signs, impossible to miss.'}
-    ]
-  },
-  {
-    id:'d3',
-    type:'day',
-    emoji:'💦',
-    badge:'Day Trip · Dramatic',
+ {t:'sight',lat:47.6577,lng:8.8543,emoji:'⛪',name:'Insel Werd',desc:'Convent island, km 1 — slow-float it'},
+ {t:'food',lat:47.6883,lng:8.7521,emoji:'🍇',name:'Diessenhofen',desc:'Vineyard village stop, km 8 — wine + bakery'},
+ {t:'swim',lat:47.6840,lng:8.7100,emoji:'🏊',name:'Calm swim stretch',desc:'Quiet bank, km 10–13'},
+ {t:'hazard',lat:47.6920,lng:8.6400,emoji:'',name:'EXIT SOON',desc:'Rheinfall is 4km past exit. Do NOT continue!'},
+ {t:'exit',lat:47.6936,lng:8.6316,emoji:'🏛',name:'Schaffhausen Schifflände',desc:'Exit HERE — km 18.8. Clear signs, impossible to miss.'}
+ ]
+ },
+ {
+ id:'d3',
+ type:'day',
+ emoji:'💦',
+ badge:'Day Trip · Dramatic',
     name:'Rheinfall → Kloster Rheinau',
-    sub:'Rhein · 7 km · Most dramatic · moonlight trip',
-    verdict:'The shortest route, but the most cinematic. Launch below Europe\'s largest waterfall, drift past a baroque monastery island, finish at a thousand-year-old Benedictine complex. Works as a moonlight trip on clear nights.',
-    photos:['./Rheinfall.jpeg','./Rhein bei Neuhausen.jpg','./Rhein zurcher weinland.jpg'],
-    km:7,
-    hours:'2–3h',
-    hoursTotal:'3.5–5h incl. breaks',
-    difficulty:'Leicht',
-    temp:'18–20°C',
-    travel:'Basel SBB → Neuhausen Rheinfall ~1h 10 (via Schaffhausen)',
+ sub:'Rhein · 7 km · Most dramatic · moonlight trip',
+ verdict:'The shortest route, but the most cinematic. Launch below Europe\'s largest waterfall, drift past a baroque monastery island, finish at a thousand-year-old Benedictine complex. Works as a moonlight trip on clear nights.',
+ photos:['./Rheinfall.jpeg','./Rhein bei Neuhausen.jpg','./Rhein zurcher weinland.jpg'],
+ km:7,
+ hours:'2–3h',
+ hoursTotal:'3.5–5h incl. breaks',
+ difficulty:'Leicht',
+ temp:'18–20°C',
+ travel:'Basel SBB → Neuhausen Rheinfall ~1h 10 (via Schaffhausen)',
     entryStation:'Neuhausen Rheinfall (SBB · ~10 min walk to slip below falls)',
     exitStation:'Marthalen or Dachsen (SBB · ~15 min walk from Rheinau abbey)',
     returnTime:'~1h 10 back to Basel SBB',
     river:'Rhein',
-    tags:['day','moonlight'],
-    pills:[
-      {c:'d','t':'7 km'},
+ tags:['day','moonlight'],
+ pills:[
+ {c:'d','t':'7 km'},
       {c:'d','t':'2–3 hours'},
       {c:'d','t':'Leicht'},
       {c:'w','t':'moonlight trip'},
-      {c:'b','t':'Basel ~1h 10'}
+ {c:'b','t':'Basel ~1h 10'}
     ],
     diag:[
       {cls:'ds',emoji:'💦',name:'Rheinfall',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'🌳',name:'Nohl',sub:'Forest · km 3'},
+ {cls:'dm',emoji:'🌳',name:'Nohl',sub:'Forest · km 3'},
       {cls:'de',emoji:'⛪',name:'Rheinau',sub:'Abbey · km 7'}
-    ],
-    flow:'Neuhausen · Q 350 m³/s'
-    ,
-    facts:[
-      ['Entry','Below Rheinfall: marked public entry on left bank downstream of basin'],
-      ['Exit','Rheinau: Jetty at the Benedictine abbey, left bank'],
-      ['Hazard','Initial turbulence from the falls. Stay left, 200m downstream before you relax.'],
-      ['Beach stops','Nohl forest clearings, Rheinau abbey approach'],
-      ['Boat rental','None. Bring own.'],
-      ['Swimming','✅ Calm after first 200m. Magical at dusk.']
+ ],
+ flow:'Neuhausen · Q 350 m³/s'
+ ,
+ facts:[
+ ['Entry','Below Rheinfall: marked public entry on left bank downstream of basin'],
+ ['Exit','Rheinau: Jetty at the Benedictine abbey, left bank'],
+ ['Hazard','Initial turbulence from the falls. Stay left, 200m downstream before you relax.'],
+ ['Beach stops','Nohl forest clearings, Rheinau abbey approach'],
+ ['Boat rental','None. Bring own.'],
+ ['Swimming','Calm after first 200m. Magical at dusk.']
     ],
     pros:['Shortest, easiest day out','Start at iconic waterfall','Moonlight-trip capable','Baroque abbey finish'],
     cons:['Colder water than other routes','No rental','Initial turbulence requires attention'],
-    fit:'When you want drama without commitment. Half a day, one beer at the abbey, home for dinner. Best under a full moon.',
+ fit:'When you want drama without commitment. Half a day, one beer at the abbey, home for dinner. Best under a full moon.',
     mapCoords:[[47.6781,8.6154],[47.6768,8.6090],[47.6750,8.6035],[47.6725,8.5995],[47.6695,8.5975],[47.6660,8.5980],[47.6625,8.6005],[47.6595,8.6040],[47.6560,8.6080],[47.6525,8.6115],[47.6490,8.6140],[47.6455,8.6160],[47.6425,8.6170],[47.6403,8.6175]],
     waypoints:[
       {t:'entry',lat:47.6781,lng:8.6154,emoji:'💦',name:'Below Rheinfall',desc:'Marked public entry, left bank downstream of basin'},
-      {t:'hazard',lat:47.6770,lng:8.6130,emoji:'⚠️',name:'Initial turbulence',desc:'Stay left, 200m before you relax — falls backflow'},
-      {t:'sight',lat:47.6681,lng:8.6000,emoji:'🌳',name:'Nohl forest',desc:'Quiet forest clearings, km 3'},
-      {t:'swim',lat:47.6550,lng:8.6100,emoji:'🏊',name:'Evening swim',desc:'Best calm stretch — magical at dusk'},
-      {t:'exit',lat:47.6403,lng:8.6175,emoji:'⛪',name:'Kloster Rheinau',desc:'Jetty at the Benedictine abbey, left bank'}
-    ]
-  },
-  {
-    id:'o1',
-    type:'night',
-    emoji:'⛰️',
-    badge:'Overnight · The Dream',
+ {t:'hazard',lat:47.6770,lng:8.6130,emoji:'',name:'Initial turbulence',desc:'Stay left, 200m before you relax — falls backflow'},
+ {t:'sight',lat:47.6681,lng:8.6000,emoji:'🌳',name:'Nohl forest',desc:'Quiet forest clearings, km 3'},
+ {t:'swim',lat:47.6550,lng:8.6100,emoji:'🏊',name:'Evening swim',desc:'Best calm stretch — magical at dusk'},
+ {t:'exit',lat:47.6403,lng:8.6175,emoji:'⛪',name:'Kloster Rheinau',desc:'Jetty at the Benedictine abbey, left bank'}
+ ]
+ },
+ {
+ id:'o1',
+ type:'night',
+ emoji:'⛰️',
+ badge:'Overnight · The Dream',
     name:'Thun → Bern → Hinterkappelen',
-    sub:'Aare · 44 km · The dream route',
-    verdict:'The big one. The turquoise glacier-fed Aare, two perfect days, camping under the stars at Eichholz, drifting through Bern the second morning past the parliament, past the bear park, into the final sandy curves. This is the trip people talk about for years.',
-    photos:['./Mit dem Gummiboot auf der Aare.webp','./Aare von Thun nach Bern.webp','./aarebootle_Mit dem gummiboot von thun nach bern.jpg','./thun bern.jpg'],
-    km:44,
-    hours:'2 days',
-    hoursTotal:'2 days · ~5h paddling each',
-    difficulty:'Mittel',
-    temp:'16–20°C',
-    travel:'Basel SBB → Thun ~1h 25 (direct IC)',
+ sub:'Aare · 44 km · The dream route',
+ verdict:'The big one. The turquoise glacier-fed Aare, two perfect days, camping under the stars at Eichholz, drifting through Bern the second morning past the parliament, past the bear park, into the final sandy curves. This is the trip people talk about for years.',
+ photos:['./Mit dem Gummiboot auf der Aare.webp','./Aare von Thun nach Bern.webp','./aarebootle_Mit dem gummiboot von thun nach bern.jpg','./thun bern.jpg'],
+ km:44,
+ hours:'2 days',
+ hoursTotal:'2 days · ~5h paddling each',
+ difficulty:'Mittel',
+ temp:'16–20°C',
+ travel:'Basel SBB → Thun ~1h 25 (direct IC)',
     entryStation:'Thun (SBB · ~15 min walk to Schwäbis Strand)',
     exitStation:'Hinterkappelen (Postbus → Bern SBB ~20 min)',
     returnTime:'~1h from Bern SBB → Basel',
-    river:'Aare',
-    tags:['night'],
-    pills:[
-      {c:'d','t':'44 km · 2 days'},
+ river:'Aare',
+ tags:['night'],
+ pills:[
+ {c:'d','t':'44 km · 2 days'},
       {c:'d','t':'Mittel'},
       {c:'w','t':'16–20°C glacier'},
       {c:'s','t':'Camping Eichholz'},
-      {c:'b','t':'Basel ~1h 25'}
+ {c:'b','t':'Basel ~1h 25'}
     ],
     diag:[
       {cls:'ds',emoji:'🏔',name:'Thun',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'🏖',name:'Kiesen',sub:'Lunch · km 12'},
-      {cls:'dc',emoji:'⛺',name:'Eichholz',sub:'Camp · km 28'},
+ {cls:'dm',emoji:'🏖',name:'Kiesen',sub:'Lunch · km 12'},
+ {cls:'dc',emoji:'⛺',name:'Eichholz',sub:'Camp · km 28'},
       {cls:'dm',emoji:'🐻',name:'Bern',sub:'Day 2 · km 32'},
-      {cls:'de',emoji:'🌅',name:'Hinterkappelen',sub:'Exit · km 44'}
-    ],
-    flow:'Thun · Q 220 m³/s · Max 380 m³/s',
-    facts:[
-      ['Entry','Thun: Schwäbis Strand, right bank 400m downstream of Scherzligschleuse'],
-      ['Exit','Hinterkappelen: Wohlensee shore, left bank. ⚠️ Exit BEFORE Wohleibrücke.'],
-      ['Day 1','Thun → Eichholz 28km · 5–6 hours paddling · camp'],
-      ['Day 2','Eichholz → Bern 4km → Hinterkappelen 12km · 3–4 hours'],
-      ['Camping','Camping Eichholz: CHF 14/night + tent. Book early. campingeichholz.ch'],
-      ['Swimming','✅ Cold but incredible. Swiss locals swim here daily.']
-    ],
-    pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Direct IC train all the way'],
+ {cls:'de',emoji:'🌅',name:'Hinterkappelen',sub:'Exit · km 44'}
+ ],
+ flow:'Thun · Q 220 m³/s · Max 380 m³/s',
+ facts:[
+ ['Entry','Thun: Schwäbis Strand, right bank 400m downstream of Scherzligschleuse'],
+ ['Exit','Hinterkappelen: Wohlensee shore, left bank. Exit BEFORE Wohleibrücke.'],
+ ['Day 1','Thun → Eichholz 28km · 5–6 hours paddling · camp'],
+ ['Day 2','Eichholz → Bern 4km → Hinterkappelen 12km · 3–4 hours'],
+ ['Camping','Camping Eichholz: CHF 14/night + tent. Book early. campingeichholz.ch'],
+ ['Swimming','Cold but incredible. Swiss locals swim here daily.']
+ ],
+ pros:['THE iconic Swiss river trip','Two days, zero rush','Camp under the stars','Drift through Bern past parliament + bear park','Direct IC train all the way'],
     cons:['Glacier-cold water (16–20°C)','Requires camping gear','Must book Eichholz ahead','Most commitment'],
-    fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
+ fit:'The trip of the summer. Everyone should do this once in their life. Take Friday + Monday off, do it as a full long weekend.',
     mapCoords:[[46.7580,7.6250],[46.7660,7.6180],[46.7745,7.6100],[46.7830,7.6015],[46.7915,7.5925],[46.7995,7.5840],[46.8085,7.5760],[46.8183,7.5700],[46.8275,7.5625],[46.8370,7.5555],[46.8465,7.5485],[46.8560,7.5410],[46.8650,7.5340],[46.8740,7.5265],[46.8825,7.5180],[46.8910,7.5085],[46.8990,7.4985],[46.9065,7.4880],[46.9135,7.4770],[46.9200,7.4660],[46.9260,7.4560],[46.9320,7.4480],[46.9385,7.4432],[46.9440,7.4420],[46.9480,7.4374],[46.9530,7.4280],[46.9580,7.4170],[46.9625,7.4060],[46.9660,7.3965],[46.9697,7.3883]],
     waypoints:[
       {t:'entry',lat:46.7580,lng:7.6250,emoji:'🏔',name:'Thun Schwäbis',desc:'Right bank 400m downstream of Scherzligschleuse'},
-      {t:'beach',lat:46.8183,lng:7.5800,emoji:'🏖',name:'Kiesen lunch stop',desc:'Wide sandy bank, km 12 — stop for food'},
-      {t:'swim',lat:46.8700,lng:7.5300,emoji:'🏊',name:'Uttigen swim',desc:'Classic local swim spot, km 20'},
-      {t:'camp',lat:46.9385,lng:7.4632,emoji:'⛺',name:'Camping Eichholz',desc:'Camp night one · CHF 14/night + tent · book ahead'},
-      {t:'sight',lat:46.9480,lng:7.4474,emoji:'🐻',name:'Bern: Bear Park + Parliament',desc:'Day 2 · drift through Bern past the parliament'},
-      {t:'hazard',lat:46.9650,lng:7.3950,emoji:'⚠️',name:'EXIT BEFORE bridge',desc:'Wohleibrücke = dam ahead. Exit at Hinterkappelen shore!'},
-      {t:'exit',lat:46.9697,lng:7.3883,emoji:'🌅',name:'Hinterkappelen',desc:'Wohlensee shore, left bank, km 44'}
-    ]
-  },
-  {
-    id:'o2',
-    type:'night',
-    emoji:'🌲',
-    badge:'Overnight · Wildest',
+ {t:'beach',lat:46.8183,lng:7.5800,emoji:'🏖',name:'Kiesen lunch stop',desc:'Wide sandy bank, km 12 — stop for food'},
+ {t:'swim',lat:46.8700,lng:7.5300,emoji:'🏊',name:'Uttigen swim',desc:'Classic local swim spot, km 20'},
+ {t:'camp',lat:46.9385,lng:7.4632,emoji:'⛺',name:'Camping Eichholz',desc:'Camp night one · CHF 14/night + tent · book ahead'},
+ {t:'sight',lat:46.9480,lng:7.4474,emoji:'🐻',name:'Bern: Bear Park + Parliament',desc:'Day 2 · drift through Bern past the parliament'},
+ {t:'hazard',lat:46.9650,lng:7.3950,emoji:'',name:'EXIT BEFORE bridge',desc:'Wohleibrücke = dam ahead. Exit at Hinterkappelen shore!'},
+ {t:'exit',lat:46.9697,lng:7.3883,emoji:'🌅',name:'Hinterkappelen',desc:'Wohlensee shore, left bank, km 44'}
+ ]
+ },
+ {
+ id:'o2',
+ type:'night',
+ emoji:'🌲',
+ badge:'Overnight · Wildest',
     name:'Bremgarten → Gebenstorf',
-    sub:'Reuss · 25.3 km · Advanced · Wildest',
-    verdict:'The secret one. Forgotten medieval Bremgarten, a forested reuss wilderness most people have never heard of, a night at a quiet riverside camping, and a finish at the Wasserschloss — where three Swiss rivers meet. Advanced. Empty. Wild.',
-    photos:['./Bremgarten.jpg','./bremgarten-melligen.jpg','./Easy-Rafting-Bremgarten-Mellingen776x776.jpg','./Bremgarten AG.jpg'],
-    km:25.3,
-    hours:'2 days',
-    hoursTotal:'2 days · ~4h paddling each',
-    difficulty:'Anspruchsvoll',
-    temp:'18–21°C',
-    travel:'Basel SBB → Bremgarten West ~1h 40 (via Dietikon/BDWM)',
+ sub:'Reuss · 25.3 km · Advanced · Wildest',
+ verdict:'The secret one. Forgotten medieval Bremgarten, a forested reuss wilderness most people have never heard of, a night at a quiet riverside camping, and a finish at the Wasserschloss — where three Swiss rivers meet. Advanced. Empty. Wild.',
+ photos:['./Bremgarten.jpg','./bremgarten-melligen.jpg','./Easy-Rafting-Bremgarten-Mellingen776x776.jpg','./Bremgarten AG.jpg'],
+ km:25.3,
+ hours:'2 days',
+ hoursTotal:'2 days · ~4h paddling each',
+ difficulty:'Anspruchsvoll',
+ temp:'18–21°C',
+ travel:'Basel SBB → Bremgarten West ~1h 40 (via Dietikon/BDWM)',
     entryStation:'Bremgarten West (BDWM · ~5 min walk to slip)',
     exitStation:'Turgi (SBB · ~20 min walk from Wasserschloss Gebenstorf)',
     returnTime:'~45 min from Turgi back to Basel SBB',
-    river:'Reuss',
-    tags:['night'],
-    pills:[
-      {c:'d','t':'25.3 km · 2 days'},
-      {c:'x','t':'⚠️ Advanced'},
-      {c:'w','t':'18–21°C'},
+ river:'Reuss',
+ tags:['night'],
+ pills:[
+ {c:'d','t':'25.3 km · 2 days'},
+      {c:'x','t':'Advanced'},
+ {c:'w','t':'18–21°C'},
       {c:'s','t':'Camping Sulz'},
-      {c:'b','t':'Basel ~1h 40'}
+ {c:'b','t':'Basel ~1h 40'}
     ],
     diag:[
       {cls:'ds',emoji:'🏰',name:'Bremgarten',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'🌲',name:'Forest',sub:'Wild · km 6'},
+ {cls:'dm',emoji:'🌲',name:'Forest',sub:'Wild · km 6'},
       {cls:'dc',emoji:'⛺',name:'Sulz',sub:'Camp · km 14'},
       {cls:'dm',emoji:'🏰',name:'Mellingen',sub:'Day 2'},
-      {cls:'de',emoji:'💎',name:'Gebenstorf',sub:'Exit · km 25.3'}
-    ],
-    flow:'Mellingen · Q 180 m³/s · NOT > 250',
-    facts:[
-      ['Entry','Bremgarten: Slip at Reussufer 300m downstream of old covered bridge'],
-      ['Exit','Gebenstorf: Wasserschloss — where Reuss, Aare, Limmat meet. Left bank.'],
-      ['Hazard','Advanced only. Requires previous river experience. Check level BEFORE going.'],
-      ['Day 1','Bremgarten → Sulz 14km · 4 hours · camp'],
-      ['Camping','Camping Sulz: CHF ~18/tent. camping-sulz.ch · +41 56 496 48 79'],
-      ['Swimming','✅ Excellent. Rarely anyone around.']
-    ],
-    pros:['Wildest of all routes','Empty — barely any other boats','Covered medieval bridges','End at Swiss Wasserschloss','Affordable riverside camp'],
+ {cls:'de',emoji:'💎',name:'Gebenstorf',sub:'Exit · km 25.3'}
+ ],
+ flow:'Mellingen · Q 180 m³/s · NOT > 250',
+ facts:[
+ ['Entry','Bremgarten: Slip at Reussufer 300m downstream of old covered bridge'],
+ ['Exit','Gebenstorf: Wasserschloss — where Reuss, Aare, Limmat meet. Left bank.'],
+ ['Hazard','Advanced only. Requires previous river experience. Check level BEFORE going.'],
+ ['Day 1','Bremgarten → Sulz 14km · 4 hours · camp'],
+ ['Camping','Camping Sulz: CHF ~18/tent. camping-sulz.ch · +41 56 496 48 79'],
+ ['Swimming','Excellent. Rarely anyone around.']
+ ],
+ pros:['Wildest of all routes','Empty — barely any other boats','Covered medieval bridges','End at Swiss Wasserschloss','Affordable riverside camp'],
     cons:['Advanced only — experience required','Must check water level carefully','Camping is basic','Hard to organise return transport'],
-    fit:'For the group that\'s already done the Aare and wants something more remote. Save this for year two.',
+ fit:'For the group that\'s already done the Aare and wants something more remote. Save this for year two.',
     mapCoords:[[47.3522,8.3421],[47.3580,8.3395],[47.3640,8.3355],[47.3700,8.3310],[47.3760,8.3270],[47.3820,8.3255],[47.3870,8.3260],[47.3892,8.3242],[47.3945,8.3180],[47.4005,8.3095],[47.4060,8.3000],[47.4105,8.2900],[47.4145,8.2800],[47.4176,8.2724],[47.4200,8.2650],[47.4215,8.2560],[47.4220,8.2470],[47.4195,8.2420],[47.4174,8.2402],[47.4240,8.2395],[47.4320,8.2390],[47.4405,8.2395],[47.4490,8.2400],[47.4575,8.2410],[47.4660,8.2405],[47.4736,8.2400]],
     waypoints:[
       {t:'entry',lat:47.3522,lng:8.3421,emoji:'🏰',name:'Bremgarten',desc:'Slip 300m downstream of the old covered bridge'},
-      {t:'sight',lat:47.3750,lng:8.3300,emoji:'🌲',name:'Forest wilderness',desc:'Quiet forested stretch, km 6 — barely anyone around'},
-      {t:'camp',lat:47.3892,lng:8.3242,emoji:'⛺',name:'Camping Sulz',desc:'Night camp · ~CHF 18/tent · camping-sulz.ch'},
-      {t:'sight',lat:47.4176,lng:8.2824,emoji:'🏰',name:'Mellingen covered bridge',desc:'Day 2 · historic wooden bridge'},
-      {t:'hazard',lat:47.4350,lng:8.2500,emoji:'⚠️',name:'Check level!',desc:'NEVER if Mellingen Q > 250 m³/s'},
-      {t:'swim',lat:47.4500,lng:8.2410,emoji:'🏊',name:'Final swim',desc:'Calm stretch before the junction'},
-      {t:'exit',lat:47.4736,lng:8.2400,emoji:'💎',name:'Wasserschloss Gebenstorf',desc:'Where Reuss, Aare + Limmat meet. Left bank, km 25.3'}
-    ]
-  },
-  {
-    id:'d4',
-    type:'day',
-    emoji:'🏙',
-    badge:'Day Trip · Urban escape',
+ {t:'sight',lat:47.3750,lng:8.3300,emoji:'🌲',name:'Forest wilderness',desc:'Quiet forested stretch, km 6 — barely anyone around'},
+ {t:'camp',lat:47.3892,lng:8.3242,emoji:'⛺',name:'Camping Sulz',desc:'Night camp · ~CHF 18/tent · camping-sulz.ch'},
+ {t:'sight',lat:47.4176,lng:8.2824,emoji:'🏰',name:'Mellingen covered bridge',desc:'Day 2 · historic wooden bridge'},
+ {t:'hazard',lat:47.4350,lng:8.2500,emoji:'',name:'Check level!',desc:'NEVER if Mellingen Q > 250 m³/s'},
+ {t:'swim',lat:47.4500,lng:8.2410,emoji:'🏊',name:'Final swim',desc:'Calm stretch before the junction'},
+ {t:'exit',lat:47.4736,lng:8.2400,emoji:'💎',name:'Wasserschloss Gebenstorf',desc:'Where Reuss, Aare + Limmat meet. Left bank, km 25.3'}
+ ]
+ },
+ {
+ id:'d4',
+ type:'day',
+ emoji:'🏙',
+ badge:'Day Trip · Urban escape',
     name:'Zürich → Dietikon',
-    sub:'Limmat · 10 km · The party mile',
-    verdict:'"There\'s no more beautiful way to escape Zürich — at least if you like the agglomeration." Start at the Wipkingerpark stairs in the heart of Zurich, drift past the Hardturm, the Werdinsel beach, the Kloster Fahr nuns, and finish at Dietikon train station. In high summer it becomes a party mile.',
-    photos:['./zurich 12.jpg','./zurich 9.jpeg','./zurich 5.jpg','./zurich 6.jpg','./zurich 3.jpg','./zurich 2.webp'],
+ sub:'Limmat · 10 km · The party mile',
+ verdict:'"There\'s no more beautiful way to escape Zürich — at least if you like the agglomeration." Start at the Wipkingerpark stairs in the heart of Zurich, drift past the Hardturm, the Werdinsel beach, the Kloster Fahr nuns, and finish at Dietikon train station. In high summer it becomes a party mile.',
+ photos:['./zurich 12.jpg','./zurich 9.jpeg','./zurich 5.jpg','./zurich 6.jpg','./zurich 3.jpg','./zurich 2.webp'],
     km:10,
     hours:'2–2½h',
     hoursTotal:'3.5–4h incl. breaks',
-    difficulty:'Mittel',
-    temp:'19–22°C',
-    travel:'Basel → Zürich HB → tram to Wipkingerpark · ~1h 15 total',
-    river:'Limmat',
-    tags:['day','moonlight'],
+ difficulty:'Mittel',
+ temp:'19–22°C',
+ travel:'Basel → Zürich HB → tram to Wipkingerpark · ~1h 15 total',
+ river:'Limmat',
+ tags:['day','moonlight'],
     entryStation:'Zürich Wipkingerpark (tram, 2 min)',
     altEntryStation:'Zürich Tüffenwies (bus, 5 min walk to Höngger Wehr)',
     exitStation:'Bahnhof Dietikon (1 min walk)',
@@ -5942,49 +5943,49 @@ const ROUTES=[
     nightTour:true,
     pills:[
       {c:'d',t:'10 km'},
-      {c:'d',t:'2–2½ hours'},
-      {c:'d',t:'Mittel'},
-      {c:'w',t:'19–22°C'},
-      {c:'b',t:'Basel ~1h 15'},
-      {c:'s',t:'🌙 moonlight OK'}
-    ],
-    diag:[
-      {cls:'ds',emoji:'🏙',name:'Wipkingerpark',sub:'Entry · km 0'},
-      {cls:'dm',emoji:'🏰',name:'Hardturm',sub:'km 0.7'},
-      {cls:'dw',emoji:'⚠️',name:'Höngger Wehr',sub:'Portage LEFT · km 2.5'},
-      {cls:'dm',emoji:'🏖',name:'Werdinsel',sub:'Beach · km 3'},
-      {cls:'dw',emoji:'⚠️',name:'Mühliwuhr',sub:'Pass LEFT · km 6.5'},
+ {c:'d',t:'2–2½ hours'},
+ {c:'d',t:'Mittel'},
+ {c:'w',t:'19–22°C'},
+ {c:'b',t:'Basel ~1h 15'},
+ {c:'s',t:'moonlight OK'}
+ ],
+ diag:[
+ {cls:'ds',emoji:'🏙',name:'Wipkingerpark',sub:'Entry · km 0'},
+ {cls:'dm',emoji:'🏰',name:'Hardturm',sub:'km 0.7'},
+      {cls:'dw',emoji:'',name:'Höngger Wehr',sub:'Portage LEFT · km 2.5'},
+ {cls:'dm',emoji:'🏖',name:'Werdinsel',sub:'Beach · km 3'},
+ {cls:'dw',emoji:'',name:'Mühliwuhr',sub:'Pass LEFT · km 6.5'},
       {cls:'dm',emoji:'⛪',name:'Kloster Fahr',sub:'Monastery · km 7.5'},
-      {cls:'de',emoji:'🚆',name:'Dietikon',sub:'Exit · km 10'}
-    ],
-    flow:'SMS to 9234: Q 2099 · max 80 m³/s at Zürich',
-    facts:[
-      ['Entry','Wipkingerpark stair landing. Tram from Zürich HB ~2 min.'],
-      ['Exit','Nötzliwiese, Dietikon. End of long low concrete wall. Train station 1 min walk.'],
-      ['Hazard 1','Höngger Wehr (km 2.5) — PORTAGE required. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'],
-      ['Hazard 2','Mühliwuhr (km 6.5) — impassable wooden-stake row. Pass on the LEFT (verified).'],
-      ['Beach stops','Werdinsel (km 3) is the main one — half of Zürich is here on a sunny day.'],
-      ['Food on route','Kafi Tintenfisch at put-in · Werdinsel Bar (Apr–Oct) · Zu den Zwei Raben at Kloster Fahr (Wed–Sun)'],
-      ['Boat rental','None mentioned — bring your own.'],
-      ['Swimming','✅ Good. Avoid the Mühliwuhr zone between Strassenbrücke Unterengstringen and the stakes.'],
-      ['Short variant','Werdinsel → Dietikon, ~1½h. Skip the city start if you want.']
-    ],
-    pros:['Closest river escape from Zürich — tram from HB','Werdinsel beach + Kloster Fahr garden restaurant','Moonlight tour suitable (city lights, churches)','Easy return — 20 min from Dietikon to Zürich HB','Short variant available for half-day energy'],
+ {cls:'de',emoji:'🚆',name:'Dietikon',sub:'Exit · km 10'}
+ ],
+ flow:'SMS to 9234: Q 2099 · max 80 m³/s at Zürich',
+ facts:[
+ ['Entry','Wipkingerpark stair landing. Tram from Zürich HB ~2 min.'],
+ ['Exit','Nötzliwiese, Dietikon. End of long low concrete wall. Train station 1 min walk.'],
+ ['Hazard 1','Höngger Wehr (km 2.5) — PORTAGE required. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'],
+ ['Hazard 2','Mühliwuhr (km 6.5) — impassable wooden-stake row. Pass on the LEFT (verified).'],
+ ['Beach stops','Werdinsel (km 3) is the main one — half of Zürich is here on a sunny day.'],
+ ['Food on route','Kafi Tintenfisch at put-in · Werdinsel Bar (Apr–Oct) · Zu den Zwei Raben at Kloster Fahr (Wed–Sun)'],
+ ['Boat rental','None mentioned — bring your own.'],
+ ['Swimming','Good. Avoid the Mühliwuhr zone between Strassenbrücke Unterengstringen and the stakes.'],
+ ['Short variant','Werdinsel → Dietikon, ~1½h. Skip the city start if you want.']
+ ],
+ pros:['Closest river escape from Zürich — tram from HB','Werdinsel beach + Kloster Fahr garden restaurant','Moonlight tour suitable (city lights, churches)','Easy return — 20 min from Dietikon to Zürich HB','Short variant available for half-day energy'],
     cons:['Two hazards need attention — Höngger Wehr portage + Mühliwuhr','High traffic on warm days — "party mile" energy','Furthest from Basel of all routes (~1h 15)','Industrial start (Schlieren, A1 parallel for 2km)'],
-    fit:'For the day where you want to be in/around a city, drift past medieval towers and a Benedictine monastery, and end at a real train station with one transfer back. The "city escape" route — not the wilderness one.',
+ fit:'For the day where you want to be in/around a city, drift past medieval towers and a Benedictine monastery, and end at a real train station with one transfer back. The "city escape" route — not the wilderness one.',
     mapCoords:[[47.3885,8.5270],[47.3900,8.5230],[47.3912,8.5190],[47.3920,8.5155],[47.3930,8.5125],[47.3940,8.5095],[47.3952,8.5065],[47.3960,8.5030],[47.3968,8.4990],[47.3978,8.4945],[47.3990,8.4900],[47.4000,8.4855],[47.4010,8.4805],[47.4015,8.4755],[47.4018,8.4705],[47.4020,8.4650],[47.4022,8.4580],[47.4025,8.4510],[47.4028,8.4435],[47.4030,8.4355],[47.4030,8.4275],[47.4028,8.4195],[47.4025,8.4115],[47.4028,8.4040],[47.4030,8.3970]],
     waypoints:[
       {t:'entry',lat:47.3885,lng:8.5270,emoji:'🏙',name:'Wipkingerpark',desc:'Wide stair landing put-in. Tram 2 min from Zürich HB.'},
-      {t:'sight',lat:47.3920,lng:8.5170,emoji:'🏰',name:'Hardturm',desc:'Ivy-covered 13th-century medieval tower with tent roof. km 0.7.'},
-      {t:'sight',lat:47.3935,lng:8.5130,emoji:'⛪',name:'Höngg church',desc:'Picturesque village on the vineyard hill. Current slows here.'},
-      {t:'hazard',lat:47.3940,lng:8.5100,emoji:'⚠️',name:'Höngger Wehr — PORTAGE',desc:'km 2.5. MUST portage. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'},
-      {t:'beach',lat:47.3960,lng:8.5050,emoji:'🏖',name:'Werdinsel',desc:'Half of Zürich is here on a sunny day. Werdinsel Bar & Restaurant (Apr–Oct daily). km 3.'},
-      {t:'swim',lat:47.3990,lng:8.4900,emoji:'🏊',name:'Schwallstrecken',desc:'Two gentle rapids after Werdinsel — audible from afar. Fun, harmless.'},
-      {t:'sight',lat:47.4000,lng:8.4800,emoji:'🛣',name:'A1 Autobahnbrücke',desc:'Leaving the city. A1 runs parallel for ~2 km. km 4.5.'},
-      {t:'hazard',lat:47.4050,lng:8.4600,emoji:'⚠️',name:'Mühliwuhr',desc:'Impassable wooden-stake weir. Pass on the LEFT (verified from satellite). 150m after Strassenbrücke Unterengstringen. km 6.5.'},
-      {t:'food',lat:47.4020,lng:8.4680,emoji:'⛪',name:'Kloster Fahr',desc:'Baroque Benedictine monastery (1130, 25 nuns today). Garden restaurant "Zu den Zwei Raben" Wed–Sun. Land on grass embankment. km 7.5.'},
-      {t:'sight',lat:47.4025,lng:8.4300,emoji:'🏭',name:'Schlieren',desc:'Industrial zone with Bauhaus building center. Right curve. km 8.5.'},
-      {t:'exit',lat:47.4030,lng:8.3970,emoji:'🚆',name:'Dietikon Nötzliwiese',desc:'Exit at end of long low concrete wall. Bahnhof Dietikon 1 min walk. S-Bahn back to Zürich HB ~20 min. km 10.'}
+ {t:'sight',lat:47.3920,lng:8.5170,emoji:'🏰',name:'Hardturm',desc:'Ivy-covered 13th-century medieval tower with tent roof. km 0.7.'},
+ {t:'sight',lat:47.3935,lng:8.5130,emoji:'⛪',name:'Höngg church',desc:'Picturesque village on the vineyard hill. Current slows here.'},
+ {t:'hazard',lat:47.3940,lng:8.5100,emoji:'',name:'Höngger Wehr — PORTAGE',desc:'km 2.5. MUST portage. Stay LEFT. Two signed exits before Europabrücke at km 2.4.'},
+ {t:'beach',lat:47.3960,lng:8.5050,emoji:'🏖',name:'Werdinsel',desc:'Half of Zürich is here on a sunny day. Werdinsel Bar & Restaurant (Apr–Oct daily). km 3.'},
+ {t:'swim',lat:47.3990,lng:8.4900,emoji:'🏊',name:'Schwallstrecken',desc:'Two gentle rapids after Werdinsel — audible from afar. Fun, harmless.'},
+ {t:'sight',lat:47.4000,lng:8.4800,emoji:'🛣',name:'A1 Autobahnbrücke',desc:'Leaving the city. A1 runs parallel for ~2 km. km 4.5.'},
+ {t:'hazard',lat:47.4050,lng:8.4600,emoji:'',name:'Mühliwuhr',desc:'Impassable wooden-stake weir. Pass on the LEFT (verified from satellite). 150m after Strassenbrücke Unterengstringen. km 6.5.'},
+ {t:'food',lat:47.4020,lng:8.4680,emoji:'⛪',name:'Kloster Fahr',desc:'Baroque Benedictine monastery (1130, 25 nuns today). Garden restaurant "Zu den Zwei Raben" Wed–Sun. Land on grass embankment. km 7.5.'},
+ {t:'sight',lat:47.4025,lng:8.4300,emoji:'🏭',name:'Schlieren',desc:'Industrial zone with Bauhaus building center. Right curve. km 8.5.'},
+ {t:'exit',lat:47.4030,lng:8.3970,emoji:'🚆',name:'Dietikon Nötzliwiese',desc:'Exit at end of long low concrete wall. Bahnhof Dietikon 1 min walk. S-Bahn back to Zürich HB ~20 min. km 10.'}
     ]
   }
 ];
@@ -6202,7 +6203,7 @@ const saveAvail=a=>{
     const[y,m,d]=newBest.split('-');
     const dt=new Date(+y,+m-1,+d);
     const label=dt.toLocaleDateString('en-CH',{weekday:'long',month:'long',day:'numeric'});
-    setTimeout(()=>fireWhisper('A new best day just appeared — '+label+'. ❆'),1200);
+ setTimeout(()=>fireWhisper('A new best day just appeared — '+label+'. ❆'),1200);
   }
 };
 const getCrew=()=>S.get('gb_crew')||{};    // { name: {emoji, joined} }
@@ -6221,7 +6222,7 @@ function setMe(name,emoji,{cascade=true}={}){
   if(!trimmed)return null;
   const prev=getMe();
   const oldName=prev&&prev.name;
-  const finalEmoji=emoji||prev?.emoji||'🛶';
+  const finalEmoji=emoji||prev?.emoji||'';
   const next={name:trimmed,emoji:finalEmoji};
   S.set('gb_identity',next);
   if(typeof maybeFireOnAction==='function')maybeFireOnAction();
@@ -6270,7 +6271,7 @@ function renameIdentity(oldName,newName){
   if(crew[oldName]){
     const p=crew[newName];
     crew[newName]={
-      emoji:crew[oldName].emoji||p?.emoji||'🛶',
+      emoji:crew[oldName].emoji||p?.emoji||'',
       joined:Math.min(crew[oldName].joined||Date.now(),p?.joined||Date.now())
     };
     delete crew[oldName];
@@ -6297,13 +6298,13 @@ function renameIdentity(oldName,newName){
 function migrateIdentity(){
   if(getMe())return;
   let lV='',lA='',lE='';
-  try{lV=JSON.parse(localStorage.getItem('gb_voter')||'""')||''}catch{}
-  try{lA=JSON.parse(localStorage.getItem('gb_avail_person')||'""')||''}catch{}
-  try{lE=JSON.parse(localStorage.getItem('gb_my_emoji')||'""')||''}catch{}
+ try{lV=JSON.parse(localStorage.getItem('gb_voter')||'""')||''}catch{}
+ try{lA=JSON.parse(localStorage.getItem('gb_avail_person')||'""')||''}catch{}
+ try{lE=JSON.parse(localStorage.getItem('gb_my_emoji')||'""')||''}catch{}
   const chosen=lV||lA||'';
   if(!chosen)return;
   const other=(lV&&lA&&lV!==lA)?(chosen===lV?lA:lV):null;
-  setMe(chosen,lE||'🛶',{cascade:false});
+  setMe(chosen,lE||'',{cascade:false});
   if(other)renameIdentity(other,chosen);
 }
 Object.defineProperty(window,'voter',{get:()=>getMe()?.name||'',configurable:true});
@@ -6319,13 +6320,13 @@ let leadingRouteId=null;
 // 48 emojis across nature, animals, landscape, mystical. No hearts/trophies.
 const CREW_EMOJIS=[
   // Core
-  '🛶','🌊','☀️','🌙','🏔','⛺','🔥','🍀','🧘‍♀️','🌸','🦊','🍉','🐟','🌻','✨',
+  '','🌊','☀️','🌙','🏔','⛺','🔥','🍀','🧘‍♀️','🌸','🦊','🍉','🐟','','✨',
   // Animals
   '🐞','🐺','🐢','🐚','🪼','🐙','🦦','🦔','🐇','🐬','🐳',
   // Nature + landscape
   '🌲','🍃','🌴','🌱','🍄','🌵','🌷','🪷','🗻','🌋','🏝','❄️','🌈',
-  // Mystical / cutesy
-  '🧿','🔮','🌀','🦄','🧚','🧜‍♀️',
+ // Mystical / cutesy
+ '🧿','🔮','🌀','🦄','🧚','🧜‍♀️',
   // Fruit
   '🫐','🍑','🍊','🥥','🍋'
 ];
@@ -6342,8 +6343,8 @@ function joinCrew(name,emoji){
 
 // Legacy key → emoji mapping (for identities saved under V23's SVG-icon system)
 const LEGACY_ICON_MAP={
-  boat:'🛶',compass:'🧭',droplet:'💧',sun:'☀️',moon:'🌙',
-  mountain:'🏔',tent:'',fire:'🔥',heart:'🌻',trophy:'✨',waves:'🌊'
+  boat:'',compass:'🧭',droplet:'',sun:'☀️',moon:'🌙',
+  mountain:'🏔',tent:'',fire:'🔥',heart:'',trophy:'✨',waves:'🌊'
 };
 // Render identity emoji — outputs the emoji directly (V24: no more SVG icons)
 function renderIcon(key,size=18){
@@ -6515,23 +6516,23 @@ function renderLetterBody(text){
 // 🌊 THE WHISPERS — ambient + contextual
 const AMBIENT_WHISPERS=[
   'The river doesn\u2019t rush. Neither should you.',
-  'Summer is a decision. Make it.',
-  'Pack light. Float far. The current does the rest.',
-  'Every good story starts with yes.',
-  'Cold water. Warm sun. Good people. Nothing else required.',
-  'The Aare has been waiting all winter.',
-  'You\u2019re not planning a trip. You\u2019re planning a memory.',
-  'Some weekends change the whole season.',
-  'The river knows where it\u2019s going. Trust it.',
-  'A crew, a current, and nowhere to be. That\u2019s the whole plan.',
-  'Sunscreen is non-negotiable. Everything else is improvised.',
-  'The best conversations happen on the water.',
-  'Inflatable boats and real friendships. Swiss summer perfection.',
-  'Vote. Mark your days. Say yes. The river handles the rest.',
-  'Six rivers. One summer. Pick one and go.',
-  'The water is cold. The laughter is warm. Worth it every time.',
-  'This is what summer is supposed to feel like.',
-  'You already know which route. Trust that feeling.'
+ 'Summer is a decision. Make it.',
+ 'Pack light. Float far. The current does the rest.',
+ 'Every good story starts with yes.',
+ 'Cold water. Warm sun. Good people. Nothing else required.',
+ 'The Aare has been waiting all winter.',
+ 'You\u2019re not planning a trip. You\u2019re planning a memory.',
+ 'Some weekends change the whole season.',
+ 'The river knows where it\u2019s going. Trust it.',
+ 'A crew, a current, and nowhere to be. That\u2019s the whole plan.',
+ 'Sunscreen is non-negotiable. Everything else is improvised.',
+ 'The best conversations happen on the water.',
+ 'Inflatable boats and real friendships. Swiss summer perfection.',
+ 'Vote. Mark your days. Say yes. The river handles the rest.',
+ 'Six rivers. One summer. Pick one and go.',
+ 'The water is cold. The laughter is warm. Worth it every time.',
+ 'This is what summer is supposed to feel like.',
+ 'You already know which route. Trust that feeling.'
 ];
 
 const CONTEXTUAL_WHISPERS={
@@ -6627,7 +6628,7 @@ function refreshBottleGlow(){
   const dock=document.getElementById('bottleDock');
   if(!dock)return;
   if(hasNewLetter())dock.classList.add('has-new');
-  else dock.classList.remove('has-new');
+ else dock.classList.remove('has-new');
 }
 
 let _idChainedFromLetter=false;
@@ -6651,31 +6652,31 @@ function showArrivalCeremony(opts){
   if(!modal)return;
   // Force a reflow before adding .show so the bottle drift-in keyframe fires reliably
   modal.classList.remove('show','ceremony');
-  void modal.offsetWidth;
-  modal.classList.add('show','ceremony');
+ void modal.offsetWidth;
+ modal.classList.add('show','ceremony');
   const bottle=modal.querySelector('.lm-bottle');
   const reader=modal.querySelector('.lm-reader');
   const editor=modal.querySelector('.lm-editor');
   if(reader)reader.style.display='none';
-  if(editor)editor.style.display='none';
-  if(bottle){
-    bottle.style.display='flex';
+ if(editor)editor.style.display='none';
+ if(bottle){
+ bottle.style.display='flex';
     // Force animation restart
     bottle.classList.remove('uncorking');
-    void bottle.offsetWidth;
-  }
-  populateLetterReader();
+ void bottle.offsetWidth;
+ }
+ populateLetterReader();
 
-  setTimeout(()=>{
-    if(bottle)bottle.classList.add('uncorking');
-  },2200);
-  setTimeout(()=>{
-    if(bottle){bottle.style.display='none';bottle.classList.remove('uncorking');}
-    if(reader){
-      reader.style.display='block';
-      reader.classList.remove('unfurling');
-      void reader.offsetWidth;
-      reader.classList.add('unfurling');
+ setTimeout(()=>{
+ if(bottle)bottle.classList.add('uncorking');
+ },2200);
+ setTimeout(()=>{
+ if(bottle){bottle.style.display='none';bottle.classList.remove('uncorking');}
+ if(reader){
+ reader.style.display='block';
+ reader.classList.remove('unfurling');
+ void reader.offsetWidth;
+ reader.classList.add('unfurling');
     }
     const cont=modal.querySelector('.lm-continue');
     const closeBtn=modal.querySelector('.lm-close');
@@ -6703,16 +6704,16 @@ function showLetterReader(){
   const reader=modal.querySelector('.lm-reader');
   const editor=modal.querySelector('.lm-editor');
   if(bottle)bottle.style.display='none';
-  if(editor)editor.style.display='none';
-  if(reader){reader.style.display='block';reader.classList.add('unfurling');}
+ if(editor)editor.style.display='none';
+ if(reader){reader.style.display='block';reader.classList.add('unfurling');}
   const cont=modal.querySelector('.lm-continue');
   if(cont)cont.style.display='none';
   const skipBtn=document.getElementById('lmSkipBtn');
   if(skipBtn)skipBtn.style.display='none';
   const closeBtn=modal.querySelector('.lm-close');
   if(closeBtn)closeBtn.style.display='inline-flex';
-  modal.classList.add('show');
-  modal.classList.remove('ceremony');
+ modal.classList.add('show');
+ modal.classList.remove('ceremony');
   markLetterRead();
 }
 
@@ -6760,7 +6761,7 @@ function continueFromLetter(){
   if(!modal)return;
   const reader=modal.querySelector('.lm-reader');
   if(reader)reader.style.display='none';
-  modal.classList.remove('show','ceremony');
+ modal.classList.remove('show','ceremony');
   _idChainedFromLetter=true;
   setTimeout(()=>{
     openIdentityModal({
@@ -6773,7 +6774,7 @@ function continueFromLetter(){
     });
     setTimeout(()=>{
       const m=document.getElementById('identityModal');
-      if(m)m.classList.add('chained');
+ if(m)m.classList.add('chained');
     },50);
   },300);
 }
@@ -6782,7 +6783,7 @@ function backFromIdentityToLetter(){
   closeIdentityModal();
   _idChainedFromLetter=false;
   const m=document.getElementById('identityModal');
-  if(m)m.classList.remove('chained');
+ if(m)m.classList.remove('chained');
   setTimeout(()=>showLetterReader(),200);
 }
 
@@ -6795,9 +6796,9 @@ function bottlePressStart(e){
   _bottlePressFired=false;
   const dock=document.getElementById('bottleDock');
   if(dock)dock.classList.add('pressing');
-  _bottlePressTimer=setTimeout(()=>{
-    _bottlePressFired=true;
-    if(dock)dock.classList.remove('pressing');
+ _bottlePressTimer=setTimeout(()=>{
+ _bottlePressFired=true;
+ if(dock)dock.classList.remove('pressing');
     openPasswordModal();
     if(navigator.vibrate)try{navigator.vibrate(40)}catch{}
   },3000);
@@ -6851,10 +6852,10 @@ function showLetterEditor(){
   const reader=modal.querySelector('.lm-reader');
   const editor=modal.querySelector('.lm-editor');
   if(bottle)bottle.style.display='none';
-  if(reader)reader.style.display='none';
-  if(editor)editor.style.display='block';
-  modal.classList.add('show');
-  modal.classList.remove('ceremony');
+ if(reader)reader.style.display='none';
+ if(editor)editor.style.display='block';
+ modal.classList.add('show');
+ modal.classList.remove('ceremony');
 }
 function saveLetterEdit(){
   const me=getMe();
@@ -6906,7 +6907,7 @@ function deleteIdentity(name){
     S.set('gb_identity',null);
     try{localStorage.removeItem('gb_voter')}catch{}
     try{localStorage.removeItem('gb_avail_person')}catch{}
-    try{localStorage.removeItem('gb_my_emoji')}catch{}
+ try{localStorage.removeItem('gb_my_emoji')}catch{}
   }
   try{renderVotePosters()}catch{}
   try{renderCal()}catch{}
@@ -7099,7 +7100,7 @@ function openManageModal(){
 }
 function closeManageModal(){
   const m=document.getElementById('manageModal');
-  if(m)m.classList.remove('show');
+ if(m)m.classList.remove('show');
   document.querySelectorAll('.paper-boat-btn,.boat-charm').forEach(b=>b.style.animationPlayState='');
 }
 function renderManageList(){
@@ -7139,7 +7140,7 @@ function renderManageList(){
         </div>`
       :`<div class="mg-readonly">view only</div>`;
     return `<div class="mg-row${isMe?' me':''}">
-      <div class="mg-avatar">${c.emoji||'🛶'}</div>
+ <div class="mg-avatar">${c.emoji||''}</div>
       <div class="mg-body">
         <div class="mg-name">${escapeHtml(n)}${isMe?'<span class="mg-you-badge">you</span>':''}</div>
         <div class="mg-meta">${statsHTML}</div>
@@ -7157,11 +7158,11 @@ function confirmDeleteIdentity(name){
   const deleteBtn=document.getElementById('confirmDelete');
   if(renameBtn)renameBtn.onclick=function(){closeConfirmModal();closeManageModal();openIdentityModal({allowSkip:true});};
   if(deleteBtn)deleteBtn.onclick=function(){closeConfirmModal();closeManageModal();deleteIdentity(name);showToast('Identity deleted');};
-  m.classList.add('show');
+ m.classList.add('show');
 }
 function closeConfirmModal(){
   const m=document.getElementById('confirmModal');
-  if(m)m.classList.remove('show');
+ if(m)m.classList.remove('show');
   // Reset button states for next use
   const renameBtn=document.getElementById('confirmRename');
   const deleteBtn=document.getElementById('confirmDelete');
@@ -7184,15 +7185,15 @@ function openIdentityModal({onComplete,reason,allowSkip=true,startStage='name'}=
   _idAllowSkip=allowSkip;
   const me=getMe();
   _idDraftName=me?.name||'';
-  _idDraftEmoji=me?.emoji||'';
+ _idDraftEmoji=me?.emoji||'';
   _idStage=startStage;
   const rEl=document.getElementById('idReason');
   if(rEl){rEl.textContent=reason||'';rEl.style.display=reason?'block':'none';}
   renderIdentityStage();
   const modal=document.getElementById('identityModal');
-  if(modal)modal.classList.add('show');
-  setTimeout(()=>{
-    if(_idStage==='name'){
+ if(modal)modal.classList.add('show');
+ setTimeout(()=>{
+ if(_idStage==='name'){
       const inp=document.getElementById('idNameInput');
       if(inp){inp.focus();inp.select();}
     }
@@ -7209,7 +7210,7 @@ function renderIdentityStage(){
     const inp=document.getElementById('idNameInput');
     if(inp)inp.value=_idDraftName;
     if(sk)sk.style.display=_idAllowSkip?'inline-block':'none';
-    if(bk)bk.style.display='none';
+ if(bk)bk.style.display='none';
   }else{
     nW.style.display='none';eW.style.display='block';
     const grid=document.getElementById('idEmojiGrid');
@@ -7218,9 +7219,9 @@ function renderIdentityStage(){
         const sel=e===_idDraftEmoji?' selected':'';
         return `<button class="ep-emoji${sel}" type="button" onclick="pickIdentityEmoji('${e}')" title="${e}">${e}</button>`;
       }).join('');
-    }
-    if(sk)sk.style.display='none';
-    if(bk)bk.style.display='inline-block';
+ }
+ if(sk)sk.style.display='none';
+ if(bk)bk.style.display='inline-block';
   }
 }
 function submitIdentityName(){
@@ -7256,7 +7257,7 @@ function skipIdentityModal(){
 }
 function closeIdentityModal(){
   const m=document.getElementById('identityModal');
-  if(m)m.classList.remove('show');
+ if(m)m.classList.remove('show');
 }
 function backToNameStage(){
   _idStage='name';
@@ -7286,8 +7287,8 @@ function refreshIdentityPills(){
   const tbMe=document.getElementById('tbMe');
   if(tbMe){
     if(me && me.name){
-      const emoji=me.emoji||'🛶';
-      tbMe.innerHTML=`<span title="${escapeHtml(me.name)} — tap to open your dashboard">${emoji}</span>`;
+      const emoji=me.emoji||'';
+      tbMe.innerHTML=`<span>${emoji}</span>`;
     }else{
       tbMe.innerHTML='';
     }
@@ -7313,7 +7314,7 @@ function switchToCrewMember(name){
   const m=document.getElementById('confirmModal');
   if(!m)return;
   document.getElementById('confirmTitle').textContent=`Switch to ${name}?`;
-  document.getElementById('confirmText').textContent=`You'll vote, mark days, and claim as ${name} ${entry.emoji||'🛶'} from now on.`;
+  document.getElementById('confirmText').textContent=`You'll vote, mark days, and claim as ${name} ${entry.emoji||''} from now on.`;
   const renameBtn=document.getElementById('confirmRename');
   const deleteBtn=document.getElementById('confirmDelete');
   if(renameBtn)renameBtn.style.display='none';
@@ -7321,13 +7322,13 @@ function switchToCrewMember(name){
     deleteBtn.textContent=`Switch to ${name}`;
     deleteBtn.onclick=function(){
       closeConfirmModal();
-      setMe(name,entry.emoji||'🛶',{cascade:false});
-      showToast(`Now you're ${name} ${entry.emoji||'🛶'}`);
+      setMe(name,entry.emoji||'',{cascade:false});
+ showToast(`Now you're ${name} ${entry.emoji||''}`);
       if(deleteBtn){deleteBtn.textContent='Delete forever';deleteBtn.style.background='';}
       if(renameBtn)renameBtn.style.display='';
-    };
-  }
-  m.classList.add('show');
+ };
+ }
+ m.classList.add('show');
 }
 
 // ═══════════════════════════════════════
@@ -7344,6 +7345,9 @@ function closeEmojiPicker(){closeIdentityModal();}
 // TABS
 // ═══════════════════════════════════════
 function switchTab(id,scrollTo){
+  // Don't scroll or re-render if we're already on this tab AND no specific anchor requested
+  const currentActive=document.querySelector('.tab.active');
+  const sameTab=currentActive && currentActive.dataset.tab===id;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
   positionTabIndicator();
@@ -7351,8 +7355,10 @@ function switchTab(id,scrollTo){
   const labels={discover:'Discover',plan:'Plan',tripday:'Trip Day'};
   const lbl=document.getElementById('tbTabLabel');
   if(lbl)lbl.textContent=labels[id]||'';
-  // Scroll to top for bottom-nav layout
-  window.scrollTo({top:0,behavior:'auto'});
+  // Scroll to top ONLY when switching to a different tab (not when tapping the current tab)
+  if(!sameTab && !scrollTo){
+    window.scrollTo({top:0,behavior:'auto'});
+  }
   // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
   if(id==='plan'||id==='discover'){renderVotePosters();renderGallery();}
@@ -7381,7 +7387,7 @@ function matchesFilter(r,f){
   if(f==='all')return true;
   if(f==='day')return r.type==='day';
   if(f==='night')return r.type==='night';
-  if(f==='warmest')return r.tags.includes('warmest');
+ if(f==='warmest')return r.tags.includes('warmest');
   if(f==='closest')return r.tags.includes('closest');
   return true;
 }
@@ -7514,7 +7520,7 @@ function renderMiniWeather(routeId,daily){
     const rain=daily.precipitation_probability_max[i]||0;
     return `<div class="gmw-day"><div class="gmw-dow">${dow}</div><div class="gmw-icon">${wcIcon(code)}</div><div class="gmw-t">${tmax}°</div></div>`;
   }).join('');
-  el.querySelector('.gmw-days').innerHTML=daysHtml;
+ el.querySelector('.gmw-days').innerHTML=daysHtml;
 }
 
 function galleryScroll(dir){
@@ -7688,8 +7694,8 @@ function renderVotePosters(){
     document.getElementById('leaderName').textContent=r.name;
     const voters=votes[leaderId]||[];
     document.getElementById('leaderVotes').textContent=`${maxVotes} vote${maxVotes>1?'s':''} · ${voters.join(', ')}`;
-  }else if(leader){
-    leader.style.display='none';
+ }else if(leader){
+ leader.style.display='none';
   }
   renderDiscoverLeader();
 }
@@ -7720,8 +7726,8 @@ function renderDiscoverLeader(){
     const label=dt.toLocaleDateString('en-CH',{weekday:'short',month:'short',day:'numeric'});
     wTxt.textContent=`A new best day just appeared — ${label}.`;
     wEl.style.display='inline-flex';
-  } else if(wEl){
-    wEl.style.display='none';
+ } else if(wEl){
+ wEl.style.display='none';
   }
 }
 
@@ -7760,14 +7766,14 @@ function fireHeartBurst(btn){
   const hearts=['❤️','❤️','💛','✨'];
   hearts.forEach((h,idx)=>{
     const el=document.createElement('span');
-    el.className='heart-burst';
+ el.className='heart-burst';
     el.textContent=h;
     el.style.left=cx+'px';
-    el.style.top=cy+'px';
+ el.style.top=cy+'px';
     const angle=(-Math.PI/2)+((idx-1.5)*0.5);
     const dist=60+Math.random()*25;
     el.style.setProperty('--dx',(Math.cos(angle)*dist)+'px');
-    el.style.setProperty('--dy',(Math.sin(angle)*dist)+'px');
+ el.style.setProperty('--dy',(Math.sin(angle)*dist)+'px');
     parent.appendChild(el);
     requestAnimationFrame(()=>el.classList.add('go'));
     setTimeout(()=>el.remove(),1100);
@@ -7872,14 +7878,14 @@ function renderCal(){
     const st=myState===1?'✓':myState===2?'◐':'';
     const click=inRange?`onclick="tapDay('${key}')"`:' ';
     const crew=getCrew();
-    const dots=fp.slice(0,4).map(n=>`<span class="cdot free" title="${n}">${(crew[n]&&crew[n].emoji)||'🛶'}</span>`).join('')+
-               mp.slice(0,4).map(n=>`<span class="cdot maybe" title="${n}">${(crew[n]&&crew[n].emoji)||'🛶'}</span>`).join('');
+    const dots=fp.slice(0,4).map(n=>`<span class="cdot free" title="${n}">${(crew[n]&&crew[n].emoji)||''}</span>`).join('')+
+               mp.slice(0,4).map(n=>`<span class="cdot maybe" title="${n}">${(crew[n]&&crew[n].emoji)||''}</span>`).join('');
 
     const crewTotal=fp.length+mp.length;
     html+=`<div class="${cls}" style="position:relative" ${click}>
       <div class="cday">${d}</div>
       ${crewTotal>0?`<div class="ccrew-count">${crewTotal}</div>`:''}
-      ${st?`<div class="cst">${st}</div>`:''}
+ ${st?`<div class="cst">${st}</div>`:''}
       <div class="cdots">${dots}</div>
     </div>`;
   }
@@ -8027,45 +8033,45 @@ function findBestWeekend(avail){
 const PACK=[
   {group:'Required by law',items:[
     {id:'lj',t:'Life jackets (75N+ per person)',kind:'group',req:true,icon:'🦺'},
-    {id:'lbl',t:'Boat labelled (name, address, phone)',kind:'solo',req:true,icon:'🏷'},
-    {id:'pump',t:'Boat pump',kind:'solo',req:true,icon:'💨'}
-  ]},
-  {group:'Boat kit',items:[
-    {id:'boat',t:'The actual boat(s) 🛶',kind:'solo',icon:'🛶'},
-    {id:'patch',t:'Puncture repair kit',kind:'solo',icon:'🔧'},
-    {id:'rope',t:'Rope (to tie boats together)',kind:'solo',icon:'🪢'},
-    {id:'drybag',t:'Waterproof dry bag',kind:'group',icon:'🎒'}
-  ]},
-  {group:'Food & drinks',items:[
-    {id:'water',t:'Drinking water (1.5L+ per person)',kind:'group',icon:'💧'},
-    {id:'sandwiches',t:'Sandwiches / lunch',kind:'group',icon:'🥪'},
-    {id:'fruit',t:'Fresh fruit for the boat',kind:'group',icon:'🍉'},
-    {id:'snacks',t:'Salty snacks',kind:'group',icon:'🥨'},
-    {id:'beers',t:'Cold drinks 🍻',kind:'group',icon:'🍻'},
-    {id:'cooler',t:'Cooler bag',kind:'solo',icon:'🧊'}
-  ]},
-  {group:'Sun & water',items:[
-    {id:'sun',t:'Sunscreen (reef-safe)',kind:'group',icon:'☀️'},
-    {id:'hat',t:'Sun hat',kind:'group',icon:'👒'},
-    {id:'shoes',t:'Water shoes / old sneakers',kind:'group',icon:'👟'},
-    {id:'towel',t:'Quick-dry towel',kind:'group',icon:'🧺'}
-  ]},
-  {group:'Vibes',items:[
-    {id:'speaker',t:'Waterproof speaker',kind:'solo',icon:'🔊'},
-    {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:''},
-    {id:'music',t:'Playlist ready to go',kind:'solo',icon:'🎶'}
-  ]},
-  {group:'Safety + admin',items:[
-    {id:'first',t:'First aid kit',kind:'solo',icon:'🩹'},
-    {id:'cash',t:'Cash for exit towns',kind:'group',icon:'💶'},
-    {id:'id',t:'ID + Swiss travel pass',kind:'group',icon:'🪪'}
-  ]},
-  {group:'Overnight only',items:[
-    {id:'tent',t:'Tent',kind:'solo',icon:'⛺'},
-    {id:'sleeping',t:'Sleeping bag',kind:'group',icon:'🛏'},
-    {id:'headlamp',t:'Headlamp',kind:'group',icon:'🔦'},
-    {id:'dinner',t:'Camping dinner',kind:'solo',icon:'🍲'},
-    {id:'booking',t:'Campsite BOOKED',kind:'solo',req:true,icon:'📅'}
+ {id:'lbl',t:'Boat labelled (name, address, phone)',kind:'solo',req:true,icon:'🏷'},
+ {id:'pump',t:'Boat pump',kind:'solo',req:true,icon:'💨'}
+ ]},
+ {group:'Boat kit',items:[
+ {id:'boat',t:'The actual boat(s)',kind:'solo',icon:''},
+ {id:'patch',t:'Puncture repair kit',kind:'solo',icon:'🔧'},
+ {id:'rope',t:'Rope (to tie boats together)',kind:'solo',icon:'🪢'},
+ {id:'drybag',t:'Waterproof dry bag',kind:'group',icon:'🎒'}
+ ]},
+ {group:'Food & drinks',items:[
+ {id:'water',t:'Drinking water (1.5L+ per person)',kind:'group',icon:''},
+ {id:'sandwiches',t:'Sandwiches / lunch',kind:'group',icon:'🥪'},
+ {id:'fruit',t:'Fresh fruit for the boat',kind:'group',icon:'🍉'},
+ {id:'snacks',t:'Salty snacks',kind:'group',icon:'🥨'},
+ {id:'beers',t:'Cold drinks',kind:'group',icon:'🍻'},
+ {id:'cooler',t:'Cooler bag',kind:'solo',icon:'🧊'}
+ ]},
+ {group:'Sun & water',items:[
+ {id:'sun',t:'Sunscreen (reef-safe)',kind:'group',icon:'☀️'},
+ {id:'hat',t:'Sun hat',kind:'group',icon:'👒'},
+ {id:'shoes',t:'Water shoes / old sneakers',kind:'group',icon:'👟'},
+ {id:'towel',t:'Quick-dry towel',kind:'group',icon:'🧺'}
+ ]},
+ {group:'Vibes',items:[
+ {id:'speaker',t:'Waterproof speaker',kind:'solo',icon:'🔊'},
+ {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:''},
+ {id:'music',t:'Playlist ready to go',kind:'solo',icon:'🎶'}
+ ]},
+ {group:'Safety + admin',items:[
+ {id:'first',t:'First aid kit',kind:'solo',icon:'🩹'},
+ {id:'cash',t:'Cash for exit towns',kind:'group',icon:'💶'},
+ {id:'id',t:'ID + Swiss travel pass',kind:'group',icon:'🪪'}
+ ]},
+ {group:'Overnight only',items:[
+ {id:'tent',t:'Tent',kind:'solo',icon:'⛺'},
+ {id:'sleeping',t:'Sleeping bag',kind:'group',icon:'🛏'},
+ {id:'headlamp',t:'Headlamp',kind:'group',icon:'🔦'},
+ {id:'dinner',t:'Camping dinner',kind:'solo',icon:'🍲'},
+ {id:'booking',t:'Campsite BOOKED',kind:'solo',req:true,icon:'📅'}
   ]}
 ];
 
@@ -8095,11 +8101,11 @@ function renderPack(){
           const isSolo=i.kind==='solo';
           let classes='pack-i';
           if(mine)classes+=' mine';
-          else if(isSolo&&hasClaims)classes+=' claimed-solo';
+ else if(isSolo&&hasClaims)classes+=' claimed-solo';
           const claimText=hasClaims
             ? (isSolo ? '✓ '+escapeHtml(claimers[0])+(mine?' (you)':'')+' is bringing this'
-                     : '✓ '+claimers.map(escapeHtml).join(', ')+(mine?'':'').replace(me,me+' (you)'))
-            : (isSolo ? 'Unclaimed — who\'s bringing this?' : 'Anyone can bring some');
+ : '✓ '+claimers.map(escapeHtml).join(', ')+(mine?'':'').replace(me,me+' (you)'))
+ : (isSolo ? 'Unclaimed — who\'s bringing this?' : 'Anyone can bring some');
           const btnDisabled=!me||(isSolo&&hasClaims&&!mine);
           const btnLabel=mine?'Unclaim':(isSolo?'I\'ll bring':'I\'ll help');
           const btnClass='pack-claim-btn'+(mine?' unclaim':'');
@@ -8108,8 +8114,8 @@ function renderPack(){
             <div class="pack-text">
               <div class="pack-name">${i.t}</div>
               <div class="pack-claimers${hasClaims?' has-claims':''}">${claimText}</div>
-            </div>
-            ${i.req?'<div class="pack-tag req">Required</div>':`<div class="pack-tag ${i.kind}">${i.kind}</div>`}
+ </div>
+ ${i.req?'<div class="pack-tag req">Required</div>':`<div class="pack-tag ${i.kind}">${i.kind}</div>`}
             <button class="${btnClass}" onclick="togglePackClaim('${i.id}','${i.kind}')" ${btnDisabled?'disabled':''}>${btnLabel}</button>
           </div>`;
         }).join('')}
@@ -8222,7 +8228,7 @@ function renderForecast(daily){
     const perfect=wcIsPerfect(code,tmax,rain);
     let cls='f-day';
     if(isWe)cls+=' weekend';
-    if(perfect&&isWe)cls+=' perfect';
+ if(perfect&&isWe)cls+=' perfect';
     return `<div class="${cls}">
       <div class="f-dow">${dow}</div>
       <div class="f-date">${d.getDate()}</div>
@@ -8251,8 +8257,8 @@ let soundPlaying=false;
 // Layer 1: river current | Layer 2: soft rain for texture | Layer 3: birdsong
 const RIVER_SOUNDS=[
   {url:'https://raw.githubusercontent.com/remvze/moodist/main/public/sounds/nature/river.mp3', vol:0.75},
-  {url:'https://raw.githubusercontent.com/remvze/moodist/main/public/sounds/rain/light-rain.mp3', vol:0.18},
-  {url:'https://raw.githubusercontent.com/remvze/moodist/main/public/sounds/animals/birds.mp3', vol:0.22}
+ {url:'https://raw.githubusercontent.com/remvze/moodist/main/public/sounds/rain/light-rain.mp3', vol:0.18},
+ {url:'https://raw.githubusercontent.com/remvze/moodist/main/public/sounds/animals/birds.mp3', vol:0.22}
 ];
 let _riverAudios=[];
 let _riverFadeTimer=null;
@@ -8309,8 +8315,8 @@ function toggleHeroSound(){
       label.textContent='Playing…';
       soundPlaying=true;
       if(typeof fireContextualWhisper==='function')fireContextualWhisper('river-sound-play');
-    }catch(e){
-      showToast('River sound unavailable');
+ }catch(e){
+ showToast('River sound unavailable');
     }
   }
 }
@@ -8331,10 +8337,9 @@ function renderTripDay(){
     const grid=document.querySelector('.td-status-grid');
     if(grid){
       grid.innerHTML=`<div style="grid-column:1/-1;padding:28px 20px;text-align:center;background:rgba(0,0,0,.03);border-radius:14px;border:1.5px dashed rgba(0,0,0,.1);">
-        <div style="font-size:32px;margin-bottom:10px">🗺️</div>
-        <div style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink);margin-bottom:6px">Pick a route first</div>
-        <div style="font-size:13px;color:var(--ink-l);line-height:1.6;margin-bottom:18px">The crew hasn't voted yet — head to <strong>Align</strong> and heart your favourite. The leading route will show live stats here.</div>
-        <button onclick="switchTab('plan','vote')" style="padding:11px 24px;border-radius:24px;border:0;background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;">Go to Align →</button>
+        <div style="font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);margin-bottom:8px">Pick a route first</div>
+        <div style="font-size:13px;color:var(--ink-l);line-height:1.6;margin-bottom:18px">The crew hasn't voted yet — head to <strong>Plan</strong> and heart your favourite. The leading route will show live stats here.</div>
+        <button onclick="switchTab('plan','vote')" style="padding:11px 24px;border-radius:24px;border:0;background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;">Go to Plan →</button>
       </div>`;
     }
     return;
@@ -8480,7 +8485,7 @@ function renderRouteWeather(routeId,daily,launchName){
         const perfect=code<=3&&tmax>=22&&rain<30;
         let cls='rw-day';
         if(isWe)cls+=' weekend';
-        if(perfect&&isWe)cls+=' perfect';
+ if(perfect&&isWe)cls+=' perfect';
         return `<div class="${cls}">
           <div class="rw-dow">${dow}</div>
           <div class="rw-date">${d.getDate()}</div>
@@ -8552,7 +8557,7 @@ function openPoster(rid){
         ${r.altEntryStation?`<div class="station-alt">⚡ Alternate entry: <strong>${r.altEntryStation}</strong></div>`:''}
         ${r.returnTime?`<div class="station-alt">🔄 Return: <strong>${r.returnTime}</strong></div>`:''}
         ${r.shortVariant?`<div class="station-alt">✂️ Short variant: <strong>${r.shortVariant}</strong></div>`:''}
-        `:''}
+ `:''}
       </div>
 
       <div class="poster-section">
@@ -8653,8 +8658,8 @@ function posterPhotoGo(idx){
   imgs.forEach((img,i)=>{
     img.classList.toggle('ph-hidden',i!==idx);
     if(i===idx){img.style.animation='none';void img.offsetWidth;img.style.animation='pkenburns 20s ease-out forwards';}
-  });
-  dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+ });
+ dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
   _posterPhotoIdx=idx;
 }
 function posterPhotoStep(dir){posterPhotoGo(_posterPhotoIdx+dir);}
@@ -8712,7 +8717,7 @@ function buildTripSummary(){
   const best=findBestWeekend(avail);
 
   let s='🛶 GUMMIBOOT 2026\n\n';
-  if(top)s+=`⭐ Leading route: ${top.name}\n   ${top.sub}\n   ${top.travel}\n\n`;
+  if(top)s+=`Leading route: ${top.name}\n   ${top.sub}\n   ${top.travel}\n\n`;
   if(best)s+=`📅 Best weekend: ${best.label}\n   ${best.who}\n\n`;
   s+=`Vote + mark your days: ${location.href}\n`;
   return s;
@@ -8734,14 +8739,14 @@ async function copyTripSummary(){
 }
 
 async function shareUrl(){
-  const data={title:'Gummiboot 2026',text:'Vote for our summer river trip 🛶',url:location.href};
+  const data={title:'Gummiboot 2026',text:'Vote for our summer river trip',url:location.href};
   if(navigator.share){
     try{await navigator.share(data);}catch(e){}
   }else{
     try{
       await navigator.clipboard.writeText(location.href);
       showToast('Link copied ✓');
-    }catch(e){showToast('Copy link manually');}
+ }catch(e){showToast('Copy link manually');}
   }
 }
 
@@ -8910,7 +8915,7 @@ function init(){
     poster.addEventListener('click',e=>{if(e.target===poster)closePoster();});
   }
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
+ if(e.key==='Escape'){
       closePoster();
       closeMatch();
       closeEmojiPicker();
