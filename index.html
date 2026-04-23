@@ -411,7 +411,7 @@ a{color:inherit;text-decoration:none}
 /* ═══════════════════════════════════════
    TAB PANELS
    ═══════════════════════════════════════ */
-.panels{position:relative;padding-bottom:76px;padding-top:4px}
+.panels{position:relative;padding-bottom:90px;padding-top:4px}
 .panel{display:none;animation:panelIn .5s var(--smooth)}
 .panel.active{display:block}
 @keyframes panelIn{
@@ -2683,16 +2683,14 @@ body.poster-locked{overflow:hidden}
   border-color:var(--sun);
 }
 .ca-face{
-  width:36px;
-  height:36px;
+  width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
   border-radius:50%;
   background:var(--paper-d);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  flex-shrink:0;
+  color:var(--ink-m);
 }
+.ca-face svg{width:14px;height:14px;stroke:currentColor;}
 .crew-avatar.me .ca-face{background:var(--sun);color:#fff}
 .ca-name{
   font-size:13px;
@@ -2735,12 +2733,14 @@ body.poster-locked{overflow:hidden}
   border-color:rgba(255,200,100,.4);
 }
 .ca-face-lg{
-  width:46px;height:46px;border-radius:50%;
-  background:var(--paper-d);
+  width:40px;height:40px;
   display:flex;align-items:center;justify-content:center;
-  font-size:24px;flex-shrink:0;
-  border:2px solid var(--line);
+  flex-shrink:0;
+  border-radius:50%;
+  background:var(--paper-d);
+  color:var(--ink-m);
 }
+.ca-face-lg svg{width:20px;height:20px;stroke:currentColor;}
 .ca-row.me .ca-face-lg{border-color:rgba(255,200,100,.5);}
 .ca-info{flex:1;min-width:0;}
 .ca-row-name{
@@ -3762,7 +3762,7 @@ body.poster-locked{overflow:hidden}
   height:40px;
   width:40px;
   box-shadow:0 4px 16px rgba(11,42,74,.35),0 2px 6px rgba(11,42,74,.2);
-  overflow:hidden;
+  overflow:visible;
 }
 .lighthouse-charm .lh-body{
   display:flex;
@@ -3973,8 +3973,8 @@ body.poster-locked{overflow:hidden}
   max-width:560px;
   width:100%;
   background:linear-gradient(180deg,#fdf6e8,#f7ecd2);
-  border-radius:6px;
-  padding:48px 38px 36px;
+  border-radius:12px;
+  padding:44px 34px 32px;
   box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06);
   position:relative;
   max-height:88vh;
@@ -4003,16 +4003,17 @@ body.poster-locked{overflow:hidden}
 .lm-reader::before{top:0;border-radius:6px 6px 0 0;}
 .lm-reader::after{bottom:0;border-radius:0 0 6px 6px;}
 .lm-reader-title{
-  font-size:11px;
-  letter-spacing:4px;
+  font-family:var(--sans);
+  font-size:9px;
+  letter-spacing:3px;
   text-transform:uppercase;
-  color:#a36b1f;
-  font-weight:600;
-  margin-bottom:24px;
-  display:flex;align-items:center;gap:14px;
+  color:var(--sun);
+  font-weight:700;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
 }
 .lm-reader-title::before{
-  content:'';width:30px;height:1px;background:#c98a2c;opacity:.5;
+  content:'';width:24px;height:1.5px;background:var(--sun);border-radius:1px;
 }
 .lm-reader-body{
   font-family:var(--serif);
@@ -4030,7 +4031,7 @@ body.poster-locked{overflow:hidden}
   padding:0 3px;
 }
 .lm-reader-sign{
-  font-family:var(--serif);font-size:15px;font-style:italic;color:#5a3e1c;
+  font-family:var(--serif);font-size:15px;font-style:italic;color:var(--ink);
   margin-top:18px;line-height:1.7;
 }
 .lm-reader-sign-loc{display:block;color:#9a6a25;opacity:.85;margin-top:4px;font-size:13px;}
@@ -4348,7 +4349,7 @@ body.poster-locked{overflow:hidden}
   width:40px;height:40px;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 16px rgba(11,42,74,.35),0 2px 6px rgba(11,42,74,.2);
-  overflow:hidden;
+  overflow:visible;
 }
 .boat-charm-emoji{
   display:flex;align-items:center;justify-content:center;
@@ -5111,7 +5112,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
         <p class="section-sub">14-day forecast for Basel — scroll through to find your weekend. Sun icons = river-ready days.</p>
       </div>
       <div class="forecast-note">
-        <span class="fn-icon">💡</span>
+        <span class="fn-icon">·</span>
         <span><strong>This is Basel</strong> — the "when is the crew free" forecast. Each route has its own live weather at its launch point, inside the route poster.</span>
       </div>
     </div>
@@ -5179,7 +5180,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
           <div class="sg-i"><div class="sg-i-i">✓</div>Waterproof dry bag for phone + keys</div>
         </div>
         <div class="sg-card">
-          <div class="sg-t">🚫 Absolute don'ts</div>
+          <div class="sg-t">Do not</div>
           <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never paddle drunk (criminal liability)</div>
           <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never near weirs or hydro intakes</div>
           <div class="sg-i"><div class="sg-i-i" style="color:var(--danger)">✗</div>Never in high water (Rhine > 1300 m³/s)</div>
@@ -5197,7 +5198,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="travel-card">
         <div class="tc-h">
-          <div class="tc-lbl">🚆 Train times from Basel SBB</div>
+          <div class="tc-lbl">Train times from Basel SBB</div>
           <div class="tc-title">How long to each entry</div>
         </div>
         <div class="tc-row"><div class="tc-n">Leibstadt<span>Day Trip #1 · Rhine</span></div><div>~45 min</div><div class="tc-t">1h</div></div>
@@ -5320,7 +5321,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <div class="closing-hero-line">Golden hour arrives.<br>The current carries you home.</div>
     <div class="closing-hero-sig">Böötle · Summer 2026</div>
     <div class="closing-hero-credits">
-      Built with 🛶 for the Summer 2026 crew<br>
+      Built for the Summer 2026 crew<br>
       Sources: Salamander Verlag (7th ed. 2023) · hydrodaten.admin.ch · SBB
     </div>
   </div>
@@ -5331,7 +5332,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   <div class="match-card">
     <div class="match-hero-img"></div>
     <div class="match-inner">
-      <div class="match-sparkle">✨</div>
+      
       <div class="match-title" id="matchTitle">You matched with the crew!</div>
       <div class="match-body" id="matchBody"></div>
       <button class="match-btn" onclick="closeMatch()">Nice</button>
@@ -5386,7 +5387,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   </div>
 </div>
 <div class="lh-popover" id="lhPopover">
-  <div class="lh-pop-title">⛵ Group status</div>
+  <div class="lh-pop-title">Group status</div>
   <div class="lh-pop-row"><span>Crew joined</span><span class="lh-pop-val" id="lhCrew">—</span></div>
   <div class="lh-pop-row"><span>Total votes</span><span class="lh-pop-val" id="lhVotes">—</span></div>
   <div class="lh-pop-row"><span>Dates marked</span><span class="lh-pop-val" id="lhDates">—</span></div>
@@ -5420,7 +5421,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
      ontouchcancel="bottlePressEnd()"
      aria-label="Letter from Roxane (long-press to edit)">
   <div class="bd-pill-inner">
-    <span class="bd-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 7H8L9 3z"/><path d="M8 10c0 5 8 5 8 0"/><path d="M12 10v11"/><path d="M9 21h6"/></svg></span>
+    <span class="bd-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1 0 0 0.82 0 2.5)"><polygon points="8,52 92,52 78,82 22,82" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.9)" stroke-width="1"/><polygon points="50,14 70,52 30,52" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.9)" stroke-width="1"/><g stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"><line x1="50" y1="14" x2="50" y2="82"/><line x1="8" y1="52" x2="78" y2="82"/><line x1="92" y1="52" x2="22" y2="82"/></g></g></svg></span>
     <span class="bd-label">a whisper</span>
   </div>
 </div>
@@ -5495,7 +5496,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 <!-- 🤫 Password modal -->
 <div class="pw-modal" id="pwModal" onclick="if(event.target===this)closePasswordModal()">
   <div class="pw-card">
-    <div class="pw-title">🤫 Roxane only</div>
+    <div class="pw-title">Roxane only</div>
     <div class="pw-sub">Password to edit the letter</div>
     <input class="pw-input" id="pwInput" type="password" autocomplete="off" onkeydown="if(event.key==='Enter')submitPassword()">
     <div class="pw-actions">
@@ -5509,7 +5510,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 <div class="manage-modal" id="manageModal" onclick="if(event.target===this)closeManageModal()">
   <div class="manage-card">
     <div class="manage-header">
-      <div class="manage-title">The crew 🚤</div>
+      <div class="manage-title">The crew</div>
       <div class="manage-sub">You can rename or remove yourself. Others are read-only.</div>
     </div>
     <div class="manage-list" id="manageList"></div>
@@ -5525,13 +5526,13 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <div class="dash-handle"></div>
     <div class="dash-header">
       <div class="dash-who">
-        <div class="dash-emoji" id="dashEmoji">🛶</div>
+        <div class="dash-emoji" id="dashEmoji"></div>
         <div>
           <div class="dash-name" id="dashName">—</div>
           <div class="dash-name-sub" id="dashSub">your journey so far</div>
         </div>
       </div>
-      <button class="dash-edit-btn" type="button" onclick="closeDash();setTimeout(()=>openIdentityModal({allowSkip:false}),180)" title="Edit name & emoji">✏️</button>
+      <button class="dash-edit-btn" type="button" onclick="closeDash();setTimeout(()=>openIdentityModal({allowSkip:false}),180)" title="Edit">✏</button>
     </div>
     <div class="dash-body">
       <div class="dash-section">
@@ -5548,7 +5549,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
       </div>
     </div>
     <div class="dash-footer">
-      <button class="dash-btn-manage" type="button" onclick="closeDash();setTimeout(openManageModal,180)">👥 Crew</button>
+      <button class="dash-btn-manage" type="button" onclick="closeDash();setTimeout(openManageModal,180)">Crew</button>
       <button class="dash-btn-close" type="button" onclick="closeDash()">Done</button>
     </div>
   </div>
@@ -6184,9 +6185,9 @@ function renderCrewActivity(){
   const totalVoters=names.filter(n=>Object.values(votes).some(v=>v.includes(n))).length;
   const totalDaters=names.filter(n=>Object.keys(avail[n]||{}).filter(k=>(avail[n]||{})[k]==='free'||(avail[n]||{})[k]===1).length>0).length;
   const headerHTML=`<div class="ca-header">
-    <span class="ca-header-stat">👥 <strong>${names.length}</strong> joined</span>
-    <span class="ca-header-stat">❤️ <strong>${totalVoters}</strong> voted</span>
-    <span class="ca-header-stat">📅 <strong>${totalDaters}</strong> marked dates</span>
+    <span class="ca-header-stat"><strong>${names.length}</strong> joined</span>
+    <span class="ca-header-stat"><strong>${totalVoters}</strong> voted</span>
+    <span class="ca-header-stat"><strong>${totalDaters}</strong> marked dates</span>
   </div>`;
   el.innerHTML=headerHTML+names.map(n=>{
     const c=crew[n];
@@ -6220,7 +6221,7 @@ function renderCrewActivity(){
       ?`onclick="openIdentityModal({allowSkip:true})"`
       :`onclick="switchToCrewMember('${safeName}')"`;
     return `<div class="ca-row${isMe?' me':''}" ${rowClick}>
-      <div class="ca-face-lg">${c.emoji||'🛶'}</div>
+      <div class="ca-face-lg">${renderIcon(c.emoji||'boat',20)}</div>
       <div class="ca-info">
         <div class="ca-row-name">${escapeHtml(n)}${isMe?'<span class="ca-you-tag">you</span>':''}</div>
         <div class="ca-badges">${voteBadge}${dateBadge}</div>
@@ -6260,7 +6261,7 @@ function renderCrewWall(){
     const tap=isMe?`onclick="openIdentityModal({allowSkip:true})"`:`onclick="switchToCrewMember('${safeName}')"`;
     const hint=isMe?'<span class="ca-hint">tap to change</span>':'<span class="ca-hint">tap to switch</span>';
     return `<div class="crew-avatar${isMe?' me':''}" ${tap}>
-      <div class="ca-face">${c.emoji||'🛶'}</div>
+      <div class="ca-face">${renderIcon(c.emoji||'boat',16)}</div>
       <div class="ca-body"><div class="ca-name">${escapeHtml(n)}${isMe?' <em class="ca-you">← this is you</em>':''}</div><span class="ca-meta">${metaTxt}</span>${hint}</div>
     </div>`;
   }).join('');
@@ -8521,7 +8522,7 @@ async function copyTripSummary(){
   const text=buildTripSummary();
   try{
     await navigator.clipboard.writeText(text);
-    showToast('Copied to clipboard ✓');
+    showToast('Copied');
   }catch(e){
     const ta=document.createElement('textarea');
     ta.value=text;
