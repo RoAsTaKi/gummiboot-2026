@@ -7428,6 +7428,7 @@ function renderVotePosters(){
   });
 
   const me=getMe();
+  const crew=getCrew();
   const cardsHTML = routesSorted.map((r,i)=>{
     const voters=votes[r.id]||[];
     const n=voters.length;
