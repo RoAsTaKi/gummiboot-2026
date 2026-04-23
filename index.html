@@ -475,6 +475,56 @@ a{color:inherit;text-decoration:none}
 
 /* Letter — a warm moment on cream */
 /* Trip countdown strip */
+/* E2 Discover leading card */
+.discover-leader{
+  background:linear-gradient(135deg,rgba(232,131,47,.08) 0%,rgba(247,242,230,.4) 100%);
+  border-bottom:1px solid rgba(232,131,47,.15);
+  padding:20px 0 24px;
+  margin-bottom:4px;
+}
+.dl-wrap{
+  max-width:720px;margin:0 auto;padding:0 20px;
+}
+.dl-eyebrow{
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--sun);font-weight:700;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.dl-name{
+  font-family:var(--sans);font-size:clamp(22px,5vw,32px);
+  font-weight:800;letter-spacing:-.04em;color:var(--ink);
+  margin-bottom:4px;line-height:1.1;
+}
+.dl-sub{
+  font-family:var(--serif);font-size:13px;font-style:italic;
+  color:var(--ink-l);margin-bottom:10px;line-height:1.5;
+}
+.dl-meta{
+  display:flex;gap:8px;font-size:10.5px;color:var(--ink-l);
+  font-weight:500;margin-bottom:14px;flex-wrap:wrap;
+}
+.dl-meta span{display:flex;align-items:center;gap:3px;}
+.dl-whisper{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#f5a24a,#e8832f);
+  color:#fff;border-radius:100px;
+  padding:7px 14px 7px 10px;
+  margin-bottom:14px;font-size:12px;
+  box-shadow:0 3px 12px rgba(232,131,47,.3);
+}
+.dl-whisper-label{
+  font-size:7px;letter-spacing:2px;text-transform:uppercase;
+  opacity:.7;font-weight:700;
+}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--ink);color:#fff;
+  border-radius:100px;padding:9px 18px;
+  font-size:12px;font-weight:600;letter-spacing:.2px;
+  transition:all .2s var(--spring);
+}
+.dl-btn:hover{background:var(--sun);transform:translateY(-1px);}
+
 .countdown{
   max-width:620px;
   margin:0 auto 10px;
@@ -563,10 +613,12 @@ a{color:inherit;text-decoration:none}
 }
 .ec:hover::before{transform:scaleX(1)}
 .ec-icon{
-  font-size:26px;
-  line-height:1;
-  margin-bottom:auto;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-bottom:auto;
+  color:var(--bar,var(--ink-m));
 }
+.ec-icon svg{width:22px;height:22px;stroke:currentColor;}
 .ec-num{
   font-family:var(--serif);
   font-size:13px;
@@ -965,7 +1017,7 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;
 }
 .leader::before{
-  content:'🏆';
+  content:'✦';
   position:absolute;
   right:-10px;
   top:50%;
@@ -1289,6 +1341,87 @@ a{color:inherit;text-decoration:none}
   min-height:36px;
   line-height:1.5;
 }
+
+/* E2 — Featured leading card */
+.vp-featured{border-color:var(--sun);box-shadow:0 0 0 2px var(--sun),var(--sh-m);}
+.vp-featured .vp-photo{aspect-ratio:16/9 !important;}
+.vp-featured-body{padding:16px 18px 18px;}
+.vp-featured-eyebrow{
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--sun);font-weight:700;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.vp-leading-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--sun);display:inline-block;
+  animation:ledPulse 1.8s ease-in-out infinite;
+}
+@keyframes ledPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.vp-featured-name{
+  font-family:var(--sans);font-size:20px;font-weight:700;
+  letter-spacing:-.03em;color:var(--ink);margin-bottom:4px;line-height:1.15;
+}
+.vp-featured-sub{
+  font-family:var(--serif);font-size:13px;font-style:italic;
+  color:var(--ink-l);line-height:1.5;margin-bottom:10px;
+}
+.vp-featured-meta{
+  display:flex;gap:6px;font-size:10.5px;color:var(--ink-l);
+  font-weight:500;letter-spacing:.2px;margin-bottom:12px;
+}
+.vp-featured-footer{display:flex;align-items:center;justify-content:space-between;}
+.vp-bubbles{display:flex;gap:4px;}
+.vp-bubble{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--paper-d);border:1.5px solid var(--card);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-m);
+}
+.vp-bubble svg{width:13px;height:13px;}
+.vp-bubble-more{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--paper-dd);border:1.5px solid var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:700;color:var(--ink-l);
+}
+
+/* Heart button — shared by featured + rows */
+.vp-heart-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:7px 12px;border-radius:100px;
+  border:1.5px solid var(--line-m);
+  background:var(--card);
+  font-size:12px;font-weight:600;color:var(--ink-m);
+  transition:all .2s var(--spring);flex-shrink:0;
+}
+.vp-heart-btn svg{width:14px;height:14px;transition:all .2s var(--spring);}
+.vp-heart-btn:hover{border-color:var(--sun);color:var(--sun);}
+.vp-heart-btn.voted{background:var(--sun);border-color:var(--sun);color:#fff;}
+
+/* E2 — Contender rows */
+.vp-row{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:var(--card);
+  border-radius:10px;
+  border:1px solid var(--line);
+  box-shadow:var(--sh-s);
+}
+.vp-row:hover{box-shadow:var(--sh-m);border-color:rgba(11,42,74,.1);}
+.vp-row-name{
+  font-family:var(--sans);font-size:14px;font-weight:600;
+  color:var(--ink);letter-spacing:-.02em;min-width:0;
+}
+.vp-row-track{
+  width:80px;height:3px;background:var(--paper-dd);border-radius:3px;overflow:hidden;
+}
+.vp-row-fill{height:100%;background:var(--river-l);border-radius:3px;transition:width .5s var(--smooth);}
+
+/* vote-posters spacing for new layout */
+.vote-posters{display:flex;flex-direction:column;gap:10px;}
 .vp-voters strong{color:var(--ink-m);font-weight:600}
 
 /* Calendar */
@@ -1335,11 +1468,7 @@ a{color:inherit;text-decoration:none}
   position:relative;
 }
 .best-weekend.show{display:flex}
-.bw-star{
-  font-size:28px;
-  animation:bwSpin 8s linear infinite;
-}
-@keyframes bwSpin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
 .bw-info{flex:1}
 .bw-lbl{
   font-size:9px;
@@ -1594,7 +1723,7 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;
 }
 .trip-day::before{
-  content:'🛶';
+  content:'';
   position:absolute;
   right:-20px;
   bottom:-30px;
@@ -1668,7 +1797,8 @@ a{color:inherit;text-decoration:none}
   color:var(--ink);
   transform:translateY(-2px);
 }
-.td-btn-icon{font-size:20px;line-height:1}
+.td-btn-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.td-btn-icon svg{stroke:currentColor;}
 @media(max-width:560px){
   .td-actions{grid-template-columns:repeat(2,1fr)}
   .trip-day{padding:30px 24px}
@@ -1987,7 +2117,7 @@ a{color:inherit;text-decoration:none}
   padding:26px 28px;
   text-align:center;
 }
-.sc-icon{font-size:32px;margin-bottom:10px}
+
 .sc-title{
   font-family:var(--serif);
   font-size:22px;
@@ -3009,7 +3139,7 @@ body.poster-locked{overflow:hidden}
   background:linear-gradient(90deg,var(--sun),var(--river));
 }
 .td-leading::after{
-  content:'🛶';
+  content:'';
   position:absolute;
   right:-30px;
   bottom:-40px;
@@ -3085,33 +3215,36 @@ body.poster-locked{overflow:hidden}
   max-width:720px;
   margin:0 auto 18px;
 }
+/* E2 sky-blue tint cards */
 .td-status-card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:18px 20px;
+  background:linear-gradient(135deg,rgba(143,197,232,.12) 0%,rgba(247,242,230,.6) 100%);
+  border:1px solid rgba(143,197,232,.3);
+  border-radius:10px;
+  padding:16px 18px;
   box-shadow:var(--sh-s);
 }
 .td-sc-lbl{
-  font-size:10px;
+  font-size:8.5px;
   letter-spacing:2px;
   text-transform:uppercase;
   color:var(--ink-l);
-  font-weight:600;
-  margin-bottom:6px;
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:5px;
 }
+.td-sc-lbl svg{stroke:var(--river);flex-shrink:0;}
 .td-sc-val{
-  font-family:var(--serif);
-  font-size:22px;
-  font-style:italic;
-  font-weight:500;
+  font-family:var(--sans);
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:-.02em;
   color:var(--ink);
   line-height:1.2;
-  margin-bottom:10px;
-  min-height:28px;
+  margin-bottom:8px;
+  min-height:24px;
 }
 .td-sc-link{
-  font-size:11px;
+  font-size:10px;
   color:var(--river);
   font-weight:600;
   letter-spacing:.3px;
@@ -4776,6 +4909,21 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   <!-- ═══════════ DISCOVER ═══════════ -->
   <section class="panel active" id="panel-discover">
 
+    <!-- E2 Leading route card (shown when votes exist) -->
+    <div class="discover-leader" id="discoverLeader" style="display:none">
+      <div class="dl-wrap">
+        <div class="dl-eyebrow"><span class="vp-leading-dot"></span>Leading right now</div>
+        <div class="dl-name" id="dlName">—</div>
+        <div class="dl-sub" id="dlSub"></div>
+        <div class="dl-meta" id="dlMeta"></div>
+        <div class="dl-whisper" id="dlWhisper" style="display:none">
+          <span class="dl-whisper-label">From the river</span>
+          <span id="dlWhisperText"></span>
+        </div>
+        <button class="dl-btn" onclick="openLeadingPoster()">Open full route →</button>
+      </div>
+    </div>
+
     <!-- Countdown -->
     <div class="countdown" id="countdown">
       <div class="cd-num" id="cdNum">—</div>
@@ -4788,7 +4936,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <!-- Entry cards -->
     <div class="entry-cards">
       <button class="ec" style="--bar:var(--river)" onclick="scrollToRoutes()">
-        <div class="ec-icon">🗺</div>
+        <div class="ec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
         <div class="ec-body">
           <div class="ec-num">01</div>
           <div class="ec-title">Browse the routes</div>
@@ -4797,7 +4945,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
         <div class="ec-arrow">→</div>
       </button>
       <button class="ec" style="--bar:var(--sun)" onclick="switchTab('plan','vote')">
-        <div class="ec-icon">❤️</div>
+        <div class="ec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
         <div class="ec-body">
           <div class="ec-num">02</div>
           <div class="ec-title">Vote your favourite</div>
@@ -4806,7 +4954,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
         <div class="ec-arrow">→</div>
       </button>
       <button class="ec" style="--bar:var(--sage)" onclick="switchTab('plan','dates')">
-        <div class="ec-icon">📅</div>
+        <div class="ec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <div class="ec-body">
           <div class="ec-num">03</div>
           <div class="ec-title">Mark your days</div>
@@ -4840,10 +4988,10 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
     <div class="filter-row" id="filterRow">
       <button class="chip active" data-filter="all">All routes</button>
-      <button class="chip" data-filter="day">☀️ Day trips</button>
-      <button class="chip" data-filter="night">🌙 Overnights</button>
-      <button class="chip" data-filter="warmest">🌡 Warmest</button>
-      <button class="chip" data-filter="closest">🚆 Closest</button>
+      <button class="chip" data-filter="day">Day trips</button>
+      <button class="chip" data-filter="night">Overnights</button>
+      <button class="chip" data-filter="warmest">Warmest</button>
+      <button class="chip" data-filter="closest">Closest</button>
     </div>
 
     <div class="gallery-wrap">
@@ -4861,18 +5009,18 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <div class="wrap" id="crewAnchor">
       <div class="section-head">
         <div class="section-kicker">The crew</div>
-        <h2 class="section-title">Who's done what</h2>
-        <p class="section-sub">Everyone who's joined. At a glance — who's voted their routes, who's marked their days.</p>
+        <h2 class="section-title">Who's on board</h2>
+        <p class="section-sub">Everyone who's joined. At a glance — who's voted, who's marked their days.</p>
       </div>
       <div class="crew-activity" id="crewActivity"></div>
       <div class="crew-wall" id="crewWall" style="display:none"></div>
     </div>
 
     <div class="wrap" id="voteAnchor">
-      <div class="section-head">
-        <div class="section-kicker">Vote</div>
-        <h2 class="section-title">Which route lights you up?</h2>
-        <p class="section-sub">Heart as many as you want. The leader gets a gold frame. Tap a photo to see the full route.</p>
+      <div class="section-head" style="padding:40px 0 8px">
+        <div class="section-kicker">The vote</div>
+        <h2 class="section-title" style="font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(32px,7vw,52px);letter-spacing:-.02em">Where is the crew<br>leaning?</h2>
+        <p class="section-sub">Heart as many as you want. The river with the most love wins.</p>
       </div>
     </div>
 
@@ -4881,7 +5029,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <div class="wrap">
       <div class="leader" id="leader" style="display:none">
         <div class="leader-info">
-          <div class="leader-lbl">🏆 Leading right now</div>
+          <div class="leader-lbl">Leading right now</div>
           <div class="leader-name" id="leaderName">—</div>
           <div class="leader-votes" id="leaderVotes"></div>
         </div>
@@ -4889,7 +5037,9 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
-        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">🚤</button>
+        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><g transform="matrix(1 0 0 0.85 0 1)"><polygon points="3 13 21 13 18 19 6 19"/><polygon points="12 4 17 13 7 13"/><line x1="12" y1="4" x2="12" y2="19"/><line x1="3" y1="13" x2="18" y2="19"/><line x1="21" y1="13" x2="6" y2="19"/></g></svg>
+</button>
       </div>
     </div>
 
@@ -4901,7 +5051,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
       </div>
 
       <div class="best-weekend" id="bestWeekend">
-        <div class="bw-star">⭐</div>
+        
         <div class="bw-info">
           <div class="bw-lbl">Best overlap so far</div>
           <div class="bw-date" id="bwDate">—</div>
@@ -4911,7 +5061,9 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="id-pill-wrap">
         <button class="id-pill" type="button" onclick="openIdentityModal({allowSkip:true})"></button>
-        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">🚤</button>
+        <button class="paper-boat-btn" type="button" onclick="openDash()" aria-label="My dashboard" title="My dashboard">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><g transform="matrix(1 0 0 0.85 0 1)"><polygon points="3 13 21 13 18 19 6 19"/><polygon points="12 4 17 13 7 13"/><line x1="12" y1="4" x2="12" y2="19"/><line x1="3" y1="13" x2="18" y2="19"/><line x1="21" y1="13" x2="6" y2="19"/></g></svg>
+</button>
       </div>
 
       <div class="cal-mnav">
@@ -4925,11 +5077,11 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
       <div class="cal-legend">
         <div class="cl-i"><div class="cl-sw free"></div>Free</div>
         <div class="cl-i"><div class="cl-sw maybe"></div>Maybe</div>
-        <div class="cl-i">· · · = others' votes</div>
+        <div class="cl-i cl-dot">· others</div>
       </div>
 
       <div class="avail-results" id="availResults">
-        <div class="ar-t">📊 Most popular days</div>
+        <div class="ar-t">Most popular days</div>
         <div id="arBody"></div>
       </div>
       <div class="day-detail" id="dayDetail">
@@ -4941,7 +5093,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <!-- Share card -->
     <div class="wrap">
       <div class="share-card">
-        <div class="sc-icon">💬</div>
+        
         <div class="sc-title">Share with the crew</div>
         <div class="sc-sub">Copy a clean summary to paste into your group chat — route, dates, everything they need.</div>
         <div class="sc-btns">
@@ -5000,7 +5152,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="updates-card">
         <div class="uc-head">
-          <div class="uc-lbl">🔴 Three laws changed · January 2020</div>
+          <div class="uc-lbl">Three laws changed · January 2020</div>
           <div class="uc-title">Don't get fined — read this</div>
         </div>
         <div class="uc-body">
@@ -5085,22 +5237,22 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
       <div class="td-status-grid">
         <div class="td-status-card">
-          <div class="td-sc-lbl">🌊 Water level</div>
+          <div class="td-sc-lbl">Water</div>
           <div class="td-sc-val" id="tdWaterVal">—</div>
           <a class="td-sc-link" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">Full data →</a>
         </div>
         <div class="td-status-card">
-          <div class="td-sc-lbl">☀️ Weather today</div>
+          <div class="td-sc-lbl">Sky</div>
           <div class="td-sc-val" id="tdWeatherVal">—</div>
           <a class="td-sc-link" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">MeteoSwiss →</a>
         </div>
         <div class="td-status-card">
-          <div class="td-sc-lbl">🚆 Next train from Basel</div>
+          <div class="td-sc-lbl">Next train</disel</div>
           <div class="td-sc-val" id="tdTrainVal">Check SBB</div>
           <a class="td-sc-link" href="https://www.sbb.ch" target="_blank" rel="noopener">Book →</a>
         </div>
         <div class="td-status-card">
-          <div class="td-sc-lbl">🎒 Packing status</div>
+          <div class="td-sc-lbl">Pack list</div>
           <div class="td-sc-val" id="tdPackVal">—</div>
           <a class="td-sc-link" onclick="switchTab('plan','pack')">Open list →</a>
         </div>
@@ -5110,21 +5262,21 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
     <!-- Quick actions -->
     <div class="wrap">
       <div class="trip-day">
-        <div class="td-eyebrow">Quick links</div>
+        <div class="td-eyebrow">Trip day</div>
         <h2 class="td-title">When it's the morning<br>of the adventure.</h2>
         <p class="td-sub">Everything you need, one tap away — so you're not scrolling at 9am with coffee in one hand.</p>
         <div class="td-actions">
           <a class="td-btn" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">🌊</div>Water level
+            <div class="td-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>Water level
           </a>
           <a class="td-btn" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">☀️</div>Weather
+            <div class="td-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></div>Weather
           </a>
           <a class="td-btn" href="https://www.sbb.ch" target="_blank" rel="noopener">
-            <div class="td-btn-icon">🚆</div>Trains
+            <div class="td-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>Trains
           </a>
           <a class="td-btn" href="javascript:void(0)" onclick="printTripZine()">
-            <div class="td-btn-icon">📄</div>Save as PDF
+            <div class="td-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Save as PDF
           </a>
         </div>
       </div>
@@ -6525,7 +6677,7 @@ function saveLetterEdit(){
   saveLetter(obj);
   markLetterRead();
   closeLetterModal();
-  showToast('Letter saved 🍾');
+  showToast('Letter saved');
 }
 function cancelLetterEdit(){
   closeLetterModal();
@@ -7063,9 +7215,9 @@ function renderGallery(){
         <div class="g-km">${r.km}<span> km</span></div>
         <button class="g-heart-btn${voted?` voted`:``}" onclick="event.stopPropagation();gHeartTap('${r.id}')" aria-label="Vote">${voted?'♥':'♡'}</button>
         ${vCount>0?`<div class="g-heart-count">${vCount}</div>`:''}
-        ${hasMultiple?`<div class="g-photo-count">📷 ${r.photos.length}</div>`:''}
+        ${hasMultiple?`<div class="g-photo-count">${r.photos.length}</div>`:''}
         ${dotHtml}
-        <div class="g-open">⤢ Open</div>
+        <div class="g-open">↗ Open</div>
       </div>
       <div class="g-body">
         <div class="g-title">${r.name}</div>
@@ -7259,7 +7411,7 @@ function renderVotePosters(){
           const isLead=r.id===leaderId&&n>0;
           const color=({d1:'#1d7a9c',d2:'#0d5773',d3:'#4ba4c7',d4:'#e8832f',o1:'#4f8b6b',o2:'#b85e14'})[r.id];
           return `<div class="vp-pulse-row${isLead?' lead':''}" onclick="openPoster('${r.id}')">
-            <div class="vp-pulse-name">${r.emoji} ${r.name.split('→')[0].trim()}${isLead?' <span class="vp-pulse-crown">👑</span>':''}</div>
+            <div class="vp-pulse-name">${r.name.split('→')[0].trim()}${isLead?' <span class="vp-pulse-crown" aria-label="leading">✦</span>':''}</div>
             <div class="vp-pulse-track"><div class="vp-pulse-fill" style="width:${Math.max(pct,n>0?6:0)}%;background:${color}"></div></div>
             <div class="vp-pulse-n">${n}</div>
           </div>`;
@@ -7268,33 +7420,64 @@ function renderVotePosters(){
     </div>
   `;
 
-  el.innerHTML=pulseHTML+ROUTES.map(r=>{
+  // E2 layout: leading card featured + contender rows
+  const routesSorted = [...ROUTES].sort((a,b)=>{
+    const na=(votes[a.id]||[]).length;
+    const nb=(votes[b.id]||[]).length;
+    return nb-na;
+  });
+
+  const me=getMe();
+  const cardsHTML = routesSorted.map((r,i)=>{
     const voters=votes[r.id]||[];
     const n=voters.length;
-    const me=getMe();
     const voted=me&&voters.includes(me.name);
     const pct=maxVotes?Math.round((n/maxVotes)*100):0;
     const isLeader=r.id===leaderId&&n>0;
-    const voterList=voters.length?'<strong>'+voters.map(escapeHtml).join(', ')+'</strong>'+(voters.length===1?' is in':' are in'):'No votes yet';
-    return `<div class="vp${isLeader?' leading':''}" onclick="if(!event.target.closest('.vp-btn'))openPoster('${r.id}')">
-      <div class="vp-photo">
-        <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3'">
-        <div class="vp-title">${r.name}</div>
-        ${r.photos.length>1?`<div class="vp-photo-count">📷 ${r.photos.length}</div>`:''}
-      </div>
-      <div class="vp-body">
-        <div class="vp-info">
-          <div class="vp-sub">${r.sub}</div>
-          <div class="vp-bar"><div class="vp-fill" style="width:${pct}%"></div></div>
+
+    if(isLeader){
+      // LEADING CARD — big featured
+      const crewBubbles=voters.slice(0,5).map(name=>{
+        const c=crew[name]||{};
+        return `<span class="vp-bubble" title="${escapeHtml(name)}">${renderIcon(c.emoji||'boat',12)}</span>`;
+      }).join('')+(voters.length>5?`<span class="vp-bubble-more">+${voters.length-5}</span>`:'');
+      return `<div class="vp vp-featured leading" onclick="if(!event.target.closest('.vp-btn,.vp-heart-btn'))openPoster('${r.id}')">
+        <div class="vp-photo" style="aspect-ratio:16/9">
+          <img src="${r.photos[0]}" alt="${r.name}" onerror="this.style.opacity='.3'" loading="lazy">
+          <div class="vp-photo-ov"></div>
+          ${r.photos.length>1?`<div class="vp-photo-count">${r.photos.length}</div>`:''}
         </div>
-        <button class="vp-btn${voted?' voted':''}" id="vpbtn_${r.id}" onclick="toggleVote('${r.id}')">
-          <span class="vp-h">${voted?'♥':'♡'}</span>
-          <span class="vp-count">${n}</span>
+        <div class="vp-featured-body">
+          <div class="vp-featured-eyebrow"><span class="vp-leading-dot"></span>Leading</div>
+          <div class="vp-featured-name">${r.name}</div>
+          <div class="vp-featured-sub">${r.verdict||r.sub}</div>
+          <div class="vp-featured-meta">
+            <span>${r.km} km</span><span>·</span><span>${r.hours}</span><span>·</span><span>${r.temp}° water</span>
+          </div>
+          <div class="vp-featured-footer">
+            <div class="vp-bubbles">${crewBubbles}</div>
+            <button class="vp-heart-btn${voted?' voted':''}" onclick="toggleVote('${r.id}')">
+              <svg viewBox="0 0 24 24" fill="${voted?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span>${n}</span>
+            </button>
+          </div>
+          <div class="vp-bar" style="margin-top:12px"><div class="vp-fill" style="width:100%"></div></div>
+        </div>
+      </div>`;
+    } else {
+      // CONTENDER ROW — clean minimal
+      return `<div class="vp vp-row" onclick="if(!event.target.closest('.vp-btn,.vp-heart-btn'))openPoster('${r.id}')">
+        <div class="vp-row-name">${r.name}</div>
+        <div class="vp-row-track"><div class="vp-row-fill" style="width:${pct}%"></div></div>
+        <button class="vp-heart-btn${voted?' voted':''}" onclick="toggleVote('${r.id}')">
+          <svg viewBox="0 0 24 24" fill="${voted?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>${n}</span>
         </button>
-      </div>
-      <div class="vp-voters">${voterList}</div>
-    </div>`;
+      </div>`;
+    }
   }).join('');
+
+  el.innerHTML=pulseHTML+cardsHTML;
 
   const leader=document.getElementById('leader');
   if(leaderId&&maxVotes>0){
@@ -7305,6 +7488,38 @@ function renderVotePosters(){
     document.getElementById('leaderVotes').textContent=`${maxVotes} vote${maxVotes>1?'s':''} · ${voters.join(', ')}`;
   }else if(leader){
     leader.style.display='none';
+  }
+  renderDiscoverLeader();
+}
+
+function renderDiscoverLeader(){
+  const dl=document.getElementById('discoverLeader');
+  if(!dl)return;
+  const votes=getVotes();
+  const maxVotes=Math.max(0,...ROUTES.map(r=>(votes[r.id]||[]).length));
+  if(maxVotes===0){dl.style.display='none';return;}
+  const leaderId=ROUTES.map(r=>({id:r.id,n:(votes[r.id]||[]).length})).sort((a,b)=>b.n-a.n)[0]?.id;
+  const r=ROUTES.find(x=>x.id===leaderId);
+  if(!r){dl.style.display='none';return;}
+  dl.style.display='';
+  document.getElementById('dlName').textContent=r.name;
+  document.getElementById('dlSub').textContent=r.verdict||r.sub||'';
+  const voters=votes[leaderId]||[];
+  document.getElementById('dlMeta').innerHTML=
+    `<span>${r.km} km</span><span>·</span><span>${r.hours}</span><span>·</span><span>${r.temp}° water</span><span>·</span><span>${voters.length} vote${voters.length!==1?'s':''}</span>`;
+  // Show whisper if there's a best date
+  const avail=getAvail();
+  const best=getBestDate(avail);
+  const wEl=document.getElementById('dlWhisper');
+  const wTxt=document.getElementById('dlWhisperText');
+  if(best&&wEl&&wTxt){
+    const[y,m,d]=best.split('-');
+    const dt=new Date(+y,+m-1,+d);
+    const label=dt.toLocaleDateString('en-CH',{weekday:'short',month:'short',day:'numeric'});
+    wTxt.textContent=`A new best day just appeared — ${label}.`;
+    wEl.style.display='inline-flex';
+  } else if(wEl){
+    wEl.style.display='none';
   }
 }
 
@@ -7933,22 +8148,22 @@ function renderTripDay(){
   if(grid&&!document.getElementById('tdWaterVal')){
     grid.innerHTML=`
       <div class="td-status-card">
-        <div class="td-sc-lbl">🌊 Water level</div>
+        <div class="td-sc-lbl">Water</div>
         <div class="td-sc-val" id="tdWaterVal">—</div>
         <a class="td-sc-link" href="https://www.hydrodaten.admin.ch" target="_blank" rel="noopener">Full data →</a>
       </div>
       <div class="td-status-card">
-        <div class="td-sc-lbl">☀️ Weather today</div>
+        <div class="td-sc-lbl">Sky</div>
         <div class="td-sc-val" id="tdWeatherVal">—</div>
         <a class="td-sc-link" href="https://www.meteoswiss.admin.ch" target="_blank" rel="noopener">MeteoSwiss →</a>
       </div>
       <div class="td-status-card">
-        <div class="td-sc-lbl">🚆 Next train from Basel</div>
+        <div class="td-sc-lbl">Next train</disel</div>
         <div class="td-sc-val" id="tdTrainVal">Check SBB</div>
         <a class="td-sc-link" href="https://www.sbb.ch" target="_blank" rel="noopener">Book →</a>
       </div>
       <div class="td-status-card">
-        <div class="td-sc-lbl">🎒 Packing status</div>
+        <div class="td-sc-lbl">Pack list</div>
         <div class="td-sc-val" id="tdPackVal">—</div>
         <a class="td-sc-link" onclick="switchTab('plan','pack')">Open list →</a>
       </div>`;
