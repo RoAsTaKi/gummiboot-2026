@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.6.3-20260424">
+<meta name="gb-version" content="V25.6.4-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -4304,6 +4304,9 @@ body.poster-locked{overflow:hidden}
   -webkit-tap-highlight-color:transparent;
 }
 .id-close-x:hover,.id-close-x:active{background:var(--ink);color:#fff;border-color:var(--ink);transform:scale(.92);}
+/* V25.6.4: In chained-from-letter state, ← (back) and "Just explore" already handle close paths.
+   Hide the × to avoid three redundant close buttons. */
+.identity-modal.chained .id-close-x{display:none !important;}
 
 /* Manage identities modal */
 .manage-modal{
@@ -4404,6 +4407,8 @@ body.poster-locked{overflow:hidden}
 .confirm-cancel{background:rgba(0,0,0,.06);color:var(--ink);}
 .confirm-rename-btn{background:rgba(255,200,100,.25);color:#7a5210;}
 .confirm-delete-btn{background:#a83232;color:#fff;}
+/* V25.6.4: when the confirm-delete button is reused for a non-destructive action (switch crew, etc.) */
+.confirm-delete-btn.soft{background:var(--ink);color:var(--cream);}
 
 /* Manage link in id-pill area — paper boat charm */
 .id-manage-link{
@@ -7298,7 +7303,7 @@ function closeConfirmModal(){
   const renameBtn=document.getElementById('confirmRename');
   const deleteBtn=document.getElementById('confirmDelete');
   if(renameBtn)renameBtn.style.display='';
-  if(deleteBtn){deleteBtn.textContent='Delete forever';}
+  if(deleteBtn){deleteBtn.textContent='Delete forever';deleteBtn.classList.remove('soft');}
 }
 
 // V16 debug helpers — run from console to test ceremony without resetting identity
@@ -7463,6 +7468,7 @@ function switchToCrewMember(name){
   if(renameBtn)renameBtn.style.display='none';
   if(deleteBtn){
     deleteBtn.textContent=`Switch to ${name}`;
+    deleteBtn.classList.add('soft'); // V25.6.4: non-destructive, remove red styling
     deleteBtn.onclick=function(){
       closeConfirmModal();
       setMe(name,entry.emoji||'',{cascade:false});
@@ -7488,9 +7494,6 @@ function closeEmojiPicker(){closeIdentityModal();}
 // TABS
 // ═══════════════════════════════════════
 function switchTab(id,scrollTo){
-  // Don't scroll or re-render if we're already on this tab AND no specific anchor requested
-  const currentActive=document.querySelector('.tab.active');
-  const sameTab=currentActive && currentActive.dataset.tab===id;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
   // V25: body class so the hero can hide on non-discover tabs
