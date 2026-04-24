@@ -2130,7 +2130,7 @@ a{color:inherit;text-decoration:none}
 }
 .tc-row{
   display:grid;
-  grid-template-columns:2fr 1fr 1fr;
+  grid-template-columns:2fr 1fr;
   padding:13px 22px;
   gap:12px;
   border-bottom:1px solid var(--line);
@@ -2140,7 +2140,7 @@ a{color:inherit;text-decoration:none}
 .tc-row:last-child{border-bottom:none}
 .tc-n{color:var(--ink);font-weight:500}
 .tc-n span{display:block;font-size:10.5px;color:var(--ink-l);font-weight:400;margin-top:2px}
-.tc-t{color:var(--sun);font-weight:700;letter-spacing:-.01em}
+.tc-t{color:var(--sun);font-weight:700;letter-spacing:-.01em;text-align:right;font-family:var(--sans)}
 
 /* Share card */
 .share-card{
@@ -5326,11 +5326,12 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
           <div class="tc-lbl">Train times from Basel SBB</div>
           <div class="tc-title">How long to each entry</div>
         </div>
-        <div class="tc-row"><div class="tc-n">Leibstadt<span>Day Trip #1 · Rhine</span></div><div>~45 min</div><div class="tc-t">1h</div></div>
-        <div class="tc-row"><div class="tc-n">Stein am Rhein<span>Day Trip #2 · via Zürich</span></div><div>~1h 50</div><div class="tc-t">2h</div></div>
-        <div class="tc-row"><div class="tc-n">Neuhausen am Rheinfall<span>Day Trip #3 · Basel Bad</span></div><div>~1h 20</div><div class="tc-t">1.5h</div></div>
-        <div class="tc-row"><div class="tc-n">Thun<span>Overnight #1 · via Bern</span></div><div>~55 min</div><div class="tc-t">1h</div></div>
-        <div class="tc-row"><div class="tc-n">Bremgarten AG<span>Overnight #2 · via Zürich</span></div><div>~1h 15</div><div class="tc-t">1.25h</div></div>
+        <div class="tc-row"><div class="tc-n">Leibstadt<span>Day Trip #1 · Rhine — via Frick</span></div><div class="tc-t">~1h 15</div></div>
+        <div class="tc-row"><div class="tc-n">Stein am Rhein<span>Day Trip #2 · Rhine — via Zürich HB</span></div><div class="tc-t">~1h 50</div></div>
+        <div class="tc-row"><div class="tc-n">Neuhausen am Rheinfall<span>Day Trip #3 · Rhine — via Schaffhausen</span></div><div class="tc-t">~1h 10</div></div>
+        <div class="tc-row"><div class="tc-n">Zürich Werdinsel<span>Day Trip #4 · Limmat — via Zürich HB</span></div><div class="tc-t">~1h 15</div></div>
+        <div class="tc-row"><div class="tc-n">Thun<span>Overnight #1 · Aare — direct IC</span></div><div class="tc-t">~1h 25</div></div>
+        <div class="tc-row"><div class="tc-n">Bremgarten AG<span>Overnight #2 · Reuss — via Dietikon/BDWM</span></div><div class="tc-t">~1h 40</div></div>
       </div>
     </div>
 
@@ -7491,7 +7492,7 @@ function renderGallery(){
         <div class="g-sub">${r.sub}</div>
         <div class="g-verdict">${verdictLine}</div>
         <div class="g-meta">
-          <div class="g-meta-i">⏱ ${r.hours}</div>
+          <div class="g-meta-i">${r.hours}</div>
           <div class="g-meta-i">${r.temp}</div>
           <div class="g-meta-i">${(r.travel.split('~')[1]||'').trim()}</div>
         </div>
