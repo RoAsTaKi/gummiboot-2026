@@ -2254,9 +2254,11 @@ body.poster-locked .poster-close{display:flex}
   -webkit-backdrop-filter:blur(12px);
   border:1.5px solid rgba(255,255,255,.3);
   color:#fff;font-size:20px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
+  display:none;
+  align-items:center;justify-content:center;
   transition:all .25s var(--spring);
 }
+body.poster-locked .poster-vote-btn{display:flex}
 .poster-vote-btn.voted{background:rgba(232,131,47,.85);border-color:rgba(232,131,47,.6);font-size:22px;}
 .poster-vote-btn:active{transform:scale(.88);}
 
@@ -3773,10 +3775,12 @@ body.poster-locked{overflow:hidden}
   color:rgba(255,255,255,.9);
   font-family:var(--sans);
   opacity:0;
-  transition:opacity .3s var(--ease) .1s;
+  max-width:0;
+  overflow:hidden;
+  transition:opacity .3s var(--ease) .1s, max-width .4s var(--smooth);
   white-space:nowrap;
 }
-.bottle-dock:hover .bd-label,.bottle-dock.has-new .bd-label{opacity:1;}
+.bottle-dock:hover .bd-label,.bottle-dock.has-new .bd-label{opacity:1;max-width:100px;}
 .bottle-dock:hover{transform:scale(1.08);}
 .bottle-dock.pressing{transform:scale(.94);}
 .bottle-dock.has-new{
