@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.6.2-20260424">
+<meta name="gb-version" content="V25.6.3-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -4060,6 +4060,19 @@ body.poster-locked{overflow:hidden}
   animation:letterUnfurl 1s var(--smooth) forwards;
   transform-origin:top center;
 }
+/* V25.6.3: always-visible × close on the letter reader (hidden during first-visit ceremony via JS) */
+.lm-close-x{
+  position:absolute;top:14px;right:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);
+  color:var(--ink);cursor:pointer;
+  font-size:20px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+  transition:all .2s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.lm-close-x:hover,.lm-close-x:active{background:var(--ink);color:#fdf6e8;border-color:var(--ink);transform:scale(.92);}
 @keyframes letterUnfurl{
   0%   {opacity:0; transform:scaleY(.05) translateY(-40px);}
   30%  {opacity:1;}
@@ -5635,6 +5648,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 
   <!-- Reader stage -->
   <div class="lm-reader">
+    <button class="lm-close-x" type="button" onclick="closeLetterModal()" aria-label="Close">×</button>
     <div class="lm-reader-title" id="lmReaderTitle">A note from Roxane</div>
     <div class="lm-reader-body" id="lmReaderBody"></div>
     <div class="lm-reader-sign" id="lmReaderSign">— Roxane</div>
@@ -5706,7 +5720,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
           <div class="dash-name-sub" id="dashSub">your journey so far</div>
         </div>
       </div>
-      <button class="dash-edit-btn" type="button" onclick="closeDash();setTimeout(()=>openIdentityModal({allowSkip:false}),180)" title="Edit">✏</button>
+      <button class="dash-edit-btn" type="button" onclick="closeDash();setTimeout(()=>openIdentityModal({allowSkip:true}),180)" title="Edit">✏</button>
     </div>
     <div class="dash-body">
       <div class="dash-section">
@@ -6587,7 +6601,7 @@ const LETTER_EDIT_PW='böötle';
 
 const DEFAULT_LETTER={
   title:'A note from Roxane',
-  body:"Okay. I need you to clear a weekend this summer — or two.\n\nI've been dreaming about this for years: **inflatable dinghies, Swiss rivers, all of us together.** No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.\n\nI've done the research (obviously ). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.\n\n**Pick a route. Mark your days. Say yes.** The rest takes care of itself.",
+  body:"Okay. I need you to clear a weekend this summer — or two.\n\nI've been dreaming about this for years: **inflatable dinghies, Swiss rivers, all of us together.** No agenda, no schedule. Just the current, the sun, a cold drink, and wherever the river takes us.\n\nI've done the research (obviously). I built this whole thing so we can plan it — and then completely forget we planned anything once we're on the water.\n\n**Pick a route. Mark your days. Say yes.** The rest takes care of itself.",
   sign:'— Roxane',
   signLocation:'Written from Basel, with the rivers already running warm'
 };
@@ -6797,11 +6811,15 @@ function showArrivalCeremony(opts){
       if(cont)cont.style.display='inline-flex';
       if(closeBtn)closeBtn.style.display='none';
       if(skipBtn)skipBtn.style.display='inline-block';
+      // V25.6.3: no × on first-visit (gated flow — user must Continue or Skip)
+      const xBtn=modal.querySelector('.lm-close-x');if(xBtn)xBtn.style.display='none';
     }else{
       // New-letter ceremony for returning user: show Close only
       if(cont)cont.style.display='none';
       if(closeBtn)closeBtn.style.display='inline-flex';
       if(skipBtn)skipBtn.style.display='none';
+      // V25.6.3: × visible for returning users
+      const xBtn=modal.querySelector('.lm-close-x');if(xBtn)xBtn.style.display='flex';
       markLetterRead();
     }
   },3400);
@@ -6823,6 +6841,8 @@ function showLetterReader(){
   if(skipBtn)skipBtn.style.display='none';
   const closeBtn=modal.querySelector('.lm-close');
   if(closeBtn)closeBtn.style.display='inline-flex';
+  // V25.6.3: × visible when opening letter via bottle tap
+  const xBtn=modal.querySelector('.lm-close-x');if(xBtn)xBtn.style.display='flex';
  modal.classList.add('show');
  modal.classList.remove('ceremony');
   markLetterRead();
@@ -7481,11 +7501,10 @@ function switchTab(id,scrollTo){
   const labels={discover:'Discover',plan:'Plan',tripday:'Trip Day'};
   const lbl=document.getElementById('tbTabLabel');
   if(lbl)lbl.textContent=labels[id]||'';
-  // Scroll to top ALWAYS when a tab is tapped (V25.6.1: even if same tab, like Instagram).
-  // requestAnimationFrame so the scroll fires after the display:none/flex layout settles.
-  if(!scrollTo){
-    requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));
-  }
+  // V25.6.3: Tapping a tab does NOT scroll. The panel swaps beneath the hero; the user stays
+  // wherever they were. The only time scroll moves is when an explicit anchor is passed
+  // (entry cards, crew badges, etc.).
+  // (Removed the rAF scroll-to-top that V25.6.1 introduced.)
   // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
   if(id==='plan'||id==='discover'){renderVotePosters();renderGallery();}
