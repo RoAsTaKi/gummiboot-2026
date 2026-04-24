@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.6-20260424">
+<meta name="gb-version" content="V25.6.1-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -2268,6 +2268,13 @@ body.poster-locked .bottle-dock,
 body.poster-locked .lighthouse-charm,
 body.poster-locked .sync-dot,
 body.poster-locked .whisper-drift{display:none !important}
+/* V25.6.1: hide sync dot whenever a blocking modal is open so it doesn't float over letters/pw/manage/dash */
+body:has(.letter-modal.show) .sync-dot,
+body:has(.pw-modal.show) .sync-dot,
+body:has(.identity-modal.show) .sync-dot,
+body:has(.manage-modal.show) .sync-dot,
+body:has(.dash-modal.show) .sync-dot,
+body:has(.confirm-modal.show) .sync-dot{display:none !important}
 .poster-vote-btn.voted{background:rgba(232,131,47,.85);border-color:rgba(232,131,47,.6);font-size:22px;}
 .poster-vote-btn:active{transform:scale(.88);}
 
@@ -4535,7 +4542,7 @@ body.poster-locked{overflow:hidden}
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:18px 22px 14px;
+  padding:18px 56px 14px 22px; /* V25.6.1: extra right padding so close-× doesn't overlap pencil */
   border-bottom:1px solid var(--line);
   flex-shrink:0;
 }
@@ -6889,7 +6896,7 @@ function bottlePressStart(e){
  if(dock)dock.classList.remove('pressing');
     openPasswordModal();
     if(navigator.vibrate)try{navigator.vibrate(40)}catch{}
-  },3000);
+  },900);
 }
 function bottlePressEnd(){
   if(_bottlePressTimer){clearTimeout(_bottlePressTimer);_bottlePressTimer=null;}
@@ -7452,9 +7459,10 @@ function switchTab(id,scrollTo){
   const labels={discover:'Discover',plan:'Plan',tripday:'Trip Day'};
   const lbl=document.getElementById('tbTabLabel');
   if(lbl)lbl.textContent=labels[id]||'';
-  // Scroll to top ONLY when switching to a different tab (not when tapping the current tab)
-  if(!sameTab && !scrollTo){
-    window.scrollTo({top:0,behavior:'auto'});
+  // Scroll to top ALWAYS when a tab is tapped (V25.6.1: even if same tab, like Instagram).
+  // requestAnimationFrame so the scroll fires after the display:none/flex layout settles.
+  if(!scrollTo){
+    requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));
   }
   // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
@@ -8134,13 +8142,13 @@ const PACK=[
  {id:'pump',t:'Boat pump',kind:'solo',req:true,icon:'💨'}
  ]},
  {group:'Boat kit',items:[
- {id:'boat',t:'The actual boat(s)',kind:'solo',icon:''},
+ {id:'boat',t:'The actual boat(s)',kind:'solo',icon:'⛵'},
  {id:'patch',t:'Puncture repair kit',kind:'solo',icon:'🔧'},
  {id:'rope',t:'Rope (to tie boats together)',kind:'solo',icon:'🪢'},
  {id:'drybag',t:'Waterproof dry bag',kind:'group',icon:'🎒'}
  ]},
  {group:'Food & drinks',items:[
- {id:'water',t:'Drinking water (1.5L+ per person)',kind:'group',icon:''},
+ {id:'water',t:'Drinking water (1.5L+ per person)',kind:'group',icon:'💧'},
  {id:'sandwiches',t:'Sandwiches / lunch',kind:'group',icon:'🥪'},
  {id:'fruit',t:'Fresh fruit for the boat',kind:'group',icon:'🍉'},
  {id:'snacks',t:'Salty snacks',kind:'group',icon:'🥨'},
@@ -8155,7 +8163,7 @@ const PACK=[
  ]},
  {group:'Vibes',items:[
  {id:'speaker',t:'Waterproof speaker',kind:'solo',icon:'🔊'},
- {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:''},
+ {id:'camera',t:'GoPro / waterproof camera',kind:'solo',icon:'📷'},
  {id:'music',t:'Playlist ready to go',kind:'solo',icon:'🎶'}
  ]},
  {group:'Safety + admin',items:[
@@ -8168,7 +8176,7 @@ const PACK=[
  {id:'sleeping',t:'Sleeping bag',kind:'group',icon:'🛏'},
  {id:'headlamp',t:'Headlamp',kind:'group',icon:'🔦'},
  {id:'dinner',t:'Camping dinner',kind:'solo',icon:'🍲'},
- {id:'booking',t:'Campsite BOOKED',kind:'solo',req:true,icon:''}
+ {id:'booking',t:'Campsite BOOKED',kind:'solo',req:true,icon:'🏕'}
   ]}
 ];
 
