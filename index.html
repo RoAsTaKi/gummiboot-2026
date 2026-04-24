@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.7-20260424">
+<meta name="gb-version" content="V25.7.1-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -7099,10 +7099,6 @@ function renderLetterHistory(){
   const history=getLetterHistory();
   const allLetters=[{letter:active,isActive:true}]
     .concat(history.map(l=>({letter:l,isActive:false})));
-  if(allLetters.length===1 && !history.length){
-    listEl.innerHTML='<div class="lm-history-hint" style="margin:0;padding:4px 0">No past letters yet. Save a letter to start your history.</div>';
-    return;
-  }
   listEl.innerHTML=allLetters.map((entry,i)=>{
     const l=entry.letter;
     const title=escapeHtml(l.title||'Untitled');
@@ -7120,6 +7116,9 @@ function renderLetterHistory(){
       </div>
     </button>`;
   }).join('');
+  if(!history.length){
+    listEl.insertAdjacentHTML('beforeend','<div class="lm-history-hint" style="margin:8px 0 0;padding:4px 0;font-size:10px;opacity:.7">No past letters yet — save a new version to start your history.</div>');
+  }
 }
 function loadLetterFromHistory(idx){
   const l=(idx==='active')?getLetter():getLetterHistory()[parseInt(idx,10)];
@@ -7628,11 +7627,12 @@ function switchTab(id,scrollTo){
   if(lbl)lbl.textContent=labels[id]||'';
   // V25.7: Tapping a tab scrolls to just below the hero, so the tab content shows at top
   // without pushing the hero off-screen. Skip the scroll if a specific anchor is passed.
+  // V25.7.1: instant (not smooth) — smooth-scrolling from deep in a long tab is jarring.
   if(!scrollTo){
     requestAnimationFrame(()=>{
       const hero=document.querySelector('.hero');
       const y=hero?hero.offsetHeight:0;
-      window.scrollTo({top:y,behavior:'smooth'});
+      window.scrollTo({top:y,behavior:'auto'});
     });
   }
   // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
