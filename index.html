@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.4-20260424">
+<meta name="gb-version" content="V25.5-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -2251,7 +2251,7 @@ body.tab-plan .hero,body.tab-tripday .hero{display:none;}
 body.poster-locked .poster-close{display:flex}
 .poster-close:hover{background:var(--sun);color:#fff;transform:rotate(90deg)}
 .poster-vote-btn{
-  position:fixed;top:calc(16px + env(safe-area-inset-top,0px));right:64px;z-index:1010;
+  position:fixed;top:calc(22px + env(safe-area-inset-top,0px));right:82px;z-index:1010;
   width:42px;height:42px;border-radius:50%;
   background:rgba(255,255,255,.15);backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
@@ -8406,7 +8406,10 @@ function renderTripDay(){
     const sub=document.getElementById('tdLSub');
     if(eyebrow)eyebrow.textContent='Nothing yet';
     if(title)title.innerHTML='Cast the first vote';
-    if(sub)sub.textContent='Head to Align → vote your favourite route. Once the crew starts voting, the winner lives here.';
+    if(sub)sub.textContent='Head to Plan → vote your favourite route. Once the crew starts voting, the winner lives here.';
+    // Hide the "Open full route" button since there's no route to open
+    const openBtn=document.querySelector('.td-l-btn');
+    if(openBtn)openBtn.style.display='none';
     // Hide the live-status grid and show a nudge card instead
     const grid=document.querySelector('.td-status-grid');
     if(grid){
@@ -8420,6 +8423,9 @@ function renderTripDay(){
   }
   const chosen=ROUTES.find(r=>r.id===leadingRouteId);
   if(!chosen)return;
+  // Re-show the "Open full route" button now that a route exists
+  const openBtnShow=document.querySelector('.td-l-btn');
+  if(openBtnShow)openBtnShow.style.display='';
   document.getElementById('tdLEyebrow').textContent='Leading the vote';
   document.getElementById('tdLTitle').innerHTML=chosen.name.replace('→','<br>→');
   document.getElementById('tdLSub').textContent=chosen.verdict.split('.')[0]+'.';
