@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.6.4-20260424">
+<meta name="gb-version" content="V25.7-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -4206,6 +4206,60 @@ body.poster-locked{overflow:hidden}
 .lm-editor-hint{
   font-size:12px;color:#9a6a25;font-style:italic;margin-top:6px;
 }
+/* V25.7: Letter history picker */
+.lm-history-wrap{
+  margin:0 0 20px;
+  padding:14px 16px 16px;
+  background:rgba(201,138,44,.06);
+  border:1px solid rgba(201,138,44,.18);
+  border-radius:10px;
+}
+.lm-history-label{
+  font-size:10px;letter-spacing:2.2px;text-transform:uppercase;
+  color:#9a6a25;font-weight:700;margin-bottom:10px;
+}
+.lm-history-list{
+  display:flex;flex-direction:column;gap:8px;
+  max-height:240px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.lm-history-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;
+  background:#fffcf3;
+  border:1px solid rgba(120,90,40,.18);
+  border-radius:8px;
+  cursor:pointer;
+  transition:all .2s var(--ease);
+  text-align:left;
+  font-family:var(--serif);
+}
+.lm-history-item:hover,.lm-history-item:active{border-color:#c98a2c;background:#fffaeb;transform:translateY(-1px);}
+.lm-history-item.active{
+  border-color:#c98a2c;background:rgba(201,138,44,.1);
+  box-shadow:0 0 0 2px rgba(201,138,44,.15);
+}
+.lm-hi-body{flex:1;min-width:0;}
+.lm-hi-title{
+  font-size:14px;color:#3a2812;font-style:italic;font-weight:500;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;
+}
+.lm-hi-preview{
+  font-size:12px;color:#7a5210;opacity:.7;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic;
+}
+.lm-hi-meta{
+  font-size:10px;color:#9a6a25;letter-spacing:.5px;
+  text-transform:uppercase;font-family:var(--sans);font-style:normal;
+  margin-top:4px;font-weight:600;
+}
+.lm-hi-badge{
+  display:inline-block;padding:2px 8px;border-radius:10px;
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700;
+  background:#c98a2c;color:#fff;margin-left:6px;vertical-align:1px;
+}
+.lm-history-hint{
+  font-size:11px;color:#9a6a25;font-style:italic;margin-top:10px;opacity:.8;
+}
 .lm-editor-actions{
   margin-top:22px;display:flex;gap:10px;justify-content:flex-end;
 }
@@ -4590,7 +4644,7 @@ body.poster-locked{overflow:hidden}
   font-size:22px;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1;
 }
 .dash-name-sub{font-size:11px;color:var(--ink-l);margin-top:3px;letter-spacing:.3px;}
-.dash-body{flex:1;overflow-y:auto;padding:0 22px calc(28px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch;}
+.dash-body{flex:1;overflow-y:auto;padding:22px 22px calc(28px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch;}
 .dash-section{margin-bottom:22px;}
 .dash-section-title{
   font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;
@@ -5669,6 +5723,14 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
   <!-- Editor stage -->
   <div class="lm-editor">
     <h3>Edit the letter</h3>
+
+    <!-- V25.7: history picker — active letter + past saves -->
+    <div class="lm-history-wrap">
+      <div class="lm-history-label">Your letters</div>
+      <div class="lm-history-list" id="lmHistoryList"></div>
+      <div class="lm-history-hint">Tap a letter to load it into the form below. Save to make it active.</div>
+    </div>
+
     <label>Title</label>
     <input id="lmEditTitle" type="text" maxlength="60">
     <label>Body</label>
@@ -6124,7 +6186,7 @@ const ROUTES=[
 // STORAGE
 // ═══════════════════════════════════════
 // Shared keys live in Upstash via /api/state. Identity keys stay device-local.
-const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes','gb_letter','gb_letter_v']);
+const SHARED_KEYS=new Set(['gb_votes','gb_avail','gb_crew','gb_pack','gb_wishes','gb_letter','gb_letter_v','gb_letter_history']);
 const LOCAL_KEYS =new Set(['gb_voter','gb_avail_person','gb_my_emoji','gb_identity','gb_last_read_letter_v']);
 let _cache={};
 let _cacheLoaded=false;
@@ -6229,6 +6291,7 @@ function _mergeKey(key, localValue, serverValue){
     }
     case 'gb_letter':
     case 'gb_letter_v':
+    case 'gb_letter_history':
       // Letter is last-write-wins by design (Roxane is the sole editor via password)
       return localValue;
     default:
@@ -6616,7 +6679,26 @@ function getLetter(){
   if(stored&&typeof stored==='object'&&stored.body)return stored;
   return DEFAULT_LETTER;
 }
+// V25.7: Letter history — every save pushes the previous active letter into an array (cap 10).
+function getLetterHistory(){
+  const h=S.get('gb_letter_history');
+  return Array.isArray(h)?h:[];
+}
+function saveLetterHistory(arr){
+  S.set('gb_letter_history',arr);
+}
+function pushToLetterHistory(letter){
+  if(!letter||!letter.body)return;
+  const h=getLetterHistory();
+  // de-dupe: if the top of history has identical body, don't push again
+  if(h.length&&h[0].body===letter.body&&h[0].title===letter.title)return;
+  h.unshift({...letter,archivedAt:Date.now()});
+  saveLetterHistory(h.slice(0,10));
+}
 function saveLetter(obj){
+  // Archive the previous active letter before overwriting
+  const prev=S.get('gb_letter');
+  if(prev&&typeof prev==='object'&&prev.body)pushToLetterHistory(prev);
   S.set('gb_letter',obj);
   S.set('gb_letter_v',Date.now());
 }
@@ -6984,6 +7066,7 @@ function showLetterEditor(){
   document.getElementById('lmEditBody').value=L.body||'';
   document.getElementById('lmEditSign').value=L.sign||'';
   document.getElementById('lmEditSignLoc').value=L.signLocation||'';
+  renderLetterHistory(); // V25.7
   const bottle=modal.querySelector('.lm-bottle');
   const reader=modal.querySelector('.lm-reader');
   const editor=modal.querySelector('.lm-editor');
@@ -7007,6 +7090,45 @@ function saveLetterEdit(){
   markLetterRead();
   closeLetterModal();
   showToast('Letter saved');
+}
+// V25.7: Render the letter history picker inside the editor.
+function renderLetterHistory(){
+  const listEl=document.getElementById('lmHistoryList');
+  if(!listEl)return;
+  const active=getLetter();
+  const history=getLetterHistory();
+  const allLetters=[{letter:active,isActive:true}]
+    .concat(history.map(l=>({letter:l,isActive:false})));
+  if(allLetters.length===1 && !history.length){
+    listEl.innerHTML='<div class="lm-history-hint" style="margin:0;padding:4px 0">No past letters yet. Save a letter to start your history.</div>';
+    return;
+  }
+  listEl.innerHTML=allLetters.map((entry,i)=>{
+    const l=entry.letter;
+    const title=escapeHtml(l.title||'Untitled');
+    const preview=escapeHtml((l.body||'').replace(/\*\*/g,'').split('\n')[0].slice(0,80));
+    const when=l.archivedAt||l.editedAt;
+    const meta=entry.isActive
+      ?'<span class="lm-hi-badge">Active</span>'
+      :(when?new Date(when).toLocaleDateString('en-CH',{day:'numeric',month:'short',year:'numeric'}):'');
+    const idx=entry.isActive?'active':(i-1);
+    return `<button class="lm-history-item${entry.isActive?' active':''}" type="button" onclick="loadLetterFromHistory('${idx}')">
+      <div class="lm-hi-body">
+        <div class="lm-hi-title">${title}</div>
+        <div class="lm-hi-preview">${preview}${(l.body||'').length>80?'…':''}</div>
+        <div class="lm-hi-meta">${meta}</div>
+      </div>
+    </button>`;
+  }).join('');
+}
+function loadLetterFromHistory(idx){
+  const l=(idx==='active')?getLetter():getLetterHistory()[parseInt(idx,10)];
+  if(!l)return;
+  document.getElementById('lmEditTitle').value=l.title||'';
+  document.getElementById('lmEditBody').value=l.body||'';
+  document.getElementById('lmEditSign').value=l.sign||'';
+  document.getElementById('lmEditSignLoc').value=l.signLocation||'';
+  showToast('Letter loaded — save to make it active');
 }
 function cancelLetterEdit(){
   closeLetterModal();
@@ -7504,10 +7626,15 @@ function switchTab(id,scrollTo){
   const labels={discover:'Discover',plan:'Plan',tripday:'Trip Day'};
   const lbl=document.getElementById('tbTabLabel');
   if(lbl)lbl.textContent=labels[id]||'';
-  // V25.6.3: Tapping a tab does NOT scroll. The panel swaps beneath the hero; the user stays
-  // wherever they were. The only time scroll moves is when an explicit anchor is passed
-  // (entry cards, crew badges, etc.).
-  // (Removed the rAF scroll-to-top that V25.6.1 introduced.)
+  // V25.7: Tapping a tab scrolls to just below the hero, so the tab content shows at top
+  // without pushing the hero off-screen. Skip the scroll if a specific anchor is passed.
+  if(!scrollTo){
+    requestAnimationFrame(()=>{
+      const hero=document.querySelector('.hero');
+      const y=hero?hero.offsetHeight:0;
+      window.scrollTo({top:y,behavior:'smooth'});
+    });
+  }
   // Re-render things that need fresh state (use real tab IDs: discover/plan/tripday)
   if(id==='plan'){renderCrewWall();renderCrewActivity();renderPack();}
   if(id==='plan'||id==='discover'){renderVotePosters();renderGallery();}
