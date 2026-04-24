@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="gb-version" content="V25.4-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -127,6 +128,8 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;
   background:var(--ink);
 }
+/* Hero is only shown on Discover tab */
+body.tab-plan .hero,body.tab-tripday .hero{display:none;}
 .hero-img{
   position:absolute;inset:0;
   background-image:url('./thun bern.jpg');
@@ -2259,6 +2262,13 @@ body.poster-locked .poster-close{display:flex}
   transition:all .25s var(--spring);
 }
 body.poster-locked .poster-vote-btn{display:flex}
+/* V25: poster is a full-screen takeover — hide all other chrome */
+body.poster-locked .top-bar,
+body.poster-locked .tabs,
+body.poster-locked .bottle-dock,
+body.poster-locked .lighthouse-charm,
+body.poster-locked .sync-dot,
+body.poster-locked .whisper-drift{display:none !important}
 .poster-vote-btn.voted{background:rgba(232,131,47,.85);border-color:rgba(232,131,47,.6);font-size:22px;}
 .poster-vote-btn:active{transform:scale(.88);}
 
@@ -7411,6 +7421,9 @@ function switchTab(id,scrollTo){
   const sameTab=currentActive && currentActive.dataset.tab===id;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
+  // V25: body class so the hero can hide on non-discover tabs
+  document.body.classList.remove('tab-discover','tab-plan','tab-tripday');
+  document.body.classList.add('tab-'+id);
   positionTabIndicator();
   // Update top bar label
   const labels={discover:'Discover',plan:'Plan',tripday:'Trip Day'};
@@ -8615,9 +8628,9 @@ function openPoster(rid){
             <div class="station-link">Return trains →</div>
           </a>
         </div>
-        ${r.altEntryStation?`<div class="station-alt">⚡ Alternate entry: <strong>${r.altEntryStation}</strong></div>`:''}
-        ${r.returnTime?`<div class="station-alt">🔄 Return: <strong>${r.returnTime}</strong></div>`:''}
-        ${r.shortVariant?`<div class="station-alt">✂️ Short variant: <strong>${r.shortVariant}</strong></div>`:''}
+        ${r.altEntryStation?`<div class="station-alt"><strong>Alternate entry:</strong> ${r.altEntryStation}</div>`:''}
+        ${r.returnTime?`<div class="station-alt"><strong>Return:</strong> ${r.returnTime}</div>`:''}
+        ${r.shortVariant?`<div class="station-alt"><strong>Short variant:</strong> ${r.shortVariant}</div>`:''}
  `:''}
       </div>
 
@@ -8872,7 +8885,7 @@ function showPdfToast(){
     t=document.createElement('div');
     t.id='pdfToast';
     t.className='pdf-toast';
-    t.textContent='In the print dialog, choose "Save as PDF" 📄';
+    t.textContent='In the print dialog, choose "Save as PDF"';
     document.body.appendChild(t);
   }
   requestAnimationFrame(()=>t.classList.add('show'));
@@ -8919,7 +8932,7 @@ function renderCountdown(){
     el.textContent='TODAY';
     el.style.fontSize='36px';
     if(lbl)lbl.textContent='It\'s today';
-    txt.textContent='Go. The river is waiting. 🛶';
+    txt.textContent='Go. The river is waiting.';
   }else if(days>-60){
     el.textContent='NOW';
     el.style.fontSize='36px';
@@ -9018,6 +9031,8 @@ function init(){
   // Init top bar label
   const initLabel=document.getElementById('tbTabLabel');
   if(initLabel)initLabel.textContent='Discover';
+  // V25: body class so hero visibility follows tab state from the start
+  document.body.classList.add('tab-discover');
 }
 
 document.addEventListener('DOMContentLoaded',async function(){
