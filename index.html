@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.6.1-20260424">
+<meta name="gb-version" content="V25.6.2-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -4277,6 +4277,21 @@ body.poster-locked{overflow:hidden}
 .id-back-from-letter{display:none;}
 .identity-modal.chained .id-back-from-letter{display:block;}
 
+/* V25.6.2: always-visible × close button on identity modal (needed for existing users editing vibe/name) */
+.id-card{position:relative;}
+.id-close-x{
+  position:absolute;top:14px;right:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--paper-d);border:1px solid var(--line);
+  color:var(--ink);cursor:pointer;
+  font-size:20px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+  transition:all .2s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.id-close-x:hover,.id-close-x:active{background:var(--ink);color:#fff;border-color:var(--ink);transform:scale(.92);}
+
 /* Manage identities modal */
 .manage-modal{
   position:fixed;inset:0;
@@ -5503,6 +5518,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 <div class="identity-modal emoji-picker" id="identityModal">
   <div class="ep-card id-card">
     <button class="id-back-from-letter" type="button" onclick="backFromIdentityToLetter()" aria-label="Back to letter">←</button>
+    <button class="id-close-x" type="button" onclick="closeIdentityModal()" aria-label="Close">×</button>
     <div id="idNameStage">
       <div class="ep-title">What should we call you?</div>
       <div class="ep-sub">One name. Shared with the crew. Remembered everywhere.</div>
@@ -5579,7 +5595,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
       <line x1="9" y1="23" x2="15" y2="23" opacity=".6"/>
       <line x1="9" y1="27" x2="14" y2="27" opacity=".6"/>
     </svg></span>
-    <span class="bd-label">a whisper</span>
+    <span class="bd-label">a letter</span>
   </div>
 </div>
 
@@ -7305,7 +7321,13 @@ function renderIdentityStage(){
   const eW=document.getElementById('idEmojiStage');
   const sk=document.getElementById('idSkipBtn');
   const bk=document.getElementById('idBackBtn');
+  const xBtn=document.getElementById('identityModal')?.querySelector('.id-close-x');
   if(!nW||!eW)return;
+  // V25.6.2: show × when skipping is allowed OR user already has an identity (editing case).
+  // Hidden only during the first-time hard-gated identity flow from the letter ceremony.
+  const me=getMe();
+  const canClose=_idAllowSkip||!!(me&&me.name&&me.emoji);
+  if(xBtn)xBtn.style.display=canClose?'flex':'none';
   if(_idStage==='name'){
     nW.style.display='block';eW.style.display='none';
     const inp=document.getElementById('idNameInput');
