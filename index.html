@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="gb-version" content="V25.5-20260424">
+<meta name="gb-version" content="V25.6-20260424">
 <meta name="theme-color" content="#0B2A4A" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e6">
 <title>Böötle</title>
@@ -128,8 +128,7 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;
   background:var(--ink);
 }
-/* Hero is only shown on Discover tab */
-body.tab-plan .hero,body.tab-tripday .hero{display:none;}
+/* V25.6: Hero now visible on every tab — just don't force scroll-to-top on tab change */
 .hero-img{
   position:absolute;inset:0;
   background-image:url('./thun bern.jpg');
@@ -2295,7 +2294,7 @@ body.poster-locked .whisper-drift{display:none !important}
 /* Photo gallery dots */
 .poster-photo-dots{
   position:absolute;
-  top:20px;
+  top:calc(20px + env(safe-area-inset-top,0px));
   left:50%;
   transform:translateX(-50%);
   display:flex;
@@ -2666,7 +2665,7 @@ body.poster-locked{overflow:hidden}
 /* HERO SOUND BUTTON */
 .hero-sound{
   position:absolute;
-  top:24px;
+  top:calc(24px + env(safe-area-inset-top,0px));
   right:24px;
   z-index:4;
   background:rgba(255,255,255,.12);
@@ -2692,7 +2691,7 @@ body.poster-locked{overflow:hidden}
 .hero-sound.playing{background:var(--sun);border-color:var(--sun)}
 .hs-label{font-family:var(--sans)}
 @media(max-width:520px){
-  .hero-sound{top:18px;right:18px;padding:8px 14px 8px 11px;font-size:10px}
+  .hero-sound{top:calc(18px + env(safe-area-inset-top,0px));right:18px;padding:8px 14px 8px 11px;font-size:10px}
   .hero-sound svg{width:12px;height:12px}
 }
 
@@ -3733,7 +3732,7 @@ body.poster-locked{overflow:hidden}
 .bottle-dock{
   position:fixed;
   right:16px;
-  bottom:90px;
+  bottom:calc(90px + env(safe-area-inset-bottom,0px));
   z-index:1050;
   cursor:pointer;
   user-select:none;
@@ -3813,7 +3812,7 @@ body.poster-locked{overflow:hidden}
 .lighthouse-charm{
   position:fixed;
   left:16px;
-  bottom:90px;
+  bottom:calc(90px + env(safe-area-inset-bottom,0px));
   z-index:1050;
   cursor:pointer;
   user-select:none;
@@ -4493,6 +4492,22 @@ body.poster-locked{overflow:hidden}
   flex-shrink:0;
 }
 .dash-edit-btn:hover{background:var(--sun);color:#fff;border-color:var(--sun);}
+.dash-close-x{
+  position:absolute;
+  top:14px;right:14px;
+  width:32px;height:32px;
+  border-radius:50%;
+  background:var(--paper-d);
+  border:1px solid var(--line);
+  color:var(--ink);
+  cursor:pointer;
+  font-size:20px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+  transition:all .2s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.dash-close-x:hover,.dash-close-x:active{background:var(--ink);color:#fff;border-color:var(--ink);transform:scale(.92);}
 .dash-footer{
   display:flex;gap:10px;
   padding:14px 22px calc(16px + env(safe-area-inset-bottom,0px));
@@ -4809,6 +4824,7 @@ body.poster-locked{overflow:hidden}
   min-height:480px;
   max-height:720px;
   margin-top:60px;
+  margin-bottom:calc(90px + env(safe-area-inset-bottom,0px));
   overflow:hidden;
   background:#000;
 }
@@ -4824,7 +4840,7 @@ body.poster-locked{overflow:hidden}
 }
 .closing-hero-text{
   position:absolute;
-  bottom:10%;
+  bottom:calc(14% + env(safe-area-inset-bottom,0px));
   left:50%;
   transform:translateX(-50%);
   text-align:center;
@@ -4923,7 +4939,7 @@ body.poster-locked{overflow:hidden}
 .pw-btn:hover{background:var(--river)}
 
 /* sync indicator */
-.sync-dot{position:fixed;bottom:14px;right:14px;display:flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;background:rgba(255,253,247,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:0.5px solid rgba(0,0,0,0.08);border-radius:999px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;color:rgba(0,0,0,0.5);z-index:9999;pointer-events:none;transition:opacity .8s ease}
+.sync-dot{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;background:rgba(255,253,247,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:0.5px solid rgba(0,0,0,0.08);border-radius:999px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;color:rgba(0,0,0,0.5);z-index:9999;pointer-events:none;transition:opacity .8s ease}
 .sync-dot.hide-synced{opacity:0}
 .sync-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:#9caf88;box-shadow:0 0 0 0 rgba(156,175,136,0.6);transition:background .3s ease}
 .sync-synced::before{background:#9caf88}
@@ -5657,6 +5673,7 @@ body.golden-hour .hero-grad{background:linear-gradient(180deg,rgba(20,15,50,.55)
 <!-- 🚤 Personal dashboard modal -->
 <div class="dash-modal" id="dashModal" onclick="if(event.target===this)closeDash()">
   <div class="dash-card">
+    <button class="dash-close-x" type="button" onclick="closeDash()" aria-label="Close">×</button>
     <div class="dash-handle"></div>
     <div class="dash-header">
       <div class="dash-who">
@@ -6071,7 +6088,7 @@ let _cache={};
 let _cacheLoaded=false;
 let _syncStatus='syncing'; // 'synced' | 'syncing' | 'offline'
 let _syncHideTimer=null;
-function _setSync(s){_syncStatus=s;const el=document.getElementById('syncDot');if(!el)return;el.className='sync-dot sync-'+s;el.querySelector('.sync-label').textContent=s==='synced'?'synced':s==='syncing'?'syncing…':'offline';if(_syncHideTimer){clearTimeout(_syncHideTimer);_syncHideTimer=null;}if(s==='synced'){_syncHideTimer=setTimeout(()=>el.classList.add('hide-synced'),3000);}else{el.classList.remove('hide-synced');}}
+function _setSync(s){_syncStatus=s;const el=document.getElementById('syncDot');if(!el)return;el.className='sync-dot sync-'+s;el.querySelector('.sync-label').textContent=s==='synced'?'synced':s==='syncing'?'syncing…':'offline';if(_syncHideTimer){clearTimeout(_syncHideTimer);_syncHideTimer=null;}el.classList.remove('hide-synced');}
 // V24: merge helpers — prevents races when multiple friends write concurrently.
 // Each shared key has an associated merge strategy so we can safely read-modify-write.
 function _mergeKey(key, localValue, serverValue){
@@ -7206,7 +7223,7 @@ function renderManageList(){
     ].filter(Boolean).join('')||'<span class="mg-stat">Just joined 👋</span>';
     const actionsHTML=isMe
       ?`<div class="mg-actions">
-          <button class="mg-btn mg-rename" type="button" onclick="closeManageModal();openIdentityModal({allowSkip:true})">✏️ Rename</button>
+          <button class="mg-btn mg-rename" type="button" onclick="closeManageModal();openIdentityModal({allowSkip:true,startStage:'name'})">✏️ Rename</button>
           <button class="mg-btn mg-delete" type="button" onclick="confirmDeleteIdentity('${safeName}')">Remove</button>
         </div>`
       :`<div class="mg-readonly">view only</div>`;
@@ -7227,7 +7244,7 @@ function confirmDeleteIdentity(name){
   document.getElementById('confirmText').textContent='This will remove all of '+name+'\u2019s votes, days, pack claims, and wishes. This cannot be undone.';
   const renameBtn=document.getElementById('confirmRename');
   const deleteBtn=document.getElementById('confirmDelete');
-  if(renameBtn)renameBtn.onclick=function(){closeConfirmModal();closeManageModal();openIdentityModal({allowSkip:true});};
+  if(renameBtn)renameBtn.onclick=function(){closeConfirmModal();closeManageModal();openIdentityModal({allowSkip:true,startStage:'name'});};
   if(deleteBtn)deleteBtn.onclick=function(){closeConfirmModal();closeManageModal();deleteIdentity(name);showToast('Identity deleted');};
  m.classList.add('show');
 }
@@ -7257,7 +7274,13 @@ function openIdentityModal({onComplete,reason,allowSkip=true,startStage='name'}=
   const me=getMe();
   _idDraftName=me?.name||'';
  _idDraftEmoji=me?.emoji||'';
-  _idStage=startStage;
+  // V25.6: Existing users (already have a saved name) skip the name stage and jump to emoji.
+  // Only "create new user" flows start at 'name'. Explicit startStage overrides still win.
+  if(startStage==='name'&&me&&me.name){
+    _idStage='emoji';
+  }else{
+    _idStage=startStage;
+  }
   const rEl=document.getElementById('idReason');
   if(rEl){rEl.textContent=reason||'';rEl.style.display=reason?'block':'none';}
   renderIdentityStage();
@@ -8686,6 +8709,7 @@ function openPoster(rid){
   poster.classList.add('open');
   document.body.classList.add('poster-locked');
   _posterPhotoIdx=0;
+  _bindPosterSwipe();
   renderWishesInPoster(r.id);
   fetchRouteWeather(r);
   // Update poster vote button state
@@ -8743,6 +8767,35 @@ function posterPhotoGo(idx){
   _posterPhotoIdx=idx;
 }
 function posterPhotoStep(dir){posterPhotoGo(_posterPhotoIdx+dir);}
+
+// V25.6: Touch swipe for poster photo gallery
+let _posterSwipeStart=null;
+function _posterTouchStart(e){
+  if(!e.touches||e.touches.length!==1)return;
+  const t=e.touches[0];
+  _posterSwipeStart={x:t.clientX,y:t.clientY,time:Date.now()};
+}
+function _posterTouchEnd(e){
+  if(!_posterSwipeStart)return;
+  const t=(e.changedTouches&&e.changedTouches[0])||null;
+  if(!t){_posterSwipeStart=null;return;}
+  const dx=t.clientX-_posterSwipeStart.x;
+  const dy=t.clientY-_posterSwipeStart.y;
+  const dt=Date.now()-_posterSwipeStart.time;
+  _posterSwipeStart=null;
+  // Only horizontal swipes: |dx| > 40px, |dx| > |dy|*1.5, within 600ms
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.5&&dt<600){
+    posterPhotoStep(dx<0?1:-1);
+  }
+}
+function _bindPosterSwipe(){
+  const hero=document.getElementById('posterHero');
+  if(!hero)return;
+  hero.removeEventListener('touchstart',_posterTouchStart);
+  hero.removeEventListener('touchend',_posterTouchEnd);
+  hero.addEventListener('touchstart',_posterTouchStart,{passive:true});
+  hero.addEventListener('touchend',_posterTouchEnd,{passive:true});
+}
 
 function closePoster(){
   const poster=document.getElementById('poster');
